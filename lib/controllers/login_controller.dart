@@ -105,7 +105,8 @@ class LoginController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context,  Strings.noInternetConnection, callback: () {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
           Get.back();
         });
         return;
@@ -118,8 +119,8 @@ class LoginController extends GetxController {
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
-      var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
+        var responseDetail = GetLoginModel.fromJson(data);
         if (responseDetail.status == 1) {
           UserPreferences().saveSignInInfo(responseDetail.data);
           UserPreferences().setToken(responseDetail.data.token.toString());
@@ -130,13 +131,12 @@ class LoginController extends GetxController {
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseDetail.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context,  Strings.servererror,
-          callback: () {});
+      showDialogForScreen(context, Strings.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
