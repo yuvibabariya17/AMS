@@ -37,8 +37,8 @@ class ChangePasswordController extends GetxController {
   RxBool isForgotPasswordValidate = false.obs;
   RxBool isObsecureText = true.obs;
 
-  RxBool obsecureOldPasswordText = true.obs;
-  RxBool obsecureNewPasswordText = true.obs;
+  RxBool obsecureOldPasswordText = true.obs; 
+  RxBool obsecureNewPasswordText = true.obs; 
   RxBool obsecureConfirmPasswordText = true.obs;
 
   @override
