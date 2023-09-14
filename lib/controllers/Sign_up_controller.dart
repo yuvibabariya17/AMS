@@ -98,8 +98,8 @@ class SignUpController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Email Id";
         model.isValidate = false;
-      } else if (!GetUtils.isEmail(val)) {
-        model!.error = "Enter Valid Email";
+      } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(emailCtr.text.trim())) {
+        model!.error = "Enter Valid Email Id";
         model.isValidate = false;
       } else {
         model!.error = null;

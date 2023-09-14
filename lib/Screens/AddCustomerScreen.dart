@@ -210,7 +210,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                                   controller
                                                       .updateAnniversaryDate(
                                                           formattedDate);
-                                                  controller.validateDob(
+                                                  controller.validateDoa(
                                                       formattedDate);
                                                 }
                                               },

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/ServiceScreen.dart';
 import 'package:booking_app/controllers/addservice_controller.dart';
@@ -9,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-import '../core/Common/appbar.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/constants/strings.dart';
@@ -134,7 +131,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                     },
                                     errorText: Addservicecontroller
                                         .PriceModel.value.error,
-                                    inputType: TextInputType.text,
+                                    inputType: TextInputType.number,
                                   );
                                 }))),
                         Container(

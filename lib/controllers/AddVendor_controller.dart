@@ -110,6 +110,9 @@ class AddVendorController extends GetxController {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Email Id";
         model.isValidate = false;
+      } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(Emailctr.text.trim())) {
+        model!.error = "Enter Valid Email Id";
+        model.isValidate = false;
       } else {
         model!.error = null;
         model.isValidate = true;
@@ -123,6 +126,9 @@ class AddVendorController extends GetxController {
     ContactModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Contact No.";
+        model.isValidate = false;
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
+        model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {
         model!.error = null;

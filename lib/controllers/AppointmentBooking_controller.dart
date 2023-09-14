@@ -1,9 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:booking_app/Models/ExpertModel.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:sizer/sizer.dart';
+import '../Config/apicall_constant.dart';
+import '../Models/ServiceModel.dart';
 import '../Models/sign_in_form_validation.dart';
 import '../Screens/TimeSlot.dart';
+import '../api_handle/Repository.dart';
+import '../core/constants/strings.dart';
+import '../core/themes/font_constant.dart';
+import '../core/utils/log.dart';
+import '../dialogs/dialogs.dart';
 import 'internet_controller.dart';
 
 class AppointmentBookingController extends GetxController {
@@ -101,20 +110,20 @@ class AppointmentBookingController extends GetxController {
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
-  var ServiceModel = ValidationModel(null, null, isValidate: false).obs;
+  var ServicesModel = ValidationModel(null, null, isValidate: false).obs;
   var SlotModel = ValidationModel(null, null, isValidate: false).obs;
   var AmountModel = ValidationModel(null, null, isValidate: false).obs;
   var NoteModel = ValidationModel(null, null, isValidate: false).obs;
   var RemindModel = ValidationModel(null, null, isValidate: false).obs;
-  var expertModel = ValidationModel(null, null, isValidate: false).obs;
+  var expertsModel = ValidationModel(null, null, isValidate: false).obs;
   var dateModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
     if (CustomerModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (ServiceModel.value.isValidate == false) {
+    } else if (ServicesModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (expertModel.value.isValidate == false) {
+    } else if (expertsModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (dateModel.value.isValidate == false) {
       isFormInvalidate.value = false;
@@ -146,7 +155,7 @@ class AppointmentBookingController extends GetxController {
   }
 
   void validateService(String? val) {
-    ServiceModel.update((model) {
+    ServicesModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Service Name";
         model.isValidate = false;
@@ -160,7 +169,7 @@ class AppointmentBookingController extends GetxController {
   }
 
   void validateExpert(String? val) {
-    ServiceModel.update((model) {
+    expertsModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Expert";
         model.isValidate = false;
@@ -174,7 +183,7 @@ class AppointmentBookingController extends GetxController {
   }
 
   void validateDate(String? val) {
-    ServiceModel.update((model) {
+    dateModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Date";
         model.isValidate = false;
@@ -236,6 +245,235 @@ class AppointmentBookingController extends GetxController {
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
+  }
+
+//Main API CALLING
+
+  // void AddBookingAppointmentAPI(context) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       loadingIndicator.hide(context);
+  //       showDialogForScreen(context, Strings.noInternetConnection,
+  //           callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     loadingIndicator.show(context, '');
+  //     var retrievedObject = await UserPreferences().getSignInInfo();
+  //     var response = await Repository.post({
+  //       "vendor_id": Studentctr.text.toString().trim(),
+  //       "customer_id": Idctr.text.toString().trim(),
+  //       "vendor_service_id": Startctr.text.toString().trim(),
+  //       "appointment_slot_id": Feesctr.text.toString().trim(),
+  //       "duration": Descctr.text.toString().trim(),
+  //       "date_of_appointment": retrievedObject!.id.toString().trim(),
+
+  //     }, ApiUrl.addCourse, allowHeader: true);
+  //     loadingIndicator.hide(context);
+  //     var data = jsonDecode(response.body);
+  //     logcat("RESPOSNE", data);
+  //     var responseDetail = GetLoginModel.fromJson(data);
+  //     if (response.statusCode == 200) {
+  //       if (responseDetail.status == 1) {
+  //         // UserPreferences().saveSignInInfo(responseDetail.data);
+  //         UserPreferences().setToken(responseDetail.data.token.toString());
+  //         Get.to(const dashboard());
+  //       } else {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       state.value = ScreenState.apiError;
+  //       showDialogForScreen(context, responseDetail.message.toString(),
+  //           callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat("Exception", e);
+  //     showDialogForScreen(context, Strings.servererror, callback: () {});
+  //     loadingIndicator.hide(context);
+  //   }
+  // }
+
+  RxBool isExpertTypeApiList = false.obs;
+  RxList<expertList> expertObjectList = <expertList>[].obs;
+  RxString expertId = "".obs;
+
+  void getExpertList(context) async {
+    isExpertTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.expertList, allowHeader: true);
+      isExpertTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ExpertModel.fromJson(responseData);
+        if (data.status == 1) {
+          expertObjectList.clear();
+          expertObjectList.addAll(data.data);
+          logcat("RESPONSE", jsonEncode(expertObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Strings.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isExpertTypeApiList.value = false;
+    }
+  }
+
+  Widget setExpertList() {
+    return Obx(() {
+      if (isExpertTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isExpertTypeApiList.value);
+
+      return setDropDownTestContent(
+        expertObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: expertObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                expertId.value = expertObjectList[index].serviceInfo.toString();
+                expertctr.text = expertObjectList[index]
+                    .serviceInfo
+                    .name
+                    .capitalize
+                    .toString();
+
+                validateExpert(expertctr.text);
+              },
+              title: Text(
+                expertObjectList[index].serviceInfo.name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  // SERVICE LIST
+
+  Widget setServiceList() {
+    return Obx(() {
+      if (isServiceTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isServiceTypeApiList.value);
+
+      return setDropDownTestContent(
+        serviceObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: serviceObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                serviceId.value =
+                    serviceObjectList[index].serviceInfo.toString();
+                Servicectr.text = serviceObjectList[index]
+                    .serviceInfo
+                    .name
+                    .capitalize
+                    .toString();
+
+                validateService(Servicectr.text);
+              },
+              title: Text(
+                serviceObjectList[index].serviceInfo.name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  RxBool isServiceTypeApiList = false.obs;
+  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxString serviceId = "".obs;
+
+  void getServieList(context) async {
+    isServiceTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.addServiceList, allowHeader: true);
+      isServiceTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ServiceModel.fromJson(responseData);
+        if (data.status == 1) {
+          serviceObjectList.clear();
+          serviceObjectList.addAll(data.data);
+          logcat("RESPONSE", jsonEncode(serviceObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Strings.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceTypeApiList.value = false;
+    }
+  }
+
+  showDialogForScreen(context, String message, {Function? callback}) {
+    showMessage(
+        context: context,
+        callback: () {
+          if (callback != null) {
+            callback();
+          }
+          return true;
+        },
+        message: message,
+        title: "Appointment Booking",
+        negativeButton: '',
+        positiveButton: "Continue");
   }
 
   void navigate() {

@@ -110,8 +110,8 @@ class UpdateVendorController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Email Id";
         model.isValidate = false;
-      } else if (!GetUtils.isEmail(val)) {
-        model!.error = "Enter Valid Email";
+      } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(emailctr.text.trim())) {
+        model!.error = "Enter Valid Email Id";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -170,7 +170,7 @@ class UpdateVendorController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Contact No.1";
         model.isValidate = false;
-      } else if (val.replaceAll(' ', '').length < 10) {
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
         model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {
@@ -187,7 +187,7 @@ class UpdateVendorController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Contact No.2";
         model.isValidate = false;
-      } else if (val.replaceAll(' ', '').length < 10) {
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
         model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {
@@ -204,7 +204,7 @@ class UpdateVendorController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Whatsapp No";
         model.isValidate = false;
-      } else if (val.replaceAll(' ', '').length < 10) {
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
         model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {

@@ -105,7 +105,8 @@ class LoginController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context,  Strings.noInternetConnection, callback: () {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
           Get.back();
         });
         return;
@@ -118,28 +119,68 @@ class LoginController extends GetxController {
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
-      var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
+        var responseDetail = GetLoginModel.fromJson(data);
         if (responseDetail.status == 1) {
           UserPreferences().saveSignInInfo(responseDetail.data);
           UserPreferences().setToken(responseDetail.data.token.toString());
-          Get.to(const dashboard());
+          Get.offAll(dashboard());
         } else {
           showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseDetail.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context,  Strings.servererror,
-          callback: () {});
+      showDialogForScreen(context, Strings.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
+
+  // void signInAPI(context) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       loadingIndicator.hide(context);
+  //       showDialogForScreen(context,  Strings.noInternetConnection, callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     loadingIndicator.show(context, '');
+  //     var response = await Repository.post({
+  //       "email_id": emailctr.text.toString().trim(),
+  //       "password": passctr.text.toString().trim()
+  //     }, ApiUrl.login);
+  //     loadingIndicator.hide(context);
+  //     var data = jsonDecode(response.body);
+  //     logcat("RESPOSNE", data);
+  //     var responseDetail = GetLoginModel.fromJson(data);
+  //     if (response.statusCode == 200) {
+  //       if (responseDetail.status == 1) {
+  //         UserPreferences().saveSignInInfo(responseDetail.data);
+  //         UserPreferences().setToken(responseDetail.data.token.toString());
+  //         Get.to(const dashboard());
+  //       } else {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       state.value = ScreenState.apiError;
+  //       showDialogForScreen(context, responseDetail.message.toString(),
+  //           callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat("Exception", e);
+  //     showDialogForScreen(context,  Strings.servererror,
+  //         callback: () {});
+  //     loadingIndicator.hide(context);
+  //   }
+  // }
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(

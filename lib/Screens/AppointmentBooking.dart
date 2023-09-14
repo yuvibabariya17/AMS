@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/constants/strings.dart';
 import '../core/themes/font_constant.dart';
+import '../core/utils/log.dart';
 import '../custom_componannt/common_views.dart';
 import '../custom_componannt/form_inputs.dart';
 
@@ -25,6 +27,23 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
   final controller = Get.put(AppointmentBookingController());
   DateTime selectedDate = DateTime.now();
   bool check1 = false;
+
+  @override
+  void initState() {
+    controller.getServieList(context);
+    controller.getExpertList(context);
+    super.initState();
+  }
+
+  // void getService(BuildContext context) async {
+  //   try {
+  //     if (mounted) {
+  //       await Future.delayed(const Duration(seconds: 1)).then((value) {});
+  //     }
+  //   } catch (e) {
+  //     logcat("ERROR", e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +115,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                     },
                                     errorText:
                                         controller.CustomerModel.value.error,
-                                    inputType: TextInputType.text,
+                                    inputType: TextInputType.none,
                                   );
                                 }))),
                         getTitle(Strings.Services),
@@ -115,9 +134,16 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       controller.validateService(val);
                                       setState(() {});
                                     },
+                                    onTap: () {
+                                      controller.Servicectr.text = "";
+                                      showDropdownMessage(
+                                          context,
+                                          controller.setServiceList(),
+                                          'Select Category');
+                                    },
                                     errorText:
-                                        controller.ServiceModel.value.error,
-                                    inputType: TextInputType.text,
+                                        controller.ServicesModel.value.error,
+                                    inputType: TextInputType.none,
                                   );
                                 }))),
                         getTitle("Add Experts"),
@@ -138,9 +164,16 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       controller.validateExpert(val);
                                       setState(() {});
                                     },
+                                    onTap: () {
+                                      controller.expertctr.text = "";
+                                      showDropdownMessage(
+                                          context,
+                                          controller.setExpertList(),
+                                          'Select Expert');
+                                    },
                                     errorText:
-                                        controller.expertModel.value.error,
-                                    inputType: TextInputType.text,
+                                        controller.expertsModel.value.error,
+                                    inputType: TextInputType.none,
                                   );
                                 }))),
                         getTitle("Select Date"),
@@ -405,14 +438,15 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                            margin: EdgeInsets.only(top: 5.h),
-                            width: double.infinity,
-                            height: 6.h,
-                            child: getButton(() {
-                              if (controller.isFormInvalidate.value) {
-                                // Get.to(Signup2());
-                              }
+                        FadeInUp(
+                            from: 50,
+                            child: Obx(() {
+                              return getFormButton(() {
+                                if (controller.isFormInvalidate.value == true) {
+                                  // controller.AddBookingAppointmentAPI(context);
+                                }
+                              }, "Sign In",
+                                  validate: controller.isFormInvalidate.value);
                             })),
                         SizedBox(
                           height: 2.h,

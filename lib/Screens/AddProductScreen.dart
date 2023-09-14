@@ -179,7 +179,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     },
                                     errorText:
                                         controller.categroryModel.value.error,
-                                    inputType: TextInputType.text,
+                                    inputType: TextInputType.none,
                                   );
                                 }))),
                         getTitle(Strings.amount),

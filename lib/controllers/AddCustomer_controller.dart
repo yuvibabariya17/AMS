@@ -194,6 +194,9 @@ class AddCustomerController extends GetxController {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Contact Number 1";
         model.isValidate = false;
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
+        model!.error = "Enter Valid Contact No";
+        model.isValidate = false;
       } else {
         model!.error = null;
         model.isValidate = true;
@@ -207,6 +210,9 @@ class AddCustomerController extends GetxController {
     contact2Model.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Contact Number 2";
+        model.isValidate = false;
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
+        model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -222,6 +228,9 @@ class AddCustomerController extends GetxController {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Whatsapp Number";
         model.isValidate = false;
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
+        model!.error = "Enter Valid Contact No";
+        model.isValidate = false;
       } else {
         model!.error = null;
         model.isValidate = true;
@@ -235,6 +244,9 @@ class AddCustomerController extends GetxController {
     emailModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Email Id";
+        model.isValidate = false;
+      } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(Emailctr.text.trim())) {
+        model!.error = "Enter Valid Email Id";
         model.isValidate = false;
       } else {
         model!.error = null;

@@ -252,7 +252,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                       padding: EdgeInsets.only(
                                           right: SizerUtil.deviceType ==
                                                   DeviceType.mobile
-                                              ? 2.w
+                                              ? 4.w
                                               : 3.w),
                                       icon: const Icon(Icons.add),
                                       iconSize: SizerUtil.deviceType ==
@@ -265,6 +265,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                             ],
                           )
                         :
+
                         // widget.isDropdown == true
                         //     ? Row(
                         //       children: [

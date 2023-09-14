@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../controllers/AddVendorService_controller.dart';
-import '../core/Common/appbar.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/constants/strings.dart';
