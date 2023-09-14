@@ -1,0 +1,252 @@
+name: booking_app
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.5 <3.0.0'
+
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  get_storage: ^2.0.3
+  http: ^0.13.5
+  sizer: ^2.0.15
+  flutter_svg: ^1.1.1+1
+  bouncing_widget: ^2.0.0
+  font_awesome_flutter: ^10.4.0
+  google_nav_bar: ^5.0.6
+  persistent_bottom_nav_bar: ^5.0.2
+  intl: ^0.17.0
+  date_picker_timeline: ^1.2.3
+  flutter_bounce: ^1.1.0
+  dotted_border: ^2.0.0+3
+  getwidget: ^3.1.1
+  animated_splash_screen: ^1.3.0
+  onboarding_animation: ^0.0.3
+  animate_do: ^3.0.2
+  liquid_swipe: ^3.1.0
+  sms_autofill: ^2.3.0
+  telephony: ^0.2.0
+  connectivity_plus: ^4.0.1
+  animated_theme_switcher: ^2.0.8
+  encrypted_shared_preferences: ^3.0.1
+  shared_preferences: ^2.2.0
+  image_picker: ^1.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+flutter_icons:
+  android: true
+  ios: true
+  
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/svgs/
+    - assets/png/
+    - assets/gif/
+
+  fonts:
+    - family: fontRegular
+      fonts:
+        - asset: assets/fonts/archivo.regular.ttf
+    - family: fontMedium
+      fonts:
+        - asset: assets/fonts/archivo.medium.ttf
+          weight: 700
+    - family: fontUrbanistBlack
+      fonts:
+        - asset: assets/fonts/Urbanist-Black.ttf
+    - family: fontUrbanistBold
+      fonts:
+        - asset: assets/fonts/Urbanist-Bold.ttf
+    - family: fontUrbanistBlackItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-BlackItalic.ttf
+    - family: fontUrbanistBoldItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-BoldItalic.ttf
+    - family: fontUrbanistExtraBold
+      fonts:
+        - asset: assets/fonts/Urbanist-ExtraBold.ttf
+    - family: fontUrbanistExtraBoldItalic 
+      fonts:
+        - asset: assets/fonts/Urbanist-ExtraBoldItalic.ttf
+    - family: fontUrbanistExtraLight
+      fonts:
+        - asset: assets/fonts/Urbanist-ExtraLight.ttf
+    - family: fontUrbanistExtraLightItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-ExtraLightItalic.ttf
+    - family: fontUrbanistItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-Italic.ttf
+    - family: fontUrbanistLight 
+      fonts:
+        - asset: assets/fonts/Urbanist-Light.ttf
+    - family: fontUrbanistLightItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-LightItalic.ttf
+    - family: fontUrbanistMedium
+      fonts:
+        - asset: assets/fonts/Urbanist-Medium.ttf
+    - family: fontUrbanistMediumItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-MediumItalic.ttf
+    - family: fontUrbanistRegular
+      fonts:
+        - asset: assets/fonts/Urbanist-Regular.ttf
+    - family: fontUrbanistSemiBold
+      fonts:
+        - asset: assets/fonts/Urbanist-SemiBold.ttf
+    - family: fontUrbanistSemiBoldItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-SemiBoldItalic.ttf
+    - family: fontUrbanistThin
+      fonts:
+        - asset: assets/fonts/Urbanist-Thin.ttf
+    - family: fontUrbanistThinItalic
+      fonts:
+        - asset: assets/fonts/Urbanist-ThinItalic.ttf
+    - family: opensansBold
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Bold.ttf
+    - family: opensansBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-BoldItalic.ttf
+    - family: opensansExtraBold
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-ExtraBold.ttf
+    - family: opensansExtraBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-ExtraBoldItalic.ttf
+    - family: opensansItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Italic.ttf
+    - family: opensansLight
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Light.ttf
+    - family: opensansLightItalic 
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-LightItalic.ttf
+    - family: opensansMedium 
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Medium.ttf
+    - family: opensansRegular
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-Regular.ttf
+    - family: opensansSemiBold
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-SemiBold.ttf
+    - family: opensansSemiBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_Condensed-SemiBoldItalic.ttf
+    
+    - family: opensansSemiCondensed-Bold
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-Bold.ttf
+    - family: opensansSemiCondesed-BoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-BoldItalic.ttf
+    - family: opensansSemiCondesed-ExtraBold
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-ExtraBold.ttf
+    - family: opensansSemiCondesed-ExtraBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-ExtraBoldItalic.ttf
+    - family: opensansSemiCondesed-Italic
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-Italic.ttf
+    - family: opensansSemiCondesed-Light
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-Light.ttf
+    - family: opensansSemiCondesed-LightItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-LightItalic.ttf
+    - family: opensansSemiCondesed-Medium
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-Medium.ttf
+    - family: opensansSemiCondesed-Regular
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-Regular.ttf
+    - family: opensansSemiCondesed-SemiBold
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-SemiBold.ttf
+    - family: opensansSemiCondesed-SemiBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans_SemiCondensed-SemiBoldItalic.ttf
+    - family: opensans-Bold
+      fonts:
+        - asset: assets/fonts/OpenSans-Bold.ttf
+    - family: opensans-BoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans-BoldItalic.ttf
+    - family: opensans-ExtraBold
+      fonts:
+        - asset: assets/fonts/OpenSans-ExtraBold.ttf
+    - family: opensans-ExtraBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans-ExtraBoldItalic.ttf
+    - family: opensans-Italic
+      fonts:
+        - asset: assets/fonts/OpenSans-Italic.ttf
+    - family: opensans-Light
+      fonts:
+        - asset: assets/fonts/OpenSans-Light.ttf
+    - family: opensans-LightItalic
+      fonts:
+        - asset: assets/fonts/OpenSans-LightItalic.ttf
+    - family: opensans-Regular
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+    - family: opensans-SemiBold
+      fonts:
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
+    - family: opensans-SemiBoldItalic
+      fonts:
+        - asset: assets/fonts/OpenSans-SemiBoldItalic.ttf             
+    
+
