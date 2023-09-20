@@ -31,14 +31,15 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-     Common().trasparent_statusbar();
+    Common().trasparent_statusbar();
     return ListView.builder(
         shrinkWrap: false,
         clipBehavior: Clip.antiAlias,
         itemBuilder: (context, index) {
           ProductItem data = staticData[index];
           return Container(
-            margin: EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h),
+            margin:
+                EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h, top:3.h),
             padding:
                 EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
             child: Column(
@@ -143,7 +144,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                         onPressed: () {}, icon: Icon(Icons.arrow_drop_down)),
                     Spacer(),
                     SizedBox(
-                        width: 25.w,
+                        width: 22.w,
                         height: 4.h,
                         child: ElevatedButton(
                             onPressed: () {},

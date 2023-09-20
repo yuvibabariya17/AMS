@@ -188,37 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             }, "Sign In",
                                 validate: controller.isFormInvalidate.value);
-                          })
-                          // child: SizedBox(
-                          //     width: 150.h,
-                          //     height: 6.h,
-                          //     child:
-                          //      ElevatedButton(
-                          //         onPressed: () {
-                          //           Get.to(dashboard());
-
-                          //           // Get.to(PhoneNumberScreen());
-
-                          //           // Navigator.push(
-                          //           //     context,
-                          //           //     MaterialPageRoute(
-                          //           //         builder: (context) =>
-                          //           //             const PhoneNumberScreen()));
-                          //         },
-                          //         style: ElevatedButton.styleFrom(
-                          //             backgroundColor: Colors.black,
-                          //             shape: RoundedRectangleBorder(
-                          //                 borderRadius:
-                          //                     BorderRadius.circular(50))),
-                          //         child: Text(
-                          //           Strings.sing_in,
-                          //           style: TextStyle(
-                          //               color: Colors.white,
-                          //               fontSize: 14.5.sp,
-                          //               fontFamily: opensans_Bold,
-                          //               fontWeight: FontWeight.w700),
-                          //         ))),
-                          ),
+                          })),
                       SizedBox(
                         height: 4.5.h,
                       ),

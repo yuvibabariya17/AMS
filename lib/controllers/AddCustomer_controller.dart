@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Config/apicall_constant.dart';
-import '../Models/SigninModel.dart';
+
 import '../Models/UploadImageModel.dart';
 import '../Models/sign_in_form_validation.dart';
-import '../Screens/DashboardScreen.dart';
+
 import '../api_handle/Repository.dart';
 import '../core/utils/log.dart';
 import '../dialogs/dialogs.dart';
@@ -256,7 +256,6 @@ class AddCustomerController extends GetxController {
 
     enableSignUpButton();
   }
-
   RxBool isFormInvalidate = true.obs;
   RxString uploadImageId = ''.obs;
 

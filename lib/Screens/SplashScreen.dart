@@ -37,7 +37,7 @@ class _SplashscreenState extends State<Splashscreen> {
     return Container(
       color: Colors.white,
       height: double.infinity,
-      width: double.infinity,
+      width: double.infinity, 
       child: Center(
         child: SvgPicture.asset(Asset.splash_bg,
             fit: BoxFit.cover,
