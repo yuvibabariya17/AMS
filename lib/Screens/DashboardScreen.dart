@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/AddCourseScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Appointment.dart';
 import 'package:booking_app/Screens/HomeScreen.dart';
 import 'package:booking_app/Screens/ProfileScreen.dart';
@@ -34,9 +33,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var controller = Get.put(HomeScreenController());
+  List<Widget> _pageOptions = [];
 
   @override
   void initState() {
+    setState(() {
+      _pageOptions = [
+        HomeScreen(callback),
+        AppointmentScreen(
+          isfromNav: true,
+        ),
+        ProfileScreen(),
+      ];
+    });
     super.initState();
   }
 
@@ -62,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           drawer: NavdrawerScreen(),
           key: controller.drawer_key,
           body: Center(
-            child: _buildScreens.elementAt(controller.currentPage),
+            child: _pageOptions.elementAt(controller.currentPage),
           ),
           resizeToAvoidBottomInset: false,
           extendBody: true,
@@ -132,9 +141,15 @@ class _MyHomePageState extends State<MyHomePage> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-  static final List<Widget> _buildScreens = <Widget>[
-    HomeScreen(),
-    AppointmentScreen(),
-    ProfileScreen(),
-  ];
+  void callback(int index) async {
+    if (index == 1) {
+      setState(() {
+        controller.currentPage = index;
+      });
+    } else {
+      setState(() {
+        controller.currentPage = index;
+      });
+    }
+  }
 }

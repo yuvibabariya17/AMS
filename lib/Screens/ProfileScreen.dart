@@ -1,25 +1,23 @@
+import 'package:booking_app/Screens/BasicProfileTab.dart';
+import 'package:booking_app/Screens/ServicebasedProfileTab.dart';
+import 'package:booking_app/Screens/StaffProfileTab.dart';
+import 'package:booking_app/controllers/ProfileController.dart';
+import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
-import '../Models/Staff_model.dart';
-import '../Models/service.dart';
-import '../Models/service_model.dart';
-import '../Models/staff.dart';
 import '../core/Common/Common.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
-import '../core/constants/get_storage_key.dart';
-import '../core/constants/strings.dart';
 import '../core/utils/helper.dart';
-import 'UpdateVendor.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key, this.callBack});
+  Function? callBack;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -27,65 +25,73 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
-  late TabController tabController;
-  List<ServiceItem> staticData = SettingsItems;
-  List<StaffItem> staticData1 = StaffItems;
-  var currentPage = 0;
-  bool state = false;
-  int isDarkModes = 0;
-  final getStorage = GetStorage();
+  final controller = Get.put(ProfileController());
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 3, initialIndex: 0);
-    isDarkModes = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
+    controller.tabController =
+        TabController(vsync: this, length: 3, initialIndex: 0);
+
+    //  controller.isDarkModes = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
-        child: Column(
-          children: [
-            Container(
-              color: isDarkMode() ? black : transparent,
-              child: Column(
-                children: [
-                  Center(
-                      child: Column(
+    Common().trasparent_statusbar();
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.callBack != null) {
+          widget.callBack!(0);
+        } else {
+          Get.back();
+        }
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+            child: Column(
+              children: [
+                Container(
+                  color: isDarkMode() ? black : transparent,
+                  child: Column(
                     children: [
-                      getToolbar("Profile", showBackButton: true, notify: false,
-                          callback: () {
-                        Get.back();
-                      })
+                      Center(
+                          child: Column(
+                        children: [
+                          getAppbar(
+                            "Profile",
+                          )
+                        ],
+                      )),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Center(
+                        child: SvgPicture.asset(
+                          Asset.profileimg,
+                          height: 10.h,
+                          color: isDarkMode() ? white : black,
+                        ),
+                      ),
+                      SizedBox(height: 1.h),
+                      Text(
+                        Get.find<HomeScreenController>().name.toString(),
+                        style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: 16.5.sp,
+                            fontWeight: FontWeight.w700),
+                      )
                     ],
-                  )),
-                  SizedBox(
-                    height: 2.h,
                   ),
-                  Center(
-                    child: SvgPicture.asset(
-                      Asset.profileimg,
-                      height: 10.h,
-                      color: isDarkMode() ? white : black,
-                    ),
-                  ),
-                  SizedBox(height: 1.h),
-                  Text(
-                    Strings.name,
-                    style: TextStyle(
-                        color: isDarkMode() ? white : black,
-                        fontFamily: opensansMedium,
-                        fontSize: 16.5.sp,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
-              ),
+                ),
+                getListViewItem()
+              ],
             ),
-            getListViewItem()
-          ],
+          ),
         ),
       ),
     );
@@ -112,314 +118,11 @@ class _ProfileScreenState extends State<ProfileScreen>
               Expanded(
                 child: TabBarView(
                   physics: NeverScrollableScrollPhysics(),
-                  controller: tabController,
+                  controller: controller.tabController,
                   children: [
-                    Container(
-                        child: Container(
-                      margin: EdgeInsets.only(
-                          top: 5.h, left: 8.w, right: 8.w, bottom: 1.h),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            top: 1.5.h, left: 6.w, right: 4.w, bottom: 1.5.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  Strings.vendor_type,
-                                  style: TextStyle(
-                                      fontFamily: opensansMedium,
-                                      fontWeight: FontWeight.w400,
-                                      color: isDarkMode() ? Colors.grey : black,
-                                      fontSize: 13.5.sp),
-                                ),
-                                IconButton(
-                                    alignment: Alignment.topRight,
-                                    onPressed: () {
-                                      Get.to(UpdateVendor());
-                                    },
-                                    icon: SvgPicture.asset(Asset.edit,
-                                        color: isDarkMode() ? white : black))
-                              ],
-                            ),
-                            SizedBox(height: 0.5.h),
-                            Text(
-                              Strings.abc,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13.sp),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Text(
-                              Strings.company_name,
-                              style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  color: isDarkMode() ? Colors.grey : black,
-                                  fontSize: 13.5.sp),
-                            ),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            Text(
-                              Strings.company_name_hint,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13.sp),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Text(
-                              Strings.address,
-                              style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  color: isDarkMode() ? Colors.grey : black,
-                                  fontSize: 13.5.sp),
-                            ),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            Text(
-                              Strings.address_hint,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13.sp),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Text(
-                              Strings.contact_one,
-                              style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  color: isDarkMode() ? Colors.grey : black,
-                                  fontSize: 13.5.sp),
-                            ),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            Text(
-                              Strings.contact_one_hint,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13.sp),
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Text(
-                              Strings.contact_two,
-                              style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  color: isDarkMode() ? Colors.grey : black,
-                                  fontSize: 13.5.sp),
-                            ),
-                            SizedBox(
-                              height: 0.5.h,
-                            ),
-                            Text(
-                              Strings.contact_two_hint,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 13.sp),
-                            ),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: isDarkMode() ? black : white,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 0.1,
-                                blurRadius: 10,
-                                offset: Offset(0.5, 0.5)),
-                          ],
-                        ),
-                      ),
-                    )),
-                    Container(
-                      margin: EdgeInsets.only(top: 3.h),
-                      child: ListView.builder(
-                          shrinkWrap: false,
-                          clipBehavior: Clip.antiAlias,
-                          itemBuilder: (context, index) {
-                            StaffItem data = staticData1[index];
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  top: 1.5.h,
-                                  left: 8.w,
-                                  right: 8.w,
-                                  bottom: 1.5.h),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    top: 1.5.h,
-                                    left: 4.w,
-                                    right: 4.w,
-                                    bottom: 1.5.h),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Stack(children: [
-                                          CircleAvatar(
-                                            radius: 3.7.h,
-                                            backgroundColor: Colors.white,
-                                            child: SvgPicture.asset(
-                                              Asset.profileimg,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ]),
-                                        SizedBox(width: 3.w),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  child: Text(
-                                                data.title,
-                                                style: TextStyle(
-                                                    fontFamily: opensansMedium,
-                                                    fontSize: 15.5.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              )),
-                                              SizedBox(
-                                                height: 0.5.h,
-                                              ),
-                                              Text(
-                                                data.number,
-                                                style: TextStyle(
-                                                    fontFamily: opensansMedium,
-                                                    fontSize: 11.sp,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        spreadRadius: 0.1,
-                                        blurRadius: 10,
-                                        offset: Offset(0.5, 0.5)),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: staticData1.length),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 3.h),
-                      child: ListView.builder(
-                          shrinkWrap: false,
-                          clipBehavior: Clip.antiAlias,
-                          itemBuilder: (context, index) {
-                            ServiceItem data = staticData[index];
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  top: 1.5.h,
-                                  left: 8.w,
-                                  right: 8.w,
-                                  bottom: 1.h),
-                              child: InkWell(
-                                onTap: () {
-                                  Common.PopupDialogs(context);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      top: 1.5.h,
-                                      left: 4.w,
-                                      right: 4.w,
-                                      bottom: 1.5.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: data.icon,
-                                          ),
-                                          SizedBox(
-                                            width: 3.w,
-                                          ),
-                                          Container(
-                                            child: Text(
-                                              data.Name,
-                                              style: TextStyle(
-                                                  fontFamily: opensansMedium,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          spreadRadius: 0.1,
-                                          blurRadius: 10,
-                                          offset: Offset(0.5, 0.5)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: staticData.length),
-                    ),
+                    BasicprofileTabScreen(),
+                    StaffprofileTabScreen(),
+                    ServiceProfileTabScreen()
                   ],
                 ),
               ),
@@ -432,9 +135,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Bounce(
       duration: Duration(milliseconds: 200),
       onPressed: (() {
-        currentPage = index;
-        if (tabController.indexIsChanging == false) {
-          tabController.index = index;
+        controller.currentPage = index;
+        if (controller.tabController.indexIsChanging == false) {
+          controller.tabController.index = index;
         }
         setState(() {});
       }),
@@ -447,7 +150,8 @@ class _ProfileScreenState extends State<ProfileScreen>
         padding: EdgeInsets.only(top: 11, bottom: 11),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: currentPage == index || isDarkMode() ? white : black,
+            color:
+                controller.currentPage == index || isDarkMode() ? white : black,
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,
@@ -465,7 +169,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fontSize: 12.2.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
-                  color: currentPage == index || isDarkMode() ? black : white,
+                  color: controller.currentPage == index || isDarkMode()
+                      ? black
+                      : white,
                 )),
           ],
         ),

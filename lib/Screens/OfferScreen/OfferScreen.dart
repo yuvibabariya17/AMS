@@ -1,10 +1,9 @@
 import 'package:booking_app/Screens/OfferScreen/PackageBasedOffer.dart';
 import 'package:booking_app/Screens/OfferScreen/ProductBasedOffer.dart';
 import 'package:booking_app/Screens/OfferScreen/ServiceBasedOffer.dart';
-import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
@@ -12,9 +11,7 @@ import 'package:sizer/sizer.dart';
 import '../../Models/offers.dart';
 import '../../Models/offers_model.dart';
 import '../../core/Common/Common.dart';
-import '../../core/Common/appbar.dart';
 import '../../core/Common/toolbar.dart';
-import '../../core/constants/assets.dart';
 import '../../core/themes/font_constant.dart';
 
 class OfferScreen extends StatefulWidget {
@@ -41,61 +38,72 @@ class _OfferScreenState extends State<OfferScreen>
   @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
-    return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: isDarkMode()
-                ? SvgPicture.asset(
-                    Asset.dark_bg,
-                    fit: BoxFit.cover,
-                  )
-                : SvgPicture.asset(
-                    Asset.bg,
-                    fit: BoxFit.cover,
-                  ),
+    return CustomScaffold(
+        body: Column(
+      children: [
+        getCommonToolbar("Offer", () {
+          Get.back();
+        }),
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(top: 3.h),
+            child: getListViewItem(),
           ),
-          SafeArea(
-              minimum: EdgeInsets.only(top: 1.h),
-              child: Container(
-                  margin: EdgeInsets.only(
-                    top: 0.5.h,
-                  ),
-                  child: Center(
-                      child: Column(children: [
-                    getToolbar("Offer", showBackButton: true, notify: false,
-                        callback: () {
-                      Get.back();
-                    })
-                    // HomeAppBar(
-                    //   title: 'Offer',
-                    //   leading: Asset.backbutton,
-                    //   isfilter: false,
-                    //   icon: Asset.filter,
-                    //   isBack: true,
-                    //   onClick: () {},
-                    // ),
-                  ])))),
-          Container(
-            margin: EdgeInsets.only(top: 5.h),
-            child: SafeArea(
-              child: getListViewItem(),
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ));
+
+    // Scaffold(
+    //   body: Stack(
+    //     children: [
+    //       SizedBox(
+    //         height: double.infinity,
+    //         width: double.infinity,
+    //         child: isDarkMode()
+    //             ? SvgPicture.asset(
+    //                 Asset.dark_bg,
+    //                 fit: BoxFit.cover,
+    //               )
+    //             : SvgPicture.asset(
+    //                 Asset.bg,
+    //                 fit: BoxFit.cover,
+    //               ),
+    //       ),
+    //       SafeArea(
+    //           minimum: EdgeInsets.only(top: 1.h),
+    //           child: Container(
+    //               margin: EdgeInsets.only(
+    //                 top: 0.5.h,
+    //               ),
+    //               child: Center(
+    //                   child: Column(children: [
+    //                 getCommonToolbar("Offer", () {
+    //                   Get.back();
+    //                 }),
+    //                 // HomeAppBar(
+    //                 //   title: 'Offer',
+    //                 //   leading: Asset.backbutton,
+    //                 //   isfilter: false,
+    //                 //   icon: Asset.filter,
+    //                 //   isBack: true,
+    //                 //   onClick: () {},
+    //                 // ),
+    //               ])))),
+    //       Container(
+    //         margin: EdgeInsets.only(top: 5.h),
+    //         child: SafeArea(
+    //           child: getListViewItem(),
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   getListViewItem() {
     return DefaultTabController(
         length: 3,
         child: Column(children: [
-          SizedBox(
-            height: 3.h,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -105,7 +113,7 @@ class _OfferScreenState extends State<OfferScreen>
             ],
           ),
           SizedBox(
-            height: 2.h,
+            height: 3.h,
           ),
           Expanded(
               child: TabBarView(
@@ -117,7 +125,6 @@ class _OfferScreenState extends State<OfferScreen>
                 //   child: ListView.builder(
                 //       itemBuilder: (context, index) {
                 //         OfferItem data = staticData[index];
-
                 //         return Container(
                 //           margin: EdgeInsets.only(
                 //               top: 1.5.h, left: 8.w, right: 8.w, bottom: 2.h),

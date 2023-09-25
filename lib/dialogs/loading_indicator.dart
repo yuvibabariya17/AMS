@@ -1,4 +1,6 @@
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class LoadingProgressDialog {
   show(BuildContext data, message) {
@@ -10,33 +12,27 @@ class LoadingProgressDialog {
             child: Material(
           color: Colors.transparent,
           child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.transparent,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.transparent,
-                    ),
-                    height: 60,
-                    width: 60,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                color: Colors.transparent,
+              ),
+              child: Container(
+                height: 8.h,
+                width: 8.h,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                  color: white,
+                ),
+                child: Center(
+                  child: ClipOval(
                     child: Image.asset(
-                      "assets/gif/loading.gif",
-                      width: 60,
-                      height: 60,
+                      'assets/gif/loadingIndicator.gif',
+                      height: 6.h,
+                      width: 6.h,
                     ),
                   ),
                 ),
-                Text(message)
-              ],
-            ),
-          ),
+              )),
         ));
       },
     );

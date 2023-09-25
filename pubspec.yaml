@@ -55,6 +55,9 @@ dependencies:
   encrypted_shared_preferences: ^3.0.1
   shared_preferences: ^2.2.0
   image_picker: ^1.0.4
+  firebase_core: ^2.15.1
+  firebase_crashlytics: ^3.3.5
+  url_launcher: ^6.1.12
 
 dev_dependencies:
   flutter_test:

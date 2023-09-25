@@ -3,20 +3,26 @@ import 'package:booking_app/Models/product.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
 import 'package:booking_app/controllers/Appointment_screen_controller.dart';
-import 'package:booking_app/core/Common/appbar.dart';
-import 'package:booking_app/core/constants/assets.dart';
+import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/Common.dart';
 import '../../core/themes/color_const.dart';
 
 class AppointmentScreen extends StatefulWidget {
-  AppointmentScreen({super.key, this.openDrawer});
+  AppointmentScreen({
+    super.key,
+    this.openDrawer,
+    required this.isfromNav,
+    this.callBack,
+  });
+  bool isfromNav;
+  Function? callBack;
+
   GlobalKey<ScaffoldState>? openDrawer;
 
   @override
@@ -45,26 +51,28 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
-        child: Column(
-          children: [
-            Center(
-                child: Column(children: [
-              HomeAppBar(
-                title: 'Appointment',
-                leading: Asset.backbutton,
-                isfilter: true,
-                icon: Asset.filter,
-                isBack: false,
-                onClick: () {},
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.callBack != null) {
+          widget.callBack!(0);
+        } else {
+          Get.back();
+        }
+        return false;
+      },
+      child: SafeArea(
+        child: Container(
+          margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+          child: Column(
+            children: [
+              getAppbar(
+                "Appointment",
               ),
-            ])),
-            Expanded(
-              child: getListViewItem(),
-            ),
-          ],
+              Expanded(
+                child: getListViewItem(),
+              ),
+            ],
+          ),
         ),
       ),
     );

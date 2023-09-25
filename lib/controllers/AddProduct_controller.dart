@@ -1,27 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/CategoryModel.dart';
+import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/sign_in_form_validation.dart';
-import '../Screens/DashboardScreen.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
 import '../core/themes/font_constant.dart';
 import '../core/utils/log.dart';
 import '../dialogs/loading_indicator.dart';
-import '../preference/UserPreference.dart';
 import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:booking_app/dialogs/dialogs.dart';
 
 class addProductController extends GetxController {
-  late final GetStorage _getStorage;
   final InternetController networkManager = Get.find<InternetController>();
   Rx<File?> avatarFile = null.obs;
 
@@ -45,8 +42,6 @@ class addProductController extends GetxController {
 
   @override
   void onInit() {
-    _getStorage = GetStorage();
-
     NameNode = FocusNode();
     productimgNode = FocusNode();
     descriptionNode = FocusNode();
@@ -120,9 +115,6 @@ class addProductController extends GetxController {
       if (val == null || val.isEmpty) {
         model!.error = "Enter Category";
         model.isValidate = false;
-      } else if (!GetUtils.isEmail(val)) {
-        model!.error = "Enter Category";
-        model.isValidate = false;
       } else {
         model!.error = null;
         model.isValidate = true;
@@ -134,9 +126,6 @@ class addProductController extends GetxController {
   void validateAmount(String? val) {
     amountModel.update((model) {
       if (val == null || val.isEmpty) {
-        model!.error = "Enter Amount";
-        model.isValidate = false;
-      } else if (val.replaceAll(' ', '').length < 10) {
         model!.error = "Enter Amount";
         model.isValidate = false;
       } else {
@@ -192,52 +181,50 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context,  Strings.noInternetConnection, callback: () {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
           Get.back();
         });
         return;
       }
-      loadingIndicator.show(context, '');
-      var retrievedObject = await UserPreferences().getSignInInfo();
-
-      var response = await Repository.multiPartPost({
+      logcat("PRODUCTTTTTT", {
         "name": NameCtr.text.toString().trim(),
-        "product_category_id": categoryId.value,
         "description": descriptionCtr.text.toString().trim(),
-        "amount": amountCtr.toString().trim(),
-        "qty": quantityCtr.text.toString().trim(),
-      }, ApiUrl.addProduct,
-          multiPart: avatarFile.value != null
-              ? http.MultipartFile(
-                  'image_id',
-                  avatarFile.value!.readAsBytes().asStream(),
-                  avatarFile.value!.lengthSync(),
-                  filename: avatarFile.value!.path.split('/').last,
-                )
-              : null,
-          allowHeader: true);
-      var responseData = await response.stream.toBytes();
+        "image_id": uploadImageId.value.toString(),
+        "product_category_id": categoryId.value.toString(),
+        "amount": int.parse(amountCtr.text),
+        "qty": int.parse(quantityCtr.text),
+      });
+      loadingIndicator.show(context, '');
+      var response = await Repository.post({
+        "name": NameCtr.text.toString().trim(),
+        "description": descriptionCtr.text.toString().trim(),
+        "image_id": uploadImageId.value.toString(),
+        "product_category_id": categoryId.value.toString(),
+        "amount": int.parse(amountCtr.text),
+        "qty": int.parse(quantityCtr.text),
+      }, ApiUrl.addProduct, allowHeader: true);
       loadingIndicator.hide(context);
-
-      var result = String.fromCharCodes(responseData);
-      var json = jsonDecode(result);
-
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
-        if (json['status'] == 1) {
-          Get.to(const dashboard());
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back();
+          });
         } else {
-          showDialogForScreen(context, json['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, json['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context,  Strings.servererror,
-          callback: () {});
+      showDialogForScreen(context, Strings.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -264,7 +251,7 @@ class addProductController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                categoryId.value = categoryObjectList[index].name.toString();
+                categoryId.value = categoryObjectList[index].id.toString();
                 categroryCtr.text =
                     categoryObjectList[index].name.capitalize.toString();
 
@@ -320,6 +307,60 @@ class addProductController extends GetxController {
     }
   }
 
+  RxString uploadImageId = ''.obs;
+
+  void getImageApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadImageFile.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadImageFile.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadImageId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Strings.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
         context: context,
@@ -335,7 +376,7 @@ class addProductController extends GetxController {
         positiveButton: "Continue");
   }
 
-  Rx<File?> uploadReportFile = null.obs;
+  Rx<File?> uploadImageFile = null.obs;
 
   actionClickUploadImage(context) async {
     await ImagePicker()
@@ -347,17 +388,14 @@ class addProductController extends GetxController {
         .then((file) async {
       if (file != null) {
         if (file != null) {
-          uploadReportFile = File(file.path).obs;
+          uploadImageFile = File(file.path).obs;
           productimgCtr.text = file.name;
           validateProductimg(productimgCtr.text);
+          getImageApi(context);
         }
       }
     });
 
     update();
-  }
-
-  void navigate() {
-    // Get.to(const SignUpScreen(false));
   }
 }

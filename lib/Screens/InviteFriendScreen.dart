@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
-import '../core/Common/appbar.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/constants/strings.dart';
@@ -49,10 +48,9 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                   child: Center(
                       child: Column(
                     children: [
-                      getToolbar("Add Vendor Service", showBackButton: true,
-                          callback: () {
+                      getCommonToolbar("Invite Friends", () {
                         Get.back();
-                      })
+                      }),
                       // HomeAppBar(
                       //   title: Strings.invite_friends,
                       //   leading: Asset.backbutton,

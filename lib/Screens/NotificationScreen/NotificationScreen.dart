@@ -11,7 +11,6 @@ import 'package:sizer/sizer.dart';
 import '../../controllers/notification_screen_controller.dart';
 import '../../core/Common/Common.dart';
 import '../../core/Common/appbar.dart';
-import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
 import '../../core/constants/strings.dart';
 import '../../core/themes/font_constant.dart';

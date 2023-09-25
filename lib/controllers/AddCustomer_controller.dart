@@ -96,27 +96,27 @@ class AddCustomerController extends GetxController {
 
   void enableSignUpButton() {
     return;
-    if (customerModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (profileModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (dobModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (doaModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (addressModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (contact1Model.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (contact2Model.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (whatsappModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (emailModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else {
-      isFormInvalidate.value = true;
-    }
+    // if (customerModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (profileModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (dobModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (doaModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (addressModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (contact1Model.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (contact2Model.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (whatsappModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (emailModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else {
+    //   isFormInvalidate.value = true;
+    // }
   }
 
   void validateCustomerName(String? val) {
@@ -256,6 +256,7 @@ class AddCustomerController extends GetxController {
 
     enableSignUpButton();
   }
+
   RxBool isFormInvalidate = true.obs;
   RxString uploadImageId = ''.obs;
 

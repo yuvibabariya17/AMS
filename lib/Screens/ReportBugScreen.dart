@@ -49,8 +49,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
             SizedBox(
               height: 0.5.h,
             ),
-            getToolbar("Report Bug", showBackButton: true, notify: false,
-                callback: () {
+            getCommonToolbar("Report Bug", () {
               Get.back();
             }),
             SingleChildScrollView(

@@ -7,7 +7,7 @@ import 'internet_controller.dart';
 
 class PhoneController extends GetxController {
   late final GetStorage _getStorage;
-  final InternetController _networkManager = Get.find<InternetController>();
+  final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode Phone;
 

@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Models/CategoryModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -167,4 +166,27 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
           ),
         ],
       ));
+}
+
+Future showDropDownDialog(BuildContext context, Widget content, String title) {
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0XFFe3ecf3),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          title: Padding(
+            padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 2.9.w),
+            child: Text(
+              title,
+              style: TextStyle(fontFamily: fontMedium, fontSize: 20.sp),
+            ),
+          ),
+          contentPadding:
+              EdgeInsets.only(left: 6.7.w, top: 0.5.h, right: 6.7.w),
+          content: content,
+        );
+      });
 }

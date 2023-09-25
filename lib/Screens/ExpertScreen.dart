@@ -1,6 +1,5 @@
 import 'package:booking_app/Screens/AddExpertScreen.dart';
-import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/screens/NavdrawerScreen.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,7 +8,6 @@ import 'package:sizer/sizer.dart';
 
 import '../Models/Listofexpert.dart';
 import '../Models/Listofexpert_model.dart';
-import '../core/Common/appbar.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/themes/font_constant.dart';
@@ -26,74 +24,42 @@ class _ExpertScreenState extends State<ExpertScreen> {
   TextEditingController _search = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: isDarkMode()
-                ? SvgPicture.asset(
-                    Asset.dark_bg,
-                    fit: BoxFit.cover,
-                  )
-                : SvgPicture.asset(
-                    Asset.bg,
-                    fit: BoxFit.cover,
+    return CustomScaffold(
+        body: Column(
+      children: [
+        getCommonToolbar("Experts", () {
+          Get.back();
+        }),
+        Container(
+          margin: EdgeInsets.only(top: 3.h, left: 1.0.w, right: 1.0.w),
+          padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w, bottom: 1.h),
+          child: Container(
+            height: 5.5.h,
+            child: TextField(
+              decoration: InputDecoration(
+                  hintText: 'Search',
+                  contentPadding:
+                      EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-          ),
-          SafeArea(
-              child: Container(
-                  margin: EdgeInsets.only(top: 0.5.h),
-                  child: Center(
-                      child: Column(children: [
-                    getToolbar("Experts", showBackButton: true, notify: false,
-                        callback: () {
-                      Get.back();
-                    })
-                    // HomeAppBar(
-                    //   title: 'Experts',
-                    //   leading: Asset.backbutton,
-                    //   isfilter: false,
-                    //   icon: Asset.filter,
-                    //   isBack: true,
-                    //   onClick: () {
-                    //     Get.to(NavdrawerScreen());
-                    //   },
-                    // ),
-                  ])))),
-          Container(
-            margin: EdgeInsets.only(top: 8.h, left: 1.0.w, right: 1.0.w),
-            padding: EdgeInsets.only(
-                left: 7.0.w, right: 7.0.w, top: 4.h, bottom: 1.h),
-            child: Container(
-              height: 5.5.h,
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: 'Search',
-                    contentPadding:
-                        EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    suffixIcon: IconButton(
-                        onPressed: () {}, icon: Icon(Icons.search_sharp))),
-                controller: _search,
-                keyboardType: TextInputType.name,
-              ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  suffixIcon: IconButton(
+                      onPressed: () {}, icon: Icon(Icons.search_sharp))),
+              controller: _search,
+              keyboardType: TextInputType.name,
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 15.h),
+        ),
+        Expanded(
+          child: Container(
+            // margin: EdgeInsets.only(top: 15.h),
             child: ListView.builder(
                 shrinkWrap: false,
                 clipBehavior: Clip.antiAlias,
                 itemBuilder: (context, index) {
                   ExpertItems data = staticData[index];
-
                   return Container(
                     margin: EdgeInsets.only(
                         top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
@@ -168,41 +134,41 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 },
                 itemCount: staticData.length),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 6.1.h,
-                    height: 6.1.h,
-                    margin: EdgeInsets.only(bottom: 5.h, right: 7.w),
-                    child: RawMaterialButton(
-                      fillColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => AddExpertScreen(),
-                        //     ));
-                        Get.to(AddExpertScreen());
-                      },
-                      child: Icon(
-                        Icons.add,
-                        size: 3.5.h,
-                        color: Colors.white,
-                      ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 6.1.h,
+                  height: 6.1.h,
+                  margin: EdgeInsets.only(bottom: 5.h, right: 7.w),
+                  child: RawMaterialButton(
+                    fillColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    onPressed: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => AddExpertScreen(),
+                      //     ));
+                      Get.to(AddExpertScreen());
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 3.5.h,
+                      color: Colors.white,
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                ),
+              ],
+            ),
+          ],
+        )
+      ],
+    ));
   }
 }

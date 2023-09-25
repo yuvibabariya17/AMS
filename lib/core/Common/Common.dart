@@ -231,7 +231,7 @@ class Common {
       statusBarIconBrightness:
           isDarkMode() ? Brightness.light : Brightness.dark,
       statusBarColor: isDarkMode() ? Colors.transparent : Colors.transparent,
-      statusBarBrightness: isDarkMode() ? Brightness.dark : Brightness.light,
+      statusBarBrightness: isDarkMode() ? Brightness.light : Brightness.dark,
     ));
   }
 }

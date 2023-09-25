@@ -257,9 +257,9 @@ class Strings {
   static const String category = 'Select Product Category';
   static const String category_hint = 'Select Category';
   static const String amount = 'Amount';
-  static const String amount_hint = '₹ 2000';
+  static const String amount_hint = 'Enter Amount';
   static const String quantity = 'Quantity';
-  static const String quantity_hint = '1';
+  static const String quantity_hint = 'Enter Quantity';
 
   //AddCourse
   static const String student = 'Student';
@@ -289,7 +289,7 @@ class Strings {
   static const String expert = 'Expert Name';
   static const String expert_hint = 'Enter Name';
   static const String price = 'Price';
-  static const String price_hint = '₹ 2000';
+  static const String price_hint = 'Enter Amount';
 
   //Appointment Booking
   static const String Appointment_slot = 'Appointment Slot';

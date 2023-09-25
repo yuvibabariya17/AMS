@@ -1,5 +1,3 @@
-import 'package:booking_app/Screens/InviteFriendScreen.dart';
-import 'package:booking_app/Screens/ProfileScreen.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
@@ -9,11 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
-
 import '../Models/setting.dart';
 import '../Models/settings_model.dart';
-import '../core/Common/appbar.dart';
 import '../core/Common/toolbar.dart';
+import '../core/Common/util.dart';
 import '../core/constants/assets.dart';
 import '../core/constants/get_storage_key.dart';
 import '../core/constants/strings.dart';
@@ -59,8 +56,7 @@ class _SettingsState extends State<Settings> {
               ),
               child: Center(
                   child: Column(children: [
-                getToolbar("Settings", showBackButton: true, notify: false,
-                    callback: () {
+                getCommonToolbar("Settings", () {
                   Get.back();
                 }),
                 // HomeAppBar(
@@ -79,111 +75,108 @@ class _SettingsState extends State<Settings> {
                   child: ListView(
                     shrinkWrap: true,
                     children: [
-                      ListTile(
-                        // horizontalTitleGap: 0.1,
-                        // leading: data.icon,
-                        // title: Container(
-                        //     // margin: EdgeInsets.only(right: 1.h),
-                        //     child: Text(
-                        //   data.Name,
-                        //   style: TextStyle(
-                        //       fontFamily: fontUrbanistRegular,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontSize: 15.sp),
-                        // )),
-                        // trailing:
-                        //     data.button != null ? data.button : null),
-                        leading: SvgPicture.asset(
-                          Asset.user,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        horizontalTitleGap: 0.1,
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        title: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProfileScreen()));
-                          },
-                          child: Text(
-                            Strings.profile_info,
-                            style: TextStyle(
-                                fontFamily: opensansMedium,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        trailing: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfileScreen()));
-                            },
-                            icon: SvgPicture.asset(
-                              Asset.rightbackbutton,
-                              color: isDarkMode() ? white : black,
-                            )),
-                      ),
-                      Divider(
-                        height: 1.5,
-                        thickness: 1,
-                        indent: 2.h,
-                        endIndent: 4.h,
-                      ),
-                      ListTile(
-                        leading: SvgPicture.asset(
-                          Asset.adduser,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        horizontalTitleGap: 0.1,
-                        title: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        InviteFriendScreen()));
-                          },
-                          child: Text(
-                            Strings.invite_frd,
-                            style: TextStyle(
-                                fontFamily: opensansMedium,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        trailing: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          InviteFriendScreen()));
-                            },
-                            icon: SvgPicture.asset(
-                              Asset.rightbackbutton,
-                              color: isDarkMode() ? white : black,
-                            )),
-                        // trailing: TextButton(
-                        //     onPressed: () {
-                        //       Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //               builder: (context) => referal()));
-                        //     },
-                        //     child: SvgPicture.asset(Asset.rightbackbutton)),
-                      ),
-                      Divider(
-                        height: 1,
-                        thickness: 1,
-                        indent: 2.h,
-                        endIndent: 4.h,
-                      ),
+                      settingListtile(Asset.user, Strings.profile_info, () {},
+                          Asset.rightbackbutton),
+                      dividerforSetting(),
+                      settingListtile(Asset.user, Strings.invite_frd, () {},
+                          Asset.rightbackbutton),
+
+                      // ListTile(
+                      //   // horizontalTitleGap: 0.1,
+                      //   // leading: data.icon,
+                      //   // title: Container(
+                      //   //     // margin: EdgeInsets.only(right: 1.h),
+                      //   //     child: Text(
+                      //   //   data.Name,
+                      //   //   style: TextStyle(
+                      //   //       fontFamily: fontUrbanistRegular,
+                      //   //       fontWeight: FontWeight.w400,
+                      //   //       fontSize: 15.sp),
+                      //   // )),
+                      //   // trailing:
+                      //   //     data.button != null ? data.button : null),
+                      //   leading: SvgPicture.asset(
+                      //     Asset.user,
+                      //     color: isDarkMode() ? white : black,
+                      //   ),
+                      //   horizontalTitleGap: 0.1,
+                      //   visualDensity:
+                      //       VisualDensity(horizontal: 0, vertical: -1),
+                      //   title: GestureDetector(
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => ProfileScreen()));
+                      //     },
+                      //     child: Text(
+                      //       Strings.profile_info,
+                      //       style: TextStyle(
+                      //           fontSize: 14.sp,
+                      //           fontFamily: opensansMedium,
+                      //           fontWeight: FontWeight.w400),
+                      //     ),
+                      //   ),
+                      //   trailing: IconButton(
+                      //       onPressed: () {
+                      //         Get.to(ProfileScreen());
+                      //         // Navigator.push(
+                      //         //     context,
+                      //         //     MaterialPageRoute(
+                      //         //         builder: (context) => ProfileScreen()));
+                      //       },
+                      //       icon: SvgPicture.asset(
+                      //         Asset.rightbackbutton,
+                      //         color: isDarkMode() ? white : black,
+                      //       )),
+                      // ),
+
+                      // ListTile(
+                      //   leading: SvgPicture.asset(
+                      //     Asset.adduser,
+                      //     color: isDarkMode() ? white : black,
+                      //   ),
+                      //   visualDensity:
+                      //       VisualDensity(horizontal: 0, vertical: -1),
+                      //   horizontalTitleGap: 0.1,
+                      //   title: GestureDetector(
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) =>
+                      //                   InviteFriendScreen()));
+                      //     },
+                      //     child: Text(
+                      //       Strings.invite_frd,
+                      //       style: TextStyle(
+                      //           fontFamily: opensansMedium,
+                      //           fontSize: 14.sp,
+                      //           fontWeight: FontWeight.w400),
+                      //     ),
+                      //   ),
+                      //   trailing: IconButton(
+                      //       onPressed: () {
+                      //         Navigator.push(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //                 builder: (context) =>
+                      //                     InviteFriendScreen()));
+                      //       },
+                      //       icon: SvgPicture.asset(
+                      //         Asset.rightbackbutton,
+                      //         color: isDarkMode() ? white : black,
+                      //       )),
+                      //   // trailing: TextButton(
+                      //   //     onPressed: () {
+                      //   //       Navigator.push(
+                      //   //           context,
+                      //   //           MaterialPageRoute(
+                      //   //               builder: (context) => referal()));
+                      //   //     },
+                      //   //     child: SvgPicture.asset(Asset.rightbackbutton)),
+                      // ),
+                      dividerforSetting(),
                       ListTile(
                           leading: SvgPicture.asset(
                             Asset.moon,
@@ -226,8 +219,12 @@ class _SettingsState extends State<Settings> {
                                   () {},
                                 );
                               },
-                              thumbColor: CupertinoColors.white,
-                              activeColor: CupertinoColors.black,
+                              thumbColor: isDarkMode()
+                                  ? CupertinoColors.black
+                                  : CupertinoColors.white,
+                              activeColor: isDarkMode()
+                                  ? CupertinoColors.white
+                                  : CupertinoColors.black,
                               trackColor: Colors.grey,
                             ),
                             // child: CupertinoSwitch(
@@ -243,72 +240,69 @@ class _SettingsState extends State<Settings> {
                             //   trackColor: Colors.grey,
                             // ),
                           )),
-                      Divider(
-                        height: 1.5,
-                        thickness: 1,
-                        indent: 2.h,
-                        endIndent: 4.h,
-                      ),
-                      ListTile(
-                        leading: SvgPicture.asset(
-                          Asset.rate_us,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        horizontalTitleGap: 0.1,
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        title: Text(
-                          Strings.rate_us,
-                          style: TextStyle(
-                              fontFamily: opensansMedium,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      Divider(
-                        height: 1.5,
-                        thickness: 1,
-                        indent: 2.h,
-                        endIndent: 4.h,
-                      ),
-                      ListTile(
-                        leading: SvgPicture.asset(
-                          Asset.share,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        horizontalTitleGap: 0.1,
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        title: Text(
-                          Strings.share_us,
-                          style: TextStyle(
-                              fontFamily: opensansMedium,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      Divider(
-                        height: 1.5,
-                        thickness: 1,
-                        indent: 2.h,
-                        endIndent: 4.h,
-                      ),
-                      ListTile(
-                        leading: SvgPicture.asset(
-                          Asset.signout,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        horizontalTitleGap: 0.1,
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        title: Text(
-                          Strings.logout,
-                          style: TextStyle(
-                              fontFamily: opensansMedium,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
+                      dividerforSetting(),
+                      settingListtile(Asset.rate_us, Strings.rate_us, () {},
+                          Asset.rightbackbutton),
+                      dividerforSetting(),
+                      settingListtile(Asset.share, Strings.share_us, () {},
+                          Asset.rightbackbutton),
+                      dividerforSetting(),
+                      settingListtile(Asset.signout, Strings.logout, () {
+                        PopupDialogs(context);
+                      }, Asset.rightbackbutton),
+                      // ListTile(
+                      //   leading: SvgPicture.asset(
+                      //     Asset.rate_us,
+                      //     color: isDarkMode() ? white : black,
+                      //   ),
+                      //   horizontalTitleGap: 0.1,
+                      //   visualDensity:
+                      //       VisualDensity(horizontal: 0, vertical: -1),
+                      //   title: Text(
+                      //     Strings.rate_us,
+                      //     style: TextStyle(
+                      //         fontFamily: opensansMedium,
+                      //         fontSize: 14.sp,
+                      //         fontWeight: FontWeight.w400),
+                      //   ),
+                      // ),
+                      dividerforSetting(),
+                      // ListTile(
+                      //   leading: SvgPicture.asset(
+                      //     Asset.share,
+                      //     color: isDarkMode() ? white : black,
+                      //   ),
+                      //   horizontalTitleGap: 0.1,
+                      //   visualDensity:
+                      //       VisualDensity(horizontal: 0, vertical: -1),
+                      //   title: Text(
+                      //     Strings.share_us,
+                      //     style: TextStyle(
+                      //         fontFamily: opensansMedium,
+                      //         fontSize: 14.sp,
+                      //         fontWeight: FontWeight.w400),
+                      //   ),
+                      // ),
+
+                      // ListTile(
+                      //   leading: SvgPicture.asset(
+                      //     Asset.signout,
+                      //     color: isDarkMode() ? white : black,
+                      //   ),
+                      //   onTap: () {
+                      //     PopupDialogs(context);
+                      //   },
+                      //   horizontalTitleGap: 0.1,
+                      //   visualDensity:
+                      //       VisualDensity(horizontal: 0, vertical: -1),
+                      //   title: Text(
+                      //     Strings.logout,
+                      //     style: TextStyle(
+                      //         fontFamily: opensansMedium,
+                      //         fontSize: 14.sp,
+                      //         fontWeight: FontWeight.w400),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

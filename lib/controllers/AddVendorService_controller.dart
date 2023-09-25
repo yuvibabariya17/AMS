@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../Models/sign_in_form_validation.dart';
 import 'internet_controller.dart';
 
 class AddVendorServiceController extends GetxController {
-  late final GetStorage _getStorage;
-  final InternetController _networkManager = Get.find<InternetController>();
+  final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode FieldNode, TimeNode, ApproxNode, DurationNode;
 
@@ -17,8 +15,6 @@ class AddVendorServiceController extends GetxController {
 
   @override
   void onInit() {
-    _getStorage = GetStorage();
-
     FieldNode = FocusNode();
     TimeNode = FocusNode();
     ApproxNode = FocusNode();

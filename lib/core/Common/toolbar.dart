@@ -52,24 +52,6 @@ getToolbar(title,
         child: Row(
           children: [
             if (notify) notification(isNotify),
-
-            // Container(
-            //   padding: EdgeInsets.only(left: 1.w, right: 1.w),
-            //   margin: EdgeInsets.only(right: 8.w, left: 8.w),
-            //   height: 3.5.h,
-            //   decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(5),
-            //       gradient: LinearGradient(
-            //           colors: [primaryColor, primaryColor.withOpacity(0.5)],
-            //           begin: const FractionalOffset(1.0, 0.0),
-            //           end: const FractionalOffset(0.0, 0.0),
-            //           stops: const [0.0, 1.0],
-            //           tileMode: TileMode.clamp)),
-            //   child: const Icon(
-            //     Icons.notifications_outlined,
-            //     color: Colors.white,
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -150,6 +132,67 @@ getToolbarNav(
             ),
           ),
         ],
+      ),
+    ],
+  );
+}
+
+getCommonToolbar(title, Function? callback) {
+  return Row(
+    children: [
+      commonBackPress(callback),
+      Expanded(
+        flex: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FadeInDown(
+              child: Container(
+                margin: EdgeInsets.only(right: 15.w),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontFamily: fontBold,
+                      color: isDarkMode() ? white : headingTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+getAppbar(
+  title,
+) {
+  return Row(
+    children: [
+      Expanded(
+        flex: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FadeInDown(
+              child: Container(
+                //  margin: EdgeInsets.only(right: 15.w),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontFamily: fontBold,
+                      color: isDarkMode() ? white : headingTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ],
   );
@@ -498,6 +541,25 @@ Widget iosBackPress(callback) {
               height: SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
             )),
       ),
+    ),
+  );
+}
+
+Widget commonBackPress(callback) {
+  return Container(
+    margin: EdgeInsets.only(
+        left: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 10.w),
+    child: GestureDetector(
+      onTap: () {
+        callback();
+      },
+      child: Container(
+          padding: const EdgeInsets.all(2),
+          child: SvgPicture.asset(
+            Asset.arrowBack,
+            color: isDarkMode() ? white : black,
+            height: SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
+          )),
     ),
   );
 }

@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/LoginScreen/LoginScreen.dart';
 import 'package:booking_app/controllers/sign_up_controller.dart';
-import 'package:booking_app/core/Common/appbar.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';

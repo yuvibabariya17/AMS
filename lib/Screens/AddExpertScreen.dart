@@ -1,13 +1,11 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/ExpertScreen.dart';
-import 'package:booking_app/controllers/addexpert_controller.dart';
-import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/controllers/AddExpert_controller.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
+import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../core/Common/toolbar.dart';
-import '../core/constants/assets.dart';
 import '../core/constants/strings.dart';
 import '../custom_componannt/common_views.dart';
 import '../custom_componannt/form_inputs.dart';
@@ -21,51 +19,27 @@ class AddExpertScreen extends StatefulWidget {
 
 class _AddExpertScreenState extends State<AddExpertScreen> {
   final controller = Get.put(AddexpertController());
+
+  @override
+  void initState() {
+    controller.getServieList(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBody: true,
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          minimum: EdgeInsets.only(top: 1.h),
-          child: Stack(children: [
-            SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: isDarkMode()
-                  ? SvgPicture.asset(
-                      Asset.dark_bg,
-                      fit: BoxFit.cover,
-                    )
-                  : SvgPicture.asset(
-                      Asset.bg,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Center(
-                child: Column(children: [
-              getToolbar("Add Expert", showBackButton: true, notify: false,
-                  callback: () {
-                Get.back();
-              })
-              // HomeAppBar(
-              //   title: "Add Experts",
-              //   leading: Asset.backbutton,
-              //   isfilter: false,
-              //   icon: Asset.filter,
-              //   isBack: true,
-              //   onClick: () {
-              //     Get.back();
-              //   },
-              // ),
-            ])),
-            SingleChildScrollView(
+    return CustomScaffold(
+        body: Column(
+      children: [
+        getCommonToolbar("Add Expert", () {
+          Get.back();
+        }),
+        Expanded(
+            child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
               child: Container(
-                margin: EdgeInsets.only(top: 6.h, left: 1.0.w, right: 1.0.w),
+                margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
                 padding: EdgeInsets.only(
                     left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
                 child: Form(
@@ -104,9 +78,22 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                     hintLabel: Strings.service_hint,
                                     onChanged: (val) {
                                       controller.validateServicename(val);
+                                      setState(() {});
                                     },
-                                    errorText:
-                                        controller.ServiceModel.value.error,
+                                    wantSuffix: true,
+                                    isdown: true,
+                                    onTap: () {
+                                      controller.Servicectr.text = "";
+                                      showDropDownDialog(
+                                          context,
+                                          controller.setServiceList(),
+                                          "Select Category");
+                                      // showDropdownMessage(
+                                      //     context,
+                                      //     controller.setServiceList(),
+                                      //     'Select Service');
+                                    },
+                                    errorText: controller.model.value.error,
                                     inputType: TextInputType.text,
                                   );
                                 }))),
@@ -128,12 +115,15 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                     inputType: TextInputType.number,
                                   );
                                 }))),
+                        SizedBox(
+                          height: 4.h,
+                        ),
                         FadeInUp(
                             from: 50,
                             child: Obx(() {
                               return getFormButton(() {
                                 if (controller.isFormInvalidate.value == true) {
-                                  controller.AddExpertApi(context);
+                                  controller.addExpertApi(context);
                                 }
                               }, Strings.submit,
                                   validate: controller.isFormInvalidate.value);
@@ -141,8 +131,10 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                       ],
                     )),
               ),
-            ),
-          ]),
-        ));
+            )
+          ],
+        ))
+      ],
+    ));
   }
 }

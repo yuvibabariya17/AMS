@@ -2,6 +2,7 @@ class Asset {
   static const assets = "assets/";
   static const svgFolder = 'svgs/';
   static const pngFolder = 'png/';
+  static const gifFolder = 'gif/';
 
   //PNGS
   static const background = '$assets${pngFolder}background.png';
@@ -9,7 +10,8 @@ class Asset {
   static const home_bg = '$assets${pngFolder}home_bg.png';
   static const img = '$assets${pngFolder}image.jpg';
 
-  //static const home_logo = '$assets${pngFolder}home_logo.png';
+  //GIF
+  static const apiLoader = '$assets${gifFolder}loading.gif';
 
   //SVGS
 

@@ -1,3 +1,4 @@
+import 'package:booking_app/controllers/UpdateVendor_controller.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -112,7 +113,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   ? Get.find<ChangePasswordController>()
                       .obsecureConfirmPasswordText
                       .value
-                  : widget.obsecuretext,
+                  : widget.fromObsecureText == "UPDATE VENDOR"
+                      ? Get.find<UpdateVendorController>().obsecureText.value
+                      : widget.obsecuretext,
       textInputAction: TextInputAction.next,
       keyboardType: widget.inputType,
       validator: widget.validator,
@@ -183,6 +186,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
                     Get.find<LoginController>().obsecureText.value =
                         !Get.find<LoginController>().obsecureText.value;
                     setState(() {});
+                  } else if (widget.fromObsecureText == "UPDATE VENDOR") {
+                    Get.find<UpdateVendorController>().obsecureText.value =
+                        !Get.find<UpdateVendorController>().obsecureText.value;
                   } else if (widget.fromObsecureText == "RESETPASS") {
                     if (widget.index == "0") {
                       Get.find<ChangePasswordController>()
@@ -232,8 +238,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                     left: widget.isAdd == true ? 5.w : 0),
                                 icon: SvgPicture.asset(
                                   Asset.dropdown,
-                                  height: 20,
-                                  width: 20,
+                                  height: 30,
+                                  width: 30,
                                   fit: BoxFit.scaleDown,
                                 ),
                                 // iconSize:
@@ -306,37 +312,47 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                                   ? Icons.visibility_off
                                                   : Icons.visibility
                                               : widget.fromObsecureText ==
-                                                      "RESETPASS"
-                                                  ? widget.index == "0"
-                                                      ? Get.find<ChangePasswordController>()
-                                                              .obsecureOldPasswordText
-                                                              .value
-                                                          ? Icons.visibility_off
-                                                          : Icons.visibility
-                                                      : widget.index == "1"
+                                                      "UPDATE VENDOR"
+                                                  ? Get.find<UpdateVendorController>()
+                                                          .obsecureText
+                                                          .value
+                                                      ? Icons.visibility_off
+                                                      : Icons.visibility
+                                                  : widget.fromObsecureText ==
+                                                          "RESETPASS"
+                                                      ? widget.index == "0"
                                                           ? Get.find<ChangePasswordController>()
-                                                                  .obsecureNewPasswordText
+                                                                  .obsecureOldPasswordText
                                                                   .value
                                                               ? Icons
                                                                   .visibility_off
                                                               : Icons.visibility
-                                                          : widget.index == "2"
+                                                          : widget.index == "1"
                                                               ? Get.find<ChangePasswordController>()
-                                                                      .obsecureConfirmPasswordText
+                                                                      .obsecureNewPasswordText
                                                                       .value
                                                                   ? Icons
                                                                       .visibility_off
                                                                   : Icons
                                                                       .visibility
-                                                              : widget
-                                                                      .obsecuretext
-                                                                  ? Icons
-                                                                      .visibility_off
-                                                                  : Icons
-                                                                      .visibility
-                                                  : widget.obsecuretext
-                                                      ? Icons.visibility_off
-                                                      : Icons.visibility,
+                                                              : widget.index ==
+                                                                      "2"
+                                                                  ? Get.find<ChangePasswordController>()
+                                                                          .obsecureConfirmPasswordText
+                                                                          .value
+                                                                      ? Icons
+                                                                          .visibility_off
+                                                                      : Icons
+                                                                          .visibility
+                                                                  : widget
+                                                                          .obsecuretext
+                                                                      ? Icons
+                                                                          .visibility_off
+                                                                      : Icons
+                                                                          .visibility
+                                                      : widget.obsecuretext
+                                                          ? Icons.visibility_off
+                                                          : Icons.visibility,
                                           color: Colors.grey,
                                           size: SizerUtil.deviceType ==
                                                   DeviceType.mobile

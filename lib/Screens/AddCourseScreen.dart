@@ -71,8 +71,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  getToolbar("Add Course", showBackButton: true, notify: false,
-                      callback: () {
+                  getCommonToolbar("Add Course", () {
                     Get.back();
                   }),
                   Expanded(

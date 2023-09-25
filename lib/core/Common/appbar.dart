@@ -1,4 +1,5 @@
 import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,7 @@ class HomeAppBar extends StatelessWidget {
               ? Container()
               : InkWell(
                   onTap: () {
+                    logcat("ISCLICK", "BACK");
                     isBack == true
                         ? Get.back()
                         : openDrawer?.currentState?.openDrawer();
@@ -80,22 +82,7 @@ class HomeAppBar extends StatelessWidget {
               ),
             ),
           ),
-          title == 'Settings' ||
-                  title == 'Invite Friends' ||
-                  title == 'Profile' ||
-                  title == 'Offer' ||
-                  title == 'Update Vendor' ||
-                  title == 'Services' ||
-                  title == 'Add Services' ||
-                  title == 'Experts' ||
-                  title == 'Add Experts' ||
-                  title == 'Add Vendor Service' ||
-                  title == 'Add Vendor' ||
-                  title == 'Add Customer' ||
-                  title == 'Add Product' ||
-                  title == 'Add Course' ||
-                  title == 'Report Bug' ||
-                  title == 'Appointment Booking'
+          title == 'Settings' || title == 'Invite Friends'
               ? Container()
               : isfilter == true
                   ? Row(
@@ -110,6 +97,7 @@ class HomeAppBar extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(24)),
                             child: SvgPicture.asset(
                               Asset.notification,
+                              color: isDarkMode() ? white : black,
                             ),
                           ),
                         ),

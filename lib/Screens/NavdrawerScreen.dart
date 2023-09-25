@@ -105,7 +105,7 @@ class NavdrawerScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kim Se-Jeong",
+                      Get.find<HomeScreenController>().name.toString(),
                       style: TextStyle(
                           fontSize: 16.sp,
                           color: Colors.white,
@@ -116,7 +116,7 @@ class NavdrawerScreen extends StatelessWidget {
                       height: 1.h,
                     ),
                     Text(
-                      '+91 1234567890',
+                      Get.find<HomeScreenController>().number.toString(),
                       style: TextStyle(
                           fontSize: 10.sp,
                           color: Colors.white,
@@ -138,62 +138,70 @@ class NavdrawerScreen extends StatelessWidget {
             child: Wrap(
               children: [
                 setListTile(Asset.user, 'Profile', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProfileScreen());
                 }),
                 setListTile(Asset.add_service, 'Add Services', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
                 }),
                 setListTile(Asset.adduser, 'Add Expert', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ExpertScreen());
                 }),
                 setListTile(Asset.add_service_offer, 'Add Service Offer', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(OfferScreen());
                 }),
                 setListTile(Asset.passwordlock, 'Change Password', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ChangePasswordScreen(
                     fromProfile: true,
                   ));
                 }),
                 setListTile(Asset.settingslider, 'Settings', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(Settings());
                 }),
-                setListTile(Asset.rate_us, 'Rate Us', () {
+                setListTile(Asset.rate_us, 'Add Customer', () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(AddCustomerScreen());
                 }),
-                setListTile(Asset.share, 'Share Us', () {
+                setListTile(Asset.share, 'Appointment Booking', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(AppointmentBookingScreen());
                 }),
                 setListTile(Asset.share, 'Sign Out', () {
                   PopupDialogs(context);
                 }),
                 SizedBox(height: 11.5.h),
-                setListTile(Asset.share, 'Help', () {
+                setListTile(Asset.share, 'Add Product', () {
+                  Get.find<HomeScreenController>().closeDrawer();
                   Get.to(AddProductScreen());
                 }),
               ],
             )),
       );
-          // InkWell(
-                //   child: ListTile(
-                //     leading: SvgPicture.asset(
-                //       Asset.adduser,
-                //     ),
-                //     horizontalTitleGap: 0.1,
-                //     visualDensity: VisualDensity(horizontal: -2, vertical: -2),
-                //     title: Text('Add Expert',
-                //         style: TextStyle(
-                //             color: Colors.grey,
-                //             fontFamily: opensansMedium,
-                //             fontSize: 11.5.sp)),
-                //     onTap: () {
-                //       Get.to(ExpertScreen());
-                //       // Navigator.push(
-                //       //     context,
-                //       //     MaterialPageRoute(
-                //       //       builder: (context) => Expert(),
-                //       //     ));
-                //     },
-                //   ),
-                // ),
+  // InkWell(
+  //   child: ListTile(
+  //     leading: SvgPicture.asset(
+  //       Asset.adduser,
+  //     ),
+  //     horizontalTitleGap: 0.1,
+  //     visualDensity: VisualDensity(horizontal: -2, vertical: -2),
+  //     title: Text('Add Expert',
+  //         style: TextStyle(
+  //             color: Colors.grey,
+  //             fontFamily: opensansMedium,
+  //             fontSize: 11.5.sp)),
+  //     onTap: () {
+  //       Get.to(ExpertScreen());
+  //       // Navigator.push(
+  //       //     context,
+  //       //     MaterialPageRoute(
+  //       //       builder: (context) => Expert(),
+  //       //     ));
+  //     },
+  //   ),
+  // ),
 }

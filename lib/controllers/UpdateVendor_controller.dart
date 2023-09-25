@@ -1,13 +1,29 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../Config/apicall_constant.dart';
 import '../Models/sign_in_form_validation.dart';
+import '../api_handle/Repository.dart';
+import '../core/constants/strings.dart';
+import '../core/utils/log.dart';
+import '../dialogs/dialogs.dart';
+import '../dialogs/loading_indicator.dart';
+import '../preference/UserPreference.dart';
+import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
+import 'package:http/http.dart' as http;
 
 class UpdateVendorController extends GetxController {
   late final GetStorage _getStorage;
-  final InternetController _networkManager = Get.find<InternetController>();
+  final InternetController networkManager = Get.find<InternetController>();
+
+  Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
   late FocusNode VendornameNode,
       CompanynameNode,
@@ -38,6 +54,12 @@ class UpdateVendorController extends GetxController {
       propertyctr;
 
   final formKey = GlobalKey<FormState>();
+  RxBool obsecureText = true.obs;
+  RxString fullName = ''.obs;
+  RxString mobile = ''.obs;
+  RxString address = ''.obs;
+  RxString companyname = ''.obs;
+  RxString Whatsapp = ''.obs;
 
   @override
   void onInit() {
@@ -73,6 +95,16 @@ class UpdateVendorController extends GetxController {
 
     enableSignUpButton();
     super.onInit();
+  }
+
+  void initDataSet() async {
+    var retrievedObject = await UserPreferences().getSignInInfo();
+    fullName.value = retrievedObject!.userName.toString().trim();
+    mobile.value = retrievedObject.contactNo1.toString().trim();
+    companyname.value = retrievedObject.companyName.toString().trim();
+    address.value = retrievedObject.companyAddress.toString().trim();
+    Whatsapp.value = retrievedObject.whatsappNo.toString().trim();
+    update();
   }
 
   var isLoading = false.obs;
@@ -295,7 +327,353 @@ class UpdateVendorController extends GetxController {
     }
   }
 
-  void navigate() {
-    // Get.to(const SignUpScreen(false));
+  RxString uploadImageId = ''.obs;
+  RxString uploadBreacherId = ''.obs;
+  RxString uploadProfileId = ''.obs;
+  RxString uploadPropertyId = ''.obs;
+
+  void getImageApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadLogo.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadLogo.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadLogo.value!.readAsBytes().asStream(),
+                  uploadLogo.value!.lengthSync(),
+                  filename: uploadLogo.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadImageId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Strings.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void getBreacher(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadBreachers.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadBreachers.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadBreachers.value!.readAsBytes().asStream(),
+                  uploadBreachers.value!.lengthSync(),
+                  filename: uploadBreachers.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadBreacherId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Strings.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void getProfile(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadProfile.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadProfile.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadProfile.value!.readAsBytes().asStream(),
+                  uploadProfile.value!.lengthSync(),
+                  filename: uploadProfile.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadProfileId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Strings.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void getProperty(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadProperty.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadProperty.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadProperty.value!.readAsBytes().asStream(),
+                  uploadProperty.value!.lengthSync(),
+                  filename: uploadProperty.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadPropertyId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Strings.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  showDialogForScreen(context, String message, {Function? callback}) {
+    showMessage(
+        context: context,
+        callback: () {
+          if (callback != null) {
+            callback();
+          }
+          return true;
+        },
+        message: message,
+        title: "Add Customer",
+        negativeButton: '',
+        positiveButton: "Continue");
+  }
+
+  Rx<File?> uploadLogo = null.obs;
+  Rx<File?> uploadBreachers = null.obs;
+  Rx<File?> uploadProfile = null.obs;
+  Rx<File?> uploadProperty = null.obs;
+
+  actionClickUploadImage(context) async {
+    await ImagePicker()
+        .pickImage(
+            source: ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadLogo = File(file.path).obs;
+          logoctr.text = file.name;
+          validateLogo(logoctr.text);
+          getImageApi(context);
+        }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadBreachers(context) async {
+    await ImagePicker()
+        .pickImage(
+            source: ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadBreachers = File(file.path).obs;
+          breacherctr.text = file.name;
+          validateBreacher(breacherctr.text);
+          getBreacher(context);
+        }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadProfile(context) async {
+    await ImagePicker()
+        .pickImage(
+            source: ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadProfile = File(file.path).obs;
+          profilectr.text = file.name;
+          validateProfile(profilectr.text);
+          UploadProperty(
+            context,
+            false,
+            multipleImage: true,
+          );
+        }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadProperty(context) async {
+    await ImagePicker()
+        .pickImage(
+            source: ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadProperty = File(file.path).obs;
+          propertyctr.text = file.name;
+          validateProperty(propertyctr.text);
+          getProperty(context);
+        }
+      }
+    });
+
+    update();
+  }
+
+  UploadProperty(context, isUpload, {bool multipleImage = false}) async {
+    if (multipleImage) {
+      propertyctr.clear();
+      update();
+      await ImagePicker()
+          .pickMultiImage(maxWidth: 1080, maxHeight: 1080, imageQuality: 100)
+          .then((file) async {
+        // if (file.isNotEmpty) {
+        //   for (var f in file) {
+        //     propertyctr.value =(File(f.path));
+        //   }
+        //   propertyctr.text = "${uploadProperty.length} file selected";
+        //   validateProperty(propertyctr.text);
+        // }
+      });
+      return;
+    }
+    await ImagePicker()
+        .pickImage(
+            //source: ImageSource.gallery,
+            source: ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {});
+
+    update();
   }
 }

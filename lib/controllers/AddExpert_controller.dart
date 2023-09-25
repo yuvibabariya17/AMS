@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
-import '../Models/SigninModel.dart';
+import '../Models/CommonModel.dart';
+import '../Models/ServiceModel.dart';
 import '../Models/sign_in_form_validation.dart';
-import '../Screens/DashboardScreen.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
+import '../core/themes/font_constant.dart';
 import '../core/utils/log.dart';
 import '../dialogs/dialogs.dart';
 import '../dialogs/loading_indicator.dart';
@@ -16,7 +17,6 @@ import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
 
 class AddexpertController extends GetxController {
-  late final GetStorage _getStorage;
   final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode ServiceNode, ExpertNode, PriceNode;
@@ -28,8 +28,6 @@ class AddexpertController extends GetxController {
 
   @override
   void onInit() {
-    _getStorage = GetStorage();
-
     ServiceNode = FocusNode();
     ExpertNode = FocusNode();
     PriceNode = FocusNode();
@@ -44,12 +42,12 @@ class AddexpertController extends GetxController {
 
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  var ServiceModel = ValidationModel(null, null, isValidate: false).obs;
+  var model = ValidationModel(null, null, isValidate: false).obs;
   var ExpertModel = ValidationModel(null, null, isValidate: false).obs;
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    if (ServiceModel.value.isValidate == false) {
+    if (model.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (ExpertModel.value.isValidate == false) {
       isFormInvalidate.value = false;
@@ -75,7 +73,7 @@ class AddexpertController extends GetxController {
   }
 
   void validateServicename(String? val) {
-    ServiceModel.update((model) {
+    model.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Service Name";
         model.isValidate = false;
@@ -111,51 +109,129 @@ class AddexpertController extends GetxController {
     }
   }
 
-  void navigate() {
-    // Get.to(const SignUpScreen(false));
-  }
-
-  void AddExpertApi(context) async {
+  void addExpertApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context,  Strings.noInternetConnection, callback: () {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
           Get.back();
         });
         return;
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
+
       var response = await Repository.post({
         "name": Expertctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": Servicectr.text.toString().trim(),
-        "amount": Pricectr.text.toString().trim(),
+        "service_id": serviceId.value.toString(),
+        "amount": int.parse(Pricectr.text),
       }, ApiUrl.addExpert, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
-      var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
         if (responseDetail.status == 1) {
-          // UserPreferences().saveSignInInfo(responseDetail.data);
-          UserPreferences().setToken(responseDetail.data.token.toString());
-          Get.to(const dashboard());
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back();
+          });
         } else {
           showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseDetail.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context,  Strings.servererror,
-          callback: () {});
+      showDialogForScreen(context, Strings.servererror, callback: () {});
       loadingIndicator.hide(context);
+    }
+  }
+
+  Widget setServiceList() {
+    return Obx(() {
+      if (isServiceTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isServiceTypeApiList.value);
+
+      return setDropDownTestContent(
+        serviceObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: serviceObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                serviceId.value = serviceObjectList[index].id.toString();
+                Servicectr.text = serviceObjectList[index]
+                    .serviceInfo
+                    .name
+                    .capitalize
+                    .toString();
+
+                validateServicename(Servicectr.text);
+              },
+              title: Text(
+                serviceObjectList[index].serviceInfo.name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  RxBool isServiceTypeApiList = false.obs;
+  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxString serviceId = "".obs;
+
+  void getServieList(context) async {
+    isServiceTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Strings.noInternetConnection,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.addServiceList, allowHeader: true);
+      isServiceTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ServiceModel.fromJson(responseData);
+        if (data.status == 1) {
+          serviceObjectList.clear();
+          serviceObjectList.addAll(data.data);
+          logcat("RESPONSE", jsonEncode(serviceObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Strings.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceTypeApiList.value = false;
     }
   }
 

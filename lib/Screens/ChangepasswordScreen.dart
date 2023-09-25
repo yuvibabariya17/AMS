@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/LoginScreen/LoginScreen.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

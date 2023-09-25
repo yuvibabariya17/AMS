@@ -35,6 +35,11 @@ class HomeScreenController extends GetxController {
   List<OfferItem> staticData2 = offersItems;
   RxString picDate = "".obs;
   RxList treeList = [].obs;
+  RxString name = ''.obs;
+  RxString number = ''.obs;
+  RxString companyname = ''.obs;
+  RxString companyaddress = ''.obs;
+  RxString number2 = ''.obs;
 
   changeIndex(int index) async {
     currentPage = index;
@@ -45,6 +50,7 @@ class HomeScreenController extends GetxController {
 
   void drawerAction() {
     drawer_key.currentState!.openDrawer();
+    update();
   }
 
   void closeDrawer() {
@@ -65,7 +71,7 @@ class HomeScreenController extends GetxController {
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxString message = "".obs;
-  final InternetController _networkManager = Get.find<InternetController>();
+  final InternetController networkManager = Get.find<InternetController>();
 
   void hideKeyboard(context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
