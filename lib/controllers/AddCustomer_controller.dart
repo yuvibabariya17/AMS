@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Config/apicall_constant.dart';
 
@@ -95,28 +97,30 @@ class AddCustomerController extends GetxController {
   var emailModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    return;
-    // if (customerModel.value.isValidate == false) {
+    if (customerModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (profileModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (dobModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (doaModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (addressModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (contact1Model.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    }
+    //  else if (contact2Model.value.isValidate == false) {
     //   isFormInvalidate.value = false;
-    // } else if (profileModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (dobModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (doaModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (addressModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (contact1Model.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (contact2Model.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (whatsappModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else if (emailModel.value.isValidate == false) {
-    //   isFormInvalidate.value = false;
-    // } else {
-    //   isFormInvalidate.value = true;
     // }
+
+    else if (whatsappModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (emailModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else {
+      isFormInvalidate.value = true;
+    }
   }
 
   void validateCustomerName(String? val) {
@@ -257,7 +261,7 @@ class AddCustomerController extends GetxController {
     enableSignUpButton();
   }
 
-  RxBool isFormInvalidate = true.obs;
+  RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
 
   void hideKeyboard(context) {
@@ -274,8 +278,7 @@ class AddCustomerController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -314,7 +317,7 @@ class AddCustomerController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -324,20 +327,31 @@ class AddCustomerController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-      var response = await Repository.post({
+      logcat("CUSTOMERADD", {
         "name": Customerctr.text.toString().trim(),
         "contact_no": Contact1ctr.text.toString().trim(),
         "whatsapp_no": Whatsappctr.text.toString().trim(),
         "pic": uploadImageId.value.toString(),
         "email": Emailctr.text.toString().trim(),
+        "date_of_birth": Dobctr.text.toString().trim(),
+        "date_of_anniversary": Doactr.text.toString().trim(),
+        "address": Addressctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim()
+      });
+
+      var response = await Repository.post({
+        "name": Customerctr.text.toString().trim(),
+        "contact_no": Contact1ctr.text.toString().trim(),
+        "whatsapp_no": Whatsappctr.text.toString().trim(),
+        "email": Emailctr.text.toString().trim(),
+        "pic": uploadImageId.value.toString(),
         "date_of_birth": Dobctr.text.toString().trim(),
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
@@ -363,7 +377,7 @@ class AddCustomerController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -378,9 +392,9 @@ class AddCustomerController extends GetxController {
           return true;
         },
         message: message,
-        title: "Add Customer",
+        title: ScreenTitle.addCustomer,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 
   Rx<File?> uploadImageFile = null.obs;
@@ -400,6 +414,76 @@ class AddCustomerController extends GetxController {
           validateProfile(Profilectr.text);
           getImageApi(context);
         }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadImageFromCamera(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            //source: ImageSource.gallery,
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        //Cropping the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+            sourcePath: file.path,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            cropStyle: CropStyle.rectangle,
+            aspectRatioPresets: Platform.isAndroid
+                ? [
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio16x9
+                  ]
+                : [
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio5x3,
+                    CropAspectRatioPreset.ratio5x4,
+                    CropAspectRatioPreset.ratio7x5,
+                    CropAspectRatioPreset.ratio16x9
+                  ],
+            uiSettings: [
+              AndroidUiSettings(
+                  toolbarTitle: 'Crop Image',
+                  cropGridColor: primaryColor,
+                  toolbarColor: primaryColor,
+                  statusBarColor: primaryColor,
+                  toolbarWidgetColor: white,
+                  activeControlsWidgetColor: primaryColor,
+                  initAspectRatio: CropAspectRatioPreset.original,
+                  lockAspectRatio: false),
+              IOSUiSettings(
+                title: 'Crop Image',
+                cancelButtonTitle: 'Cancel',
+                doneButtonTitle: 'Done',
+                aspectRatioLockEnabled: false,
+              ),
+            ],
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        if (file != null) {
+          uploadImageFile = File(file.path).obs;
+          Profilectr.text = file.name;
+          validateProfile(Profilectr.text);
+          getImageApi(context);
+        }
+
+        // if (croppedFile != null) {
+        //   uploadImageFile = File(croppedFile.path).obs;
+        //   profilePic.value = croppedFile.path;
+        //   update();
+        // }
       }
     });
 

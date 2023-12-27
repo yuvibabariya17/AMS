@@ -44,7 +44,9 @@ class _PreviousNotificationScreenState
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: isDarkMode()
+                  ? Colors.white.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.2),
               spreadRadius: 0.1,
               blurRadius: 10,
               offset: Offset(0.5, 0.5)),
@@ -120,7 +122,7 @@ class _PreviousNotificationScreenState
                                       : Colors.red,
                               fontFamily: opensans_Regular,
                               fontSize: 10.sp,
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),

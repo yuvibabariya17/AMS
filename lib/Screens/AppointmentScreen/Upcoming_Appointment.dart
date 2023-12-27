@@ -34,6 +34,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
     return ListView.builder(
+        physics: const ClampingScrollPhysics(),
         shrinkWrap: false,
         clipBehavior: Clip.antiAlias,
         itemBuilder: (context, index) {
@@ -190,7 +191,9 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: isDarkMode()
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5)),

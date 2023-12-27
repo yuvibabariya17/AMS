@@ -30,15 +30,15 @@ class ChangePasswordController extends GetxController {
   var confirmPassModel = ValidationModel(null, null, isValidate: false).obs;
 
   Rx<ScreenState> states = ScreenState.apiLoading.obs;
-  RxString message = "".obs; 
+  RxString message = "".obs;
   RxString mobile = "".obs;
 
   RxBool isFormInvalidate = false.obs;
   RxBool isForgotPasswordValidate = false.obs;
   RxBool isObsecureText = true.obs;
 
-  RxBool obsecureOldPasswordText = true.obs; 
-  RxBool obsecureNewPasswordText = true.obs; 
+  RxBool obsecureOldPasswordText = true.obs;
+  RxBool obsecureNewPasswordText = true.obs;
   RxBool obsecureConfirmPasswordText = true.obs;
 
   @override
@@ -62,7 +62,7 @@ class ChangePasswordController extends GetxController {
       } else {
         model!.error = null;
         model.isValidate = true;
-      } 
+      }
     });
 
     enableSignUpButton();
@@ -170,7 +170,7 @@ class ChangePasswordController extends GetxController {
         model!.error = "Enter Valid Password";
         model.isValidate = false;
       } else {
-        model!.error = null; 
+        model!.error = null;
         model.isValidate = true;
       }
       if (confirmCtr.text.toString().isNotEmpty) {
@@ -284,7 +284,7 @@ class ChangePasswordController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection, callback: () {});
+        showDialogForScreen(context, Connection.noConnection, callback: () {});
         return;
       }
       logcat("CHANGE PASS", {
@@ -345,8 +345,8 @@ class ChangePasswordController extends GetxController {
           return true;
         },
         message: message,
-        title: "Reset Password",
+        title: ScreenTitle.changePassTitle,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 }

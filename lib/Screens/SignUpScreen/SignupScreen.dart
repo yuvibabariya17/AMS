@@ -50,7 +50,7 @@ class _SignupScreensState extends State<SignupScreens> {
             ),
             Center(
                 child: Column(children: [
-              getToolbar("Add Vendor Service", showBackButton: true,
+              getToolbar(ScreenTitle.addVendorService, showBackButton: true,
                   callback: () {
                 Get.back();
               })
@@ -76,7 +76,7 @@ class _SignupScreensState extends State<SignupScreens> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getTitle(Strings.vendor_name),
+                      getTitle(CommonConstant.vendor_name),
                       FadeInUp(
                           from: 30,
                           child: AnimatedSize(
@@ -94,7 +94,7 @@ class _SignupScreensState extends State<SignupScreens> {
                                   inputType: TextInputType.text,
                                 );
                               }))),
-                      getTitle(Strings.company_title),
+                      getTitle(CommonConstant.company_title),
                       FadeInUp(
                           from: 30,
                           child: AnimatedSize(
@@ -133,7 +133,7 @@ class _SignupScreensState extends State<SignupScreens> {
                                   inputType: TextInputType.text,
                                 );
                               }))),
-                      getTitle(Strings.emailId),
+                      getTitle(SignUpScreenContant.emailId),
                       FadeInUp(
                           from: 30,
                           child: AnimatedSize(
@@ -142,7 +142,7 @@ class _SignupScreensState extends State<SignupScreens> {
                                 return getReactiveFormField(
                                   node: signinController.emailNode,
                                   controller: signinController.emailCtr,
-                                  hintLabel: Strings.emailId_hint,
+                                  hintLabel: SignUpScreenContant.emailId_hint,
                                   onChanged: (val) {
                                     signinController.validateEmail(val);
                                     setState(() {});

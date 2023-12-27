@@ -9,6 +9,8 @@ class Asset {
   static const logo = '$assets${pngFolder}logo.png';
   static const home_bg = '$assets${pngFolder}home_bg.png';
   static const img = '$assets${pngFolder}image.jpg';
+  static const noInternet = '$assets${pngFolder}no_internet_image.png';
+  static const placeholder = '$assets${pngFolder}placeholder.jpg';
 
   //GIF
   static const apiLoader = '$assets${gifFolder}loading.gif';
@@ -54,6 +56,15 @@ class Asset {
   static const info_help = '$assets${svgFolder}fi-br-info.svg';
   static const home = '$assets${svgFolder}fi-br-home.svg';
   static const add = '$assets${svgFolder}add.svg';
+  static const email = '$assets${svgFolder}simplemail.svg';
+  static const invite = '$assets${svgFolder}invite.svg';
+  static const bug = '$assets${svgFolder}bug.svg';
+  static const customer_group = '$assets${svgFolder}customer_group.svg';
+  static const customers = '$assets${svgFolder}customers.svg';
+  static const multipleUser = '$assets${svgFolder}multipleUser.svg';
+  static const product = '$assets${svgFolder}product.svg';
+  static const serviceNav = '$assets${svgFolder}service.svg';
+  static const course = '$assets${svgFolder}course.svg';
 
   static const megaphone = '$assets${svgFolder}fi-br-megaphone.svg';
   static const profileimg = '$assets${svgFolder}account-icon.svg';

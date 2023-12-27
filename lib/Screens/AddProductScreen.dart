@@ -41,176 +41,209 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-        body: Column(children: [
-      getCommonToolbar("Add Product", () {
-        Get.back();
-      }),
-      Expanded(
-        child: CustomScrollView(slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
-              padding: EdgeInsets.only(
-                  left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
-              child: Form(
-                  key: controller.formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      getTitle(Strings.Name),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
-                              child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.NameNode,
-                                  controller: controller.NameCtr,
-                                  hintLabel: Strings.name_hint,
-                                  onChanged: (val) {
-                                    controller.validatename(val);
-                                  },
-                                  errorText: controller.NameModel.value.error,
-                                  inputType: TextInputType.text,
-                                );
-                              }))),
-                      getTitle(Strings.product_img),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
-                              child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.productimgNode,
-                                  controller: controller.productimgCtr,
-                                  hintLabel: Strings.product_img_hint,
-                                  wantSuffix: true,
-                                  onChanged: (val) {
-                                    controller.validateProductimg(val);
-                                    setState(() {});
-                                  },
-                                  onTap: () async {
-                                    await controller
-                                        .actionClickUploadImage(context);
-                                  },
-                                  errorText:
-                                      controller.productimgModel.value.error,
-                                  inputType: TextInputType.text,
-                                );
-                              }))),
-                      getTitle(Strings.description),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
-                              child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.descriptionNode,
-                                  controller: controller.descriptionCtr,
-                                  hintLabel: Strings.description_hint,
-                                  onChanged: (val) {
-                                    controller.validateDescription(val);
-                                    setState(() {});
-                                  },
-                                  isExpand: true,
-                                  errorText:
-                                      controller.descriptionModel.value.error,
-                                  inputType: TextInputType.text,
-                                );
-                              }))),
-                      getTitle(Strings.category),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
-                              child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.categoryNode,
-                                  controller: controller.categroryCtr,
-                                  hintLabel: Strings.category_hint,
-                                  wantSuffix: true,
-                                  isdown: true,
-                                  onChanged: (val) {
-                                    controller.validateCategory(val);
-                                    setState(() {});
-                                  },
-                                  onTap: () {
-                                    controller.categroryCtr.text = "";
+    return GestureDetector(
+      onTap: () {
+        controller.hideKeyboard(context);
+      },
+      child: CustomScaffold(
+          body: Column(children: [
+        getCommonToolbar(ScreenTitle.addProduct, () {
+          Get.back();
+        }),
+        Expanded(
+          child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
+                    padding: EdgeInsets.only(
+                        left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                    child: Form(
+                        key: controller.formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            getTitle(CommonConstant.Name),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.NameNode,
+                                        controller: controller.NameCtr,
+                                        hintLabel: CommonConstant.name_hint,
+                                        onChanged: (val) {
+                                          controller.validatename(val);
+                                        },
+                                        errorText:
+                                            controller.NameModel.value.error,
+                                        inputType: TextInputType.text,
+                                      );
+                                    }))),
+                            getTitle(AddProductConstant.product_img),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.productimgNode,
+                                        controller: controller.productimgCtr,
+                                        hintLabel:
+                                            AddProductConstant.product_img_hint,
+                                        wantSuffix: true,
+                                        onChanged: (val) {
+                                          controller.validateProductimg(val);
+                                          setState(() {});
+                                        },
+                                        onTap: () async {
+                                          selectImageFromCameraOrGallery(
+                                              context, cameraClick: () {
+                                            controller
+                                                .actionClickUploadImageFromCamera(
+                                                    context,
+                                                    isCamera: true);
+                                          }, galleryClick: () {
+                                            controller
+                                                .actionClickUploadImageFromCamera(
+                                                    context,
+                                                    isCamera: false);
+                                          });
+                                          // await controller.PopupDialogs(context);
+                                          setState(() {});
+                                        },
+                                        isReadOnly: true,
+                                        // onTap: () async {
+                                        //   await controller
+                                        //       .actionClickUploadImage(context);
+                                        // },
+                                        errorText: controller
+                                            .productimgModel.value.error,
+                                        inputType: TextInputType.text,
+                                      );
+                                    }))),
+                            getTitle(CommonConstant.description),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.descriptionNode,
+                                        controller: controller.descriptionCtr,
+                                        hintLabel:
+                                            CommonConstant.description_hint,
+                                        onChanged: (val) {
+                                          controller.validateDescription(val);
+                                          setState(() {});
+                                        },
+                                        isExpand: true,
+                                        errorText: controller
+                                            .descriptionModel.value.error,
+                                        inputType: TextInputType.text,
+                                      );
+                                    }))),
+                            getTitle(AddProductConstant.category),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.categoryNode,
+                                        controller: controller.categroryCtr,
+                                        hintLabel:
+                                            AddProductConstant.category_hint,
+                                        wantSuffix: true,
+                                        isdown: true,
+                                        onChanged: (val) {
+                                          controller.validateCategory(val);
+                                          setState(() {});
+                                        },
+                                        isReadOnly: true,
+                                        onTap: () {
+                                          controller.categroryCtr.text = "";
 
-                                    showDropDownDialog(
-                                        context,
-                                        controller.setCategoryList(),
-                                        "Select Category");
-                                    // showDropdownMessage(
-                                    //     context,
-                                    //     controller.setCategoryList(),
-                                    //     'Select Category');
-                                  },
-                                  errorText:
-                                      controller.categroryModel.value.error,
-                                  inputType: TextInputType.none,
-                                );
-                              }))),
-                      getTitle(Strings.amount),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
+                                          showDropDownDialog(
+                                              context,
+                                              controller.setCategoryList(),
+                                              "Select Category");
+                                          // showDropdownMessage(
+                                          //     context,
+                                          //     controller.setCategoryList(),
+                                          //     'Select Category');
+                                        },
+                                        errorText: controller
+                                            .categroryModel.value.error,
+                                        inputType: TextInputType.none,
+                                      );
+                                    }))),
+                            getTitle(CommonConstant.amount),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.amountNode,
+                                        controller: controller.amountCtr,
+                                        hintLabel: CommonConstant.amount_hint,
+                                        onChanged: (val) {
+                                          controller.validateAmount(val);
+                                          setState(() {});
+                                        },
+                                        errorText:
+                                            controller.amountModel.value.error,
+                                        inputType: TextInputType.number,
+                                      );
+                                    }))),
+                            getTitle(AddProductConstant.quantity),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.quantitynode,
+                                        controller: controller.quantityCtr,
+                                        hintLabel:
+                                            AddProductConstant.quantity_hint,
+                                        onChanged: (val) {
+                                          controller.validateQuantity(val);
+                                          setState(() {});
+                                        },
+                                        errorText: controller
+                                            .quantityModel.value.error,
+                                        inputType: TextInputType.number,
+                                      );
+                                    }))),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            FadeInUp(
+                              from: 50,
                               child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.amountNode,
-                                  controller: controller.amountCtr,
-                                  hintLabel: Strings.amount_hint,
-                                  onChanged: (val) {
-                                    controller.validateAmount(val);
-                                    setState(() {});
-                                  },
-                                  errorText: controller.amountModel.value.error,
-                                  inputType: TextInputType.number,
-                                );
-                              }))),
-                      getTitle(Strings.quantity),
-                      FadeInUp(
-                          from: 30,
-                          child: AnimatedSize(
-                              duration: const Duration(milliseconds: 300),
-                              child: Obx(() {
-                                return getReactiveFormField(
-                                  node: controller.quantitynode,
-                                  controller: controller.quantityCtr,
-                                  hintLabel: Strings.quantity_hint,
-                                  onChanged: (val) {
-                                    controller.validateQuantity(val);
-                                    setState(() {});
-                                  },
-                                  errorText:
-                                      controller.quantityModel.value.error,
-                                  inputType: TextInputType.number,
-                                );
-                              }))),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                      FadeInUp(
-                        from: 50,
-                        child: Obx(() {
-                          return getFormButton(() {
-                            controller.addProductApi(context);
-                            if (controller.isFormInvalidate.value == true) {
-                              controller.addProductApi(context);
-                            }
-                          }, Strings.done,
-                              validate: controller.isFormInvalidate.value);
-                        }),
-                      ),
-                    ],
-                  )),
-            ),
-          )
-        ]),
-      )
-    ]));
+                                return getFormButton(() {
+                                  controller.addProductApi(context);
+                                  if (controller.isFormInvalidate.value ==
+                                      true) {
+                                    controller.addProductApi(context);
+                                  }
+                                }, CommonConstant.done,
+                                    validate:
+                                        controller.isFormInvalidate.value);
+                              }),
+                            ),
+                          ],
+                        )),
+                  ),
+                )
+              ]),
+        )
+      ])),
+    );
   }
 }

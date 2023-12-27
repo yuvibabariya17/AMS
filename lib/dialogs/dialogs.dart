@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,7 +74,7 @@ void showMessage(
 
 void showDropdownMessage(
   BuildContext context,
-  Widget content,
+  // Widget content,
   String title,
 ) {
   showDialog(
@@ -81,19 +82,21 @@ void showDropdownMessage(
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: Padding(
-              padding: EdgeInsets.only(
-                  left:
-                      SizerUtil.deviceType == DeviceType.mobile ? 0.w : 2.9.w),
-              child: Text(
-                title,
-                style: TextStyle(fontFamily: fontMedium, fontSize: 20.sp),
+              title: Padding(
+                padding: EdgeInsets.only(
+                    left: SizerUtil.deviceType == DeviceType.mobile
+                        ? 0.w
+                        : 2.9.w),
+                child: Text(
+                  title,
+                  style: TextStyle(fontFamily: fontMedium, fontSize: 20.sp),
+                ),
               ),
-            ),
-            contentPadding:
-                EdgeInsets.only(left: 6.7.w, top: 0.5.h, right: 6.7.w),
-            content: content,
-          );
+              contentPadding:
+                  EdgeInsets.only(left: 6.7.w, top: 0.5.h, right: 6.7.w),
+              content: Container()
+              // content,
+              );
         });
       });
 }
@@ -173,7 +176,7 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: const Color(0XFFe3ecf3),
+          backgroundColor: isDarkMode() ? black : const Color(0XFFe3ecf3),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32.0))),
           title: Padding(
@@ -188,5 +191,109 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
               EdgeInsets.only(left: 6.7.w, top: 0.5.h, right: 6.7.w),
           content: content,
         );
+      });
+}
+
+Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
+    {Function? cameraClick, Function? galleryClick}) {
+  return showGeneralDialog(
+      barrierColor: black.withOpacity(0.6),
+      transitionBuilder: (context, a1, a2, widget) {
+        return Transform.scale(
+          scale: a1.value,
+          child: Opacity(
+              opacity: a1.value,
+              child: CupertinoAlertDialog(
+                title: Text(
+                  "Photo",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: black,
+                    fontFamily: fontBold,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Text(
+                  "Select Photo From",
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: black,
+                    fontFamily: fontMedium,
+                  ),
+                ),
+                actions: [
+                  CupertinoDialogAction(
+                    onPressed: () {
+                      cameraClick!();
+                      Navigator.pop(context);
+                    },
+                    isDefaultAction: true,
+                    isDestructiveAction: true,
+                    child: Text(
+                      "Camera",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: black,
+                          fontFamily: fontRegular,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 13.sp
+                              : 11.sp),
+                    ),
+                    // Icon(
+                    //   Icons.camera_alt,
+                    //   size: SizerUtil.deviceType == DeviceType.mobile
+                    //       ? 20.sp
+                    //       : 15.sp,
+                    // ),
+                    //  Text(LocalizationKeys.no.tr,
+                    //     style: const TextStyle(
+                    //       fontSize: 15,
+                    //       color: black,
+                    //       fontFamily: fontBold,
+                    //       fontWeight: FontWeight.bold,
+                    //     )),
+                  ),
+                  CupertinoDialogAction(
+                    onPressed: () {
+                      galleryClick!();
+                      Navigator.pop(context);
+                    },
+                    isDefaultAction: true,
+                    isDestructiveAction: true,
+                    child: Text(
+                      "Gallery",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: black,
+                          fontFamily: fontRegular,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 13.sp
+                              : 11.sp),
+                    ),
+                    // Icon(
+                    //   Icons.photo_size_select_actual_outlined,
+                    //   size: SizerUtil.deviceType == DeviceType.mobile
+                    //       ? 20.sp
+                    //       : 15.sp,
+                    // )
+                    // Text(LocalizationKeys.yes.tr,
+                    //     style: const TextStyle(
+                    //       fontSize: 15,
+                    //       color: black,
+                    //       fontFamily: fontBold,
+                    //       fontWeight: FontWeight.bold,
+                    //     )),
+                  ),
+                  // The "No" button
+                ],
+              )),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      pageBuilder: (context, animation1, animation2) {
+        return Container();
       });
 }

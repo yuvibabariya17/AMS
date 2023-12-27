@@ -1,5 +1,6 @@
 import 'package:booking_app/controllers/UpdateVendor_controller.dart';
 import 'package:booking_app/core/constants/assets.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,7 +29,7 @@ class CustomFormField extends StatefulWidget {
       this.formType,
       this.isExpand,
       this.isVerified,
-      this.isStarting,
+      this.time,
       this.isPhoto,
       this.isDropdown,
       this.onAddBtn,
@@ -39,6 +40,7 @@ class CustomFormField extends StatefulWidget {
       this.isDataValidated,
       this.onTap,
       this.isdown,
+      this.isReadOnly,
       this.isPick,
       this.isAdd,
       this.isPassword,
@@ -60,9 +62,10 @@ class CustomFormField extends StatefulWidget {
   final TextInputType inputType;
   final bool? isVerified;
   final bool? isPick;
-  final bool? isStarting;
+  final bool? time;
   final bool? isDropdown;
   final Function? onAddBtn;
+  final bool? isReadOnly;
   final bool? isPhoto;
   final bool? isPassword;
   final bool? isCalender;
@@ -89,7 +92,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return TextFormField(
       enabled: widget.isEnable,
       cursorColor: primaryColor,
-      readOnly: widget.isCalender == true ? true : false,
+      readOnly:
+          widget.isCalender == true || widget.isReadOnly == true ? true : false,
       onTap: () {
         if (widget.onTap != null) widget.onTap!();
       },
@@ -222,9 +226,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
                     _togglePasswordView(context);
                   }
                 },
-                child: widget.isStarting == true
+                child: widget.time == true
                     ? SvgPicture.asset(Asset.time,
-                        height: 5, width: 5, fit: BoxFit.scaleDown)
+                        height: 7, width: 7, fit: BoxFit.scaleDown)
                     : widget.isDropdown == true
                         ? Row(
                             mainAxisSize: MainAxisSize.min, // added line
@@ -260,12 +264,14 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                                   DeviceType.mobile
                                               ? 4.w
                                               : 3.w),
-                                      icon: const Icon(Icons.add),
+                                      icon: const Icon(Icons.add,
+                                          color: Colors.grey),
                                       iconSize: SizerUtil.deviceType ==
                                               DeviceType.mobile
                                           ? 25
                                           : 40,
-                                      color: Colors.black.withOpacity(0.2),
+                                      color:
+                                          isDarkMode() ? Colors.white : black,
                                     )
                                   : Container(),
                             ],

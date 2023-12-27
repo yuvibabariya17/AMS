@@ -1,33 +1,32 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Screens/DataSource.dart';
 import 'package:booking_app/Screens/NotificationScreen/NotificationScreen.dart';
+import 'package:booking_app/Screens/SpecialRegions.dart';
+import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/assets.dart';
+import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import '../Models/expert.dart';
-import '../Models/service_name.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../controllers/home_screen_controller.dart';
-import '../core/Common/Common.dart';
+import '../controllers/internet_controller.dart';
 import '../core/Common/appbar.dart';
-import '../core/themes/color_const.dart';
-import '../preference/UserPreference.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen(
-    this.callBack, {
+  HomeScreen({
+    required this.callback,
     super.key,
   });
-  Function callBack;
+  Function callback;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,20 +35,96 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var controller = Get.put(HomeScreenController());
 
-  late Stream<String> _timeStream;
-  late String _currentTime;
+  final CalendarController calendarController = CalendarController();
+  final List<CalendarView> _allowedViews = <CalendarView>[
+    CalendarView.day,
+    CalendarView.week,
+    CalendarView.workWeek,
+    CalendarView.timelineDay,
+    CalendarView.timelineWeek,
+    CalendarView.timelineWorkWeek
+  ];
+
+  List<TimeRegion> regions = <TimeRegion>[];
+  late _DataSource events;
+
+  int _currentStep = 0;
+
+  late Stream<String> timeStream;
+  late String currentTime;
+
+  int activeStep = 5; // Initial step set to 5.
+
+  int upperBound = 6;
 
   @override
   void initState() {
-    setData();
+    calendarController.view = CalendarView.week;
+    events = _DataSource(_getAppointments());
+    _updateRegions();
     super.initState();
-    //_timeStream = getCurrentTime();
+    // timeStream = getCurrentTime();
   }
 
-  void setData() async {
-    var response = await UserPreferences().getSignInInfo();
-    controller.name.value = response!.userName.toString();
-    controller.number.value = response.contactNo1.toString();
+  void _updateRegions() {
+    final DateTime date =
+        DateTime.now().add(Duration(days: -DateTime.now().weekday));
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day),
+      endTime: DateTime(date.year, date.month, date.day, 9),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR',
+    ));
+
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day, 18),
+      endTime: DateTime(date.year, date.month, date.day, 23, 59, 59),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR',
+    ));
+
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day, 10),
+      endTime: DateTime(date.year, date.month, date.day, 11),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      text: 'Not Available',
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=TU',
+    ));
+
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day, 15),
+      endTime: DateTime(date.year, date.month, date.day, 16),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      text: 'Not Available',
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=WE',
+    ));
+
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day, 13),
+      endTime: DateTime(date.year, date.month, date.day, 14),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      text: 'Lunch',
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR',
+    ));
+
+    regions.add(TimeRegion(
+      startTime: DateTime(date.year, date.month, date.day),
+      endTime: DateTime(date.year, date.month, date.day, 23, 59, 59),
+      enablePointerInteraction: false,
+      textStyle: const TextStyle(color: Colors.black45, fontSize: 15),
+      color: Colors.grey.withOpacity(0.2),
+      recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,SU',
+    ));
   }
 
   Stream<String> getCurrentTime() {
@@ -59,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return formattedTime;
     }).map((time) {
       setState(() {
-        _currentTime = time;
+        currentTime = time;
       });
       return time;
     });
@@ -74,518 +149,300 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  List<Appointment> _getAppointments() {
+    final List<String> subjectCollection = <String>[];
+    subjectCollection.add('General Meeting');
+    subjectCollection.add('Plan Execution');
+    subjectCollection.add('Project Plan');
+    subjectCollection.add('Consulting');
+    subjectCollection.add('Support');
+    subjectCollection.add('Development Meeting');
+    subjectCollection.add('Scrum');
+    subjectCollection.add('Project Completion');
+    subjectCollection.add('Release updates');
+    subjectCollection.add('Performance Check');
+
+    final List<Color> colorCollection = <Color>[];
+    colorCollection.add(const Color(0xFF0F8644));
+    colorCollection.add(const Color(0xFF8B1FA9));
+    colorCollection.add(const Color(0xFFD20100));
+    colorCollection.add(const Color(0xFFFC571D));
+    colorCollection.add(const Color(0xFF36B37B));
+    colorCollection.add(const Color(0xFF01A1EF));
+    colorCollection.add(const Color(0xFF3D4FB5));
+    colorCollection.add(const Color(0xFFE47C73));
+    colorCollection.add(const Color(0xFF636363));
+    colorCollection.add(const Color(0xFF0A8043));
+
+    final Random random = Random();
+    final DateTime rangeStartDate =
+        DateTime.now().add(const Duration(days: -(365 ~/ 2)));
+    final DateTime rangeEndDate = DateTime.now().add(const Duration(days: 365));
+    final List<Appointment> appointments = <Appointment>[];
+
+    for (DateTime i = rangeStartDate;
+        i.isBefore(rangeEndDate);
+        i = i.add(const Duration(days: 1))) {
+      final DateTime date = i;
+      if (date.weekday == 6 || date.weekday == 7) {
+        continue;
+      }
+
+      final DateTime startDate = DateTime(date.year, date.month, date.day,
+          (date.weekday.isEven ? 14 : 9) + random.nextInt(3));
+      appointments.add(Appointment(
+          subject: subjectCollection[random.nextInt(7)],
+          startTime: startDate,
+          endTime: startDate.add(const Duration(hours: 1)),
+          color: colorCollection[random.nextInt(9)]));
+      appointments.add(Appointment(
+          subject: subjectCollection[random.nextInt(7)] + "4444",
+          startTime: startDate,
+          endTime: startDate.add(const Duration(hours: 1)),
+          color: colorCollection[random.nextInt(9)]));
+    }
+
+    return appointments;
+  }
+
   @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
-    //WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuild());
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          color: isDarkMode() ? black : transparent,
-          child: Column(
-            children: [
-              FadeInDown(
-                from: 50,
-                child: HomeAppBar(
-                  openDrawer: controller.drawer_key,
-                  title: 'Book My Appointment',
-                  leading: Asset.backbutton,
-                  isfilter: true,
-                  isBack: false,
-                  onClick: () async {
-                    Get.to(NotificationScreen(
-                        controller.icon, controller.leading));
-                  },
-                  icon: Asset.filter,
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.only(bottom: 5.h, top: 3.h, left: 3.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(
-                                  () {
-                                    return FadeInDown(
-                                      from: 70,
-                                      child: Text(
-                                        (controller.picDate.value.toString()),
-                                        style: TextStyle(
-                                            fontSize: 16.5.sp,
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(right: 9.h),
-                                  child: FadeInDown(
-                                      from: 70,
-                                      child: Text(
-                                        DateFormat('hh:mm a')
-                                            .format(DateTime.now()),
-                                        style: TextStyle(
-                                            fontSize: 15.sp,
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontWeight: FontWeight.w700),
-                                      )
-                                      // StreamBuilder<String>(
-                                      //   stream: _timeStream,
-                                      //   initialData: DateFormat('hh:mm a')
-                                      //       .format(DateTime.now()),
-                                      //   builder: (context, snapshot) {
-                                      //     if (snapshot.hasData) {
-                                      //       return Text(
-                                      //         _currentTime,
-                                      //         style: TextStyle(
-                                      //             fontSize: 15.sp,
-                                      //             fontFamily: opensansMedium,
-                                      //             fontWeight: FontWeight.w700),
-                                      //       );
-                                      //     } else {
-                                      //       return Text('Loading...');
-                                      //     }
-                                      //   },
-                                      // ),
-                                      ),
-                                ),
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime(2100));
-                                if (pickedDate != null) {
-                                  String formattedDate =
-                                      DateFormat.yMMMMd().format(pickedDate);
-                                  controller.updateDate(formattedDate);
-                                }
-                              },
-                              focusColor: Colors.amber,
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  right: 3.5.h,
-                                ),
-                                height: 6.1.h,
-                                width: 6.1.h,
-                                decoration: BoxDecoration(
-                                    color: isDarkMode() ? white : black,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  child: SvgPicture.asset(
-                                    Asset.calender,
-                                    color: isDarkMode() ? black : white,
-                                    height: 1.sp,
-                                    width: 1.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                        child: DatePicker(
-                          DateTime.now(),
-                          width: 7.h,
-                          height: 10.h,
-                          controller: controller.datePickerController,
-                          initialSelectedDate: DateTime.now(),
-                          selectionColor: isDarkMode() ? white : black,
-                          selectedTextColor: isDarkMode() ? black : white,
-                          inactiveDates: [],
-                          onDateChange: (date) {
-                            setState(() {
-                              controller.selectedValue = date;
-                            });
-                          },
-                        ),
-                      ),
-                      Divider(
-                        endIndent: 3.h,
-                        indent: 3.h,
-                        thickness: 0.5.sp,
-                        height: 5.h,
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 3.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Services',
-                              style: TextStyle(
-                                  fontFamily: opensansMedium, fontSize: 15.sp),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 13.h,
-                        child: ListView.builder(
-                            shrinkWrap: false,
-                            scrollDirection: Axis.horizontal,
-                            clipBehavior: Clip.antiAlias,
-                            itemBuilder: (context, index) {
-                              Service_Item data = controller.staticData[index];
-                              return Container(
-                                width: 37.w,
-                                margin: EdgeInsets.only(left: 3.h),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        spreadRadius: 0.1,
-                                        blurRadius: 3,
-                                        offset: Offset(0.5, 0.5)),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          top: 0.5.h, left: 1.w, right: 1.w),
-                                      height: 11.h,
-                                      width: 100.w,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: data.icon),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          data.Name,
-                                          style: TextStyle(
-                                            fontSize: 10.5.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                            itemCount: controller.staticData.length),
-                      ),
-                      SizedBox(
-                        height: 1.5.h,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 3.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Experts',
-                              style: TextStyle(
-                                  fontFamily: opensansMedium, fontSize: 15.sp),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 13.h,
-                        child: ListView.builder(
-                            shrinkWrap: false,
-                            scrollDirection: Axis.horizontal,
-                            clipBehavior: Clip.antiAlias,
-                            itemBuilder: (context, index) {
-                              ExpertItem data = controller.staticData1[index];
-                              return Container(
-                                width: 37.w,
-                                margin: EdgeInsets.only(left: 3.h),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        spreadRadius: 0.1,
-                                        blurRadius: 3,
-                                        offset: Offset(0.5, 0.5)),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          top: 0.5.h, left: 1.w, right: 1.w),
-                                      height: 11.h,
-                                      width: 100.w,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: data.icon),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          data.Name,
-                                          style: TextStyle(
-                                            fontSize: 10.5.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                            itemCount: controller.staticData1.length),
-                      ),
-                      SizedBox(
-                        height: 1.5.h,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 3.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Offers',
-                              style: TextStyle(
-                                  fontFamily: opensansMedium, fontSize: 15.sp),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: 1.h, left: 8.w, right: 8.w, bottom: 1.h),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 1.h,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: SvgPicture.asset(Asset.bluestar),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            'Hair Smoothening',
-                                            style: TextStyle(
-                                                fontFamily: opensansMedium,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 13.5.sp),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(right: 4.7.h),
-                                          child: Text(
-                                            'Flat 15% Off',
-                                            style: TextStyle(
-                                                fontFamily: opensans_Bold,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14.sp),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      child: CupertinoSwitch(
-                                        value: controller.switch_state,
-                                        onChanged: (value) {
-                                          controller.switch_state = value;
-                                          setState(
-                                            () {},
-                                          );
-                                        },
-                                        thumbColor: CupertinoColors.white,
-                                        activeColor: CupertinoColors.black,
-                                        trackColor: Colors.grey,
-                                      ),
-                                    )
-                                  ]),
-                              SizedBox(
-                                height: 0.5.h,
-                              ),
-                              Container(
-                                height: 5.h,
-                                width: 100.w,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '     Valid till: 26 March',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(10))),
-                              )
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 0.1,
-                                  blurRadius: 10,
-                                  offset: Offset(0.5, 0.5)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: 1.h, left: 8.w, right: 8.w, bottom: 1.h),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 1.h,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: SvgPicture.asset(Asset.bluestar),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            'Hair Smoothening',
-                                            style: TextStyle(
-                                                fontFamily: opensansMedium,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 13.5.sp),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(right: 4.7.h),
-                                          child: Text(
-                                            'Flat 15% Off',
-                                            style: TextStyle(
-                                                fontFamily: opensans_Bold,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14.sp),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      child: CupertinoSwitch(
-                                        value: controller.switch_state,
-                                        onChanged: (value) {
-                                          controller.switch_state = value;
-                                          setState(
-                                            () {},
-                                          );
-                                        },
-                                        thumbColor: CupertinoColors.white,
-                                        activeColor: CupertinoColors.black,
-                                        trackColor: Colors.grey,
-                                      ),
-                                    )
-                                  ]),
-                              SizedBox(
-                                height: 0.5.h,
-                              ),
-                              Container(
-                                height: 5.h,
-                                width: 100.w,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '     Valid till: 26 March',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(10))),
-                              )
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 0.1,
-                                  blurRadius: 10,
-                                  offset: Offset(0.5, 0.5)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
+    WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuild());
+    return CustomScaffold(
+      floatingActionBtn: Container(
+        width: 7.h,
+        height: 7.h,
+        margin: EdgeInsets.only(bottom: 10.h, right: 3.w),
+        child: FloatingActionButton(
+          backgroundColor: black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          onPressed: () {
+            // Get.to(const AddServiceScreen())?.then((value) {
+            //   if (value == true) {
+            //     logcat("ISDONE", "DONE");
+            //     controller.getServiceList(
+            //       context,
+            //     );
+            //   }
+            // });
+          },
+          child: const Icon(
+            Icons.add,
+            color: white,
           ),
         ),
+      ),
+      body: SafeArea(
+          child: GetBuilder<InternetController>(builder: (internetCtr) {
+        // if (internetCtr.connectivity == ConnectivityResult.none) {
+        //   return checkInternet();
+        // }
+        return Column(
+          children: [
+            FadeInDown(
+              from: 50,
+              child: HomeAppBar(
+                openDrawer: controller.drawer_key,
+                title: DashboardConstant.book,
+                leading: Asset.backbutton,
+                isfilter: true,
+                isBack: false,
+                onClick: () async {
+                  Get.to(
+                      NotificationScreen(controller.icon, controller.leading));
+                },
+                icon: Asset.filter,
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
+                  child: Column(children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5.h, top: 3.h, left: 3.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text("Today",
+                                    style: TextStyle(
+                                        fontSize: 17.5.sp,
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                              Obx(
+                                () {
+                                  return FadeInDown(
+                                    from: 70,
+                                    child: Text(
+                                      (controller.picDate.value.toString()),
+                                      style: TextStyle(
+                                          fontSize: 16.5.sp,
+                                          color: isDarkMode() ? white : black,
+                                          fontFamily: opensansMedium,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                      child: DatePicker(
+                        DateTime.now(),
+                        width: 7.h,
+                        height: 10.h,
+                        controller: controller.datePickerController,
+                        initialSelectedDate: DateTime.now(),
+                        selectionColor: isDarkMode() ? white : black,
+                        selectedTextColor: isDarkMode() ? black : white,
+                        dayTextStyle: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                        monthTextStyle: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                        dateTextStyle: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                        //   deactivatedColor: isDarkMode() ? Graycolor : black,
+                        inactiveDates: [],
+                        onDateChange: (date) {
+                          setState(() {
+                            controller.selectedValue = date;
+                          });
+                        },
+                      ),
+                    ),
+                    Divider(
+                      endIndent: 3.h,
+                      indent: 3.h,
+                      thickness: 0.5.sp,
+                      height: 5.h,
+                      color: Colors.grey,
+                    ),
+                    SingleChildScrollView(
+                      physics: ClampingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 3.h),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Time Slot",
+                                    style: TextStyle(
+                                        color: isDarkMode() ? white : black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w700),
+                                  )
+                                ]),
+                          ),
+
+                          SpecialRegionsCalendar(),
+
+                          // SfCalendar(
+                          //   view: CalendarView.timelineDay,
+                          //   dataSource: MeetingDataSource(_getDataSource()),
+                          //   timeSlotViewSettings: TimeSlotViewSettings(
+                          //     timeInterval: Duration(minutes: 30),
+                          //     timelineAppointmentHeight: 50,
+                          //     timeFormat: 'h:mm a',
+                          //   ),
+                          //   // controller: ,
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ])),
+            ),
+          ],
+        );
+      })),
+    );
+  }
+
+  SfCalendar _getSpecialRegionCalendar(
+      {List<TimeRegion>? regions, _DataSource? dataSource}) {
+    return SfCalendar(
+      // showNavigationArrow: model.isWebFullView,
+      controller: calendarController,
+      showDatePickerButton: true,
+      allowedViews: _allowedViews,
+      specialRegions: regions,
+
+      allowAppointmentResize: true,
+      timeRegionBuilder: _getSpecialRegionWidget,
+      timeSlotViewSettings: const TimeSlotViewSettings(
+          minimumAppointmentDuration: Duration(minutes: 30)),
+      dataSource: dataSource,
+    );
+  }
+
+  List<Meeting> _getDataSource() {
+    final List<Meeting> meetings = <Meeting>[];
+    final DateTime today = DateTime.now();
+    final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
+    final DateTime endTime = startTime.add(const Duration(hours: 2));
+    meetings.add(Meeting(
+        'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+    return meetings;
+  }
+}
+
+_getCalendarDataSource() {
+  List<Appointment> appointments = <Appointment>[];
+  appointments.add(Appointment(
+    startTime: DateTime.now(),
+    endTime: DateTime.now().add(Duration(hours: 2)),
+    subject: 'Meeting with client',
+    color: Colors.blue,
+  ));
+
+  return (appointments);
+}
+
+Widget _getSpecialRegionWidget(
+    BuildContext context, TimeRegionDetails details) {
+  if (details.region.text == 'Lunch') {
+    return Container(
+      color: details.region.color,
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.restaurant,
+        color: Colors.grey.withOpacity(0.5),
+      ),
+    );
+  } else if (details.region.text == 'Not Available') {
+    return Container(
+      color: details.region.color,
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.block,
+        color: Colors.grey.withOpacity(0.5),
       ),
     );
   }
 
-  void trasparent_statusbar() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarIconBrightness:
-            isDarkMode() ? Brightness.dark : Brightness.light,
-        statusBarColor: Colors.transparent));
+  return Container(color: details.region.color);
+}
+
+class _DataSource extends CalendarDataSource {
+  _DataSource(List<Appointment> appointments) {
+    this.appointments = appointments;
   }
 }

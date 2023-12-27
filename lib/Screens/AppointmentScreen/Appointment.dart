@@ -1,11 +1,15 @@
 import 'package:booking_app/Models/notification_model.dart';
 import 'package:booking_app/Models/product.dart';
+import 'package:booking_app/Screens/AppointmentBooking.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
 import 'package:booking_app/controllers/Appointment_screen_controller.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
+import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
@@ -51,28 +55,46 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
-    return WillPopScope(
-      onWillPop: () async {
-        if (widget.callBack != null) {
-          widget.callBack!(0);
-        } else {
-          Get.back();
-        }
-        return false;
-      },
-      child: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
-          child: Column(
-            children: [
-              getAppbar(
-                "Appointment",
-              ),
-              Expanded(
-                child: getListViewItem(),
-              ),
-            ],
-          ),
+    return CustomScaffold(
+      floatingActionBtn: Container(
+        width: 7.h,
+        height: 7.h,
+        margin: EdgeInsets.only(bottom: 10.h, right: 3.5.w),
+        child: FloatingActionButton(
+            backgroundColor: isDarkMode() ? white : black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            onPressed: () {
+              Get.to(AppointmentBookingScreen())?.then((value) {
+                if (value == true) {
+                  logcat("ISDONE", "DONE");
+                  // controller.getServiceList(
+                  //   context,
+                  // );
+                }
+              });
+            },
+            child: isDarkMode()
+                ? Icon(
+                    Icons.add,
+                    color: black,
+                  )
+                : Icon(
+                    Icons.add,
+                    color: white,
+                  )),
+      ),
+      body: Container(
+        margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+        child: Column(
+          children: [
+            getAppbar(
+              ScreenTitle.appointment,
+            ),
+            Expanded(
+              child: getListViewItem(),
+            ),
+          ],
         ),
       ),
     );
@@ -88,8 +110,8 @@ class _AppointmentScreenState extends State<AppointmentScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              getTab("Upcoming", 30, 0),
-              getTab("Previous", 30, 1),
+              getTab(ScreenTitle.upcomingAppointment, 30, 0),
+              getTab(ScreenTitle.previousAppointment, 30, 1),
             ],
           ),
           Expanded(
@@ -154,6 +176,15 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                       borderRadius: BorderRadius.circular(10),
                       color:
                           currentPage == index || isDarkMode() ? white : black,
+                      boxShadow: [
+                        BoxShadow(
+                            color: isDarkMode()
+                                ? Colors.white.withOpacity(0.2)
+                                : Colors.black.withOpacity(0.2),
+                            spreadRadius: 0.1,
+                            blurRadius: 10,
+                            offset: Offset(0.5, 0.5)),
+                      ],
                     ),
                     padding:
                         EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),

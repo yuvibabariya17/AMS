@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../core/constants/get_storage_key.dart';
 
 class ThemeController extends GetxController {
-  RxBool isDark = false.obs;
+  RxBool isDark = true.obs;
   @override
   void onInit() {
     super.onInit();
@@ -22,6 +23,11 @@ class ThemeController extends GetxController {
     }
 
     update();
+  }
+
+  void toggleTheme() {
+    isDark.value = !isDark.value;
+    Get.changeTheme(isDark.value ? ThemeData.dark() : ThemeData.light());
   }
 
   updateState(int themeMode) {

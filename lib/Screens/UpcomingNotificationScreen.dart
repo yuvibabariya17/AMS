@@ -44,11 +44,13 @@ class _UpcomingNotificationScreenState
     return Container(
       margin: EdgeInsets.only(top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
       decoration: BoxDecoration(
-        color: isDarkMode() ? white : white,
+        color: isDarkMode() ? black : white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: isDarkMode()
+                  ? Colors.white.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.2),
               spreadRadius: 0.1,
               blurRadius: 10,
               offset: Offset(0.5, 0.5)),
@@ -123,7 +125,8 @@ class _UpcomingNotificationScreenState
                                       ? Colors.orange
                                       : Colors.red,
                               fontFamily: opensans_Regular,
-                              fontSize: 10.sp),
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),

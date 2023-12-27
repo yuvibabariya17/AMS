@@ -31,6 +31,11 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+            <activity
+                android:name="com.yalantis.ucrop.UCropActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <receiver android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
 		    android:permission="android.permission.BROADCAST_SMS" android:exported="true">
 		    <intent-filter>

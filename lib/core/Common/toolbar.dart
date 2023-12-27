@@ -111,27 +111,33 @@ getSizedBoxForDropDown() {
   );
 }
 
-getToolbarNav(
-  title,
-) {
+getToolbarNav(title, Function? callback) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FadeInDown(
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontFamily: fontBold,
-                  color: headingTextColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.sp),
+      commonBackPress(callback),
+      Expanded(
+        flex: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FadeInDown(
+              child: Container(
+                margin: EdgeInsets.only(right: 15.w, top: 1.h),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontFamily: fontBold,
+                      color: isDarkMode() ? white : headingTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ],
   );
@@ -196,6 +202,36 @@ getAppbar(
       ),
     ],
   );
+}
+
+checkInternet() {
+  return Scaffold(
+      body: SizedBox(
+    child: Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            Asset.noInternet,
+            height: 20.h,
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          Text(
+            textAlign: TextAlign.center,
+            "Please Check Your\nInternet Connection.",
+            style: TextStyle(
+              color: Colors.red,
+              fontFamily: fontBold,
+              fontSize: 18.sp,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ));
 }
 
 getForgetToolbar(title,
@@ -630,29 +666,30 @@ Widget notification(isNotify) {
   );
 }
 
-Future<Object?> PopupDialogs(BuildContext context) {
+Future<Object?> PopupDialogsforSignOut(BuildContext context) {
   return showGeneralDialog(
-      barrierColor: black.withOpacity(0.6),
+      barrierColor:
+          isDarkMode() ? white.withOpacity(0.6) : black.withOpacity(0.6),
       transitionBuilder: (context, a1, a2, widget) {
         return Transform.scale(
           scale: a1.value,
           child: Opacity(
               opacity: a1.value,
               child: CupertinoAlertDialog(
-                title: const Text(
+                title: Text(
                   "Sign Out",
                   style: TextStyle(
                     fontSize: 18,
-                    color: black,
+                    color: isDarkMode() ? white : black,
                     fontFamily: fontBold,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                content: const Text(
+                content: Text(
                   "Are you sure to SignOut?",
                   style: TextStyle(
                     fontSize: 13,
-                    color: black,
+                    color: isDarkMode() ? white : black,
                     fontFamily: fontMedium,
                   ),
                 ),
@@ -663,10 +700,10 @@ Future<Object?> PopupDialogs(BuildContext context) {
                     },
                     isDefaultAction: true,
                     isDestructiveAction: true,
-                    child: const Text("No",
+                    child: Text("No",
                         style: TextStyle(
                           fontSize: 15,
-                          color: black,
+                          color: isDarkMode() ? white : black,
                           fontFamily: fontBold,
                           fontWeight: FontWeight.bold,
                         )),
@@ -679,10 +716,10 @@ Future<Object?> PopupDialogs(BuildContext context) {
                     },
                     isDefaultAction: true,
                     isDestructiveAction: true,
-                    child: const Text("Yes",
+                    child: Text("Yes",
                         style: TextStyle(
                           fontSize: 15,
-                          color: black,
+                          color: isDarkMode() ? white : black,
                           fontFamily: fontBold,
                           fontWeight: FontWeight.bold,
                         )),

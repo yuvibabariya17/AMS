@@ -105,8 +105,7 @@ class LoginController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -136,7 +135,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -192,8 +191,8 @@ class LoginController extends GetxController {
           return true;
         },
         message: message,
-        title: "Sign In",
+        title: ScreenTitle.signIn,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 }

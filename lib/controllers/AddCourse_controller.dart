@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:booking_app/Models/UploadImageModel.dart';
 
 import '../Config/apicall_constant.dart';
 import '../Models/CourseModel.dart';
@@ -18,6 +21,7 @@ import '../dialogs/dialogs.dart';
 import '../dialogs/loading_indicator.dart';
 import '../preference/UserPreference.dart';
 import 'Appointment_screen_controller.dart';
+import 'package:http/http.dart' as http;
 import 'internet_controller.dart';
 
 class AddCourseController extends GetxController {
@@ -25,12 +29,15 @@ class AddCourseController extends GetxController {
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
+  RxString profilePic = "".obs;
+
   final formKey = GlobalKey<FormState>();
 
   late FocusNode StudentNode,
       CourseNode,
       FeesNode,
       StartNode,
+      DurationNode,
       DescNode,
       NotesNode,
       IdNode;
@@ -39,6 +46,7 @@ class AddCourseController extends GetxController {
       Coursectr,
       Feesctr,
       Startctr,
+      Durationctr,
       Descctr,
       Notesctr,
       Idctr;
@@ -48,6 +56,7 @@ class AddCourseController extends GetxController {
     StudentNode = FocusNode();
     CourseNode = FocusNode();
     FeesNode = FocusNode();
+    DurationNode = FocusNode();
     StartNode = FocusNode();
     DescNode = FocusNode();
     NotesNode = FocusNode();
@@ -57,6 +66,7 @@ class AddCourseController extends GetxController {
     Coursectr = TextEditingController();
     Feesctr = TextEditingController();
     Startctr = TextEditingController();
+    Durationctr = TextEditingController();
     Descctr = TextEditingController();
     Notesctr = TextEditingController();
     Idctr = TextEditingController();
@@ -65,12 +75,18 @@ class AddCourseController extends GetxController {
     super.onInit();
   }
 
+  void updateDate(date) {
+    Startctr.text = date;
+    print("PICKED_DATE${Startctr.value}");
+    update();
+  }
+
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   var StudentModel = ValidationModel(null, null, isValidate: false).obs;
   var CourseModel = ValidationModel(null, null, isValidate: false).obs;
   var FeesModel = ValidationModel(null, null, isValidate: false).obs;
-  var StartModel = ValidationModel(null, null, isValidate: false).obs;
+  var DurationModel = ValidationModel(null, null, isValidate: false).obs;
   var DescModel = ValidationModel(null, null, isValidate: false).obs;
   var NotesModel = ValidationModel(null, null, isValidate: false).obs;
   var IdModel = ValidationModel(null, null, isValidate: false).obs;
@@ -78,11 +94,14 @@ class AddCourseController extends GetxController {
   void enableSignUpButton() {
     if (StudentModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (CourseModel.value.isValidate == false) {
+    }
+    // else if (CourseModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // }
+
+    else if (FeesModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (FeesModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (StartModel.value.isValidate == false) {
+    } else if (DurationModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (DescModel.value.isValidate == false) {
       isFormInvalidate.value = false;
@@ -96,7 +115,7 @@ class AddCourseController extends GetxController {
   }
 
   void validateStudent(String? val) {
-    StartModel.update((model) {
+    StudentModel.update((model) {
       if (val != null && val.toString().trim().isEmpty) {
         model!.error = "Enter Student Name";
         model.isValidate = false;
@@ -138,7 +157,7 @@ class AddCourseController extends GetxController {
   }
 
   void validateStartDate(String? val) {
-    StartModel.update((model) {
+    DurationModel.update((model) {
       if (val != null && val.toString().trim().isEmpty) {
         model!.error = "Select Start Date";
         model.isValidate = false;
@@ -211,18 +230,27 @@ class AddCourseController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("ADDCOURSE", {
+        "name": Studentctr.text.toString().trim(),
+        "thumbnail_url": uploadImageId.value.toString(),
+        "duration": Durationctr.text.toString().trim(),
+        "fees": Feesctr.text.toString().trim(),
+        "description": Descctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim()
+      });
+
       var response = await Repository.post({
         "name": Studentctr.text.toString().trim(),
-        "thumbnail_url": Idctr.text.toString().trim(),
-        "duration": Startctr.text.toString().trim(),
+        "thumbnail_url": uploadImageId.value.toString(),
+        "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
         "description": Descctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
@@ -230,66 +258,64 @@ class AddCourseController extends GetxController {
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
-      var responseDetail = GetLoginModel.fromJson(data);
+      // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
-        if (responseDetail.status == 1) {
-          // UserPreferences().saveSignInInfo(responseDetail.data);
-          UserPreferences().setToken(responseDetail.data.token.toString());
-          Get.to(const dashboard());
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back();
+          });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, data['message'].toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseDetail.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror,
-          callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
 
   RxBool isCourseTypeApiCall = false.obs;
-  RxList<courselist> courseObjectList = <courselist>[].obs;
+  RxList<ListofCourse> courseObjectList = <ListofCourse>[].obs;
   RxString courseId = "".obs;
 
   void getCourseApi(context) async {
     isCourseTypeApiCall.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response =
-          await Repository.post({}, ApiUrl.courselist, allowHeader: true);
-      isCourseTypeApiCall.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = CourseListModel.fromJson(responseData);
-        if (data.status == 1) {
-          courseObjectList.clear();
-          courseObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(courseObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Strings.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isCourseTypeApiCall.value = false;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
     }
+    var response =
+        await Repository.post({}, ApiUrl.courselist, allowHeader: true);
+    isCourseTypeApiCall.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = CourseListModel.fromJson(responseData);
+      if (data.status == 1) {
+        courseObjectList.clear();
+        courseObjectList.addAll(data.data);
+        logcat("RESPONSE", jsonEncode(courseObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isCourseTypeApiCall.value = false;
+    // }
   }
 
   Widget setCourseList() {
@@ -331,6 +357,59 @@ class AddCourseController extends GetxController {
     });
   }
 
+  RxString uploadImageId = ''.obs;
+
+  void getImageApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadImageFile.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadImageFile.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadImageId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
         context: context,
@@ -341,12 +420,12 @@ class AddCourseController extends GetxController {
           return true;
         },
         message: message,
-        title: "Add Course",
+        title: ScreenTitle.addCourse,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 
-  Rx<File?> uploadReportFile = null.obs;
+  Rx<File?> uploadImageFile = null.obs;
 
   actionClickUploadImage(context) async {
     await ImagePicker()
@@ -358,10 +437,81 @@ class AddCourseController extends GetxController {
         .then((file) async {
       if (file != null) {
         if (file != null) {
-          uploadReportFile = File(file.path).obs;
+          uploadImageFile = File(file.path).obs;
           Idctr.text = file.name;
           validateId(Idctr.text);
+          getImageApi(context);
         }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadImageFromCamera(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            //source: ImageSource.gallery,
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        //Cropping the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+            sourcePath: file.path,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            cropStyle: CropStyle.rectangle,
+            aspectRatioPresets: Platform.isAndroid
+                ? [
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio16x9
+                  ]
+                : [
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio5x3,
+                    CropAspectRatioPreset.ratio5x4,
+                    CropAspectRatioPreset.ratio7x5,
+                    CropAspectRatioPreset.ratio16x9
+                  ],
+            uiSettings: [
+              AndroidUiSettings(
+                  toolbarTitle: 'Crop Image',
+                  cropGridColor: primaryColor,
+                  toolbarColor: primaryColor,
+                  statusBarColor: primaryColor,
+                  toolbarWidgetColor: white,
+                  activeControlsWidgetColor: primaryColor,
+                  initAspectRatio: CropAspectRatioPreset.original,
+                  lockAspectRatio: false),
+              IOSUiSettings(
+                title: 'Crop Image',
+                cancelButtonTitle: 'Cancel',
+                doneButtonTitle: 'Done',
+                aspectRatioLockEnabled: false,
+              ),
+            ],
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        if (file != null) {
+          uploadImageFile = File(file.path).obs;
+          Idctr.text = file.name;
+          validateId(Idctr.text);
+          getImageApi(context);
+        }
+
+        // if (croppedFile != null) {
+        //   uploadImageFile = File(croppedFile.path).obs;
+        //   profilePic.value = croppedFile.path;
+        //   update();
+        // }
       }
     });
 

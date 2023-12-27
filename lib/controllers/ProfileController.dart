@@ -1,9 +1,13 @@
 import 'package:booking_app/controllers/home_screen_controller.dart';
+import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/Staff_model.dart';
 import '../Models/service.dart';
 import '../Models/service_model.dart';
+import 'package:booking_app/models/SignInModel.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import '../Models/staff.dart';
 import '../dialogs/dialogs.dart';
 import 'internet_controller.dart';
@@ -19,13 +23,18 @@ class ProfileController extends GetxController {
   bool states = false;
   int isDarkModes = 0;
 
-  RxString userName = "".obs;
-  RxString number = "".obs;
-  RxString email = "".obs;
+  String name = '';
+  String number = '';
+
   RxString profilePic = "".obs;
-  RxString gender = "".obs;
-  RxString address = "".obs;
-  RxString companyaddress = "".obs;
+
+  // RxString userName = "".obs;
+  // RxString number = "".obs;
+  // RxString email = "".obs;
+  // RxString profilePic = "".obs;
+  // RxString gender = "".obs;
+  // RxString address = "".obs;
+  // RxString companyaddress = "".obs;
 
   final formKey = GlobalKey<FormState>();
 
@@ -56,8 +65,21 @@ class ProfileController extends GetxController {
           return true;
         },
         message: message,
-        title: "Add Expert",
+        title: ScreenTitle.profile,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
+  }
+
+  void initDataSet(BuildContext context) async {
+    logcat("Name", name.toString());
+    logcat("Number", number.toString());
+    SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+
+    name = retrievedObject!.userName.toString();
+    // number = retrievedObject.contactNo1.toString();
+
+    //controller.statectr.text = retrievedObject.stateId.toString();
+    //controller.cityctr.text = retrievedObject.cityId.toString();
+    update();
   }
 }

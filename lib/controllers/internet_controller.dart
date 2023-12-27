@@ -5,6 +5,14 @@ import 'package:get/get.dart';
 import '../core/Common/util.dart';
 
 class InternetController extends GetxController {
+  Rx<ConnectivityResult> connectivity = ConnectivityResult.none.obs;
+
+  void updateConnectivity(ConnectivityResult result) {
+    connectivity.value = result;
+    update();
+    refresh();
+  }
+
   //this variable 0 = No Internet, 1 = connected to WIFI ,2 = connected to Mobile Data.
   int connectionType = 0;
   final Connectivity _connectivity = Connectivity();

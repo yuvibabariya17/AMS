@@ -101,23 +101,23 @@ class HomeAppBar extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 6.5.w,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 1.h),
-                          child: InkWell(
-                            onTap: () {
-                              // Navigator.push(context,
-                              //     MaterialPageRoute(builder: (context) => notification()));
-                            },
-                            borderRadius: BorderRadius.all(Radius.circular(24)),
-                            child: SvgPicture.asset(
-                              Asset.cart,
-                              color: isDarkMode() ? white : black,
-                            ),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: 6.5.w,
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.only(right: 1.h),
+                        //   child: InkWell(
+                        //     onTap: () {
+                        //       // Navigator.push(context,
+                        //       //     MaterialPageRoute(builder: (context) => notification()));
+                        //     },
+                        //     borderRadius: BorderRadius.all(Radius.circular(24)),
+                        //     child: SvgPicture.asset(
+                        //       Asset.cart,
+                        //       color: isDarkMode() ? white : black,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     )
                   : Container(

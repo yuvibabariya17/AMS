@@ -1,15 +1,14 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Screens/EmailScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/screens/ChangepasswordScreen.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../controllers/login_controller.dart';
 import '../../core/Common/Common.dart';
 import '../../core/Common/util.dart';
@@ -35,22 +34,22 @@ class _LoginScreenState extends State<LoginScreen> {
         onTap: () {
           hideKeyboard(context);
         },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
+        child: CustomScaffold(
+          // resizeToAvoidBottomInset: false,
           body: Stack(children: [
-            SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: isDarkMode()
-                  ? SvgPicture.asset(
-                      Asset.dark_bg,
-                      fit: BoxFit.cover,
-                    )
-                  : SvgPicture.asset(
-                      Asset.bg,
-                      fit: BoxFit.cover,
-                    ),
-            ),
+            // SizedBox(
+            //   height: double.infinity,
+            //   width: double.infinity,
+            //   child: isDarkMode()
+            //       ? SvgPicture.asset(
+            //           Asset.dark_bg,
+            //           fit: BoxFit.cover,
+            //         )
+            //       : SvgPicture.asset(
+            //           Asset.bg,
+            //           fit: BoxFit.cover,
+            //         ),
+            // ),
             SingleChildScrollView(
               child: Form(
                 key: controller.formKey,
@@ -61,9 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      FadeInDown(
-                        from: 50,
-                        child: Center(
+                      Container(
+                        margin: EdgeInsets.only(left: 3.5.w),
+                        child: FadeInDown(
+                          from: 50,
                           child: isDarkMode()
                               ? SvgPicture.asset(
                                   Asset.ams_black_logo,
@@ -76,11 +76,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 5.w),
+                        margin: EdgeInsets.only(right: 6.5.w),
                         child: FadeInDown(
                           from: 50,
                           child: Text(
-                            Strings.title,
+                            CommonConstant.ams,
                             style: TextStyle(
                                 color: isDarkMode() ? white : black,
                                 fontSize: 35.sp,
@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: FadeInDown(
                           from: 50,
                           child: Text(
-                            Strings.signInAccount,
+                            LoginScreenConstant.signInAccount,
                             style: TextStyle(
                                 fontSize: 18.sp,
                                 fontFamily: opensans_Bold,
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            getTitle(Strings.emailId),
+                            getTitle(LoginScreenConstant.emailId),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -121,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       return getReactiveFormField(
                                         node: controller.Email,
                                         controller: controller.emailctr,
-                                        hintLabel: Strings.emailId_hint,
+                                        hintLabel:
+                                            LoginScreenConstant.emailId_hint,
                                         onChanged: (val) {
                                           controller.validateEmail(val);
                                         },
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         inputType: TextInputType.text,
                                       );
                                     }))),
-                            getTitle(Strings.password),
+                            getTitle(CommonConstant.password),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -139,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       return getReactiveFormField(
                                         node: controller.Pass,
                                         controller: controller.passctr,
-                                        hintLabel: Strings.pass_hint,
+                                        hintLabel:
+                                            LoginScreenConstant.enter_password,
                                         wantSuffix: true,
                                         isPassword: true,
                                         onChanged: (val) {
@@ -162,12 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.to(ChangePasswordScreen(
-                                fromProfile: false,
-                              ));
+                              Get.to(EmailScreen());
                             },
                             child: Text(
-                              Strings.forgot_pass,
+                              LoginScreenConstant.forgot_pass,
                               style: TextStyle(
                                   fontFamily: opensans_Bold,
                                   fontWeight: FontWeight.w400,
@@ -189,68 +189,72 @@ class _LoginScreenState extends State<LoginScreen> {
                             }, "Sign In",
                                 validate: controller.isFormInvalidate.value);
                           })),
-                      SizedBox(
-                        height: 4.5.h,
-                      ),
-                      FadeInUp(
-                        from: 50,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
 
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            getDivider(),
-                            Text(
-                              'Or',
-                              style: TextStyle(
-                                  fontFamily: opensans_Bold,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            getDivider(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      FadeInUp(
-                        from: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 4.5.h,
-                              width: 4.5.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black),
-                              child: Icon(
-                                FontAwesomeIcons.googlePlusG,
-                                size: 16.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(width: 4.5.w),
-                            Container(
-                              height: 4.5.h,
-                              width: 4.5.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black),
-                              child: Icon(
-                                FontAwesomeIcons.facebookF,
-                                size: 16.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 3.7.h,
-                      ),
+                      // OR AND GOOGLE FACEBOOK
+
+                      // SizedBox(
+                      //   height: 4.5.h,
+                      // ),
+                      // FadeInUp(
+                      //   from: 50,
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+
+                      //     // ignore: prefer_const_literals_to_create_immutables
+                      //     children: [
+                      //       getDivider(),
+                      //       Text(
+                      //         'Or',
+                      //         style: TextStyle(
+                      //             fontFamily: opensans_Bold,
+                      //             fontSize: 14.sp,
+                      //             fontWeight: FontWeight.w700),
+                      //       ),
+                      //       getDivider(),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 1.h,
+                      // ),
+                      // FadeInUp(
+                      //   from: 50,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Container(
+                      //         height: 4.5.h,
+                      //         width: 4.5.h,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(20),
+                      //             color: isDarkMode() ? white : black),
+                      //         child: Icon(
+                      //           FontAwesomeIcons.googlePlusG,
+                      //           size: 16.sp,
+                      //           color: isDarkMode() ? black : white,
+                      //         ),
+                      //       ),
+                      //       SizedBox(width: 4.5.w),
+                      //       Container(
+                      //         height: 4.5.h,
+                      //         width: 4.5.h,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(20),
+                      //             color: isDarkMode() ? white : black),
+                      //         child: Icon(
+                      //           FontAwesomeIcons.facebookF,
+                      //           size: 16.sp,
+                      //           color: isDarkMode() ? black : white,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      // SizedBox(
+                      //   height: 3.7.h,
+                      // ),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.center,
                       //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -293,11 +297,5 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ]),
         ));
-  }
-
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
   }
 }

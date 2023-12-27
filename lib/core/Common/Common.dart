@@ -116,9 +116,10 @@ class Common {
     );
   }
 
-  static Future<Object?> PopupDialog(BuildContext context) {
+  static Future<Object?> PopupDialogForOtp(BuildContext context) {
     return showGeneralDialog(
-        barrierColor: black.withOpacity(0.6),
+        barrierColor:
+            isDarkMode() ? white.withOpacity(0.6) : black.withOpacity(0.6),
         transitionBuilder: (context, a1, a2, widget) {
           return Transform.scale(
             scale: a1.value,
@@ -129,7 +130,7 @@ class Common {
                     "RESEND CODE",
                     style: TextStyle(
                       fontSize: 18,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontBold,
                       fontWeight: FontWeight.bold,
                     ),
@@ -138,7 +139,7 @@ class Common {
                     "1234",
                     style: TextStyle(
                       fontSize: 13,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontMedium,
                     ),
                   ),
@@ -150,7 +151,7 @@ class Common {
                       child: Text("DONE",
                           style: TextStyle(
                             fontSize: 15,
-                            color: black,
+                            color: isDarkMode() ? white : black,
                             fontFamily: fontBold,
                             fontWeight: FontWeight.bold,
                           )),
@@ -173,7 +174,8 @@ class Common {
 
   static Future<Object?> PopupDialogs(BuildContext context) {
     return showGeneralDialog(
-        barrierColor: black.withOpacity(0.6),
+        barrierColor:
+            isDarkMode() ? white.withOpacity(0.6) : black.withOpacity(0.6),
         transitionBuilder: (context, a1, a2, widget) {
           return Transform.scale(
             scale: a1.value,
@@ -184,7 +186,7 @@ class Common {
                     "HairCuts",
                     style: TextStyle(
                       fontSize: 18,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontBold,
                       fontWeight: FontWeight.bold,
                     ),
@@ -193,7 +195,7 @@ class Common {
                     "Haircutting (also hair shaping) - is the process of cutting, tapering, texturizing and thinning using any hair cutting tools in order to create a shape. ",
                     style: TextStyle(
                       fontSize: 13,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontMedium,
                     ),
                   ),
@@ -205,7 +207,7 @@ class Common {
                       child: Text("DONE",
                           style: TextStyle(
                             fontSize: 15,
-                            color: black,
+                            color: isDarkMode() ? white : black,
                             fontFamily: fontBold,
                             fontWeight: FontWeight.bold,
                           )),

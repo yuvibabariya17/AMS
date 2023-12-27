@@ -25,6 +25,8 @@ class HomeScreenController extends GetxController {
   RxBool accessToDrawer = false.obs;
   DateTime selectedValue = DateTime.now();
   bool switch_state = false;
+  bool switch_state1 = false;
+
   var icon;
   var leading;
   var isfilter;
@@ -35,11 +37,8 @@ class HomeScreenController extends GetxController {
   List<OfferItem> staticData2 = offersItems;
   RxString picDate = "".obs;
   RxList treeList = [].obs;
-  RxString name = ''.obs;
-  RxString number = ''.obs;
-  RxString companyname = ''.obs;
-  RxString companyaddress = ''.obs;
-  RxString number2 = ''.obs;
+  String name = '';
+  String number = '';
 
   changeIndex(int index) async {
     currentPage = index;
@@ -79,4 +78,15 @@ class HomeScreenController extends GetxController {
       currentFocus.unfocus();
     }
   }
+
+  // void initDataSet(BuildContext context) async {
+  //   SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+  //   name = retrievedObject!.userName.toString();
+  //   number = retrievedObject.contactNo1.toString();
+
+  //   //controller.statectr.text = retrievedObject.stateId.toString();
+  //   //controller.cityctr.text = retrievedObject.cityId.toString();
+
+  //   update();
+  // }
 }

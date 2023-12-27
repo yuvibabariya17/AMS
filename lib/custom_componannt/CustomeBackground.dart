@@ -6,9 +6,11 @@ import 'package:flutter_svg/svg.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
+  final Widget? floatingActionBtn;
 
   CustomScaffold({
     required this.body,
+    this.floatingActionBtn,
   });
 
   @override
@@ -16,7 +18,7 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           SizedBox(
@@ -33,9 +35,11 @@ class CustomScaffold extends StatelessWidget {
                   ),
           ),
           Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor:
                 transparent, // Make the Scaffold's background transparent
             body: SafeArea(child: body),
+            floatingActionButton: floatingActionBtn,
           ),
         ],
       ),

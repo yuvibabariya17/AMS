@@ -256,8 +256,7 @@ class AppointmentBookingController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -290,21 +289,20 @@ class AppointmentBookingController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
 
   RxBool isExpertTypeApiList = false.obs;
-  RxList<expertList> expertObjectList = <expertList>[].obs;
+  RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
   RxString expertId = "".obs;
 
   void getExpertList(context) async {
     isExpertTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -326,7 +324,7 @@ class AppointmentBookingController extends GetxController {
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Strings.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -357,16 +355,13 @@ class AppointmentBookingController extends GetxController {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
                 expertId.value = expertObjectList[index].serviceInfo.toString();
-                expertctr.text = expertObjectList[index]
-                    .serviceInfo
-                    .name
-                    .capitalize
-                    .toString();
+                expertctr.text =
+                    expertObjectList[index].name.capitalize.toString();
 
                 validateExpert(expertctr.text);
               },
               title: Text(
-                expertObjectList[index].serviceInfo.name.toString(),
+                expertObjectList[index].name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -403,7 +398,7 @@ class AppointmentBookingController extends GetxController {
                 serviceId.value =
                     serviceObjectList[index].serviceInfo.toString();
                 Servicectr.text = serviceObjectList[index]
-                    .serviceInfo
+                    .serviceInfo!
                     .name
                     .capitalize
                     .toString();
@@ -411,7 +406,7 @@ class AppointmentBookingController extends GetxController {
                 validateService(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].serviceInfo.name.toString(),
+                serviceObjectList[index].serviceInfo!.name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -429,14 +424,13 @@ class AppointmentBookingController extends GetxController {
     isServiceTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.addServiceList, allowHeader: true);
+          await Repository.post({}, ApiUrl.ServiceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("RESPONSE", jsonEncode(responseData));
@@ -452,7 +446,7 @@ class AppointmentBookingController extends GetxController {
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Strings.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -470,9 +464,9 @@ class AppointmentBookingController extends GetxController {
           return true;
         },
         message: message,
-        title: "Appointment Booking",
+        title: ScreenTitle.appointmentBooking,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 
   void navigate() {

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/CategoryModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
@@ -162,6 +164,8 @@ class addProductController extends GetxController {
       isFormInvalidate.value = false;
     } else if (amountModel.value.isValidate == false) {
       isFormInvalidate.value = false;
+    } else if (quantityModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
     }
@@ -181,8 +185,7 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -224,7 +227,7 @@ class addProductController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -276,8 +279,7 @@ class addProductController extends GetxController {
     isCategoryTypeApiCall.value = true;
     try {
       if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -299,7 +301,7 @@ class addProductController extends GetxController {
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Strings.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -316,8 +318,7 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -356,7 +357,7 @@ class addProductController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -371,9 +372,9 @@ class addProductController extends GetxController {
           return true;
         },
         message: message,
-        title: "Add Customer",
+        title: ScreenTitle.addProduct,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
   }
 
   Rx<File?> uploadImageFile = null.obs;
@@ -393,6 +394,76 @@ class addProductController extends GetxController {
           validateProductimg(productimgCtr.text);
           getImageApi(context);
         }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadImageFromCamera(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            //source: ImageSource.gallery,
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        //Cropping the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+            sourcePath: file.path,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            cropStyle: CropStyle.rectangle,
+            aspectRatioPresets: Platform.isAndroid
+                ? [
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio16x9
+                  ]
+                : [
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio5x3,
+                    CropAspectRatioPreset.ratio5x4,
+                    CropAspectRatioPreset.ratio7x5,
+                    CropAspectRatioPreset.ratio16x9
+                  ],
+            uiSettings: [
+              AndroidUiSettings(
+                  toolbarTitle: 'Crop Image',
+                  cropGridColor: primaryColor,
+                  toolbarColor: primaryColor,
+                  statusBarColor: primaryColor,
+                  toolbarWidgetColor: white,
+                  activeControlsWidgetColor: primaryColor,
+                  initAspectRatio: CropAspectRatioPreset.original,
+                  lockAspectRatio: false),
+              IOSUiSettings(
+                title: 'Crop Image',
+                cancelButtonTitle: 'Cancel',
+                doneButtonTitle: 'Done',
+                aspectRatioLockEnabled: false,
+              ),
+            ],
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        if (file != null) {
+          uploadImageFile = File(file.path).obs;
+          productimgCtr.text = file.name;
+          validateProductimg(productimgCtr.text);
+          getImageApi(context);
+        }
+
+        // if (croppedFile != null) {
+        //   uploadImageFile = File(croppedFile.path).obs;
+        //   profilePic.value = croppedFile.path;
+        //   update();
+        // }
       }
     });
 

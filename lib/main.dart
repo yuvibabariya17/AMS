@@ -43,14 +43,13 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return ThemeProvider(
-            initTheme:
-                isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
+            initTheme: _getInitialTheme(),
             child: Builder(builder: (context) {
               return GetBuilder<ThemeController>(
                   init: ThemeController(),
                   builder: (ctr) {
                     return GetMaterialApp(
-                      title: Strings.title,
+                      title: CommonConstant.ams,
                       theme: !ctr.isDark.value
                           ? ThemeData.light()
                           : ThemeData.dark(),
@@ -62,5 +61,11 @@ class MyApp extends StatelessWidget {
             }));
       },
     );
+  }
+
+  ThemeData _getInitialTheme() {
+    final getStorage = GetStorage();
+    int isDarkMode = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
+    return isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme;
   }
 }

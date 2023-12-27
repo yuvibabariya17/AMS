@@ -27,6 +27,42 @@ class Repository {
     };
   }
 
+  static Future<http.Response> delete(
+      Map<String, dynamic> body, String endPoint,
+      {bool? allowHeader, int? itemId}) async {
+    logcat("APIURL:::", buildUrl(endPoint));
+    String token = await UserPreferences().getToken();
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+      'x-access-token': token,
+    };
+
+    var response = await client.delete(
+      itemId != null ? buildUrl('$endPoint/$itemId') : buildUrl(endPoint),
+      headers: allowHeader == true ? headers : await buildHeader,
+    );
+    return response;
+  }
+
+  static Future<http.Response> put(Map<String, dynamic> body, String endPoint,
+      {bool? allowHeader}) async {
+    logcat("APIURL:::", buildUrl(endPoint));
+    String token = await UserPreferences().getToken();
+    logcat("TOKEN", token.toString());
+    Map<String, String> headers = {
+      'Content-Type': "application/json",
+      'x-access-token': token,
+    };
+    logcat("PassignData", {
+      'Content-Type': "application/json",
+      'Authorization': "Bearer $token",
+    });
+    var response = await client.put(buildUrl(endPoint),
+        body: jsonEncode(body),
+        headers: allowHeader == true ? headers : await buildHeader);
+    return response;
+  }
+
   static Future<http.Response> post(Map<String, dynamic> body, String endPoint,
       {bool? allowHeader}) async {
     logcat("APIURL:::", buildUrl(endPoint));

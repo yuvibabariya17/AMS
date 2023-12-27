@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final courseListModel = courseListModelFromJson(jsonString);
+
 import 'dart:convert';
 
 CourseListModel courseListModelFromJson(String str) =>
@@ -9,7 +13,7 @@ String courseListModelToJson(CourseListModel data) =>
 class CourseListModel {
   int status;
   String message;
-  List<courselist> data;
+  List<ListofCourse> data;
   int totalRecord;
   int totalPages;
 
@@ -24,8 +28,9 @@ class CourseListModel {
   factory CourseListModel.fromJson(Map<String, dynamic> json) =>
       CourseListModel(
         status: json["status"],
-        message: json["message"],
-        data: List<courselist>.from(json["data"].map((x) => courselist.fromJson(x))),
+        message: json["message"] ?? '',
+        data: List<ListofCourse>.from(
+            json["data"].map((x) => ListofCourse.fromJson(x))),
         totalRecord: json["totalRecord"],
         totalPages: json["totalPages"],
       );
@@ -39,7 +44,7 @@ class CourseListModel {
       };
 }
 
-class courselist {
+class ListofCourse {
   String id;
   String name;
   String thumbnailUrl;
@@ -50,7 +55,7 @@ class courselist {
   VendorInfo vendorInfo;
   ThumbnailUrlInfo thumbnailUrlInfo;
 
-  courselist({
+  ListofCourse({
     required this.id,
     required this.name,
     required this.thumbnailUrl,
@@ -62,16 +67,17 @@ class courselist {
     required this.thumbnailUrlInfo,
   });
 
-  factory courselist.fromJson(Map<String, dynamic> json) => courselist(
-        id: json["_id"],
-        name: json["name"],
-        thumbnailUrl: json["thumbnail_url"],
+  factory ListofCourse.fromJson(Map<String, dynamic> json) => ListofCourse(
+        id: json["_id"] ?? '',
+        name: json["name"] ?? '',
+        thumbnailUrl: json["thumbnail_url"] ?? '',
         duration: json["duration"],
         fees: json["fees"],
-        description: json["description"],
+        description: json["description"] ?? '',
         createdAt: json["created_at"],
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]),
-        thumbnailUrlInfo: ThumbnailUrlInfo.fromJson(json["thumbnail_url_info"]),
+        vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
+        thumbnailUrlInfo:
+            ThumbnailUrlInfo.fromJson(json["thumbnail_url_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,7 +102,7 @@ class ThumbnailUrlInfo {
 
   factory ThumbnailUrlInfo.fromJson(Map<String, dynamic> json) =>
       ThumbnailUrlInfo(
-        image: json["image"],
+        image: json["image"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -105,13 +111,13 @@ class ThumbnailUrlInfo {
 }
 
 class VendorInfo {
-  String? vendorType;
+  String vendorType;
   String companyName;
-  String? contactNo1;
+  String contactNo1;
   String emailId;
-  String? whatsappNo;
+  String whatsappNo;
   String role;
-  String? userName;
+  dynamic userName;
   String contactPersonName;
 
   VendorInfo({
@@ -126,14 +132,14 @@ class VendorInfo {
   });
 
   factory VendorInfo.fromJson(Map<String, dynamic> json) => VendorInfo(
-        vendorType: json["vendor_type"],
-        companyName: json["company_name"],
-        contactNo1: json["contact_no1"],
-        emailId: json["email_id"],
-        whatsappNo: json["whatsapp_no"],
-        role: json["role"],
+        vendorType: json["vendor_type"] ?? '',
+        companyName: json["company_name"] ?? '',
+        contactNo1: json["contact_no1"] ?? '',
+        emailId: json["email_id"] ?? '',
+        whatsappNo: json["whatsapp_no"] ?? '',
+        role: json["role"] ?? '',
         userName: json["user_name"],
-        contactPersonName: json["contact_person_name"],
+        contactPersonName: json["contact_person_name"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

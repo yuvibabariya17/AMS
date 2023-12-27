@@ -1,3 +1,5 @@
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -50,6 +52,7 @@ class _ProductBasedOfferState extends State<ProductBasedOffer> {
                             child: Text(
                               data.title,
                               style: TextStyle(
+                                  color: isDarkMode() ? white : black,
                                   fontFamily: opensansMedium,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.5.sp),
@@ -60,6 +63,7 @@ class _ProductBasedOfferState extends State<ProductBasedOffer> {
                             child: Text(
                               data.offer,
                               style: TextStyle(
+                                  color: isDarkMode() ? white : black,
                                   fontFamily: opensans_Bold,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14.sp),
@@ -77,9 +81,16 @@ class _ProductBasedOfferState extends State<ProductBasedOffer> {
                               () {},
                             );
                           },
-                          thumbColor: CupertinoColors.white,
-                          activeColor: CupertinoColors.black,
+                          thumbColor: isDarkMode()
+                              ? CupertinoColors.black
+                              : CupertinoColors.white,
+                          activeColor: isDarkMode()
+                              ? CupertinoColors.white
+                              : CupertinoColors.black,
                           trackColor: Colors.grey,
+                          // thumbColor: CupertinoColors.white,
+                          // activeColor: CupertinoColors.black,
+                          // trackColor: Colors.grey,
                         ),
                       )
                     ]),
@@ -107,11 +118,13 @@ class _ProductBasedOfferState extends State<ProductBasedOffer> {
               ],
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDarkMode() ? black : Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20)),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: isDarkMode()
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5)),

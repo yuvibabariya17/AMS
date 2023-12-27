@@ -54,14 +54,14 @@ class _OtpScreenState extends State<OtpScreen> {
             height: double.infinity,
             width: double.infinity,
             child: isDarkMode()
-            ? SvgPicture.asset(
-                Asset.dark_bg,
-                fit: BoxFit.cover,
-              )
-            : SvgPicture.asset(
-                Asset.bg,
-                fit: BoxFit.cover,
-              ),
+                ? SvgPicture.asset(
+                    Asset.dark_bg,
+                    fit: BoxFit.cover,
+                  )
+                : SvgPicture.asset(
+                    Asset.bg,
+                    fit: BoxFit.cover,
+                  ),
           ),
           SingleChildScrollView(
             child: Column(
@@ -167,7 +167,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         from: 50,
                         child: InkWell(
                           onTap: () {
-                            Common.PopupDialog(context);
+                            Common.PopupDialogForOtp(context);
                           },
                           child: Container(
                             child: Text(

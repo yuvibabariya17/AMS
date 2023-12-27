@@ -59,6 +59,7 @@ Future showbottomsheetdialog(BuildContext context) {
                           child: CheckboxListTile(
                             controlAffinity: ListTileControlAffinity.leading,
                             activeColor: isDarkMode() ? white : black,
+                            checkColor: isDarkMode() ? black : white,
                             visualDensity:
                                 VisualDensity(horizontal: -2, vertical: -4),
                             contentPadding:
@@ -87,6 +88,7 @@ Future showbottomsheetdialog(BuildContext context) {
                           child: CheckboxListTile(
                             controlAffinity: ListTileControlAffinity.leading,
                             activeColor: isDarkMode() ? white : black,
+                            checkColor: isDarkMode() ? black : white,
                             contentPadding:
                                 EdgeInsets.only(top: 0.5, bottom: 0.5),
                             visualDensity:
@@ -113,6 +115,7 @@ Future showbottomsheetdialog(BuildContext context) {
                           child: CheckboxListTile(
                             controlAffinity: ListTileControlAffinity.leading,
                             activeColor: isDarkMode() ? white : black,
+                            checkColor: isDarkMode() ? black : white,
                             contentPadding: EdgeInsets.only(
                               top: 0.5,
                             ),

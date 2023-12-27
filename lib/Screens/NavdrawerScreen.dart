@@ -1,26 +1,49 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/AddCustomerScreen.dart';
-import 'package:booking_app/Screens/AddProductScreen.dart';
-import 'package:booking_app/Screens/ProfileScreen.dart';
+import 'package:booking_app/Screens/CourseScreen.dart';
+import 'package:booking_app/Screens/CustomerScreen.dart';
+import 'package:booking_app/Screens/OfferForm.dart';
+import 'package:booking_app/Screens/ProductScreen.dart';
+import 'package:booking_app/Screens/ProductSelling.dart';
+import 'package:booking_app/Screens/StudentCourseScreen.dart';
+import 'package:booking_app/Screens/StudentScreen.dart';
+import 'package:booking_app/controllers/NavdrawerController.dart';
 import 'package:booking_app/Screens/ServiceScreen.dart';
 import 'package:booking_app/Screens/SettingScreen.dart';
+import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/core/constants/assets.dart';
+import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/screens/ChangepasswordScreen.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:booking_app/models/SignInModel.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
-import '../controllers/home_screen_controller.dart';
 import '../core/Common/toolbar.dart';
 import '../core/Common/util.dart';
-import 'AppointmentBooking.dart';
 import 'ExpertScreen.dart';
-import 'OfferScreen/OfferScreen.dart';
 
-class NavdrawerScreen extends StatelessWidget {
+class NavdrawerScreen extends StatefulWidget {
   const NavdrawerScreen({super.key});
+
+  @override
+  State<NavdrawerScreen> createState() => _NavdrawerScreenState();
+}
+
+class _NavdrawerScreenState extends State<NavdrawerScreen> {
+  String name = '';
+  String number = '';
+  var controller = Get.put(NavdrawerController());
+
+  @override
+  void initState() {
+    initDataSet(context);
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +81,7 @@ class NavdrawerScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.8,
             shadowColor: Colors.white,
             elevation: 0,
-            backgroundColor: Colors.grey[900],
+            backgroundColor: isDarkMode() ? black : Colors.grey[900],
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,7 +109,7 @@ class NavdrawerScreen extends StatelessWidget {
         from: 50,
         child: Container(
           padding: EdgeInsets.only(top: 5.5.h, left: 3.2.h, bottom: 2.h),
-          color: Colors.grey[900],
+          color: isDarkMode() ? black : Colors.grey[900],
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -105,7 +128,7 @@ class NavdrawerScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Get.find<HomeScreenController>().name.toString(),
+                      name.toString(),
                       style: TextStyle(
                           fontSize: 16.sp,
                           color: Colors.white,
@@ -116,7 +139,7 @@ class NavdrawerScreen extends StatelessWidget {
                       height: 1.h,
                     ),
                     Text(
-                      Get.find<HomeScreenController>().number.toString(),
+                      number.toString(),
                       style: TextStyle(
                           fontSize: 10.sp,
                           color: Colors.white,
@@ -133,75 +156,76 @@ class NavdrawerScreen extends StatelessWidget {
   buildMenuItems(BuildContext context) => FadeInLeft(
         from: 50,
         child: Container(
-            color: Colors.grey[900],
+            color: isDarkMode() ? black : Colors.grey[900],
             padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
-                setListTile(Asset.user, 'Profile', () {
+                setNavtile(Asset.course, "Course", isBig: true, () {
+                  // controller.closeDrawer();
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(ProfileScreen());
+                  Get.to(CourseScreen());
                 }),
-                setListTile(Asset.add_service, 'Add Services', () {
+                setNavtile(Asset.serviceNav, "Service", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
                 }),
-                setListTile(Asset.adduser, 'Add Expert', () {
+                setNavtile(Asset.adduser, "Expert", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ExpertScreen());
                 }),
-                setListTile(Asset.add_service_offer, 'Add Service Offer', () {
+                setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
+                    () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(OfferScreen());
+                  Get.to(OfferFormScreen());
                 }),
-                setListTile(Asset.passwordlock, 'Change Password', () {
+                setNavtile(Asset.passwordlock, ScreenTitle.changePassTitle, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ChangePasswordScreen(
                     fromProfile: true,
                   ));
                 }),
-                setListTile(Asset.settingslider, 'Settings', () {
+                setNavtile(Asset.settingslider, ScreenTitle.settings, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(Settings());
                 }),
-                setListTile(Asset.rate_us, 'Add Customer', () {
+                setNavtile(Asset.multipleUser, "Customer", () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(AddCustomerScreen());
+                  Get.to(CustomerScreen());
                 }),
-                setListTile(Asset.share, 'Appointment Booking', () {
+                // setListTile(Asset.share, ScreenTitle.appointmentBooking, () {
+                //   Get.find<HomeScreenController>().closeDrawer();
+                //   Get.to(AppointmentBookingScreen());
+                // }),
+                setNavtile(Asset.product, "Product", () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(AppointmentBookingScreen());
+                  Get.to(ProductScreen());
                 }),
-                setListTile(Asset.share, 'Sign Out', () {
-                  PopupDialogs(context);
+                setNavtile(Asset.product, "Student", () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(StudentScreen());
+                }),
+                setNavtile(Asset.product, "Student Course", () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(StudentCourseScreen());
+                }),
+                setNavtile(Asset.product, "Product Selling", () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(ProductSellingScreen());
                 }),
                 SizedBox(height: 11.5.h),
-                setListTile(Asset.share, 'Add Product', () {
-                  Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(AddProductScreen());
+                setNavtile(Asset.share, ScreenTitle.signOut, () {
+                  PopupDialogsforSignOut(context);
                 }),
               ],
             )),
       );
-  // InkWell(
-  //   child: ListTile(
-  //     leading: SvgPicture.asset(
-  //       Asset.adduser,
-  //     ),
-  //     horizontalTitleGap: 0.1,
-  //     visualDensity: VisualDensity(horizontal: -2, vertical: -2),
-  //     title: Text('Add Expert',
-  //         style: TextStyle(
-  //             color: Colors.grey,
-  //             fontFamily: opensansMedium,
-  //             fontSize: 11.5.sp)),
-  //     onTap: () {
-  //       Get.to(ExpertScreen());
-  //       // Navigator.push(
-  //       //     context,
-  //       //     MaterialPageRoute(
-  //       //       builder: (context) => Expert(),
-  //       //     ));
-  //     },
-  //   ),
-  // ),
+
+  void initDataSet(BuildContext context) async {
+    SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+
+    name = retrievedObject!.userName.toString();
+    number = retrievedObject.contactNo1.toString();
+
+    setState(() {});
+  }
 }

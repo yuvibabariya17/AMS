@@ -1,11 +1,13 @@
 class ApiUrl {
-  static const buildApiUrl = "http://192.168.1.9:4000/api/";
+  static const buildApiUrl = "http://192.168.42.17:4000/api/";
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";
   static const addCustomer = "customer/add";
   static const customerList = "customer/list";
   static const addService = "vendor/service/add";
-  static const addServiceList = "vendor/service/list";
+  static const addServiceList = "service/list";
+  static const ServiceList = "vendor/service/list";
+
   static const editVendorService = "vendor/service/editx";
   static const getVendorService = "vendor/service/get";
   static const deleteVendorService = "vendor/service/delete";

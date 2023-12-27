@@ -1,6 +1,7 @@
 import 'package:booking_app/Screens/OfferScreen/PackageBasedOffer.dart';
 import 'package:booking_app/Screens/OfferScreen/ProductBasedOffer.dart';
 import 'package:booking_app/Screens/OfferScreen/ServiceBasedOffer.dart';
+import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -41,7 +42,7 @@ class _OfferScreenState extends State<OfferScreen>
     return CustomScaffold(
         body: Column(
       children: [
-        getCommonToolbar("Offer", () {
+        getCommonToolbar(ScreenTitle.offer, () {
           Get.back();
         }),
         Expanded(
@@ -107,9 +108,9 @@ class _OfferScreenState extends State<OfferScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              getTab("Product Based", 30, 0),
-              getTab("Service Based", 30, 1),
-              getTab("Package Based", 30, 2),
+              getTab(ScreenTitle.productBasedOffer, 30, 0),
+              // getTab(ScreenTitle.serviceBasedOffer, 30, 1),
+              // getTab(ScreenTitle.packageBasedOffer, 30, 2),
             ],
           ),
           SizedBox(
@@ -218,8 +219,9 @@ class _OfferScreenState extends State<OfferScreen>
                 //       },
                 //       itemCount: staticData.length),
                 // ),
-                ServiceBasedOffer(),
-                PackageBasedOffer(),
+
+                // ServiceBasedOffer(),
+                // PackageBasedOffer(),
               ]))
         ]));
   }
@@ -240,7 +242,7 @@ class _OfferScreenState extends State<OfferScreen>
         //width: 50.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
-          horizontal: 0.1.w,
+          horizontal: 0.5.w,
         ),
         padding:
             EdgeInsets.only(left: 1.w, right: 1.w, top: 1.5.h, bottom: 1.5.h),
@@ -268,9 +270,9 @@ class _OfferScreenState extends State<OfferScreen>
                   color:
                       currentPage == index ? Colors.white : Colors.grey[850]),
             ),
-            SizedBox(
-              width: currentPage == index ? 4.w : 0,
-            ),
+            // SizedBox(
+            //   width: currentPage == index ? 4.w : 0,
+            // ),
           ],
         ),
       ),

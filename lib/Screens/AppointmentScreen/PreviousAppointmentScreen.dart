@@ -1,3 +1,4 @@
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import '../../controllers/notification_screen_controller.dart';
 import '../../core/Common/Common.dart';
 import '../../core/constants/assets.dart';
 import '../../core/themes/font_constant.dart';
+import '../../core/utils/helper.dart';
 
 class PreviousAppointmentScreen extends StatefulWidget {
   const PreviousAppointmentScreen({super.key});
@@ -39,7 +41,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
           ProductItem data = staticData[index];
           return Container(
             margin:
-                EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h, top:3.h),
+                EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h, top: 3.h),
             padding:
                 EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
             child: Column(
@@ -49,6 +51,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                 Text(
                   'March 22,2023',
                   style: TextStyle(
+                      color: isDarkMode() ? white : black,
                       fontFamily: opensansMedium,
                       fontWeight: FontWeight.w700,
                       fontSize: 15.sp),
@@ -84,6 +87,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                 child: Text(
                                   data.Name,
                                   style: TextStyle(
+                                      color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w700),
@@ -95,6 +99,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               child: Text(
                             data.title,
                             style: TextStyle(
+                                color: isDarkMode() ? white : black,
                                 fontFamily: opensansMedium,
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.w400),
@@ -117,7 +122,12 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                     SizedBox(
                       width: 2.w,
                     ),
-                    Text('Ahn Hyeon Seop')
+                    Text(
+                      'Ahn Hyeon Seop',
+                      style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                      ),
+                    )
                   ],
                 ),
                 Row(
@@ -149,13 +159,13 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                         child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
+                                backgroundColor: isDarkMode() ? white : black,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10))),
                             child: Text(
                               'Cancel',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: isDarkMode() ? black : white,
                                 fontSize: 12.5.sp,
                                 fontFamily: opensansMedium,
                               ),
@@ -165,11 +175,13 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
               ],
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDarkMode() ? black : white,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: isDarkMode()
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5)),

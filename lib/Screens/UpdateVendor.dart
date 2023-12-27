@@ -1,14 +1,18 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/controllers/UpdateVendor_controller.dart';
+import 'package:booking_app/dialogs/dialogs.dart';
+import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/strings.dart';
+import '../core/utils/log.dart';
 import '../custom_componannt/CustomeBackground.dart';
 import '../custom_componannt/common_views.dart';
 import '../custom_componannt/form_inputs.dart';
+import '../preference/UserPreference.dart';
 
 class UpdateVendor extends StatefulWidget {
   const UpdateVendor({super.key});
@@ -20,24 +24,41 @@ class UpdateVendor extends StatefulWidget {
 class _UpdateVendorState extends State<UpdateVendor> {
   @override
   void initState() {
-    controller.initDataSet();
+    initDataSet(context);
     super.initState();
   }
 
   final controller = Get.put(UpdateVendorController());
 
-  
- 
+  void initDataSet(BuildContext context) async {
+    SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+    logcat("USERNAME", retrievedObject!.userName.toString());
+    logcat("COMPANY", retrievedObject.companyName.toString());
+
+    controller.Vendornamectr.text = retrievedObject!.userName.toString();
+    controller.companyctr.text = retrievedObject.companyName.toString();
+    controller.addressctr.text = retrievedObject.address.toString();
+    //controller.statectr.text = retrievedObject.stateId.toString();
+    //controller.cityctr.text = retrievedObject.cityId.toString();
+    controller.emailctr.text = retrievedObject.emailId.toString();
+    controller.contact_onectr.text = retrievedObject.contactNo1.toString();
+    controller.contact_twoctr.text = retrievedObject.contactNo2.toString();
+    controller.whatsappctr.text = retrievedObject.whatsappNo.toString();
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Column(
         children: [
-          getCommonToolbar("Update Vendor", () {
+          getCommonToolbar(ScreenTitle.updateVendor, () {
             Get.back();
           }),
           Expanded(
               child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Container(
@@ -50,7 +71,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          getTitle(Strings.vendor_name),
+                          getTitle(CommonConstant.vendor_name),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -58,8 +79,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                   child: Obx(() {
                                     return getReactiveFormField(
                                       node: controller.VendornameNode,
-                                      controller:
-                                          controller.fullName.value.toString(),
+                                      controller: controller.Vendornamectr,
                                       hintLabel: 'Enter Name',
                                       onChanged: (val) {
                                         controller.validateVendorname(val);
@@ -70,7 +90,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.text,
                                     );
                                   }))),
-                          getTitle(Strings.company_title),
+                          getTitle(CommonConstant.company_title),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -109,7 +129,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.text,
                                     );
                                   }))),
-                          getTitle(Strings.emailId),
+                          getTitle(CommonConstant.emailId),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -118,7 +138,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                     return getReactiveFormField(
                                       node: controller.EmailNode,
                                       controller: controller.emailctr,
-                                      hintLabel: Strings.emailId_hint,
+                                      hintLabel: CommonConstant.emailId_hint,
                                       onChanged: (val) {
                                         controller.validateEmail(val);
                                         setState(() {});
@@ -128,7 +148,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.text,
                                     );
                                   }))),
-                          getTitle(Strings.password),
+                          getTitle(CommonConstant.password),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -198,7 +218,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.number,
                                     );
                                   }))),
-                          getTitle(Strings.whatsapp_no),
+                          getTitle(CommonConstant.whatsapp_no),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -241,10 +261,27 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                         controller.validateLogo(val);
                                         setState(() {});
                                       },
+                                      isReadOnly: true,
                                       onTap: () async {
-                                        await controller
-                                            .actionClickUploadImage(context);
+                                        selectImageFromCameraOrGallery(context,
+                                            cameraClick: () {
+                                          controller
+                                              .actionClickUploadImageForLogo(
+                                                  context,
+                                                  isCamera: true);
+                                        }, galleryClick: () {
+                                          controller
+                                              .actionClickUploadImageForLogo(
+                                                  context,
+                                                  isCamera: false);
+                                        });
+                                        // await controller.PopupDialogs(context);
+                                        setState(() {});
                                       },
+                                      // onTap: () async {
+                                      //   await controller
+                                      //       .actionClickUploadImage(context);
+                                      // },
                                       errorText:
                                           controller.logoModel.value.error,
                                       inputType: TextInputType.none,
@@ -265,17 +302,34 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                         controller.validateBreacher(val);
                                         setState(() {});
                                       },
+                                      isReadOnly: true,
                                       onTap: () async {
-                                        await controller
-                                            .actionClickUploadBreachers(
-                                                context);
+                                        selectImageFromCameraOrGallery(context,
+                                            cameraClick: () {
+                                          controller
+                                              .actionClickUploadImageForBreachers(
+                                                  context,
+                                                  isCamera: true);
+                                        }, galleryClick: () {
+                                          controller
+                                              .actionClickUploadImageForBreachers(
+                                                  context,
+                                                  isCamera: false);
+                                        });
+                                        // await controller.PopupDialogs(context);
+                                        setState(() {});
                                       },
+                                      // onTap: () async {
+                                      //   await controller
+                                      //       .actionClickUploadBreachers(
+                                      //           context);
+                                      // },
                                       errorText:
                                           controller.breacherModel.value.error,
                                       inputType: TextInputType.none,
                                     );
                                   }))),
-                          getTitle(Strings.profile),
+                          getTitle(UpdateVendorConstant.profile),
                           FadeInUp(
                               from: 30,
                               child: AnimatedSize(
@@ -290,10 +344,27 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                         controller.validateProfile(val);
                                         setState(() {});
                                       },
+                                      isReadOnly: true,
                                       onTap: () async {
-                                        await controller
-                                            .actionClickUploadProfile(context);
+                                        selectImageFromCameraOrGallery(context,
+                                            cameraClick: () {
+                                          controller
+                                              .actionClickUploadImageForProfile(
+                                                  context,
+                                                  isCamera: true);
+                                        }, galleryClick: () {
+                                          controller
+                                              .actionClickUploadImageForProfile(
+                                                  context,
+                                                  isCamera: false);
+                                        });
+                                        // await controller.PopupDialogs(context);
+                                        setState(() {});
                                       },
+                                      // onTap: () async {
+                                      //   await controller
+                                      //       .actionClickUploadProfile(context);
+                                      // },
                                       errorText:
                                           controller.profileModel.value.error,
                                       inputType: TextInputType.none,
@@ -314,10 +385,29 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                         controller.validateProperty(val);
                                         setState(() {});
                                       },
+                                      isReadOnly: true,
                                       onTap: () async {
-                                        await controller
-                                            .actionClickUploadProperty(context);
+                                        selectImageFromCameraOrGallery(context,
+                                            cameraClick: () {
+                                          controller
+                                              .actionClickUploadImageFromCamera(
+                                                  context, true,
+                                                  multipleImage: true,
+                                                  isCamera: true);
+                                        }, galleryClick: () {
+                                          controller
+                                              .actionClickUploadImageFromCamera(
+                                                  context, true,
+                                                  multipleImage: true,
+                                                  isCamera: false);
+                                        });
+                                        // await controller.PopupDialogs(context);
+                                        setState(() {});
                                       },
+                                      // onTap: () async {
+                                      //   await controller
+                                      //       .actionClickUploadProperty(context);
+                                      // },
                                       errorText:
                                           controller.propertyModel.value.error,
                                       inputType: TextInputType.none,

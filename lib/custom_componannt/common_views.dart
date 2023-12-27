@@ -75,6 +75,7 @@ getTitle(String title) {
       Text(
         title,
         style: TextStyle(
+            color: isDarkMode() ? white : black,
             fontFamily: opensans_Bold,
             fontSize: SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 13.sp,
             fontWeight: FontWeight.w700),
@@ -175,7 +176,7 @@ getButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
         child: Text(
-          Strings.submit,
+          CommonConstant.submit,
           style: TextStyle(
               color: Colors.white,
               fontSize: 14.5.sp,

@@ -2,9 +2,9 @@ import 'package:booking_app/Screens/PreviousNotificationScreen.dart';
 import 'package:booking_app/Screens/UpcomingNotificationScreen.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -44,44 +44,30 @@ class _NotificationScreenState extends State<NotificationScreen>
   @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
-    return Scaffold(
-      extendBody: true,
+    return CustomScaffold(
       body: SafeArea(
-        minimum: EdgeInsets.only(top: 1.h),
+        // minimum: EdgeInsets.only(top: 1.h),
         child: Stack(children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: isDarkMode()
-                ? SvgPicture.asset(
-                    Asset.dark_bg,
-                    fit: BoxFit.cover,
-                  )
-                : SvgPicture.asset(
-                    Asset.bg,
-                    fit: BoxFit.cover,
-                  ),
-          ),
           Container(
-              margin: EdgeInsets.only(
-                top: 0.5.h,
-              ),
+              // margin: EdgeInsets.only(
+              //   top: 0.5.h,
+              // ),
               child: Center(
                   child: Column(children: [
-                // getToolbar("Notifications", showBackButton: true, callback: () {
-                //   Get.back();
-                // })
-                HomeAppBar(
-                  title: 'Notifications',
-                  leading: Asset.backbutton,
-                  isfilter: false,
-                  icon: Asset.filter,
-                  isBack: true,
-                  onClick: () {
-                    showbottomsheetdialog(context);
-                  },
-                ),
-              ]))),
+            // getToolbar("Notifications", showBackButton: true, callback: () {
+            //   Get.back();
+            // })
+            HomeAppBar(
+              title: ScreenTitle.notification,
+              leading: Asset.backbutton,
+              isfilter: false,
+              icon: Asset.filter,
+              isBack: true,
+              onClick: () {
+                showbottomsheetdialog(context);
+              },
+            ),
+          ]))),
           Container(
             margin: EdgeInsets.only(top: 4.h),
             child: getListViewItem(),
@@ -89,6 +75,11 @@ class _NotificationScreenState extends State<NotificationScreen>
         ]),
       ),
     );
+    // Scaffold(
+    //   extendBody: true,
+    //   body:
+
+    // );
   }
 
   getListViewItem() {
@@ -99,8 +90,8 @@ class _NotificationScreenState extends State<NotificationScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              getTab(Strings.upcoming_title, 30, 0),
-              getTab(Strings.previous_title, 30, 1),
+              getTab(NotificationConstant.upcoming_title, 30, 0),
+              getTab(NotificationConstant.previous_title, 30, 1),
             ],
           ),
           Container(
@@ -159,7 +150,9 @@ class _NotificationScreenState extends State<NotificationScreen>
                   BoxShadow(
                     blurRadius: 10,
                     spreadRadius: 0.1,
-                    color: Colors.black.withOpacity(.1),
+                    color: isDarkMode()
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.black.withOpacity(0.2),
                   )
                 ],
                 borderRadius: BorderRadius.circular(50)),

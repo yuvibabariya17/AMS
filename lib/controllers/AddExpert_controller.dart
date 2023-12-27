@@ -1,6 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:booking_app/Models/UploadImageModel.dart';
+import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/CommonModel.dart';
@@ -15,13 +20,24 @@ import '../dialogs/loading_indicator.dart';
 import '../preference/UserPreference.dart';
 import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
+import 'package:http/http.dart' as http;
 
 class AddexpertController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
-  late FocusNode ServiceNode, ExpertNode, PriceNode;
+  late FocusNode ServiceNode,
+      ExpertNode,
+      PriceNode,
+      ProfileNode,
+      StartTimeNode,
+      EndTimeNode;
 
-  late TextEditingController Servicectr, Expertctr, Pricectr;
+  late TextEditingController Servicectr,
+      Expertctr,
+      Pricectr,
+      Profilectr,
+      Startctr,
+      Endctr;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
   final formKey = GlobalKey<FormState>();
@@ -31,13 +47,34 @@ class AddexpertController extends GetxController {
     ServiceNode = FocusNode();
     ExpertNode = FocusNode();
     PriceNode = FocusNode();
+    ProfileNode = FocusNode();
+    StartTimeNode = FocusNode();
+    EndTimeNode = FocusNode();
 
     Servicectr = TextEditingController();
     Expertctr = TextEditingController();
     Pricectr = TextEditingController();
+    Profilectr = TextEditingController();
+    Startctr = TextEditingController();
+    Endctr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();
+  }
+
+  String startTime = "";
+  String endTime = "";
+
+  void updateStartTime(date) {
+    Startctr.text = date;
+    print("PICKED_DATE${Startctr.value}");
+    update();
+  }
+
+  void updateEndTime(date) {
+    Endctr.text = date;
+    print("PICKED_DATE${Endctr.value}");
+    update();
   }
 
   var isLoading = false.obs;
@@ -45,6 +82,9 @@ class AddexpertController extends GetxController {
   var model = ValidationModel(null, null, isValidate: false).obs;
   var ExpertModel = ValidationModel(null, null, isValidate: false).obs;
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
+  var ProfileModel = ValidationModel(null, null, isValidate: false).obs;
+  var StartTimeModel = ValidationModel(null, null, isValidate: false).obs;
+  var EndTimeModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
     if (model.value.isValidate == false) {
@@ -52,6 +92,8 @@ class AddexpertController extends GetxController {
     } else if (ExpertModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (PriceModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (ProfileModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -100,6 +142,48 @@ class AddexpertController extends GetxController {
     enableSignUpButton();
   }
 
+  void validateProfile(String? val) {
+    PriceModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Profile Pic";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateStartTime(String? val) {
+    StartTimeModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Time";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateEndTime(String? val) {
+    EndTimeModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Time";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
   RxBool isFormInvalidate = false.obs;
 
   void hideKeyboard(context) {
@@ -114,8 +198,7 @@ class AddexpertController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
@@ -137,7 +220,7 @@ class AddexpertController extends GetxController {
         if (responseDetail.status == 1) {
           showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {
-            Get.back();
+            Get.back(result: true);
           });
         } else {
           showDialogForScreen(context, responseDetail.message.toString(),
@@ -150,7 +233,7 @@ class AddexpertController extends GetxController {
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Strings.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -178,7 +261,7 @@ class AddexpertController extends GetxController {
                 Get.back();
                 serviceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text = serviceObjectList[index]
-                    .serviceInfo
+                    .serviceInfo!
                     .name
                     .capitalize
                     .toString();
@@ -186,7 +269,7 @@ class AddexpertController extends GetxController {
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].serviceInfo.name.toString(),
+                serviceObjectList[index].serviceInfo!.name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -199,40 +282,41 @@ class AddexpertController extends GetxController {
   RxBool isServiceTypeApiList = false.obs;
   RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
   RxString serviceId = "".obs;
+  RxString uploadImageId = ''.obs;
 
-  void getServieList(context) async {
+  void getServiceList(context) async {
     isServiceTypeApiList.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Strings.noInternetConnection,
-            callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response =
-          await Repository.post({}, ApiUrl.addServiceList, allowHeader: true);
-      isServiceTypeApiList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = ServiceModel.fromJson(responseData);
-        if (data.status == 1) {
-          serviceObjectList.clear();
-          serviceObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(serviceObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Strings.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isServiceTypeApiList.value = false;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
     }
+    var response =
+        await Repository.post({}, ApiUrl.ServiceList, allowHeader: true);
+    isServiceTypeApiList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = ServiceModel.fromJson(responseData);
+      if (data.status == 1) {
+        serviceObjectList.clear();
+        serviceObjectList.addAll(data.data);
+        logcat("RESPONSE", jsonEncode(serviceObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {
+          Get.back(result: true);
+        });
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isServiceTypeApiList.value = false;
+    // }
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {
@@ -245,8 +329,131 @@ class AddexpertController extends GetxController {
           return true;
         },
         message: message,
-        title: "Add Expert",
+        title: ScreenTitle.addExpert,
         negativeButton: '',
-        positiveButton: "Continue");
+        positiveButton: CommonConstant.continuebtn);
+  }
+
+  void getImageApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadImageFile.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadImageFile.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadImageId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  Rx<File?> uploadImageFile = null.obs;
+
+  actionClickUploadImageFromCamera(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            //source: ImageSource.gallery,
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        //Cropping the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+            sourcePath: file.path,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            cropStyle: CropStyle.rectangle,
+            aspectRatioPresets: Platform.isAndroid
+                ? [
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio16x9
+                  ]
+                : [
+                    CropAspectRatioPreset.original,
+                    CropAspectRatioPreset.square,
+                    CropAspectRatioPreset.ratio3x2,
+                    CropAspectRatioPreset.ratio4x3,
+                    CropAspectRatioPreset.ratio5x3,
+                    CropAspectRatioPreset.ratio5x4,
+                    CropAspectRatioPreset.ratio7x5,
+                    CropAspectRatioPreset.ratio16x9
+                  ],
+            uiSettings: [
+              AndroidUiSettings(
+                  toolbarTitle: 'Crop Image',
+                  cropGridColor: primaryColor,
+                  toolbarColor: primaryColor,
+                  statusBarColor: primaryColor,
+                  toolbarWidgetColor: white,
+                  activeControlsWidgetColor: primaryColor,
+                  initAspectRatio: CropAspectRatioPreset.original,
+                  lockAspectRatio: false),
+              IOSUiSettings(
+                title: 'Crop Image',
+                cancelButtonTitle: 'Cancel',
+                doneButtonTitle: 'Done',
+                aspectRatioLockEnabled: false,
+              ),
+            ],
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        if (file != null) {
+          uploadImageFile = File(file.path).obs;
+          Profilectr.text = file.name;
+          validateProfile(Profilectr.text);
+          getImageApi(context);
+        }
+
+        // if (croppedFile != null) {
+        //   uploadImageFile = File(croppedFile.path).obs;
+        //   profilePic.value = croppedFile.path;
+        //   update();
+        // }
+      }
+    });
+
+    update();
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../core/constants/assets.dart';
+import '../custom_componannt/CustomeBackground.dart';
 import 'LoginScreen/LoginScreen.dart';
 import 'OnboardingContentScreen.dart';
 
@@ -51,22 +51,22 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       body: Stack(
         children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: isDarkMode()
-                ? SvgPicture.asset(
-                    Asset.dark_bg,
-                    fit: BoxFit.cover,
-                  )
-                : SvgPicture.asset(
-                    Asset.bg,
-                    fit: BoxFit.cover,
-                  ),
-          ),
+          // SizedBox(
+          //   height: double.infinity,
+          //   width: double.infinity,
+          //   child: isDarkMode()
+          //       ? SvgPicture.asset(
+          //           Asset.dark_bg,
+          //           fit: BoxFit.cover,
+          //         )
+          //       : SvgPicture.asset(
+          //           Asset.bg,
+          //           fit: BoxFit.cover,
+          //         ),
+          // ),
           Column(
             children: [
               Expanded(
@@ -182,7 +182,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                   ),
                                   child: Center(
                                       child: Text(
-                                    Strings.started,
+                                    IntroScreenConstant.started,
                                     style: TextStyle(
                                         fontFamily: opensans_Bold,
                                         fontSize: SizerUtil.deviceType ==

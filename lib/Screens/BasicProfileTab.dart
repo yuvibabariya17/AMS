@@ -49,7 +49,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 5.h, left: 8.w, right: 8.w, bottom: 1.h),
+      margin: EdgeInsets.only(top: 3.h, left: 8.w, right: 8.w, bottom: 1.h),
       child: Container(
         padding:
             EdgeInsets.only(top: 1.5.h, left: 6.w, right: 4.w, bottom: 1.5.h),
@@ -65,7 +65,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   "Vendor Name :",
                   style: TextStyle(
                       fontFamily: opensansMedium,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w700,
                       color: isDarkMode() ? Colors.grey : black,
                       fontSize: 13.5.sp),
                 ),
@@ -75,7 +75,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                       Get.to(UpdateVendor());
                     },
                     icon: SvgPicture.asset(Asset.edit,
-                        color: isDarkMode() ? white : black))
+                        height: 2.3.h,
+                        color: isDarkMode() ? Colors.grey : Colors.grey))
               ],
             ),
             SizedBox(height: 0.5.h),
@@ -91,10 +92,10 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
               height: 2.h,
             ),
             Text(
-              Strings.company_name,
+              CommonConstant.company_name,
               style: TextStyle(
                   fontFamily: opensansMedium,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: 13.5.sp),
             ),
@@ -116,7 +117,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
               Strings.address,
               style: TextStyle(
                   fontFamily: opensansMedium,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: 13.5.sp),
             ),
@@ -138,7 +139,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
               Strings.contact_one,
               style: TextStyle(
                   fontFamily: opensansMedium,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: 13.5.sp),
             ),
@@ -160,7 +161,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
               "Whatsapp Number :",
               style: TextStyle(
                   fontFamily: opensansMedium,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: 13.5.sp),
             ),
@@ -182,7 +183,9 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: isDarkMode()
+                    ? Colors.white.withOpacity(0.2)
+                    : Colors.black.withOpacity(0.2),
                 spreadRadius: 0.1,
                 blurRadius: 10,
                 offset: Offset(0.5, 0.5)),

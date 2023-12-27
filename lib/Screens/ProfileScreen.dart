@@ -2,9 +2,11 @@ import 'package:booking_app/Screens/BasicProfileTab.dart';
 import 'package:booking_app/Screens/ServicebasedProfileTab.dart';
 import 'package:booking_app/Screens/StaffProfileTab.dart';
 import 'package:booking_app/controllers/ProfileController.dart';
-import 'package:booking_app/controllers/home_screen_controller.dart';
+import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/preference/UserPreference.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,10 +16,16 @@ import '../core/Common/Common.dart';
 import '../core/Common/toolbar.dart';
 import '../core/constants/assets.dart';
 import '../core/utils/helper.dart';
+import '../models/SignInModel.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key, this.callBack});
+  ProfileScreen({
+    super.key,
+    this.callBack,
+    required this.isfromNav,
+  });
   Function? callBack;
+  bool isfromNav;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -26,14 +34,24 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   final controller = Get.put(ProfileController());
+  String name = '';
+  String number = '';
 
   @override
   void initState() {
     controller.tabController =
         TabController(vsync: this, length: 3, initialIndex: 0);
+    initDataSet(context);
 
     //  controller.isDarkModes = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
     super.initState();
+  }
+
+  void initDataset(BuildContext context) async {
+    SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+
+    controller.profilePic.value =
+        "http://192.168.1.20.4000/uploads/${retrievedObject!.profilePic}";
   }
 
   @override
@@ -50,35 +68,56 @@ class _ProfileScreenState extends State<ProfileScreen>
       },
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: transparent,
           body: Container(
-            margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+            margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 1.h),
             child: Column(
               children: [
                 Container(
-                  color: isDarkMode() ? black : transparent,
                   child: Column(
                     children: [
                       Center(
                           child: Column(
                         children: [
-                          getAppbar(
-                            "Profile",
-                          )
+                          widget.isfromNav
+                              ? getCommonToolbar(ScreenTitle.profile, () {
+                                  Get.back();
+                                })
+                              : getAppbar(
+                                  ScreenTitle.profile,
+                                )
                         ],
                       )),
                       SizedBox(
                         height: 2.h,
                       ),
                       Center(
-                        child: SvgPicture.asset(
+                          child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: controller.profilePic.toString(),
+                        placeholder: (context, url) => SvgPicture.asset(
                           Asset.profileimg,
-                          height: 10.h,
+                          height: 8.h,
                           color: isDarkMode() ? white : black,
+                          fit: BoxFit.cover,
                         ),
-                      ),
+                        errorWidget: (context, url, error) => SvgPicture.asset(
+                          Asset.profileimg,
+                          height: 8.h,
+                          color: isDarkMode() ? white : black,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+
+                          // SvgPicture.asset(
+                          //   Asset.profileimg,
+                          //   height: 10.h,
+                          //   color: isDarkMode() ? white : black,
+                          // ),
+                          ),
                       SizedBox(height: 1.h),
                       Text(
-                        Get.find<HomeScreenController>().name.toString(),
+                        name.toString(),
                         style: TextStyle(
                             color: isDarkMode() ? white : black,
                             fontFamily: opensansMedium,
@@ -100,19 +139,19 @@ class _ProfileScreenState extends State<ProfileScreen>
   getListViewItem() {
     return Expanded(
       child: Container(
-        color: isDarkMode() ? black : transparent,
+        //color: isDarkMode() ? black : transparent,
         child: DefaultTabController(
             length: 3,
             child: Column(children: [
               SizedBox(
-                height: 1.5.h,
+                height: 2.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  getTab("Basic", 30, 0),
-                  getTab("Staff", 30, 1),
-                  getTab("Service", 30, 2),
+                  getTab(ScreenTitle.basic, 30, 0),
+                  getTab(ScreenTitle.staff, 30, 1),
+                  getTab(ScreenTitle.service, 30, 2),
                 ],
               ),
               Expanded(
@@ -150,14 +189,19 @@ class _ProfileScreenState extends State<ProfileScreen>
         padding: EdgeInsets.only(top: 11, bottom: 11),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color:
-                controller.currentPage == index || isDarkMode() ? white : black,
+            color: controller.currentPage == index
+                ? black
+                : isDarkMode()
+                    ? Colors.white
+                    : Colors.white,
             boxShadow: [
               BoxShadow(
-                blurRadius: 10,
-                spreadRadius: 0.1,
-                color: Colors.black.withOpacity(.1),
-              )
+                  color: isDarkMode()
+                      ? Colors.white.withOpacity(0.2)
+                      : Colors.black.withOpacity(0.2),
+                  spreadRadius: 0.1,
+                  blurRadius: 10,
+                  offset: Offset(0.5, 0.5)),
             ],
             borderRadius: BorderRadius.circular(50)),
         child: Row(
@@ -169,13 +213,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fontSize: 12.2.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
-                  color: controller.currentPage == index || isDarkMode()
-                      ? black
-                      : white,
+                  color: controller.currentPage == index
+                      ? white
+                      : isDarkMode()
+                          ? black
+                          : black,
                 )),
           ],
         ),
       ),
     );
+  }
+
+  void initDataSet(BuildContext context) async {
+    SignInData? retrievedObject = await UserPreferences().getSignInInfo();
+
+    name = retrievedObject!.userName.toString();
+
+    setState(() {});
   }
 }
