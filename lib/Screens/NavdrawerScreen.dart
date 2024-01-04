@@ -1,30 +1,32 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/CourseScreen.dart';
-import 'package:booking_app/Screens/CustomerScreen.dart';
-import 'package:booking_app/Screens/OfferForm.dart';
-import 'package:booking_app/Screens/ProductScreen.dart';
+import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
+import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
-import 'package:booking_app/Screens/StudentCourseScreen.dart';
-import 'package:booking_app/Screens/StudentScreen.dart';
-import 'package:booking_app/controllers/NavdrawerController.dart';
-import 'package:booking_app/Screens/ServiceScreen.dart';
-import 'package:booking_app/Screens/SettingScreen.dart';
-import 'package:booking_app/controllers/home_screen_controller.dart';
+import 'package:booking_app/Screens/StudentScreen/StudentCourseScreen.dart';
+import 'package:booking_app/Screens/StudentScreen/StudentScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/screens/ChangepasswordScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
+import 'package:booking_app/screens/ChangepasswordScreen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import '../controllers/NavdrawerController.dart';
+import '../controllers/home_screen_controller.dart';
 import '../core/Common/toolbar.dart';
 import '../core/Common/util.dart';
-import 'ExpertScreen.dart';
+import 'CourseScreen/CourseScreen.dart';
+import 'ExpertScreen/ExpertScreen.dart';
+import 'OfferScreen/OfferForm.dart';
+import 'ProductScreen/ProductScreen.dart';
+import 'ServiceScreen/ServiceScreen.dart';
+import 'SettingScreen/SettingScreen.dart';
 
 class NavdrawerScreen extends StatefulWidget {
   const NavdrawerScreen({super.key});
@@ -36,6 +38,7 @@ class NavdrawerScreen extends StatefulWidget {
 class _NavdrawerScreenState extends State<NavdrawerScreen> {
   String name = '';
   String number = '';
+  String profile = "";
   var controller = Get.put(NavdrawerController());
 
   @override
@@ -108,19 +111,35 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
   buildHeader(BuildContext context) => FadeInLeft(
         from: 50,
         child: Container(
-          padding: EdgeInsets.only(top: 5.5.h, left: 3.2.h, bottom: 2.h),
+          padding: EdgeInsets.only(top: 5.5.h, left: 2.5.h, bottom: 2.h),
           color: isDarkMode() ? black : Colors.grey[900],
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
-                radius: 4.5.h,
+                radius: 3.7.h,
                 backgroundColor: Colors.white,
-                child: SvgPicture.asset(
-                  Asset.profileimg,
-                  fit: BoxFit.cover,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        'http://192.168.1.7:4000/uploads/$profile', // URL of the expert's image
+                    placeholder: (context, url) =>
+                        SvgPicture.asset(Asset.profileimg),
+                    errorWidget: (context, url, error) =>
+                        SvgPicture.asset(Asset.profileimg),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
+              // CircleAvatar(
+              //   radius: 4.5.h,
+              //   backgroundColor: Colors.white,
+              //   child: SvgPicture.asset(
+              //     Asset.profileimg,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               SizedBox(width: 2.5.w),
               Container(
                 margin: EdgeInsets.only(bottom: 1.5.h, top: 1.8.h),
@@ -188,7 +207,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(Settings());
                 }),
-                setNavtile(Asset.multipleUser, "Customer", () {
+                setNavtile(Asset.multipleUser, "Customer", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CustomerScreen());
                 }),
@@ -196,21 +215,25 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 //   Get.find<HomeScreenController>().closeDrawer();
                 //   Get.to(AppointmentBookingScreen());
                 // }),
-                setNavtile(Asset.product, "Product", () {
+                setNavtile(Asset.product, "Product", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductScreen());
                 }),
-                setNavtile(Asset.product, "Student", () {
+                setNavtile(Asset.product, "Student", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentScreen());
                 }),
-                setNavtile(Asset.product, "Student Course", () {
+                setNavtile(Asset.product, "Student Course", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentCourseScreen());
                 }),
-                setNavtile(Asset.product, "Product Selling", () {
+                setNavtile(Asset.product, "Product Selling", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductSellingScreen());
+                }),
+                setNavtile(Asset.product, "Package Screen", isBig: true, () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(PackageScreen());
                 }),
                 SizedBox(height: 11.5.h),
                 setNavtile(Asset.share, ScreenTitle.signOut, () {
@@ -225,6 +248,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
 
     name = retrievedObject!.userName.toString();
     number = retrievedObject.contactNo1.toString();
+    profile = retrievedObject.profilePic ?? "";
 
     setState(() {});
   }

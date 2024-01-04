@@ -232,6 +232,58 @@ class addProductController extends GetxController {
     }
   }
 
+  void UpdateProduct(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      logcat("PRODUCTTTTTT", {
+        "name": NameCtr.text.toString().trim(),
+        "description": descriptionCtr.text.toString().trim(),
+        "image_id": uploadImageId.value.toString(),
+        "product_category_id": categoryId.value.toString(),
+        "amount": int.parse(amountCtr.text),
+        "qty": int.parse(quantityCtr.text),
+      });
+      loadingIndicator.show(context, '');
+      var response = await Repository.post({
+        "name": NameCtr.text.toString().trim(),
+        "description": descriptionCtr.text.toString().trim(),
+        "image_id": uploadImageId.value.toString(),
+        "product_category_id": categoryId.value.toString(),
+        "amount": int.parse(amountCtr.text),
+        "qty": int.parse(quantityCtr.text),
+      }, ApiUrl.editProduct, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back();
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   Widget setCategoryList() {
     return Obx(() {
       if (isCategoryTypeApiCall.value == true)

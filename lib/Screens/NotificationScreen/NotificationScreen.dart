@@ -1,5 +1,5 @@
-import 'package:booking_app/Screens/PreviousNotificationScreen.dart';
-import 'package:booking_app/Screens/UpcomingNotificationScreen.dart';
+import 'package:booking_app/Screens/NotificationScreen/PreviousNotificationScreen.dart';
+import 'package:booking_app/Screens/NotificationScreen/UpcomingNotificationScreen.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';

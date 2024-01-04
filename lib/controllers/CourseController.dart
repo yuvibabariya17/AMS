@@ -47,7 +47,7 @@ class CourseController extends GetxController {
         return;
       }
       var response = await Repository.delete(
-          {}, '${ApiUrl.deleteVendorService}/$itemId',
+          {}, '${ApiUrl.deleteCourse}/$itemId',
           allowHeader: true);
       isCourseTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
@@ -130,7 +130,7 @@ class CourseController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.service,
+        title: "Course",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

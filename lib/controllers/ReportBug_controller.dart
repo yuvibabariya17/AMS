@@ -416,56 +416,54 @@ class ReportBugController extends GetxController {
 
   actionClickUploadVideo(context, {bool? isCamera}) async {
     await ImagePicker()
-        .pickImage(
+        .pickVideo(
             //source: ImageSource.gallery,
             source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
+            maxDuration: Duration(seconds: 60))
         .then((file) async {
       if (file != null) {
         //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        // CroppedFile? croppedFile = await ImageCropper().cropImage(
+        //     sourcePath: file.path,
+        //     maxWidth: 1080,
+        //     maxHeight: 1080,
+        //     cropStyle: CropStyle.rectangle,
+        //     aspectRatioPresets: Platform.isAndroid
+        //         ? [
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ]
+        //         : [
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio5x3,
+        //             CropAspectRatioPreset.ratio5x4,
+        //             CropAspectRatioPreset.ratio7x5,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ],
+        //     uiSettings: [
+        //       AndroidUiSettings(
+        //           toolbarTitle: 'Crop Image',
+        //           cropGridColor: primaryColor,
+        //           toolbarColor: primaryColor,
+        //           statusBarColor: primaryColor,
+        //           toolbarWidgetColor: white,
+        //           activeControlsWidgetColor: primaryColor,
+        //           initAspectRatio: CropAspectRatioPreset.original,
+        //           lockAspectRatio: false),
+        //       IOSUiSettings(
+        //         title: 'Crop Image',
+        //         cancelButtonTitle: 'Cancel',
+        //         doneButtonTitle: 'Done',
+        //         aspectRatioLockEnabled: false,
+        //       ),
+        //     ],
+        //     aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
         if (file != null) {
           uploadVideoFile = File(file.path).obs;
           videoctr.text = file.name;

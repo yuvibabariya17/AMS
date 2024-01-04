@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:booking_app/Screens/DashboardScreen.dart';
+import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';

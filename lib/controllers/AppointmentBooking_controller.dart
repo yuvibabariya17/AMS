@@ -8,7 +8,7 @@ import '../Config/apicall_constant.dart';
 import '../Models/CommonModel.dart';
 import '../Models/ServiceModel.dart';
 import '../Models/sign_in_form_validation.dart';
-import '../Screens/TimeSlot.dart';
+import '../Screens/BookingAppointmentScreen/TimeSlot.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
 import '../core/themes/font_constant.dart';

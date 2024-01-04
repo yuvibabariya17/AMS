@@ -82,7 +82,7 @@ class CustomerController extends GetxController {
         return;
       }
       var response = await Repository.delete(
-          {}, '${ApiUrl.deleteVendorService}/$itemId',
+          {}, '${ApiUrl.deleteCustomer}/$itemId',
           allowHeader: true);
       isCustomerTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
@@ -130,7 +130,7 @@ class CustomerController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.service,
+        title: "Customer",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

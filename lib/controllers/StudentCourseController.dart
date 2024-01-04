@@ -206,7 +206,7 @@ class StudentCourseController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.reportBug,
+        title: "Student Course",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

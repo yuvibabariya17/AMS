@@ -1,6 +1,4 @@
-import 'package:booking_app/Screens/OfferScreen/PackageBasedOffer.dart';
 import 'package:booking_app/Screens/OfferScreen/ProductBasedOffer.dart';
-import 'package:booking_app/Screens/OfferScreen/ServiceBasedOffer.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';

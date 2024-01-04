@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:booking_app/Screens/DashboardScreen.dart';
+import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

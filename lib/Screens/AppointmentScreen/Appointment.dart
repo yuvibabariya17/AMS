@@ -1,6 +1,6 @@
 import 'package:booking_app/Models/notification_model.dart';
 import 'package:booking_app/Models/product.dart';
-import 'package:booking_app/Screens/AppointmentBooking.dart';
+import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
 import 'package:booking_app/controllers/Appointment_screen_controller.dart';

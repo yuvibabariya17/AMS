@@ -153,8 +153,8 @@ class _SpecialRegionsCalendarState extends SampleViewState {
           (date.weekday.isEven ? 14 : 9) + random.nextInt(3));
       appointments.add(Appointment(
           subject: subjectCollection[random.nextInt(7)],
-          startTime: startDate,
-          endTime: startDate.add(const Duration(hours: 1)),
+          startTime: startDate.add(const Duration(minutes: 30)),
+          endTime: startDate.add(const Duration(minutes: 30)),
           color: colorCollection[random.nextInt(9)]));
     }
 
@@ -209,7 +209,10 @@ class _SpecialRegionsCalendarState extends SampleViewState {
       specialRegions: regions,
       timeRegionBuilder: _getSpecialRegionWidget,
       timeSlotViewSettings: const TimeSlotViewSettings(
-          minimumAppointmentDuration: Duration(minutes: 30)),
+        minimumAppointmentDuration: Duration(minutes: 30),
+        startHour: 6, // Set the start hour to 6 am
+        endHour: 24,
+      ),
       dataSource: dataSource,
     );
   }

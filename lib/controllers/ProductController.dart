@@ -50,7 +50,7 @@ class ProductController extends GetxController {
         await Repository.post({}, ApiUrl.productList, allowHeader: true);
     isProductTypeApiList.value = false;
     var responseData = jsonDecode(response.body);
-    logcat(" CUSTOMER RESPONSE", jsonEncode(responseData));
+    logcat(" PRODUCT RESPONSE", jsonEncode(responseData));
 
     if (response.statusCode == 200) {
       var data = ProductListModel.fromJson(responseData);
@@ -58,7 +58,7 @@ class ProductController extends GetxController {
         state.value = ScreenState.apiSuccess;
         productObjectList.clear();
         productObjectList.addAll(data.data);
-        logcat("CUSTOMER RESPONSE", jsonEncode(productObjectList));
+        logcat("PRODUCT RESPONSE", jsonEncode(productObjectList));
       } else {
         showDialogForScreen(context, responseData['message'], callback: () {});
       }
@@ -82,11 +82,11 @@ class ProductController extends GetxController {
         return;
       }
       var response = await Repository.delete(
-          {}, '${ApiUrl.deleteVendorService}/$itemId',
+          {}, '${ApiUrl.deleteProduct}/$itemId',
           allowHeader: true);
       isProductTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+      logcat(" DELETE RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = DeleteSuccessModel.fromJson(responseData);
@@ -96,7 +96,7 @@ class ProductController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(productObjectList));
+          logcat("DELETE RESPONSE", jsonEncode(productObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -130,7 +130,7 @@ class ProductController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.service,
+        title: "Product",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

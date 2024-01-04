@@ -48,6 +48,8 @@ class expertcontroller extends GetxController {
           expertObjectList.clear();
           expertObjectList.addAll(data.data);
           logcat("EXPERT RESPONSE", jsonEncode(expertObjectList));
+
+          
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

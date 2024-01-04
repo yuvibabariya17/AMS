@@ -79,7 +79,7 @@ class AddexpertController extends GetxController {
 
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  var model = ValidationModel(null, null, isValidate: false).obs;
+  var Model = ValidationModel(null, null, isValidate: false).obs;
   var ExpertModel = ValidationModel(null, null, isValidate: false).obs;
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
   var ProfileModel = ValidationModel(null, null, isValidate: false).obs;
@@ -87,13 +87,17 @@ class AddexpertController extends GetxController {
   var EndTimeModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    if (model.value.isValidate == false) {
+    if (Model.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (ExpertModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (PriceModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
     } else if (ProfileModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (StartTimeModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (EndTimeModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (PriceModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -115,7 +119,7 @@ class AddexpertController extends GetxController {
   }
 
   void validateServicename(String? val) {
-    model.update((model) {
+    Model.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Service Name";
         model.isValidate = false;
@@ -143,7 +147,7 @@ class AddexpertController extends GetxController {
   }
 
   void validateProfile(String? val) {
-    PriceModel.update((model) {
+    ProfileModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Profile Pic";
         model.isValidate = false;
@@ -212,6 +216,51 @@ class AddexpertController extends GetxController {
         "service_id": serviceId.value.toString(),
         "amount": int.parse(Pricectr.text),
       }, ApiUrl.addExpert, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void UpdateExpert(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
+      var response = await Repository.put({
+        "name": Expertctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": serviceId.value.toString(),
+        "amount": int.parse(Pricectr.text),
+      }, ApiUrl.editExpert, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

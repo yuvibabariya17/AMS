@@ -17,6 +17,8 @@ class StaffController extends GetxController {
   RxString expertId = "".obs;
   RxBool isLoading = false.obs;
 
+  RxString profilePic = "".obs;
+
   RxString message = "".obs;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxList memberList = [].obs;

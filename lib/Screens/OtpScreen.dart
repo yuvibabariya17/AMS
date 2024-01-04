@@ -1,13 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
+import 'package:booking_app/Screens/LoginScreen/LoginScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/screens/DashboardScreen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-
 import '../core/Common/Common.dart';
 import '../core/Common/OTP_Textfield.dart';
 import '../core/constants/strings.dart';
@@ -193,7 +192,9 @@ class _OtpScreenState extends State<OtpScreen> {
                             height: 6.h,
                             child: ElevatedButton(
                                 onPressed: () {
-                                  Get.to(dashboard());
+                                  Get.offAll(LoginScreen());
+
+                                  // Get.to(dashboard());
                                   // Navigator.push(
                                   //     context,
                                   //     MaterialPageRoute(

@@ -4,19 +4,19 @@
 
 import 'dart:convert';
 
-ServiceModel serviceModelFromJson(String str) =>
-    ServiceModel.fromJson(json.decode(str));
+ServiceModelNew serviceModelFromJson(String str) =>
+    ServiceModelNew.fromJson(json.decode(str));
 
-String serviceModelToJson(ServiceModel data) => json.encode(data.toJson());
+String serviceModelToJson(ServiceModelNew data) => json.encode(data.toJson());
 
-class ServiceModel {
+class ServiceModelNew {
   int status;
   String message;
   List<ServiceList> data;
   int totalRecord;
   int totalPages;
 
-  ServiceModel({
+  ServiceModelNew({
     required this.status,
     required this.message,
     required this.data,
@@ -24,7 +24,8 @@ class ServiceModel {
     required this.totalPages,
   });
 
-  factory ServiceModel.fromJson(Map<String, dynamic> json) => ServiceModel(
+  factory ServiceModelNew.fromJson(Map<String, dynamic> json) =>
+      ServiceModelNew(
         status: json["status"],
         message: json["message"],
         data: List<ServiceList>.from(

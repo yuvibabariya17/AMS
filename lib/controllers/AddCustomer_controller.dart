@@ -7,10 +7,8 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Config/apicall_constant.dart';
-
 import '../Models/UploadImageModel.dart';
 import '../Models/sign_in_form_validation.dart';
-
 import '../api_handle/Repository.dart';
 import '../core/utils/log.dart';
 import '../dialogs/dialogs.dart';
@@ -36,6 +34,7 @@ class AddCustomerController extends GetxController {
       Contact1Node,
       Contact2Node,
       WhatsappNode,
+      descNode,
       EmailNode;
 
   late TextEditingController Customerctr,
@@ -46,6 +45,7 @@ class AddCustomerController extends GetxController {
       Contact1ctr,
       Contact2ctr,
       Whatsappctr,
+      descctr,
       Emailctr;
 
   @override
@@ -59,6 +59,7 @@ class AddCustomerController extends GetxController {
     Contact2Node = FocusNode();
     WhatsappNode = FocusNode();
     EmailNode = FocusNode();
+    descNode = FocusNode();
 
     Customerctr = TextEditingController();
     Profilectr = TextEditingController();
@@ -69,6 +70,7 @@ class AddCustomerController extends GetxController {
     Contact2ctr = TextEditingController();
     Whatsappctr = TextEditingController();
     Emailctr = TextEditingController();
+    descctr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();
@@ -95,6 +97,7 @@ class AddCustomerController extends GetxController {
   var contact2Model = ValidationModel(null, null, isValidate: false).obs;
   var whatsappModel = ValidationModel(null, null, isValidate: false).obs;
   var emailModel = ValidationModel(null, null, isValidate: false).obs;
+  var descriptionModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
     if (customerModel.value.isValidate == false) {
@@ -117,6 +120,8 @@ class AddCustomerController extends GetxController {
     else if (whatsappModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (emailModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (descriptionModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -261,6 +266,20 @@ class AddCustomerController extends GetxController {
     enableSignUpButton();
   }
 
+  void validateDescription(String? val) {
+    descriptionModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Description";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
 
@@ -357,6 +376,66 @@ class AddCustomerController extends GetxController {
         "address": Addressctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
       }, ApiUrl.addCustomer, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back();
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void UpdateCustomer(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+      logcat("CUSTOMERADD", {
+        "name": Customerctr.text.toString().trim(),
+        "contact_no": Contact1ctr.text.toString().trim(),
+        "whatsapp_no": Whatsappctr.text.toString().trim(),
+        "pic": uploadImageId.value.toString(),
+        "email": Emailctr.text.toString().trim(),
+        "date_of_birth": Dobctr.text.toString().trim(),
+        "date_of_anniversary": Doactr.text.toString().trim(),
+        "address": Addressctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim()
+      });
+
+      var response = await Repository.post({
+        "name": Customerctr.text.toString().trim(),
+        "contact_no": Contact1ctr.text.toString().trim(),
+        "whatsapp_no": Whatsappctr.text.toString().trim(),
+        "email": Emailctr.text.toString().trim(),
+        "pic": uploadImageId.value.toString(),
+        "date_of_birth": Dobctr.text.toString().trim(),
+        "date_of_anniversary": Doactr.text.toString().trim(),
+        "address": Addressctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim()
+      }, ApiUrl.editCustomer, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

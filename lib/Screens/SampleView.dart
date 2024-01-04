@@ -136,8 +136,8 @@ class LocalizationSampleViewState<T extends LocalizationSampleView>
 
   Widget _buildDirectionalityWidget() {
     return Directionality(
-            textDirection: model.textDirection,
-            child: buildSample(context) ?? Container());
+        textDirection: model.textDirection,
+        child: buildSample(context) ?? Container());
   }
 
   /// Method to get the widget's color based on the widget state

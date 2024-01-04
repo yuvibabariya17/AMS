@@ -43,6 +43,7 @@ class AddserviceController extends GetxController {
       approxtimeNode,
       sittingNode,
       durationNode,
+      intervalNode,
       daysNode;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
@@ -52,6 +53,7 @@ class AddserviceController extends GetxController {
       approxtimectr,
       sittingctr,
       durationctr,
+      intervalctr,
       daysctr;
 
   final formKey = GlobalKey<FormState>();
@@ -65,6 +67,7 @@ class AddserviceController extends GetxController {
     sittingNode = FocusNode();
     durationNode = FocusNode();
     daysNode = FocusNode();
+    intervalNode = FocusNode();
 
     Servicectr = TextEditingController();
     Expertctr = TextEditingController();
@@ -73,6 +76,7 @@ class AddserviceController extends GetxController {
     sittingctr = TextEditingController();
     durationctr = TextEditingController();
     daysctr = TextEditingController();
+    intervalctr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();
@@ -90,6 +94,7 @@ class AddserviceController extends GetxController {
   var sittingModel = ValidationModel(null, null, isValidate: false).obs;
   var durationModel = ValidationModel(null, null, isValidate: false).obs;
   var daysModel = ValidationModel(null, null, isValidate: false).obs;
+  var intervalModel = ValidationModel(null, null, isValidate: false).obs;
 
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
 
@@ -105,6 +110,8 @@ class AddserviceController extends GetxController {
     } else if (durationModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (daysModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (intervalModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -129,6 +136,20 @@ class AddserviceController extends GetxController {
     ExpertModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Expert Name";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateIntervalDuration(String? val) {
+    intervalModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Sitting Days Interval";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -282,10 +303,11 @@ class AddserviceController extends GetxController {
       logcat("RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = ServiceModel.fromJson(responseData);
+        var data = ServiceModelNew.fromJson(responseData);
         if (data.status == 1) {
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
+
           logcat("RESPONSE", jsonEncode(serviceObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
@@ -315,6 +337,65 @@ class AddserviceController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
+  void UpdateVendorServiceApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("ADDDDD SERVICE", {
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": ServiceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      });
+      var response = await Repository.put({
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": ServiceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      }, ApiUrl.editVendorService, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   void addServiceApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     // try {
@@ -329,7 +410,7 @@ class AddserviceController extends GetxController {
     var retrievedObject = await UserPreferences().getSignInInfo();
     logcat("ADDDDD SERVICE", {
       "vendor_id": retrievedObject!.id.toString().trim(),
-      "service_id": Servicectr.text.toString().trim(),
+      "service_id": ServiceId.toString().trim(),
       "fees": int.parse(Pricectr.text),
       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
       "oppox_setting": sittingctr.text.toString().trim(),
@@ -339,7 +420,7 @@ class AddserviceController extends GetxController {
     });
     var response = await Repository.post({
       "vendor_id": retrievedObject.id.toString().trim(),
-      "service_id": Servicectr.text.toString().trim(),
+      "service_id": ServiceId.toString().trim(),
       "fees": int.parse(Pricectr.text),
       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
       "oppox_setting": sittingctr.text.toString().trim(),

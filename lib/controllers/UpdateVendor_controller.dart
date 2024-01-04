@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -320,6 +321,60 @@ class UpdateVendorController extends GetxController {
   RxString uploadBreacherId = ''.obs;
   RxString uploadProfileId = ''.obs;
   RxString uploadPropertyId = ''.obs;
+
+  // void addServiceApi(context) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   // try {
+  //   if (networkManager.connectionType == 0) {
+  //     loadingIndicator.hide(context);
+  //     showDialogForScreen(context, Connection.noConnection, callback: () {
+  //       Get.back();
+  //     });
+  //     return;
+  //   }
+  //   loadingIndicator.show(context, '');
+  //   var retrievedObject = await UserPreferences().getSignInInfo();
+  //   // logcat("ADDDDD SERVICE", {
+  //   //   "vendor_id": retrievedObject!.id.toString().trim(),
+  //   //   "service_id": ServiceId.toString().trim(),
+  //   //   "fees": int.parse(Pricectr.text),
+  //   //   "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+  //   //   "oppox_setting": sittingctr.text.toString().trim(),
+  //   //   "oppox_setting_duration":
+  //   //       sitingTime.replaceAll(' ', '').toString().trim(),
+  //   //   "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+  //   // });
+  //   var response = await Repository.post({
+  //     "contact_no1": contact_onectr.toString().trim(),
+  //     "email_id": emailctr.toString().trim(),
+  //     "vendor_type": Vendornamectr.toString().trim(),
+  //     "company_name": companyctr.toString().trim(),
+  //     "company_address": addressctr.toString().trim(),
+  //     "contact_no2": contact_twoctr.toString().trim(),
+  //     "whatsapp_no": whatsappctr.toString().trim(),
+  //     "address": com,
+  //     "contact_person_name": "Minni",
+  //     "area_id": "647858c499ee0654f9cdec0a"
+  //   }, ApiUrl.addService, allowHeader: true);
+  //   loadingIndicator.hide(context);
+  //   var data = jsonDecode(response.body);
+  //   logcat("RESPOSNE", data);
+  //   if (response.statusCode == 200) {
+  //     var responseDetail = CommonModel.fromJson(data);
+  //     if (responseDetail.status == 1) {
+  //       showDialogForScreen(context, responseDetail.message.toString(),
+  //           callback: () {
+  //         Get.back(result: true);
+  //       });
+  //     } else {
+  //       showDialogForScreen(context, responseDetail.message.toString(),
+  //           callback: () {});
+  //     }
+  //   } else {
+  //     state.value = ScreenState.apiError;
+  //     showDialogForScreen(context, data['message'].toString(), callback: () {});
+  //   }
+  // }
 
   void getImageApi(context) async {
     var loadingIndicator = LoadingProgressDialog();

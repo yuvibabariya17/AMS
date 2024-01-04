@@ -57,11 +57,12 @@ void showMessage(
                       child: Text(
                         positiveButton,
                         style: TextStyle(
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 12.sp
-                                : 6.sp,
-                            fontFamily: fontMedium,
-                            color: black),
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 6.sp,
+                          fontFamily: fontMedium,
+                          color: isDarkMode() ? white : black,
+                        ),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -195,7 +196,7 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
 }
 
 Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
-    {Function? cameraClick, Function? galleryClick}) {
+    {Function? cameraClick, Function? galleryClick, bool? isVideo}) {
   return showGeneralDialog(
       barrierColor: black.withOpacity(0.6),
       transitionBuilder: (context, a1, a2, widget) {
@@ -205,19 +206,19 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
               opacity: a1.value,
               child: CupertinoAlertDialog(
                 title: Text(
-                  "Photo",
-                  style: const TextStyle(
+                  isVideo == true ? "Video" : "Photo",
+                  style: TextStyle(
                     fontSize: 18,
-                    color: black,
+                    color: isDarkMode() ? white : black,
                     fontFamily: fontBold,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 content: Text(
-                  "Select Photo From",
-                  style: const TextStyle(
+                  isVideo == true ? "Select Video From" : "Select Photo From",
+                  style: TextStyle(
                     fontSize: 13,
-                    color: black,
+                    color: isDarkMode() ? white : black,
                     fontFamily: fontMedium,
                   ),
                 ),
@@ -233,7 +234,7 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                       "Camera",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: black,
+                          color: isDarkMode() ? white : black,
                           fontFamily: fontRegular,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 13.sp
@@ -264,7 +265,7 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                       "Gallery",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: black,
+                          color: isDarkMode() ? white : black,
                           fontFamily: fontRegular,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 13.sp

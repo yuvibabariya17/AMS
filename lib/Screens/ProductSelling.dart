@@ -1,16 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/controllers/ProductSellingController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
-import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:booking_app/custom_componannt/form_inputs.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -141,6 +140,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             controller: controller.coursectr,
                                             hintLabel: "Select Product",
                                             wantSuffix: true,
+                                            isReadOnly: true,
                                             isdown: true,
                                             onChanged: (val) {
                                               controller.validateProduct(val);
@@ -196,225 +196,217 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                 SizedBox(
                                   height: 5.h,
                                 ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: BouncingScrollPhysics(),
-                                  child: DataTable(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors
-                                              .black), // Adjust color as needed
-                                    ),
-                                    columns: [
-                                      DataColumn(label: Text('No.')),
-                                      DataColumn(label: Text('Category')),
-                                      DataColumn(label: Text('Brand')),
-                                      DataColumn(label: Text('Name')),
-                                      DataColumn(label: Text('Qty')),
-                                      DataColumn(label: Text('Action')),
-                                    ],
-                                    rows: [
-                                      DataRow(cells: [
-                                        DataCell(Text('1')),
-                                        DataCell(Text('Hair')),
-                                        DataCell(Text('Loreal Paris')),
-                                        DataCell(Text('Hair Serum')),
-                                        DataCell(Text('5')),
-                                        DataCell(
-                                          PopupMenuButton(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  15.0))),
-                                              onSelected: (value) {
-                                                // if (value == "delete") {
-                                                //   logcat("REPORT_ID",
-                                                //       uploadList.reportId);
-                                                //   controller.deleteUploadReport(
-                                                //       context,
-                                                //       uploadList.reportId,
-                                                //       controller
-                                                //           .customerId.value
-                                                //           .toString());
-                                                // } else if (value == "update") {
-                                                //   controller.addUpload(
-                                                //       context,
-                                                //       false,
-                                                //       uploadList.reportId,
-                                                //       prescriptionName:
-                                                //           uploadList.fullName,
-                                                //       reportType:
-                                                //           uploadList.reportType,
-                                                //       updateReportTypeId:
-                                                //           uploadList
-                                                //               .reportTypeID,
-                                                //       reportImage: uploadList
-                                                //           .reportImage,
-                                                //       prescriptionId: uploadList
-                                                //           .prescriptionId);
-                                                // } else {
-                                                //   // shareImage(
-                                                //   //   context,
-                                                //   //   uploadList.reportImage,
-                                                //   //   DateFormat(Date.dateFormat).format(
-                                                //   //       DateTime.parse(uploadList
-                                                //   //           .prescriptionDate
-                                                //   //           .toString())),
-                                                //   //   uploadList.doctorName,
-                                                //   //   uploadList.complaint,
-                                                //   //   uploadList.reportType,
-                                                //   // );
-                                                // }
-                                              },
-                                              itemBuilder: (BuildContext bc) {
-                                                return [
-                                                  setPopupMenuItem('Edit',
-                                                      "Edit", Icons.add),
-                                                  setPopupMenuItem('delete',
-                                                      "Delete", Icons.delete),
-                                                ];
-                                              }),
-                                        ),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Text('2')),
-                                        DataCell(Text('Hair')),
-                                        DataCell(Text('Loreal Paris')),
-                                        DataCell(Text('Hair Serum')),
-                                        DataCell(Text('5')),
-                                        DataCell(
-                                          PopupMenuButton(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  15.0))),
-                                              onSelected: (value) {
-                                                // if (value == "delete") {
-                                                //   logcat("REPORT_ID",
-                                                //       uploadList.reportId);
-                                                //   controller.deleteUploadReport(
-                                                //       context,
-                                                //       uploadList.reportId,
-                                                //       controller
-                                                //           .customerId.value
-                                                //           .toString());
-                                                // } else if (value == "update") {
-                                                //   controller.addUpload(
-                                                //       context,
-                                                //       false,
-                                                //       uploadList.reportId,
-                                                //       prescriptionName:
-                                                //           uploadList.fullName,
-                                                //       reportType:
-                                                //           uploadList.reportType,
-                                                //       updateReportTypeId:
-                                                //           uploadList
-                                                //               .reportTypeID,
-                                                //       reportImage: uploadList
-                                                //           .reportImage,
-                                                //       prescriptionId: uploadList
-                                                //           .prescriptionId);
-                                                // } else {
-                                                //   // shareImage(
-                                                //   //   context,
-                                                //   //   uploadList.reportImage,
-                                                //   //   DateFormat(Date.dateFormat).format(
-                                                //   //       DateTime.parse(uploadList
-                                                //   //           .prescriptionDate
-                                                //   //           .toString())),
-                                                //   //   uploadList.doctorName,
-                                                //   //   uploadList.complaint,
-                                                //   //   uploadList.reportType,
-                                                //   // );
-                                                // }
-                                              },
-                                              itemBuilder: (BuildContext bc) {
-                                                return [
-                                                  setPopupMenuItem('Edit',
-                                                      "Edit", Icons.add),
-                                                  setPopupMenuItem('delete',
-                                                      "Delete", Icons.delete),
-                                                ];
-                                              }),
-                                        ),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Text('3')),
-                                        DataCell(Text('Hair')),
-                                        DataCell(Text('Loreal Paris')),
-                                        DataCell(Text('Hair Serum')),
-                                        DataCell(Text('5')),
-                                        DataCell(
-                                          PopupMenuButton(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  15.0))),
-                                              onSelected: (value) {
-                                                // if (value == "delete") {
-                                                //   logcat("REPORT_ID",
-                                                //       uploadList.reportId);
-                                                //   controller.deleteUploadReport(
-                                                //       context,
-                                                //       uploadList.reportId,
-                                                //       controller
-                                                //           .customerId.value
-                                                //           .toString());
-                                                // } else if (value == "update") {
-                                                //   controller.addUpload(
-                                                //       context,
-                                                //       false,
-                                                //       uploadList.reportId,
-                                                //       prescriptionName:
-                                                //           uploadList.fullName,
-                                                //       reportType:
-                                                //           uploadList.reportType,
-                                                //       updateReportTypeId:
-                                                //           uploadList
-                                                //               .reportTypeID,
-                                                //       reportImage: uploadList
-                                                //           .reportImage,
-                                                //       prescriptionId: uploadList
-                                                //           .prescriptionId);
-                                                // } else {
-                                                //   // shareImage(
-                                                //   //   context,
-                                                //   //   uploadList.reportImage,
-                                                //   //   DateFormat(Date.dateFormat).format(
-                                                //   //       DateTime.parse(uploadList
-                                                //   //           .prescriptionDate
-                                                //   //           .toString())),
-                                                //   //   uploadList.doctorName,
-                                                //   //   uploadList.complaint,
-                                                //   //   uploadList.reportType,
-                                                //   // );
-                                                // }
-                                              },
-                                              itemBuilder: (BuildContext bc) {
-                                                return [
-                                                  setPopupMenuItem('Edit',
-                                                      "Edit", Icons.add),
-                                                  setPopupMenuItem('delete',
-                                                      "Delete", Icons.delete),
-                                                ];
-                                              }),
-                                        ),
-                                      ]),
-                                      // Add more DataRow entries as needed
-                                    ],
-                                  ),
-                                ),
                               ],
                             )),
                       ),
                     ),
                   ]),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 7.h, left: 7.w),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                child: DataTable(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: isDarkMode()
+                            ? white
+                            : black), // Adjust color as needed
+                  ),
+                  columns: [
+                    DataColumn(label: Text('No.')),
+                    DataColumn(label: Text('Category')),
+                    DataColumn(label: Text('Brand')),
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Qty')),
+                    DataColumn(label: Text('Action')),
+                  ],
+                  rows: [
+                    DataRow(cells: [
+                      DataCell(Text('1')),
+                      DataCell(Text('Hair')),
+                      DataCell(Text('Loreal Paris')),
+                      DataCell(Text('Hair Serum')),
+                      DataCell(Text('5')),
+                      DataCell(
+                        PopupMenuButton(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                            onSelected: (value) {
+                              // if (value == "delete") {
+                              //   logcat("REPORT_ID",
+                              //       uploadList.reportId);
+                              //   controller.deleteUploadReport(
+                              //       context,
+                              //       uploadList.reportId,
+                              //       controller
+                              //           .customerId.value
+                              //           .toString());
+                              // } else if (value == "update") {
+                              //   controller.addUpload(
+                              //       context,
+                              //       false,
+                              //       uploadList.reportId,
+                              //       prescriptionName:
+                              //           uploadList.fullName,
+                              //       reportType:
+                              //           uploadList.reportType,
+                              //       updateReportTypeId:
+                              //           uploadList
+                              //               .reportTypeID,
+                              //       reportImage: uploadList
+                              //           .reportImage,
+                              //       prescriptionId: uploadList
+                              //           .prescriptionId);
+                              // } else {
+                              //   // shareImage(
+                              //   //   context,
+                              //   //   uploadList.reportImage,
+                              //   //   DateFormat(Date.dateFormat).format(
+                              //   //       DateTime.parse(uploadList
+                              //   //           .prescriptionDate
+                              //   //           .toString())),
+                              //   //   uploadList.doctorName,
+                              //   //   uploadList.complaint,
+                              //   //   uploadList.reportType,
+                              //   // );
+                              // }
+                            },
+                            itemBuilder: (BuildContext bc) {
+                              return [
+                                setPopupMenuItem('Edit', "Edit", Icons.add),
+                                setPopupMenuItem(
+                                    'delete', "Delete", Icons.delete),
+                              ];
+                            }),
+                      ),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('2')),
+                      DataCell(Text('Hair')),
+                      DataCell(Text('Loreal Paris')),
+                      DataCell(Text('Hair Serum')),
+                      DataCell(Text('5')),
+                      DataCell(
+                        PopupMenuButton(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                            onSelected: (value) {
+                              // if (value == "delete") {
+                              //   logcat("REPORT_ID",
+                              //       uploadList.reportId);
+                              //   controller.deleteUploadReport(
+                              //       context,
+                              //       uploadList.reportId,
+                              //       controller
+                              //           .customerId.value
+                              //           .toString());
+                              // } else if (value == "update") {
+                              //   controller.addUpload(
+                              //       context,
+                              //       false,
+                              //       uploadList.reportId,
+                              //       prescriptionName:
+                              //           uploadList.fullName,
+                              //       reportType:
+                              //           uploadList.reportType,
+                              //       updateReportTypeId:
+                              //           uploadList
+                              //               .reportTypeID,
+                              //       reportImage: uploadList
+                              //           .reportImage,
+                              //       prescriptionId: uploadList
+                              //           .prescriptionId);
+                              // } else {
+                              //   // shareImage(
+                              //   //   context,
+                              //   //   uploadList.reportImage,
+                              //   //   DateFormat(Date.dateFormat).format(
+                              //   //       DateTime.parse(uploadList
+                              //   //           .prescriptionDate
+                              //   //           .toString())),
+                              //   //   uploadList.doctorName,
+                              //   //   uploadList.complaint,
+                              //   //   uploadList.reportType,
+                              //   // );
+                              // }
+                            },
+                            itemBuilder: (BuildContext bc) {
+                              return [
+                                setPopupMenuItem('Edit', "Edit", Icons.add),
+                                setPopupMenuItem(
+                                    'delete', "Delete", Icons.delete),
+                              ];
+                            }),
+                      ),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('3')),
+                      DataCell(Text('Hair')),
+                      DataCell(Text('Loreal Paris')),
+                      DataCell(Text('Hair Serum')),
+                      DataCell(Text('5')),
+                      DataCell(
+                        PopupMenuButton(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                            onSelected: (value) {
+                              // if (value == "delete") {
+                              //   logcat("REPORT_ID",
+                              //       uploadList.reportId);
+                              //   controller.deleteUploadReport(
+                              //       context,
+                              //       uploadList.reportId,
+                              //       controller
+                              //           .customerId.value
+                              //           .toString());
+                              // } else if (value == "update") {
+                              //   controller.addUpload(
+                              //       context,
+                              //       false,
+                              //       uploadList.reportId,
+                              //       prescriptionName:
+                              //           uploadList.fullName,
+                              //       reportType:
+                              //           uploadList.reportType,
+                              //       updateReportTypeId:
+                              //           uploadList
+                              //               .reportTypeID,
+                              //       reportImage: uploadList
+                              //           .reportImage,
+                              //       prescriptionId: uploadList
+                              //           .prescriptionId);
+                              // } else {
+                              //   // shareImage(
+                              //   //   context,
+                              //   //   uploadList.reportImage,
+                              //   //   DateFormat(Date.dateFormat).format(
+                              //   //       DateTime.parse(uploadList
+                              //   //           .prescriptionDate
+                              //   //           .toString())),
+                              //   //   uploadList.doctorName,
+                              //   //   uploadList.complaint,
+                              //   //   uploadList.reportType,
+                              //   // );
+                              // }
+                            },
+                            itemBuilder: (BuildContext bc) {
+                              return [
+                                setPopupMenuItem('Edit', "Edit", Icons.add),
+                                setPopupMenuItem(
+                                    'delete', "Delete", Icons.delete),
+                              ];
+                            }),
+                      ),
+                    ]),
+                    // Add more DataRow entries as needed
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -537,7 +529,8 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                        margin:
+                            EdgeInsets.only(left: 5.w, right: 5.w, top: 1.5.h),
                         child: Column(children: [
                           FadeInDown(
                             child: AnimatedSize(
@@ -672,7 +665,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                               children: [
                                 Icon(
                                   Icons.info,
-                                  color: primaryColor,
+                                  color: black,
                                   size: 3.h,
                                 ),
                                 Container(
@@ -698,11 +691,10 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                             child: Container(
                               height: 13.w,
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(top: 5),
                               width: SizerUtil.width,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3.w),
-                                color: primaryColor,
+                                color: black,
                                 boxShadow: [
                                   BoxShadow(
                                       color: primaryColor.withOpacity(0.3),
@@ -712,6 +704,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                 ],
                               ),
                               child: Text(
+                                textAlign: TextAlign.center,
                                 "Submit",
                                 style: TextStyle(
                                     color: Colors.white,

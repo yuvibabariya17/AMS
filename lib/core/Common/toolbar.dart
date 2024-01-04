@@ -160,7 +160,7 @@ getCommonToolbar(title, Function? callback) {
                   title,
                   style: TextStyle(
                       fontFamily: fontBold,
-                      color: isDarkMode() ? white : headingTextColor,
+                      color: isDarkMode() ? white : black,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp),
                 ),

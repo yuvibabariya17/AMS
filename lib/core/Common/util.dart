@@ -103,14 +103,21 @@ Widget setNavtile(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            svg,
-            color: isDarkMode() ? white : white,
-            height: isBig == true ? 3.2.h : 2.3.h,
-            width: 1.5.w,
-          ),
+          isBig == true
+              ? SvgPicture.asset(
+                  svg,
+                  color: isDarkMode() ? white : white,
+                  height: 2.5.h,
+                  width: 1.5.h,
+                )
+              : SvgPicture.asset(
+                  svg,
+                  color: isDarkMode() ? white : white,
+                  height: 2.1.h,
+                  width: 1.5.h,
+                ),
           SizedBox(
-            width: isBig == true ? 2.w : 3.5.w,
+            width: isBig == true ? 3.w : 3.5.w,
           ),
           Text(title,
               style: TextStyle(

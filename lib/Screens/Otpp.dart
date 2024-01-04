@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:telephony/telephony.dart';
-
 import '../core/constants/assets.dart';
 import '../core/themes/font_constant.dart';
 
