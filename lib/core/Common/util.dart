@@ -20,7 +20,7 @@ Widget getDivider() {
 
 Widget dividerforSetting() {
   return Divider(
-    height: 1.5,
+    height: 1.h,
     thickness: 1,
     indent: 2.h,
     endIndent: 2.h,
@@ -134,6 +134,7 @@ Widget setNavtile(
 Widget settingListtile(
     String svg, String title, Function callback, String arrow) {
   return ListTile(
+    
     leading: title == "Report Bug"
         ? SvgPicture.asset(
             svg,
@@ -157,6 +158,7 @@ Widget settingListtile(
     onTap: () {
       callback();
     },
+
     trailing: SvgPicture.asset(
       arrow,
       color: isDarkMode() ? white : black,

@@ -529,6 +529,71 @@ class UpdateVendorController extends GetxController {
     }
   }
 
+
+   void UpdateVendor(context, String customerId) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+      // logcat("CUSTOMERADD", {
+      //   "name": Customerctr.text.toString().trim(),
+      //   "contact_no": Contact1ctr.text.toString().trim(),
+      //   "whatsapp_no": Whatsappctr.text.toString().trim(),
+      //   "pic": uploadImageId.value.toString(),
+      //   "email": Emailctr.text.toString().trim(),
+      //   "date_of_birth": Dobctr.text.toString().trim(),
+      //   "date_of_anniversary": Doactr.text.toString().trim(),
+      //   "address": Addressctr.text.toString().trim(),
+      //   "vendor_id": retrievedObject!.id.toString().trim()
+      // });
+
+      var response = await Repository.post(
+       {
+    "contact_no1": contact_onectr.toString().trim(),
+    "email_id": emailctr.toString().trim(),
+    "vendor_type": "vendor",
+    "company_name": companyctr.toString().trim(),
+    "company_address": addressctr.toString().trim(),
+    "contact_no2": contact_twoctr.toString().trim(),
+    "whatsapp_no": whatsappctr.toString().trim(),
+    "address": addressctr.toString().trim(),
+    "contact_person_name": fullName.toString().trim(),
+    "area_id": "647858c499ee0654f9cdec0a"
+
+      },  '${ApiUrl.editCourse}/$customerId',allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back();
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+
   void getProperty(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');

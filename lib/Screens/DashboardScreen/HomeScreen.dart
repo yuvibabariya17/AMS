@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   physics: ClampingScrollPhysics(),
                   child: Column(children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 5.h, top: 3.h, left: 3.h),
+                      margin: EdgeInsets.only(bottom: 5.h, top: 2.5.h, left: 3.h),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -303,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DatePicker(
                         DateTime.now(),
                         width: 7.h,
-                        height: 10.h,
+                        height: 12.h,
                         controller: controller.datePickerController,
                         initialSelectedDate: DateTime.now(),
                         selectionColor: isDarkMode() ? white : black,

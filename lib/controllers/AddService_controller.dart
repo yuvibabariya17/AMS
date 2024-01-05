@@ -337,7 +337,7 @@ class AddserviceController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
-  void UpdateVendorServiceApi(context) async {
+  void UpdateVendorServiceApi(context, String serviceId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -369,7 +369,7 @@ class AddserviceController extends GetxController {
         "oppox_setting_duration":
             sitingTime.replaceAll(' ', '').toString().trim(),
         "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-      }, ApiUrl.editVendorService, allowHeader: true);
+      },  '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

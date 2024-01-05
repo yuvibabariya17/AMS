@@ -1,7 +1,7 @@
 class ApiUrl {
   static const buildApiUrl = "http://192.168.1.9:4000/api/";
 
-  static const ImgUrl = "http://192.168.1.7:4000/uploads/";
+  static const ImgUrl = "http://192.168.1.9:4000/uploads/";
 
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";

@@ -286,6 +286,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       padding: EdgeInsets.only(
                         left: 1.5.w,
                         right: 1.5.w,
+                        top: 0.5.h
                       ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,

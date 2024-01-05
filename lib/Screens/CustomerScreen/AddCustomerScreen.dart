@@ -39,8 +39,28 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       controller.Emailctr.text = widget.editCustomer!.email.toString();
       // Set other fields as well
     }
+       if(widget.isEdit == true){
+       validateFields() ;
+    }
     controller.addcustomerApi(context);
     super.initState();
+  }
+
+
+   void validateFields() {
+    // Validate all fields here
+    controller.validateCustomerName(controller.Customerctr.text);
+    controller.validateProfile(controller.Profilectr.text);
+    controller.validateDob(controller.Dobctr.text);
+    controller.validateDoa(controller.Doactr.text);
+    controller.validateAddree(controller.Addressctr.text);
+    controller.validateContact1(controller.Contact1ctr.text);
+    controller.validateContact2(controller.Contact2ctr.text);
+    controller.validateWhatsapp(controller.Whatsappctr.text);
+    controller.validateEmail(controller.Emailctr.text);
+    controller.validateDescription(controller.descctr.text);
+    
+    // Add validation for other fields as needed
   }
 
   @override
@@ -384,18 +404,36 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                               SizedBox(
                                 height: 5.h,
                               ),
-                              FadeInUp(
+
+                                FadeInUp(
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                      if (controller.isFormInvalidate.value ==
-                                          true) {
-                                        controller.addcustomerApi(context);
-                                      }
+                                    
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateCustomer(context, widget.editCustomer!.id );
+                                        } else {
+                                          // Call AddCourseApi API
+                                          controller.addcustomerApi(context);
+                                        }
+                                    
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);
                                   }))
+                              // FadeInUp(
+                              //     from: 50,
+                              //     child: Obx(() {
+                              //       return getFormButton(() {
+                              //         if (controller.isFormInvalidate.value ==
+                              //             true) {
+                              //           controller.addcustomerApi(context);
+                              //         }
+                              //       }, CommonConstant.submit,
+                              //           validate:
+                              //               controller.isFormInvalidate.value);
+                              //     }))
                             ],
                           )),
                     ),

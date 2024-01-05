@@ -38,8 +38,32 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           widget.editCourse!.thumbnailUrlInfo.image.toString();
       // Set other fields as well
     }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
+    // widget.isEdit == true ?
+    // validateFields() : Container();
     getCourseApi(context);
     super.initState();
+
+    // controller.validateCourse(controller.Studentctr.text );
+    // controller.validateFee(controller.Feesctr.text );
+    // controller.validateStartDate(controller.Durationctr.text );
+    // controller.validateDescription(controller.Descctr.text );
+    // controller.validateNotes(controller.Notesctr.text );
+    //  controller.validateId(controller.Idctr.text );
+  }
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateStudent(controller.Studentctr.text);
+    controller.validateFee(controller.Feesctr.text);
+    controller.validateStartDate(controller.Durationctr.text);
+    controller.validateDescription(controller.Descctr.text);
+    controller.validateNotes(controller.Notesctr.text);
+    controller.validateId(controller.Idctr.text);
+
+    // Add validation for other fields as needed
   }
 
   @override
@@ -351,14 +375,31 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                      if (controller.isFormInvalidate.value ==
-                                          true) {
-                                        controller.AddCourseApi(context);
-                                      }
+                                    
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateCourse(context, widget.editCourse!.id );
+                                        } else {
+                                          // Call AddCourseApi API
+                                          controller.AddCourseApi(context);
+                                        }
+                                    
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);
                                   }))
+                              // FadeInUp(
+                              //     from: 50,
+                              //     child: Obx(() {
+                              //       return getFormButton(() {
+                              //         if (controller.isFormInvalidate.value ==
+                              //             true) {
+                              //           controller.AddCourseApi(context);
+                              //         }
+                              //       }, CommonConstant.submit,
+                              //           validate:
+                              //               controller.isFormInvalidate.value);
+                              //     }))
                             ],
                           )),
                     ),

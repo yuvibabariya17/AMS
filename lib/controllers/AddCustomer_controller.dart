@@ -401,7 +401,7 @@ class AddCustomerController extends GetxController {
     }
   }
 
-  void UpdateCustomer(context) async {
+  void UpdateCustomer(context, String customerId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -435,7 +435,7 @@ class AddCustomerController extends GetxController {
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
-      }, ApiUrl.editCustomer, allowHeader: true);
+      },  '${ApiUrl.editCourse}/$customerId',allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

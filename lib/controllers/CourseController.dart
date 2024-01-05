@@ -51,7 +51,7 @@ class CourseController extends GetxController {
           allowHeader: true);
       isCourseTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+      logcat(" DELETE COURSE ", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = DeleteSuccessModel.fromJson(responseData);
@@ -61,7 +61,7 @@ class CourseController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(courseObjectList));
+          logcat(" DELETE COURSE ", jsonEncode(courseObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -99,7 +99,7 @@ class CourseController extends GetxController {
         await Repository.post({}, ApiUrl.courselist, allowHeader: true);
     isCourseTypeApiList.value = false;
     var responseData = jsonDecode(response.body);
-    logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+    logcat(" COURSE LIST", jsonEncode(responseData));
 
     if (response.statusCode == 200) {
       var data = CourseListModel.fromJson(responseData);
@@ -107,7 +107,7 @@ class CourseController extends GetxController {
         state.value = ScreenState.apiSuccess;
         courseObjectList.clear();
         courseObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(courseObjectList));
+        logcat("COURSE LIST", jsonEncode(courseObjectList));
       } else {
         showDialogForScreen(context, responseData['message'], callback: () {});
       }

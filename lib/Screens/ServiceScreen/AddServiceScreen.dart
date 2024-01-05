@@ -34,8 +34,21 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     controller.sittingctr.text = "";
     controller.durationctr.text = "";
     controller.daysctr.text = "";
-
+    
     super.dispose();
+  }
+
+   void validateFields() {
+    // Validate all fields here
+    controller.validateServicename(controller.Servicectr.text);
+    controller.validateApproxtime(controller.approxtimectr.text);
+    controller.validateSitting(controller.sittingctr.text);
+    controller.validateDuration(controller.durationctr.text);
+    controller.validatePrice(controller.Pricectr.text);
+    controller.validateDays(controller.daysctr.text);
+    controller.validateIntervalDuration(controller.intervalctr.text);
+    
+    // Add validation for other fields as needed
   }
 
   @override
@@ -51,6 +64,10 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
           widget.editService!.serviceInfo!.name.toString();
       // Set other fields as well
     }
+     if(widget.isEdit == true){
+       validateFields() ;
+    }
+
     controller.ServiceListApi(context);
     super.initState();
   }
@@ -435,39 +452,41 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                               height: 4.h,
                             ),
 
-                            FadeInUp(
-                                from: 50,
-                                child: Obx(() {
-                                  return getFormButton(() {
-                                    if (widget.isEdit == true) {
-                                      // Call UpdateVendorserviceApi here
-                                      controller.UpdateVendorServiceApi(
-                                          context);
-                                    } else {
-                                      // Call addServiceApi here
-                                      if (controller.isFormInvalidate.value ==
-                                          true) {
-                                        controller.addServiceApi(context);
-                                      }
-                                    }
-                                  }, CommonConstant.submit,
-                                      validate: widget.isEdit == true
-                                          ? true
-                                          : controller.isFormInvalidate.value);
-                                }))
+
+                              FadeInUp(
+                                  from: 50,
+                                  child: Obx(() {
+                                    return getFormButton(() {
+                                    
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateVendorServiceApi(context, widget.editService!.id );
+                                        } else {
+                                          // Call AddCourseApi API
+                                          controller.addServiceApi(context);
+                                        }
+                                    
+                                    }, CommonConstant.submit,
+                                        validate:
+                                            controller.isFormInvalidate.value);
+                                  }))
 
                             // FadeInUp(
                             //     from: 50,
                             //     child: Obx(() {
                             //       return getFormButton(() {
-                            //         if (controller.isFormInvalidate.value ==
-                            //             true) {
-                            //           controller.addServiceApi(context);
-                            //         }
+
+                            //          if (controller.isFormInvalidate.value ==
+                            //               true) {
+                            //             controller.addServiceApi(context);
+                            //           }
+                                  
                             //       }, CommonConstant.submit,
-                            //           validate:
-                            //               controller.isFormInvalidate.value);
+                            //           validate: 
+                            //                controller.isFormInvalidate.value);
                             //     }))
+
+                         
                           ],
                         )),
                   ),

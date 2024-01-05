@@ -267,7 +267,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         'http://192.168.1.7:4000/uploads/${data.uploadInfo.image}';
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -289,7 +289,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.8.h,
+                                  height: 10.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -310,7 +310,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 10.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -350,16 +350,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                   style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 15.5.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
-                              height:
-                                  5.0), // You can adjust the spacing as needed
+                          // SizedBox(
+                          //     height:
+                          //         5.0), // You can adjust the spacing as needed
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,

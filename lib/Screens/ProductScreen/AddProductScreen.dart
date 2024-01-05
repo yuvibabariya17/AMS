@@ -32,7 +32,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
     controller.amountCtr.text = "";
     controller.quantityCtr.text = "";
 
+
+
     super.dispose();
+  }
+  void validateFields() {
+    // Validate all fields here
+    controller.validatename(controller.NameCtr.text);
+    controller.validateProductimg(controller.productimgCtr.text);
+    controller.validateDescription(controller.descriptionCtr.text);
+    controller.validateCategory(controller.categroryCtr.text);
+    controller.validateAmount(controller.amountCtr.text);
+    controller.validateQuantity(controller.quantityCtr.text);
+   
+    
+    // Add validation for other fields as needed
   }
 
   @override
@@ -47,6 +61,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
           widget.editProduct!.productCategoryInfo.name.toString();
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
+      if(widget.isEdit == true ){
+        validateFields();
+      }
 
       // Set other fields as well
     }

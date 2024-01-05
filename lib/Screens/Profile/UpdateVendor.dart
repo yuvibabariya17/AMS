@@ -419,7 +419,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                               height: 6.h,
                               child: getButton(() {
                                 if (controller.isFormInvalidate.value) {
-                                  // Get.to(Signup2());
+                                Get.to(UpdateVendor());
                                 }
                               })),
                         ],

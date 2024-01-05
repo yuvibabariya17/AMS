@@ -33,6 +33,11 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
 
       controller.Pricectr.text = widget.editExpert!.amount.toString();
 
+        if(widget.isEdit == true){
+       validateFields() ;
+    }
+
+
       // Set other fields as well
     }
     controller.getServiceList(context);
@@ -46,6 +51,19 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
     controller.Pricectr.text = "";
 
     super.dispose();
+  }
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateExpertname(controller.Servicectr.text);
+    controller.validateProfile(controller.Profilectr.text);
+    controller.validateStartTime(controller.Startctr.text);
+    controller.validateEndTime(controller.Endctr.text);
+    controller.validatePrice(controller.Pricectr.text);
+    controller.validateServicename(controller.Servicectr.text);
+  
+    
+    // Add validation for other fields as needed
   }
 
   @override
@@ -399,18 +417,37 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                           SizedBox(
                             height: 4.h,
                           ),
-                          FadeInUp(
-                              from: 50,
-                              child: Obx(() {
-                                return getFormButton(() {
-                                  if (controller.isFormInvalidate.value ==
-                                      true) {
-                                    controller.addExpertApi(context);
-                                  }
-                                }, CommonConstant.submit,
-                                    validate:
-                                        controller.isFormInvalidate.value);
-                              }))
+
+
+                            FadeInUp(
+                                  from: 50,
+                                  child: Obx(() {
+                                    return getFormButton(() {
+                                    
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateExpert(context, widget.editExpert!.id );
+                                        } else {
+                                          // Call AddCourseApi API
+                                          controller.addExpertApi(context);
+                                        }
+                                    
+                                    }, CommonConstant.submit,
+                                        validate:
+                                            controller.isFormInvalidate.value);
+                                  }))
+                          // FadeInUp(
+                          //     from: 50,
+                          //     child: Obx(() {
+                          //       return getFormButton(() {
+                          //         if (controller.isFormInvalidate.value ==
+                          //             true) {
+                          //           controller.addExpertApi(context);
+                          //         }
+                          //       }, CommonConstant.submit,
+                          //           validate:
+                          //               controller.isFormInvalidate.value);
+                          //     }))
                         ],
                       )),
                 ),

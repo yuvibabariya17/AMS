@@ -177,7 +177,7 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: isDarkMode() ? black : const Color(0XFFe3ecf3),
+          backgroundColor: isDarkMode() ? black : white,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(32.0))),
           title: Padding(

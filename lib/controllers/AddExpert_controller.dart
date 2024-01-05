@@ -242,7 +242,7 @@ class AddexpertController extends GetxController {
     }
   }
 
-  void UpdateExpert(context) async {
+  void UpdateExpert(context, String expertId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -260,7 +260,7 @@ class AddexpertController extends GetxController {
         "vendor_id": retrievedObject!.id.toString().trim(),
         "service_id": serviceId.value.toString(),
         "amount": int.parse(Pricectr.text),
-      }, ApiUrl.editExpert, allowHeader: true);
+      },  '${ApiUrl.editCourse}/$expertId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

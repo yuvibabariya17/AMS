@@ -264,7 +264,7 @@ class _CourseScreenState extends State<CourseScreen> {
                         controller.filteredCourseObjectList[index];
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -286,7 +286,7 @@ class _CourseScreenState extends State<CourseScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.8.h,
+                                  height: 10.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -298,7 +298,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: data.thumbnailUrlInfo.image,
+                                      imageUrl:'http://192.168.1.9:4000/uploads/${data.thumbnailUrlInfo.image}',
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -307,7 +307,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 10.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),

@@ -299,7 +299,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                         controller.filteredExpertObjectList[index];
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w,top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -341,7 +341,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
 
                               //CLICPRRECT
                               Container(
-                                  height: 10.8.h,
+                                  height: 10.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -362,7 +362,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 10.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),

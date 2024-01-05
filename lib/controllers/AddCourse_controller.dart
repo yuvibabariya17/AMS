@@ -11,7 +11,6 @@ import 'package:booking_app/Models/UploadImageModel.dart';
 
 import '../Config/apicall_constant.dart';
 import '../Models/CourseModel.dart';
-import '../Models/SigninModel.dart';
 import '../Models/sign_in_form_validation.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
@@ -253,11 +252,11 @@ class AddCourseController extends GetxController {
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
         "description": Descctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim()
+        "vendor_id": retrievedObject.id.toString().trim()
       }, ApiUrl.addCourse, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
-      logcat("RESPOSNE", data);
+      logcat("ADDCOURSE", data);
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
@@ -281,9 +280,9 @@ class AddCourseController extends GetxController {
     }
   }
 
-  void UpdateCourse(context) async {
+  void UpdateCourse(context, String courseId) async {
     var loadingIndicator = LoadingProgressDialog();
-    try {
+   // try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -308,8 +307,8 @@ class AddCourseController extends GetxController {
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
         "description": Descctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim()
-      }, ApiUrl.editCourse, allowHeader: true);
+        "vendor_id": retrievedObject.id.toString().trim()
+      }, '${ApiUrl.editCourse}/$courseId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -329,11 +328,11 @@ class AddCourseController extends GetxController {
         showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
+    // } catch (e) {
+    //   logcat("Exception", e);
+    //   showDialogForScreen(context, Connection.servererror, callback: () {});
+    //   loadingIndicator.hide(context);
+    // }
   }
 
   RxBool isCourseTypeApiCall = false.obs;
