@@ -1,4 +1,3 @@
-import 'package:booking_app/Screens/Profile/UpdateVendor.dart';
 import 'package:booking_app/controllers/ProfileInformationController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/assets.dart';
@@ -12,7 +11,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileInformationScreen extends StatefulWidget {
@@ -115,7 +113,7 @@ class _ProfileInformationScreenState extends State<ProfileInformationScreen> {
       margin: EdgeInsets.only(top: 3.h, left: 8.w, right: 8.w, bottom: 1.h),
       child: Container(
         padding:
-            EdgeInsets.only(top: 1.5.h, left: 6.w, right: 4.w, bottom: 1.5.h),
+            EdgeInsets.only(top: 3.h, left: 6.w, right: 4.w, bottom: 3.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -132,14 +130,14 @@ class _ProfileInformationScreenState extends State<ProfileInformationScreen> {
                       color: isDarkMode() ? Colors.grey : black,
                       fontSize: 13.5.sp),
                 ),
-                IconButton(
-                    alignment: Alignment.topRight,
-                    onPressed: () {
-                      Get.to(UpdateVendor());
-                    },
-                    icon: SvgPicture.asset(Asset.edit,
-                        height: 2.3.h,
-                        color: isDarkMode() ? Colors.grey : Colors.grey))
+                // IconButton(
+                //     alignment: Alignment.topRight,
+                //     onPressed: () {
+                //       Get.to(UpdateVendor());
+                //     },
+                //     icon: SvgPicture.asset(Asset.edit,
+                //         height: 2.3.h,
+                //         color: isDarkMode() ? Colors.grey : Colors.grey))
               ],
             ),
             SizedBox(height: 0.5.h),

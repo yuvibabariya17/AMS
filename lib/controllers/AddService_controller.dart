@@ -249,6 +249,7 @@ class AddserviceController extends GetxController {
         serviceObjectList,
         ListView.builder(
           shrinkWrap: true,
+          
           itemCount: serviceObjectList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(

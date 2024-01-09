@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
+import 'package:booking_app/Screens/AddProductCategory.dart';
+import 'package:booking_app/Screens/ProductList.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentScreen.dart';
@@ -179,11 +181,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
             padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
-                setNavtile(Asset.course, "Course", isBig: true, () {
-                  // controller.closeDrawer();
-                  Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(CourseScreen());
-                }),
+                
                 setNavtile(Asset.serviceNav, "Service", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
@@ -191,6 +189,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 setNavtile(Asset.adduser, "Expert", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ExpertScreen());
+                }),
+                setNavtile(Asset.course, "Course", isBig: true, () {
+                  // controller.closeDrawer();
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(CourseScreen());
                 }),
                 setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
                     () {
@@ -235,7 +238,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(PackageScreen());
                 }),
-                SizedBox(height: 11.5.h),
+                  setNavtile(Asset.product, "Product Category", isBig: true, () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(ProductListScreen());
+                }),
+                SizedBox(height: 9.5.h),
                 setNavtile(Asset.share, ScreenTitle.signOut, () {
                   PopupDialogsforSignOut(context);
                 }),

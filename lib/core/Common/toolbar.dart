@@ -587,6 +587,7 @@ Widget commonBackPress(callback) {
         left: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 10.w),
     child: GestureDetector(
       onTap: () {
+        print("CLICK");
         callback();
       },
       child: Container(

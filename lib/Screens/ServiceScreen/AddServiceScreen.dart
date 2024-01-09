@@ -120,9 +120,9 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
                                         wantSuffix: true,
                                         isDropdown: true,
-                                        onAddBtn: () {
-                                          //Get.to(AddExpertScreen());
-                                        },
+                                        // onAddBtn: () {
+                                        //   //Get.to(AddExpertScreen());
+                                        // },
                                         isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
@@ -453,38 +453,38 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                             ),
 
 
-                              FadeInUp(
-                                  from: 50,
-                                  child: Obx(() {
-                                    return getFormButton(() {
+                              // FadeInUp(
+                              //     from: 50,
+                              //     child: Obx(() {
+                              //       return getFormButton(() {
                                     
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
-                                          controller.UpdateVendorServiceApi(context, widget.editService!.id );
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.addServiceApi(context);
-                                        }
+                              //           if (widget.isEdit == true) {
+                              //             // Call updateCourse API
+                              //             controller.UpdateVendorServiceApi(context, widget.editService!.id );
+                              //           } else {
+                              //             // Call AddCourseApi API
+                              //             controller.addServiceApi(context);
+                              //           }
                                     
-                                    }, CommonConstant.submit,
-                                        validate:
-                                            controller.isFormInvalidate.value);
-                                  }))
+                              //       }, CommonConstant.submit,
+                              //           validate:
+                              //               controller.isFormInvalidate.value);
+                              //     }))
 
-                            // FadeInUp(
-                            //     from: 50,
-                            //     child: Obx(() {
-                            //       return getFormButton(() {
+                            FadeInUp(
+                                from: 50,
+                                child: Obx(() {
+                                  return getFormButton(() {
 
-                            //          if (controller.isFormInvalidate.value ==
-                            //               true) {
-                            //             controller.addServiceApi(context);
-                            //           }
+                                     if (controller.isFormInvalidate.value ==
+                                          true) {
+                                        controller.addServiceApi(context);
+                                      }
                                   
-                            //       }, CommonConstant.submit,
-                            //           validate: 
-                            //                controller.isFormInvalidate.value);
-                            //     }))
+                                  }, CommonConstant.submit,
+                                      validate: 
+                                           controller.isFormInvalidate.value);
+                                }))
 
                          
                           ],

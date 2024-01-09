@@ -166,6 +166,8 @@ class _SpecialRegionsCalendarState extends SampleViewState {
     return Row(children: <Widget>[
       Expanded(
           child: Container(
+            height: SizerUtil.height,
+            
               margin: EdgeInsets.only(left: 5.w),
               color: white,
               child: _getSpecialRegionCalendar(
@@ -202,8 +204,13 @@ class _SpecialRegionsCalendarState extends SampleViewState {
   SfCalendar _getSpecialRegionCalendar(
       {List<TimeRegion>? regions, _DataSource? dataSource}) {
     return SfCalendar(
+      
       // showNavigationArrow: model.isWebFullView,
       controller: calendarController,
+      allowAppointmentResize: true,
+        showCurrentTimeIndicator: true,
+        initialDisplayDate: DateTime(2024),
+
       showDatePickerButton: true,
       allowedViews: _allowedViews,
       specialRegions: regions,

@@ -62,151 +62,67 @@ class _SettingsState extends State<Settings> {
                 height: 3.h,
               ),
               Container(
-                margin: EdgeInsets.only(left: 2.h),
+                margin: EdgeInsets.only(left: 8.w, right: 8.w),
                 child: ListView(
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    settingListtile(Asset.user, SettingConstant.profile_info,
-                        () {
+                    settingRow(Asset.user, SettingConstant.profile_info, () {
                       Get.to(ProfileInformationScreen());
                     }, Asset.rightbackbutton),
                     dividerforSetting(),
-                    settingListtile(Asset.invite, SettingConstant.invite_frd,
-                        () {
+                    settingRow(Asset.invite, SettingConstant.invite_frd, () {
                       Get.to(InviteFriendScreen());
                     }, Asset.rightbackbutton),
-
-                    // ListTile(
-                    //   // horizontalTitleGap: 0.1,
-                    //   // leading: data.icon,
-                    //   // title: Container(
-                    //   //     // margin: EdgeInsets.only(right: 1.h),
-                    //   //     child: Text(
-                    //   //   data.Name,
-                    //   //   style: TextStyle(
-                    //   //       fontFamily: fontUrbanistRegular,
-                    //   //       fontWeight: FontWeight.w400,
-                    //   //       fontSize: 15.sp),
-                    //   // )),
-                    //   // trailing:
-                    //   //     data.button != null ? data.button : null),
-                    //   leading: SvgPicture.asset(
-                    //     Asset.user,
-                    //     color: isDarkMode() ? white : black,
-                    //   ),
-                    //   horizontalTitleGap: 0.1,
-                    //   visualDensity:
-                    //       VisualDensity(horizontal: 0, vertical: -1),
-                    //   title: GestureDetector(
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => ProfileScreen()));
-                    //     },
-                    //     child: Text(
-                    //       Strings.profile_info,
-                    //       style: TextStyle(
-                    //           fontSize: 14.sp,
-                    //           fontFamily: opensansMedium,
-                    //           fontWeight: FontWeight.w400),
-                    //     ),
-                    //   ),
-                    //   trailing: IconButton(
-                    //       onPressed: () {
-                    //         Get.to(ProfileScreen());
-                    //         // Navigator.push(
-                    //         //     context,
-                    //         //     MaterialPageRoute(
-                    //         //         builder: (context) => ProfileScreen()));
-                    //       },
-                    //       icon: SvgPicture.asset(
-                    //         Asset.rightbackbutton,
-                    //         color: isDarkMode() ? white : black,
-                    //       )),
-                    // ),
-                    // ListTile(
-                    //   leading: SvgPicture.asset(
-                    //     Asset.adduser,
-                    //     color: isDarkMode() ? white : black,
-                    //   ),
-                    //   visualDensity:
-                    //       VisualDensity(horizontal: 0, vertical: -1),
-                    //   horizontalTitleGap: 0.1,
-                    //   title: GestureDetector(
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) =>
-                    //                   InviteFriendScreen()));
-                    //     },
-                    //     child: Text(
-                    //       Strings.invite_frd,
-                    //       style: TextStyle(
-                    //           fontFamily: opensansMedium,
-                    //           fontSize: 14.sp,
-                    //           fontWeight: FontWeight.w400),
-                    //     ),
-                    //   ),
-                    //   trailing: IconButton(
-                    //       onPressed: () {
-                    //         Navigator.push(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //                 builder: (context) =>
-                    //                     InviteFriendScreen()));
-                    //       },
-                    //       icon: SvgPicture.asset(
-                    //         Asset.rightbackbutton,
-                    //         color: isDarkMode() ? white : black,
-                    //       )),
-                    //   // trailing: TextButton(
-                    //   //     onPressed: () {
-                    //   //       Navigator.push(
-                    //   //           context,
-                    //   //           MaterialPageRoute(
-                    //   //               builder: (context) => referal()));
-                    //   //     },
-                    //   //     child: SvgPicture.asset(Asset.rightbackbutton)),
-                    // ),
                     dividerforSetting(),
-                    ListTile(
-                        leading: SvgPicture.asset(
+                    Row(
+                      children: [
+                        SvgPicture.asset(
                           Asset.moon,
                           color: isDarkMode() ? white : black,
                         ),
-                        horizontalTitleGap: 0.1,
-                        visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -1),
-                        title: Text(
-                          SettingConstant.change_theme,
-                          style: TextStyle(
-                              fontFamily: opensansMedium,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
+                        Container(
+                          margin: EdgeInsets.only(left: 5.5.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                SettingConstant.change_theme,
+                                style: TextStyle(
+                                  fontFamily: opensansMedium,
+                                  fontSize: 13.5.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        trailing: Container(
-                          //padding: EdgeInsets.only(right: 2.h),
+                        Spacer(),
+
+
+
+                        Container(
+                          width: 20.w,
+                          height: 1.h,
+                          // margin: const EdgeInsets.only(
+                          //     right: 16.0), // Adjust right margin as needed
                           child: CupertinoSwitch(
+                             
                             value: isDarkMode() ? true : false,
                             onChanged: (value) async {
+                              print("Switch Click");
                               state = value;
                               setState(() {
                                 _isDarkMode = _isDarkMode == 0 ? 1 : 0;
                               });
                               await getStorage.write(
                                   GetStorageKey.IS_DARK_MODE, _isDarkMode);
-                              //setState(() {});
                               Get.find<ThemeController>()
                                   .updateState(_isDarkMode);
                               Get.find<ThemeController>().update();
                               print(
                                   getStorage.read(GetStorageKey.IS_DARK_MODE));
-                              setState(
-                                () {},
-                              );
+                              setState(() {});
                             },
                             thumbColor: isDarkMode()
                                 ? CupertinoColors.black
@@ -215,86 +131,75 @@ class _SettingsState extends State<Settings> {
                                 ? CupertinoColors.white
                                 : CupertinoColors.black,
                             trackColor: Colors.grey,
+                         
                           ),
-                          // child: CupertinoSwitch(
-                          //   value: state,
-                          //   onChanged: (value) {
-                          //     state = value;
-                          //     setState(
-                          //       () {},
-                          //     );
-                          //   },
-                          //   thumbColor: CupertinoColors.white,
-                          //   activeColor: CupertinoColors.black,
-                          //   trackColor: Colors.grey,
-                          // ),
-                        )),
+                        ),
+                     
+                      ],
+                    ),
+
+                    // ListTile(
+                    //     leading: SvgPicture.asset(
+                    //       Asset.moon,
+                    //       color: isDarkMode() ? white : black,
+                    //     ),
+                    //     horizontalTitleGap: 0.1,
+                    //     visualDensity:
+                    //         VisualDensity(horizontal: 0, vertical: -1),
+                    //     title: Text(
+                    //       SettingConstant.change_theme,
+                    //       style: TextStyle(
+                    //           fontFamily: opensansMedium,
+                    //           fontSize: 14.sp,
+                    //           fontWeight: FontWeight.w400),
+                    //     ),
+                    //     trailing: Container(
+                    //       //padding: EdgeInsets.only(right: 2.h),
+                    //       child: CupertinoSwitch(
+                    //         value: isDarkMode() ? true : false,
+                    //         onChanged: (value) async {
+                    //           state = value;
+                    //           setState(() {
+                    //             _isDarkMode = _isDarkMode == 0 ? 1 : 0;
+                    //           });
+                    //           await getStorage.write(
+                    //               GetStorageKey.IS_DARK_MODE, _isDarkMode);
+                    //           //setState(() {});
+                    //           Get.find<ThemeController>()
+                    //               .updateState(_isDarkMode);
+                    //           Get.find<ThemeController>().update();
+                    //           print(
+                    //               getStorage.read(GetStorageKey.IS_DARK_MODE));
+                    //           setState(
+                    //             () {},
+                    //           );
+                    //         },
+                    //         thumbColor: isDarkMode()
+                    //             ? CupertinoColors.black
+                    //             : CupertinoColors.white,
+                    //         activeColor: isDarkMode()
+                    //             ? CupertinoColors.white
+                    //             : CupertinoColors.black,
+                    //         trackColor: Colors.grey,
+                    //       ),
+
+                    //     )),
+
                     dividerforSetting(),
-                    settingListtile(Asset.bug, "Report Bug", () {
+                    settingRow(Asset.bug, "Report Bug", () {
                       Get.to(ReportBugScreen());
                     }, Asset.rightbackbutton),
                     dividerforSetting(),
-                    settingListtile(Asset.rate_us, SettingConstant.rate_us,
-                        () {}, Asset.rightbackbutton),
+                    settingRow(Asset.rate_us, SettingConstant.rate_us, () {},
+                        Asset.rightbackbutton),
                     dividerforSetting(),
-                    settingListtile(Asset.share, SettingConstant.share_us,
-                        () {}, Asset.rightbackbutton),
+                    settingRow(Asset.share, SettingConstant.share_us, () {},
+                        Asset.rightbackbutton),
                     dividerforSetting(),
-                    settingListtile(Asset.signout, SettingConstant.logout, () {
+                    settingRow(Asset.signout, SettingConstant.logout, () {
                       PopupDialogsforSignOut(context);
                     }, Asset.rightbackbutton),
-                    // ListTile(
-                    //   leading: SvgPicture.asset(
-                    //     Asset.rate_us,
-                    //     color: isDarkMode() ? white : black,
-                    //   ),
-                    //   horizontalTitleGap: 0.1,
-                    //   visualDensity:
-                    //       VisualDensity(horizontal: 0, vertical: -1),
-                    //   title: Text(
-                    //     Strings.rate_us,
-                    //     style: TextStyle(
-                    //         fontFamily: opensansMedium,
-                    //         fontSize: 14.sp,
-                    //         fontWeight: FontWeight.w400),
-                    //   ),
-                    // ),
                     dividerforSetting(),
-                    // ListTile(
-                    //   leading: SvgPicture.asset(
-                    //     Asset.share,
-                    //     color: isDarkMode() ? white : black,
-                    //   ),
-                    //   horizontalTitleGap: 0.1,
-                    //   visualDensity:
-                    //       VisualDensity(horizontal: 0, vertical: -1),
-                    //   title: Text(
-                    //     Strings.share_us,
-                    //     style: TextStyle(
-                    //         fontFamily: opensansMedium,
-                    //         fontSize: 14.sp,
-                    //         fontWeight: FontWeight.w400),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   leading: SvgPicture.asset(
-                    //     Asset.signout,
-                    //     color: isDarkMode() ? white : black,
-                    //   ),
-                    //   onTap: () {
-                    //     PopupDialogs(context);
-                    //   },
-                    //   horizontalTitleGap: 0.1,
-                    //   visualDensity:
-                    //       VisualDensity(horizontal: 0, vertical: -1),
-                    //   title: Text(
-                    //     Strings.logout,
-                    //     style: TextStyle(
-                    //         fontFamily: opensansMedium,
-                    //         fontSize: 14.sp,
-                    //         fontWeight: FontWeight.w400),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

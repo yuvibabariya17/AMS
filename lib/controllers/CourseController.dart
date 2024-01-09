@@ -107,6 +107,7 @@ class CourseController extends GetxController {
         state.value = ScreenState.apiSuccess;
         courseObjectList.clear();
         courseObjectList.addAll(data.data);
+        
         logcat("COURSE LIST", jsonEncode(courseObjectList));
       } else {
         showDialogForScreen(context, responseData['message'], callback: () {});

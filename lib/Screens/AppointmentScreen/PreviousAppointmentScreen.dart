@@ -149,27 +149,36 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                         trackColor: Colors.grey,
                       ),
                     ),
-                    Text('Remind me'),
+                    Text('Remind me',  style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                      ),),
                     IconButton(
                         onPressed: () {}, icon: Icon(Icons.arrow_drop_down)),
                     Spacer(),
-                    SizedBox(
-                        width: 22.w,
-                        height: 4.h,
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: isDarkMode() ? white : black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                color: isDarkMode() ? black : white,
-                                fontSize: 12.5.sp,
-                                fontFamily: opensansMedium,
-                              ),
-                            ))),
+                    Container(
+                      height: 4.h,
+                      width: 20.w,
+                      child: Center(
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle( color: isDarkMode() ? black : white,),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDarkMode() ? white : black,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: isDarkMode()
+                                  ? Colors.white.withOpacity(0.2)
+                                  : Colors.black.withOpacity(0.2),
+                              spreadRadius: 0.1,
+                              blurRadius: 10,
+                              offset: Offset(0.5, 0.5)),
+                        ],
+                      ),
+                    )
                   ],
                 )
               ],

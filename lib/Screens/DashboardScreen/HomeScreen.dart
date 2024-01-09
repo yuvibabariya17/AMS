@@ -258,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  physics: ClampingScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   child: Column(children: [
                     Container(
                       margin: EdgeInsets.only(bottom: 5.h, top: 2.5.h, left: 3.h),
@@ -333,40 +333,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 5.h,
                       color: Colors.grey,
                     ),
-                    SingleChildScrollView(
-                      physics: ClampingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 3.h),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Time Slot",
-                                    style: TextStyle(
-                                        color: isDarkMode() ? white : black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w700),
-                                  )
-                                ]),
-                          ),
-
-                          SpecialRegionsCalendar(),
-
-                          // SfCalendar(
-                          //   view: CalendarView.timelineDay,
-                          //   dataSource: MeetingDataSource(_getDataSource()),
-                          //   timeSlotViewSettings: TimeSlotViewSettings(
-                          //     timeInterval: Duration(minutes: 30),
-                          //     timelineAppointmentHeight: 50,
-                          //     timeFormat: 'h:mm a',
-                          //   ),
-                          //   // controller: ,
-                          // ),
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 3.h),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Time Slot",
+                                  style: TextStyle(
+                                      color: isDarkMode() ? white : black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ]),
+                        ),
+                    
+                        SpecialRegionsCalendar(),
+                    
+                        // SfCalendar(
+                        //   view: CalendarView.timelineDay,
+                        //   dataSource: MeetingDataSource(_getDataSource()),
+                        //   timeSlotViewSettings: TimeSlotViewSettings(
+                        //     timeInterval: Duration(minutes: 30),
+                        //     timelineAppointmentHeight: 50,
+                        //     timeFormat: 'h:mm a',
+                        //   ),
+                        //   // controller: ,
+                        // ),
+                      ],
                     ),
                   ])),
             ),

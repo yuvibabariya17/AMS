@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -20,10 +21,10 @@ Widget getDivider() {
 
 Widget dividerforSetting() {
   return Divider(
-    height: 1.h,
-    thickness: 1,
-    indent: 2.h,
-    endIndent: 2.h,
+    height: 3.h,
+    thickness: 0.5,
+    // indent: .h,
+    // endIndent: 1.h,
   );
 }
 
@@ -131,10 +132,184 @@ Widget setNavtile(
   );
 }
 
+
+Row switchRow(String svg,  String title, bool switchValue, Function onChanged) {
+  return Row(
+    children: [
+      SvgPicture.asset(
+        svg,
+        color: isDarkMode() ? white : black,
+      ),
+      SizedBox(width: 8.0),
+      Text(
+        title,
+        style: TextStyle(
+          fontFamily: opensansMedium,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      Spacer(),
+      CupertinoSwitch(
+        value: switchValue,
+        onChanged: (value) {
+          onChanged();
+        },
+        thumbColor: isDarkMode() ? CupertinoColors.black : CupertinoColors.white,
+        activeColor: isDarkMode() ? CupertinoColors.white : CupertinoColors.black,
+        trackColor: Colors.grey,
+      ),
+    ],
+  );
+}
+Widget settingRow(String svg, String title, Function callback, String arrow) {
+  return GestureDetector(
+    onTap: () {
+        callback();
+    },
+    child: Container(
+    
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          title == "Report Bug"
+              ? SvgPicture.asset(
+                  svg,
+                  color: isDarkMode() ? white : black,
+                  height: 2.8.h,
+                  width: 1.h,
+                )
+              : SvgPicture.asset(
+                  svg,
+                  color: isDarkMode() ? white : black,
+                ),
+                SizedBox(width: title == "Invite Friends" ? 5.w : 5.5.w,),
+          Text(
+            title,
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontFamily: opensansMedium,
+                fontWeight: FontWeight.w400),
+          ),
+          Spacer(),
+          SvgPicture.asset(
+            arrow,
+            color: isDarkMode() ? white : black,
+          ),
+        ],
+      ),
+    ),
+  );
+  // return ListTile(
+
+  //   leading: title == "Report Bug"
+  //       ? SvgPicture.asset(
+  //           svg,
+  //           color: isDarkMode() ? white : black,
+  //           height: 3.h,
+  //           width: 1.h,
+  //         )
+  //       : SvgPicture.asset(
+  //           svg,
+  //           color: isDarkMode() ? white : black,
+  //         ),
+  //   horizontalTitleGap: 0.1,
+  //   visualDensity: VisualDensity(horizontal: 1, vertical: -1),
+  //   title: Text(
+  //     title,
+  //     style: TextStyle(
+  //         fontSize: 14.sp,
+  //         fontFamily: opensansMedium,
+  //         fontWeight: FontWeight.w400),
+  //   ),
+  //   onTap: () {
+  //     callback();
+  //   },
+
+  //   trailing: SvgPicture.asset(
+  //     arrow,
+  //     color: isDarkMode() ? white : black,
+  //   ),
+  // );
+}
+
+
+Widget darkSwitch(String svg, String title, ) {
+  // return GestureDetector(
+  //   onTap: () {
+  //       callback();
+  //   },
+  //   child: Container(
+    
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         title == "Report Bug"
+  //             ? SvgPicture.asset(
+  //                 svg,
+  //                 color: isDarkMode() ? white : black,
+  //                 height: 3.h,
+  //                 width: 1.h,
+  //               )
+  //             : SvgPicture.asset(
+  //                 svg,
+  //                 color: isDarkMode() ? white : black,
+  //               ),
+  //               SizedBox(width: 3.w,),
+  //         Text(
+  //           title,
+  //           style: TextStyle(
+  //               fontSize: 14.sp,
+  //               fontFamily: opensansMedium,
+  //               fontWeight: FontWeight.w400),
+  //         ),
+  //         Spacer(),
+  //         SvgPicture.asset(
+  //           arrow,
+  //           color: isDarkMode() ? white : black,
+  //         ),
+  //       ],
+  //     ),
+  //   ),
+  // );
+  return ListTile(
+
+    leading: title == "Report Bug"
+        ? SvgPicture.asset(
+            svg,
+            color: isDarkMode() ? white : black,
+            height: 3.h,
+            width: 1.h,
+          )
+        : SvgPicture.asset(
+            svg,
+            color: isDarkMode() ? white : black,
+          ),
+    horizontalTitleGap: 0.1,
+    visualDensity: VisualDensity(horizontal: 1, vertical: -1),
+    title: Text(
+      title,
+      style: TextStyle(
+          fontSize: 14.sp,
+          fontFamily: opensansMedium,
+          fontWeight: FontWeight.w400),
+    ),
+    // onTap: () {
+    //   callback();
+    // },
+
+    // trailing: SvgPicture.asset(
+    //   arrow,
+    //   color: isDarkMode() ? white : black,
+    // ),
+  );
+}
+
 Widget settingListtile(
     String svg, String title, Function callback, String arrow) {
   return ListTile(
-    
     leading: title == "Report Bug"
         ? SvgPicture.asset(
             svg,
@@ -158,7 +333,6 @@ Widget settingListtile(
     onTap: () {
       callback();
     },
-
     trailing: SvgPicture.asset(
       arrow,
       color: isDarkMode() ? white : black,

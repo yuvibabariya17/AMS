@@ -54,7 +54,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (widget.isEdit == true && widget.editProduct != null) {
       controller.NameCtr.text = widget.editProduct!.name;
       controller.productimgCtr.text =
-          widget.editProduct!.productCategoryInfo.name.toString();
+          widget.editProduct!.uploadInfo.image.toString();
       controller.descriptionCtr.text =
           widget.editProduct!.description.toString();
       controller.categroryCtr.text =

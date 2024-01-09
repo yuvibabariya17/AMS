@@ -71,6 +71,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     borderRadius: BorderRadius.circular(8.0)),
                 onPressed: () {
                   Get.to(AddCourseScreen())?.then((value) {
+                    logcat("ISDONE", "DONE");
                     if (value == true) {
                       logcat("ISDONE", "DONE");
                       controller.getCourseList(
@@ -128,7 +129,6 @@ class _CourseScreenState extends State<CourseScreen> {
                 ),
               ),
             ),
-
             Expanded(
               child: Container(
                 child: RefreshIndicator(
@@ -172,40 +172,6 @@ class _CourseScreenState extends State<CourseScreen> {
                 ),
               ),
             ),
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.end,
-            //       children: [
-            //         Container(
-            //           width: 6.1.h,
-            //           height: 6.1.h,
-            //           margin: EdgeInsets.only(bottom: 5.h, right: 7.w),
-            //           child: RawMaterialButton(
-            //             fillColor: isDarkMode() ? white : black,
-            //             shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.all(Radius.circular(15))),
-            //             onPressed: () {
-            //               Get.to(const AddServiceScreen())?.then((value) {
-            //                 if (value == true) {
-            //                   controller.getServiceList(
-            //                     context,
-            //                   );
-            //                 }
-            //               });
-            //             },
-            //             child: Icon(
-            //               Icons.add,
-            //               size: 3.5.h,
-            //               color: isDarkMode() ? black : white,
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // )
           ])),
     );
   }
@@ -264,7 +230,8 @@ class _CourseScreenState extends State<CourseScreen> {
                         controller.filteredCourseObjectList[index];
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                      padding: EdgeInsets.only(
+                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -298,7 +265,8 @@ class _CourseScreenState extends State<CourseScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl:'http://192.168.1.9:4000/uploads/${data.thumbnailUrlInfo.image}',
+                                      imageUrl:
+                                          'http://192.168.1.9:4000/uploads/${data.thumbnailUrlInfo.image}',
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -312,15 +280,6 @@ class _CourseScreenState extends State<CourseScreen> {
                                       ),
                                     ),
                                   ))
-
-                              // CircleAvatar(
-                              //   radius: 4.h,
-                              //   backgroundColor: Colors.white,
-                              //   child: SvgPicture.asset(
-                              //     Asset.profileimg,
-                              //     fit: BoxFit.cover,
-                              //   ),
-                              // ),
                             ],
                           ),
                           SizedBox(height: 10.0),
@@ -577,14 +536,14 @@ class _CourseScreenState extends State<CourseScreen> {
     if (state == ScreenState.apiLoading) {
       return Center(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(50),
           child: Container(
-            height: 30,
-            width: 30,
+            height: 50,
+            width: 50,
             child: Image.asset(
               "assets/gif/apiloader.gif",
-              width: 100,
-              height: 100,
+              width: 50,
+              height: 50,
             ),
           ),
         ),

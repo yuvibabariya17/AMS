@@ -376,7 +376,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       style: TextStyle(
                                           color: isDarkMode() ? white : black,
                                           fontFamily: opensansMedium,
-                                          fontSize: 13.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Spacer(),
@@ -611,12 +611,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: Container(
-            height: 30,
-            width: 30,
+            height: 50,
+            width: 50,
             child: Image.asset(
               "assets/gif/apiloader.gif",
-              width: 100,
-              height: 100,
+              width: 50,
+              height: 50,
             ),
           ),
         ),

@@ -119,8 +119,13 @@ class AppointmentBookingController extends GetxController {
   var RemindModel = ValidationModel(null, null, isValidate: false).obs;
   var expertsModel = ValidationModel(null, null, isValidate: false).obs;
   var dateModel = ValidationModel(null, null, isValidate: false).obs;
+  var slotModel = ValidationModel(null, null, isValidate: false).obs;
 
-  void enableSignUpButton() {
+  void 
+  
+  
+  
+  enableSignUpButton() {
     if (CustomerModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (ServicesModel.value.isValidate == false) {
@@ -137,7 +142,11 @@ class AppointmentBookingController extends GetxController {
       isFormInvalidate.value = false;
     } else if (RemindModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else {
+    } else if (slotModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    }
+    
+    else {
       isFormInvalidate.value = true;
     }
   }
@@ -188,6 +197,21 @@ class AppointmentBookingController extends GetxController {
     dateModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Date";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  
+  void validateSlot(String? val) {
+    slotModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Time Slot";
         model.isValidate = false;
       } else {
         model!.error = null;

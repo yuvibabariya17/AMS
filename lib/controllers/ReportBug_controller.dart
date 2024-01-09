@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/constants/strings.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/sign_in_form_validation.dart';
@@ -67,9 +65,7 @@ class ReportBugController extends GetxController {
   var DateModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    if (SelectvendorModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (ImageModel.value.isValidate == false) {
+    if (ImageModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (VideoModel.value.isValidate == false) {
       isFormInvalidate.value = false;
@@ -82,19 +78,19 @@ class ReportBugController extends GetxController {
     }
   }
 
-  void validateFieldname(String? val) {
-    SelectvendorModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Field Name";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
+  // void validateFieldname(String? val) {
+  //   SelectvendorModel.update((model) {
+  //     if (val != null && val.isEmpty) {
+  //       model!.error = "Enter Field Name";
+  //       model.isValidate = false;
+  //     } else {
+  //       model!.error = null;
+  //       model.isValidate = true;
+  //     }
+  //   });
 
-    enableSignUpButton();
-  }
+  //   enableSignUpButton();
+  // }
 
   void validateImage(String? val) {
     ImageModel.update((model) {
@@ -125,7 +121,7 @@ class ReportBugController extends GetxController {
   }
 
   void validateDate(String? val) {
-    SelectvendorModel.update((model) {
+    DateModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Field Name";
         model.isValidate = false;
@@ -167,7 +163,7 @@ class ReportBugController extends GetxController {
     // Get.to(const SignUpScreen(false));
   }
 
-  void addcustomerApi(context) async {
+  void reportBugApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -326,7 +322,7 @@ class ReportBugController extends GetxController {
       if (response.statusCode == 200) {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
-          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          logcat("UPLOAD_VIDEO_ID", responseData.data.id.toString());
           uploadBreacherId.value = responseData.data.id.toString();
         } else {
           showDialogForScreen(context, responseData.message.toString(),
@@ -355,47 +351,47 @@ class ReportBugController extends GetxController {
         .then((file) async {
       if (file != null) {
         //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        // CroppedFile? croppedFile = await ImageCropper().cropImage(
+        //     sourcePath: file.path,
+        //     maxWidth: 1080,
+        //     maxHeight: 1080,
+        //     cropStyle: CropStyle.rectangle,
+        //     aspectRatioPresets: Platform.isAndroid
+        //         ? [
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ]
+        //         : [
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio5x3,
+        //             CropAspectRatioPreset.ratio5x4,
+        //             CropAspectRatioPreset.ratio7x5,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ],
+        //     uiSettings: [
+        //       AndroidUiSettings(
+        //           toolbarTitle: 'Crop Image',
+        //           cropGridColor: primaryColor,
+        //           toolbarColor: primaryColor,
+        //           statusBarColor: primaryColor,
+        //           toolbarWidgetColor: white,
+        //           activeControlsWidgetColor: primaryColor,
+        //           initAspectRatio: CropAspectRatioPreset.original,
+        //           lockAspectRatio: false),
+        //       IOSUiSettings(
+        //         title: 'Crop Image',
+        //         cancelButtonTitle: 'Cancel',
+        //         doneButtonTitle: 'Done',
+        //         aspectRatioLockEnabled: false,
+        //       ),
+        //     ],
+        //     aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
         if (file != null) {
           uploadReportFile = File(file.path).obs;
           imgctr.text = file.name;

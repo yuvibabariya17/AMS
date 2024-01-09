@@ -262,7 +262,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                       padding: EdgeInsets.only(
                                           right: SizerUtil.deviceType ==
                                                   DeviceType.mobile
-                                              ? 4.w
+                                              ? 2.w
                                               : 3.w),
                                       icon: const Icon(Icons.add,
                                           color: Colors.grey),

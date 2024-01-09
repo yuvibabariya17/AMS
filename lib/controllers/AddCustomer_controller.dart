@@ -383,7 +383,7 @@ class AddCustomerController extends GetxController {
         if (data['status'] == 1) {
           showDialogForScreen(context, data['message'].toString(),
               callback: () {
-            Get.back();
+            Get.back(result: true);
           });
         } else {
           showDialogForScreen(context, data['message'].toString(),

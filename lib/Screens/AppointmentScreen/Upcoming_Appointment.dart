@@ -138,7 +138,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(right: 1.h),
+                      // padding: EdgeInsets.only(left: 3.h),
                       child: CupertinoSwitch(
                         value: state,
                         onChanged: (value) {
@@ -165,23 +165,30 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                           color: isDarkMode() ? white : black,
                         )),
                     Spacer(),
-                    SizedBox(
-                        width: 22.w,
-                        height: 4.h,
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: isDarkMode() ? white : black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                color: isDarkMode() ? black : white,
-                                fontSize: 12.5.sp,
-                                fontFamily: opensansMedium,
-                              ),
-                            ))),
+                    Container(
+                      height: 4.h,
+                      width: 20.w,
+                      child: Center(
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle( color: isDarkMode() ? black : white,),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDarkMode() ? white : black,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: isDarkMode()
+                                  ? Colors.white.withOpacity(0.2)
+                                  : Colors.black.withOpacity(0.2),
+                              spreadRadius: 0.1,
+                              blurRadius: 10,
+                              offset: Offset(0.5, 0.5)),
+                        ],
+                      ),
+                    )
                   ],
                 )
               ],

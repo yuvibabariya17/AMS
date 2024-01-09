@@ -13,9 +13,9 @@ class LoadingProgressDialog {
             child: Material(
           color: Colors.transparent,
           child: Container(
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
-                color: Colors.transparent,
+                color:isDarkMode() ? black : white,
               ),
               child: Container(
                 height: 8.h,
@@ -28,7 +28,7 @@ class LoadingProgressDialog {
                   child: ClipOval(
                     child: Image.asset(
                       'assets/gif/loadingIndicator.gif',
-                      color: isDarkMode() ? black : white,
+                      // color: isDarkMode() ? black : white,
                       height: 6.h,
                       width: 6.h,
                     ),

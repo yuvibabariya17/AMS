@@ -747,12 +747,12 @@ class _ProductScreenState extends State<ProductScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: Container(
-            height: 30,
-            width: 30,
+            height: 50,
+            width: 50,
             child: Image.asset(
               "assets/gif/apiloader.gif",
-              width: 100,
-              height: 100,
+              width: 50,
+              height: 50,
             ),
           ),
         ),

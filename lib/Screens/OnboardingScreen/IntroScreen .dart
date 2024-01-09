@@ -185,6 +185,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                     IntroScreenConstant.started,
                                     style: TextStyle(
                                         fontFamily: opensans_Bold,
+                                        color: isDarkMode() ? black : white,
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 15.sp
@@ -221,7 +222,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                                 : 15.sp),
                                       ),
                                       child: Icon(
+                                      
                                           Icons.arrow_forward_ios_rounded,
+                                          color: isDarkMode() ? white : white,
                                           size: 6.5.h),
                                     ),
                                   ),

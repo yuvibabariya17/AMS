@@ -13,7 +13,7 @@ import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
 
 class AddCourseScreen extends StatefulWidget {
-  AddCourseScreen({super.key, this.isEdit, this.editCourse});
+  AddCourseScreen({super.key, this.isEdit, this.editCourse, });
 
   bool? isEdit;
   ListofCourse? editCourse;
@@ -46,12 +46,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     getCourseApi(context);
     super.initState();
 
-    // controller.validateCourse(controller.Studentctr.text );
-    // controller.validateFee(controller.Feesctr.text );
-    // controller.validateStartDate(controller.Durationctr.text );
-    // controller.validateDescription(controller.Descctr.text );
-    // controller.validateNotes(controller.Notesctr.text );
-    //  controller.validateId(controller.Idctr.text );
+    
   }
 
   void validateFields() {
@@ -142,37 +137,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           inputType: TextInputType.name,
                                         );
                                       }))),
-                              // getTitle(AddCourseConstant.course),
-                              // FadeInUp(
-                              //     from: 30,
-                              //     child: AnimatedSize(
-                              //         duration:
-                              //             const Duration(milliseconds: 300),
-                              //         child: Obx(() {
-                              //           return getReactiveFormField(
-                              //             node: controller.CourseNode,
-                              //             controller: controller.Coursectr,
-                              //             hintLabel:
-                              //                 AddCourseConstant.course_hint,
-                              //             wantSuffix: true,
-                              //             isdown: true,
-                              //             onChanged: (val) {
-                              //               controller.validateCourse(val);
-                              //             },
-                              //             isReadOnly: true,
-                              //             onTap: () {
-                              //               controller.Coursectr.text = "";
-                              //               showDropdownMessage(
-                              //                   context,
-                              //                   controller.setCourseList(),
-                              //                   AlertDialogConstant
-                              //                       .selectCourse);
-                              //             },
-                              //             errorText: controller
-                              //                 .CourseModel.value.error,
-                              //             inputType: TextInputType.none,
-                              //           );
-                              //         }))),
+                              
                               getTitle(AddCourseConstant.fees),
                               FadeInUp(
                                   from: 30,
@@ -195,51 +160,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                       }))),
                               getTitle(AddCourseConstant.duration),
 
-                              // FadeInUp(
-                              //     from: 30,
-                              //     child: AnimatedSize(
-                              //         duration:
-                              //             const Duration(milliseconds: 300),
-                              //         child: Obx(() {
-                              //           return getReactiveFormField(
-                              //             node: controller.StartNode,
-                              //             controller: controller.Startctr,
-                              //             hintLabel:
-                              //                 AddCourseConstant.startingHint,
-                              //             onChanged: (val) {
-                              //               controller.validateStartDate(val);
-                              //             },
-                              //             wantSuffix: true,
-                              //             isCalender: true,
-                              //             onTap: () async {
-                              //               DateTime? pickedDate =
-                              //                   await showDatePicker(
-                              //                       context: context,
-                              //                       initialDate: selectedDate,
-                              //                       firstDate: DateTime(1950),
-                              //                       lastDate: DateTime(2050));
-                              //               if (pickedDate != null &&
-                              //                   pickedDate != selectedDate) {
-                              //                 setState(() {
-                              //                   selectedDate = pickedDate;
-                              //                 });
-                              //               }
-                              //               if (pickedDate != null) {
-                              //                 String formattedDate =
-                              //                     DateFormat(Strings.dateFormat)
-                              //                         .format(pickedDate);
-                              //                 controller
-                              //                     .updateDate(formattedDate);
-                              //                 controller.validateStartDate(
-                              //                     formattedDate);
-                              //               }
-                              //             },
-                              //             errorText:
-                              //                 controller.StartModel.value.error,
-                              //             inputType: TextInputType.none,
-                              //           );
-                              //         }))),
-
+                            
                               FadeInDown(
                                 child: AnimatedSize(
                                   duration: const Duration(milliseconds: 300),
@@ -249,32 +170,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         controller: controller.Durationctr,
                                         hintLabel:
                                             AddCourseConstant.durationHint,
-                                        // wantSuffix: true,
-                                        // isCalender: true,
-                                        // onTap: () async {
-                                        //   DateTime? pickedDate =
-                                        //       await showDatePicker(
-                                        //     context: context,
-                                        //     initialDate: selectedDate,
-                                        //     firstDate: DateTime(1950),
-                                        //     lastDate: DateTime(9999),
-                                        //   );
-                                        //   if (pickedDate != null &&
-                                        //       pickedDate != selectedDate) {
-                                        //     setState(() {
-                                        //       selectedDate = pickedDate;
-                                        //     });
-                                        //   }
-                                        //   if (pickedDate != null) {
-                                        //     String formattedDate =
-                                        //         DateFormat(Strings.dateFormat)
-                                        //             .format(pickedDate);
-                                        //     controller
-                                        //         .updateDate(formattedDate);
-                                        //     controller.validateStartDate(
-                                        //         formattedDate);
-                                        //   }
-                                        // },
+                                       
                                         onChanged: (val) {
                                           controller.validateStartDate(val);
                                         },
@@ -388,18 +284,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         validate:
                                             controller.isFormInvalidate.value);
                                   }))
-                              // FadeInUp(
-                              //     from: 50,
-                              //     child: Obx(() {
-                              //       return getFormButton(() {
-                              //         if (controller.isFormInvalidate.value ==
-                              //             true) {
-                              //           controller.AddCourseApi(context);
-                              //         }
-                              //       }, CommonConstant.submit,
-                              //           validate:
-                              //               controller.isFormInvalidate.value);
-                              //     }))
+                              
                             ],
                           )),
                     ),

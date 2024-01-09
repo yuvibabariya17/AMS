@@ -1,5 +1,6 @@
-import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
-import 'package:booking_app/controllers/Service_controller.dart';
+import 'package:booking_app/Models/ListProductModel.dart';
+import 'package:booking_app/Screens/AddProductCategory.dart';
+import 'package:booking_app/controllers/ProductList_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../Models/ServiceModel.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
 import '../../core/constants/strings.dart';
@@ -16,36 +16,36 @@ import '../../core/themes/font_constant.dart';
 import '../../core/utils/helper.dart';
 import '../../core/utils/log.dart';
 
-class ServiceScreen extends StatefulWidget {
-  const ServiceScreen({super.key});
+class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
 
   @override
-  State<ServiceScreen> createState() => _ServiceScreenState();
+  State<ProductListScreen> createState() => _ProductListScreenState();
 }
 
-class _ServiceScreenState extends State<ServiceScreen> {
-  final controller = Get.put(serviceController());
+class _ProductListScreenState extends State<ProductListScreen> {
+  final controller = Get.put(ProductListController());
 
   TextEditingController search = TextEditingController();
 
   @override
   void initState() {
-    controller.getServiceList(context);
-    controller.filteredServiceObjectList = controller.serviceObjectList;
+    controller.getProductCategoryList(context);
+    controller.filterrdProductObjectList = controller.productCategoryObjectList;
     super.initState();
   }
 
-  void filterServiceList(String query) {
+  void filetProductCategoryList(String query) {
     setState(() {
       if (query.isEmpty) {
-        controller.filteredServiceObjectList = controller.serviceObjectList;
+        controller.filterrdProductObjectList =
+            controller.productCategoryObjectList;
       } else {
-        controller.filteredServiceObjectList = controller.serviceObjectList
+        controller.filterrdProductObjectList = controller
+            .productCategoryObjectList
             .where((data) =>
-                data.serviceInfo!.name
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
-                data.fees
+                data.name.toLowerCase().contains(query.toLowerCase()) ||
+                data.description
                     .toString()
                     .toString()
                     .toLowerCase()
@@ -90,10 +90,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0)),
                 onPressed: () {
-                  Get.to(AddServiceScreen())?.then((value) {
+                  Get.to(AddProductCategoryScreen())?.then((value) {
                     if (value == true) {
                       logcat("ISDONE", "DONE");
-                      controller.getServiceList(
+                      controller.getProductCategoryList(
                         context,
                       );
                     }
@@ -110,7 +110,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       )),
           ),
           body: Column(children: [
-            getCommonToolbar(ScreenTitle.service, () {
+            getCommonToolbar("Product Category List", () {
               Get.back();
             }),
             Container(
@@ -120,7 +120,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 height: 5.5.h,
                 child: TextField(
                   onChanged: ((value) {
-                    filterServiceList(value);
+                    filetProductCategoryList(value);
                   }),
                   decoration: InputDecoration(
                       contentPadding:
@@ -156,7 +156,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getServiceList(context);
+                        controller.getProductCategoryList(context);
                       },
                     );
                   },
@@ -246,7 +246,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
             ),
             TextButton(
               onPressed: () {
-                controller.deleteServiceList(context, serviceId);
+                controller.deleteProductCategoryList(context, serviceId);
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: Text(
@@ -261,12 +261,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
   }
 
   Widget apiSuccess(ScreenState state) {
-    logcat("LENGTH", controller.serviceObjectList.length.toString());
+    logcat("LENGTH", controller.productCategoryObjectList.length.toString());
     // ignore: unrelated_type_quality_checks
     if (controller.state == ScreenState.apiSuccess &&
-        controller.serviceObjectList.isNotEmpty) {
+        controller.productCategoryObjectList.isNotEmpty) {
       return Expanded(
-        child: controller.filteredServiceObjectList.isNotEmpty
+        child: controller.filterrdProductObjectList.isNotEmpty
             ? Container(
                 margin: EdgeInsets.only(left: 8.w, right: 8.w),
                 child: GridView.builder(
@@ -279,15 +279,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    ServiceList data =
-                        controller.filteredServiceObjectList[index];
+                    DataList data =
+                        controller.filterrdProductObjectList[index];
 
                     return Container(
                       padding: EdgeInsets.only(
-                        left: 1.5.w,
-                        right: 1.5.w,
-                        top: 0.5.h
-                      ),
+                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -352,11 +349,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.serviceInfo!.name,
+                                data.name,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
-                                  fontSize: 13.sp,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                                 textAlign: TextAlign.center,
@@ -371,7 +368,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                '₹ ${data.fees.toString()}',
+                                data.name,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
                                   fontSize: 11.sp,
@@ -381,8 +378,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(AddServiceScreen(
-                                      isEdit: true, editService: data));
+                                  // Get.to(AddServiceScreen(
+                                  //     isEdit: true, editService: data));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -415,163 +412,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       ),
                     );
                   },
-                  itemCount: controller.filteredServiceObjectList.length,
+                  itemCount: controller.filterrdProductObjectList.length,
                 ),
               )
-
-            // ListView.builder(
-            //     shrinkWrap: true,
-            //     clipBehavior: Clip.antiAlias,
-            //     physics: BouncingScrollPhysics(),
-            //     itemBuilder: (context, index) {
-            //       ServiceList data =
-            //           controller.filteredServiceObjectList[index];
-            //       // hairservice data = staticData[index];
-            //       // logcat("DATAAA", controller.serviceObjectList);
-            //       return Container(
-            //         margin: EdgeInsets.only(
-            //             top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
-            //         child: Expanded(
-            //           child: Container(
-            //             padding: EdgeInsets.only(
-            //                 top: 1.h, left: 3.w, right: 4.w, bottom: 1.h),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               children: [
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.start,
-            //                   crossAxisAlignment: CrossAxisAlignment.center,
-            //                   children: [
-            //                     Stack(children: [
-            //                       CircleAvatar(
-            //                         radius: 3.5.h,
-            //                         backgroundColor: Colors.white,
-            //                         child: SvgPicture.asset(
-            //                           Asset.profileimg,
-            //                           fit: BoxFit.cover,
-            //                         ),
-            //                       ),
-            //                     ]),
-            //                     SizedBox(width: 5.5.w),
-            //                     Expanded(
-            //                       child: Column(
-            //                         mainAxisAlignment: MainAxisAlignment.start,
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.start,
-            //                         children: [
-            //                           Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.start,
-            //                               crossAxisAlignment:
-            //                                   CrossAxisAlignment.center,
-            //                               children: [
-            //                                 Container(
-            //                                   child: Text(
-            //                                     data.categoryInfo != null
-            //                                         ? data.categoryInfo!.name
-            //                                         : "",
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 15.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w700),
-            //                                   ),
-            //                                 ),
-            //                                 Spacer(),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     Get.to(AddServiceScreen(
-            //                                         isEdit: true,
-            //                                         editService: data));
-            //                                   },
-            //                                   child: Container(
-            //                                       child: SvgPicture.asset(
-            //                                           Asset.edit,
-            //                                           height: 2.3.h,
-            //                                           color: isDarkMode()
-            //                                               ? Colors.grey
-            //                                               : Colors.grey)),
-            //                                 ),
-            //                                 SizedBox(
-            //                                   width: 2.w,
-            //                                 ),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     showDeleteConfirmationDialog(
-            //                                         data.id);
-            //                                     // controller.deleteServiceList(
-            //                                     //     context, data.id);
-            //                                   },
-            //                                   child: Container(
-            //                                       child: Icon(
-            //                                     Icons.delete_rounded,
-            //                                     color: isDarkMode()
-            //                                         ? Colors.grey
-            //                                         : Colors.grey,
-            //                                     size: 3.h,
-            //                                   )),
-            //                                 ),
-            //                               ]),
-            //                           Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.spaceBetween,
-            //                               crossAxisAlignment:
-            //                                   CrossAxisAlignment.center,
-            //                               children: [
-            //                                 Container(
-            //                                   child: Text(
-            //                                     data.vendorInfo.userName
-            //                                         .toString(),
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 11.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w400),
-            //                                   ),
-            //                                 ),
-            //                                 Container(
-            //                                   margin:
-            //                                       EdgeInsets.only(top: 0.5.h),
-            //                                   child: Text(
-            //                                     '₹ ${data.fees.toString()}',
-            //                                     // data.fees.toString(),
-            //                                     // '${model.fullName.capitalize} (${model.age} Years)'
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 14.5.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w600),
-            //                                   ),
-            //                                 ),
-            //                               ]),
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //             decoration: BoxDecoration(
-            //               color: isDarkMode() ? black : white,
-            //               borderRadius: BorderRadius.all(Radius.circular(25)),
-            //               boxShadow: [
-            //                 BoxShadow(
-            //                     color: isDarkMode()
-            //                         ? Colors.white.withOpacity(0.2)
-            //                         : Colors.black.withOpacity(0.2),
-            //                     spreadRadius: 0.1,
-            //                     blurRadius: 10,
-            //                     offset: Offset(0.5, 0.5)),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     itemCount: controller.filteredServiceObjectList.length,
-            //   )
-
             : Center(child: Text(CommonConstant.noDataFound)),
       );
     } else {
@@ -599,12 +442,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: Container(
-            height: 50,
-            width: 50,
+            height: 30,
+            width: 30,
             child: Image.asset(
               "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
+              width: 100,
+              height: 100,
             ),
           ),
         ),
@@ -622,7 +465,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     }
     if (state == ScreenState.noNetwork) {
       button = getMiniButton(() {
-        controller.getServiceList(
+        controller.getProductCategoryList(
           context,
         );
       }, "Try Again");

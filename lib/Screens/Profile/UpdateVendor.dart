@@ -179,7 +179,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                     return getReactiveFormField(
                                       node: controller.Contact_oneNode,
                                       controller: controller.contact_onectr,
-                                      formType: FieldType.Mobile,
+                                      //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
                                         controller.validatePhone1(val);
@@ -199,7 +199,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                     return getReactiveFormField(
                                       node: controller.Contact_twoNode,
                                       controller: controller.contact_twoctr,
-                                      formType: FieldType.Mobile,
+                                      //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
                                         controller.validatePhone2(val);
@@ -227,7 +227,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                     return getReactiveFormField(
                                       node: controller.WhatsappNode,
                                       controller: controller.whatsappctr,
-                                      formType: FieldType.Mobile,
+                                     // formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
                                         controller.validatePhone3(val);
