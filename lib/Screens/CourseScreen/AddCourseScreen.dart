@@ -271,14 +271,19 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                    
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
-                                          controller.UpdateCourse(context, widget.editCourse!.id );
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.AddCourseApi(context);
+
+                                           if (controller.isFormInvalidate.value ==
+                                            true) {
+                                      controller.AddCourseApi(context);
                                         }
+                                    
+                                        // if (widget.isEdit == true) {
+                                        //   // Call updateCourse API
+                                        //   controller.UpdateCourse(context, widget.editCourse!.id );
+                                        // } else {
+                                        //   // Call AddCourseApi API
+                                        //   controller.AddCourseApi(context);
+                                        // }
                                     
                                     }, CommonConstant.submit,
                                         validate:

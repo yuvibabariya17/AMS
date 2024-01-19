@@ -1,15 +1,20 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/controllers/StudentCourseController.dart';
-import 'package:booking_app/core/Common/toolbar.dart';
-import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/Models/StudentCourseListModel.dart';
+import 'package:booking_app/Screens/StudentScreen/AddStudentCourseScreen.dart';
+import 'package:booking_app/controllers/StudentCourse_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/custom_componannt/common_views.dart';
-import 'package:booking_app/custom_componannt/form_inputs.dart';
-import 'package:booking_app/dialogs/dialogs.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import '../../core/Common/toolbar.dart';
+import '../../core/constants/assets.dart';
+import '../../core/constants/strings.dart';
+import '../../core/themes/color_const.dart';
+import '../../core/themes/font_constant.dart';
+import '../../core/utils/helper.dart';
+import '../../core/utils/log.dart';
 
 class StudentCourseScreen extends StatefulWidget {
   const StudentCourseScreen({super.key});
@@ -21,236 +26,509 @@ class StudentCourseScreen extends StatefulWidget {
 class _StudentCourseScreenState extends State<StudentCourseScreen> {
   final controller = Get.put(StudentCourseController());
 
+  TextEditingController search = TextEditingController();
+
+  @override
+  void initState() {
+    controller.getStudentCourseList(context);
+    controller.filteredStudentObjectList = controller.studentObjectList;
+    super.initState();
+  }
+
+  void filterServiceList(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        controller.filteredStudentObjectList = controller.studentObjectList;
+      } else {
+        controller.filteredStudentObjectList = controller.studentObjectList
+            .where((data) =>
+                data.fees.toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                data.otherNotes
+                    .toString()
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  // void filterServiceList(String query) {
+  //   setState(() {
+  //     if (query.isEmpty) {
+  //       controller.filteredServiceObjectList = controller.serviceObjectList;
+  //     } else {
+  //       controller.filteredServiceObjectList = controller.serviceObjectList
+  //           .where((data) =>
+  //               data.categoryInfo!.name
+  //                   .toLowerCase()
+  //                   .contains(query.toLowerCase()) ||
+  //               data.vendorInfo.userName
+  //                   .toString()
+  //                   .toLowerCase()
+  //                   .contains(query.toLowerCase()))
+  //           .toList();
+  //     }
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: (() {
         controller.hideKeyboard(context);
-      },
+      }),
       child: CustomScaffold(
-          body: Container(
-        child: Column(
-          children: [
-            getCommonToolbar("Student Course", () {
+          floatingActionBtn: Container(
+            width: 7.h,
+            height: 7.h,
+            margin: EdgeInsets.only(bottom: 2.h, right: 3.5.w),
+            child: FloatingActionButton(
+                backgroundColor: isDarkMode() ? white : black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
+                onPressed: () {
+                  Get.to(AddStudentCourseScreen())?.then((value) {
+                    if (value == true) {
+                      logcat("ISDONE", "DONE");
+                      controller.getStudentCourseList(
+                        context,
+                      );
+                    }
+                  });
+                },
+                child: isDarkMode()
+                    ? Icon(
+                        Icons.add,
+                        color: black,
+                      )
+                    : Icon(
+                        Icons.add,
+                        color: white,
+                      )),
+          ),
+          body: Column(children: [
+            getCommonToolbar("Student Course",  () {
               Get.back();
             }),
-            Expanded(
-              child: CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
-                        padding: EdgeInsets.only(
-                            left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
-                        child: Form(
-                            key: controller.formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                getTitle("Student"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.studentNode,
-                                            controller: controller.studentctr,
-                                            hintLabel: "Select Student",
-                                            wantSuffix: true,
-                                            isdown: true,
-                                            onChanged: (val) {
-                                              controller.validateStudent(val);
-                                            },
-                                            errorText: controller
-                                                .StudentModel.value.error,
-                                            inputType: TextInputType.none,
-                                          );
-                                        }))),
-                                getTitle("Course"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.courseNode,
-                                            controller: controller.coursectr,
-                                            hintLabel: "Select Course",
-                                            wantSuffix: true,
-                                            isdown: true,
-                                            onChanged: (val) {
-                                              controller.validateCourse(val);
-                                              setState(() {});
-                                            },
-                                            errorText: controller
-                                                .CourseModel.value.error,
-                                            inputType: TextInputType.none,
-                                          );
-                                        }))),
-                                getTitle("Start Date"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.startNode,
-                                            controller: controller.startDatectr,
-                                            hintLabel: "Start Date",
-                                            wantSuffix: true,
-                                            isCalender: true,
-                                            onChanged: (val) {
-                                              controller.validateStartDate(val);
-                                              setState(() {});
-                                            },
-                                            onTap: () async {
-                                              DateTime? pickedDate =
-                                                  await showDatePicker(
-                                                      context: context,
-                                                      initialDate: controller
-                                                          .selectedStartDate,
-                                                      firstDate: DateTime(1950),
-                                                      lastDate: DateTime.now()
-                                                          .add(const Duration(
-                                                              days: 0)));
-                                              if (pickedDate != null &&
-                                                  pickedDate !=
-                                                      controller
-                                                          .selectedStartDate) {
-                                                setState(() {
-                                                  controller.selectedStartDate =
-                                                      pickedDate;
-                                                });
-                                              }
-                                              if (pickedDate != null) {
-                                                String formattedDate =
-                                                    DateFormat(Strings
-                                                            .oldDateFormat)
-                                                        .format(pickedDate);
-                                                controller
-                                                    .updateDate(formattedDate);
-                                                controller.validateStartDate(
-                                                    formattedDate);
-                                              }
-                                            },
-                                            errorText: controller
-                                                .StartModel.value.error,
-                                            inputType: TextInputType.text,
-                                          );
-                                        }))),
-                                getTitle("Fees"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.feesNode,
-                                            controller: controller.Feesctr,
-                                            hintLabel: "Fees",
-                                            isExpand: true,
-                                            onChanged: (val) {
-                                              controller.validateFees(val);
-                                              setState(() {});
-                                            },
-                                            errorText: controller
-                                                .FeesModel.value.error,
-                                            inputType: TextInputType.number,
-                                          );
-                                        }))),
-                                getTitle("Id Proof"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.imageNode,
-                                            controller: controller.imgctr,
-                                            hintLabel: "Select Id Proof",
-                                            wantSuffix: true,
-                                            onChanged: (val) {
-                                              controller.validateImage(val);
-                                              setState(() {});
-                                            },
-                                            isReadOnly: true,
-                                            onTap: () async {
-                                              selectImageFromCameraOrGallery(
-                                                  context, cameraClick: () {
-                                                controller
-                                                    .actionClickUploadImage(
-                                                        context,
-                                                        isCamera: true);
-                                              }, galleryClick: () {
-                                                controller
-                                                    .actionClickUploadImage(
-                                                        context,
-                                                        isCamera: false);
-                                              });
-                                              // await controller.PopupDialogs(context);
-                                              setState(() {});
-                                            },
-                                            // onTap: () async {
-                                            //   await controller
-                                            //       .actionClickUploadImage(context);
-                                            // },
-                                            errorText: controller
-                                                .ImageModel.value.error,
-                                            inputType: TextInputType.number,
-                                          );
-                                        }))),
-                                getTitle("Other Notes"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.notesNode,
-                                            controller: controller.notesctr,
-                                            hintLabel: "Enter Notes",
-                                            onChanged: (val) {
-                                              controller.validateNotes(val);
-                                              setState(() {});
-                                            },
-                                            errorText: controller
-                                                .NotesModel.value.error,
-                                            inputType: TextInputType.text,
-                                          );
-                                        }))),
-                                SizedBox(
-                                  height: 4.h,
-                                ),
-                                FadeInUp(
-                                    from: 50,
-                                    child: Obx(() {
-                                      return getFormButton(() {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
-                                          //  controller.AddCourseApi(context);
-                                        }
-                                      }, CommonConstant.submit,
-                                          validate: controller
-                                              .isFormInvalidate.value);
-                                    }))
-                              ],
-                            )),
+            Container(
+              margin: EdgeInsets.only(top: 3.h, left: 1.0.w, right: 1.0.w),
+              padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w),
+              child: Container(
+                height: 5.5.h,
+                child: TextField(
+                  onChanged: ((value) {
+                    filterServiceList(value);
+                  }),
+                  decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                      hintText: CommonConstant.search,
+                      hintStyle: TextStyle(
+                        color: isDarkMode() ? white : black,
                       ),
-                    ),
-                  ]),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:
+                              BorderSide(color: isDarkMode() ? white : black)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:
+                              BorderSide(color: isDarkMode() ? white : black)),
+                      suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.search_sharp,
+                            color: isDarkMode() ? white : black,
+                          ))),
+                  controller: search,
+                  keyboardType: TextInputType.name,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: RefreshIndicator(
+                  color: isDarkMode() ? white : black,
+                  onRefresh: () {
+                    return Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        controller.getStudentCourseList(context);
+                      },
+                    );
+                  },
+                  child: CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Obx(() {
+                          switch (controller.state.value) {
+                            case ScreenState.apiLoading:
+                            case ScreenState.noNetwork:
+                            case ScreenState.noDataFound:
+                            case ScreenState.apiError:
+                              return Container(
+                                margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                                height: SizerUtil.height / 1.5,
+                                child: apiOtherStates(controller.state.value),
+                              );
+                            case ScreenState.apiSuccess:
+                              return Container(
+                                  margin:
+                                      EdgeInsets.only(bottom: 3.h, top: 2.h),
+                                  child: apiSuccess(controller.state.value));
+                            default:
+                              Container();
+                          }
+                          return Container();
+                        }),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.end,
+            //       children: [
+            //         Container(
+            //           width: 6.1.h,
+            //           height: 6.1.h,
+            //           margin: EdgeInsets.only(bottom: 5.h, right: 7.w),
+            //           child: RawMaterialButton(
+            //             fillColor: isDarkMode() ? white : black,
+            //             shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.all(Radius.circular(15))),
+            //             onPressed: () {
+            //               Get.to(const AddServiceScreen())?.then((value) {
+            //                 if (value == true) {
+            //                   controller.getServiceList(
+            //                     context,
+            //                   );
+            //                 }
+            //               });
+            //             },
+            //             child: Icon(
+            //               Icons.add,
+            //               size: 3.5.h,
+            //               color: isDarkMode() ? black : white,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // )
+          ])),
+    );
+  }
+
+  Future<void> showDeleteConfirmationDialog(String serviceId) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
+          content: Text('Are you sure you want to delete this Service?',
+              style: TextStyle(fontSize: 12.sp)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel', style: TextStyle(fontSize: 11.sp)),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.deleteStudentCourseList(context, serviceId);
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                'Yes',
+                style: TextStyle(color: Colors.red, fontSize: 11.sp),
+              ),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget apiSuccess(ScreenState state) {
+    logcat("LENGTH", controller.studentObjectList.length.toString());
+    // ignore: unrelated_type_quality_checks
+    if (controller.state == ScreenState.apiSuccess &&
+        controller.studentObjectList.isNotEmpty) {
+      return Expanded(
+        child: controller.filteredStudentObjectList.isNotEmpty
+            ? Container(
+                margin: EdgeInsets.only(left: 8.w, right: 8.w),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  clipBehavior: Clip.antiAlias,
+                  physics: BouncingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Adjust the number of columns as needed
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemBuilder: (context, index) {
+                    ListofStudentCourse data =
+                        controller.filteredStudentObjectList[index];
+
+                    return Container(
+                      padding: EdgeInsets.only(
+                        left: 1.5.w,
+                        right: 1.5.w,
+                        top: 0.5.h
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDarkMode() ? black : white,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDarkMode()
+                                ? Colors.white.withOpacity(0.2)
+                                : Colors.black.withOpacity(0.2),
+                            spreadRadius: 0.1,
+                            blurRadius: 10,
+                            offset: Offset(0.5, 0.5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                  height: 10.8.h,
+                                  width: 60.w,
+                                  // padding: EdgeInsets.all(
+                                  //   SizerUtil.deviceType == DeviceType.mobile
+                                  //       ? 1.2.w
+                                  //       : 1.0.w,
+                                  // ),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: "",
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                        child: CircularProgressIndicator(
+                                            color: primaryColor),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                        Asset.placeholder,
+                                        height: 10.8.h,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ))
+
+                              // CircleAvatar(
+                              //   radius: 4.h,
+                              //   backgroundColor: Colors.white,
+                              //   child: SvgPicture.asset(
+                              //     Asset.profileimg,
+                              //     fit: BoxFit.cover,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data.fees.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: opensansMedium,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              // SizedBox(height: 5.0),
+                            ],
+                          ),
+                          Row(children: []),
+                          // SizedBox(height: 5.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                             data.otherNotes,
+                                style: TextStyle(
+                                  fontFamily: opensansMedium,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  // Get.to(AddServiceScreen(
+                                  //     isEdit: true, editService: data));
+                                },
+                                child: Container(
+                                  child: SvgPicture.asset(
+                                    Asset.edit,
+                                    height: 2.3.h,
+                                    color: isDarkMode()
+                                        ? Colors.grey
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5.0),
+                              GestureDetector(
+                                onTap: () {
+                                  showDeleteConfirmationDialog(data.id);
+                                },
+                                child: Container(
+                                  child: Icon(
+                                    Icons.delete_rounded,
+                                    color: isDarkMode()
+                                        ? Colors.grey
+                                        : Colors.grey,
+                                    size: 3.h,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: controller.filteredStudentObjectList.length,
+                ),
+              )
+
+        
+            : Center(child: Text(CommonConstant.noDataFound)),
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              // margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Text(
+                CommonConstant.noDataFound,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget apiOtherStates(state) {
+    if (state == ScreenState.apiLoading) {
+      return Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            height: 50,
+            width: 50,
+            child: Image.asset(
+              "assets/gif/apiloader.gif",
+              width: 50,
+              height: 50,
+            ),
+          ),
         ),
-      )),
+      );
+    }
+
+    Widget? button;
+    // if (controller.filterList.isEmpty) {
+    //   Container();
+    // }
+    if (state == ScreenState.noDataFound) {
+      button = getMiniButton(() {
+        Get.back();
+      }, "Back");
+    }
+    if (state == ScreenState.noNetwork) {
+      button = getMiniButton(() {
+        controller.getStudentCourseList(
+          context,
+        );
+      }, "Try Again");
+    }
+
+    if (state == ScreenState.apiError) {
+      button = getMiniButton(() {
+        Get.back();
+      }, "Back");
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Text(
+            controller.message.value,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
+          ),
+        ),
+      ],
+    );
+  }
+
+  getMiniButton(
+    Function fun,
+    str,
+  ) {
+    return InkWell(
+      onTap: () {
+        fun();
+      },
+      child: Container(
+        height: SizerUtil.deviceType == DeviceType.mobile ? 5.h : 4.5.h,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.only(top: 1),
+        width: SizerUtil.width / 3,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: lightPrimaryColor,
+          boxShadow: [
+            BoxShadow(
+                color: primaryColor.withOpacity(0.2),
+                blurRadius: 10.0,
+                offset: const Offset(0, 1),
+                spreadRadius: 3.0)
+          ],
+        ),
+        child: Text(
+          str,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: fontBold,
+              fontSize:
+                  SizerUtil.deviceType == DeviceType.mobile ? 11.sp : 8.sp),
+        ),
+      ),
     );
   }
 }

@@ -65,6 +65,7 @@ class Asset {
   static const product = '$assets${svgFolder}product.svg';
   static const serviceNav = '$assets${svgFolder}service.svg';
   static const course = '$assets${svgFolder}course.svg';
+  static const clipArrow = '$assets${svgFolder}ClipArrow.svg';
 
   static const megaphone = '$assets${svgFolder}fi-br-megaphone.svg';
   static const profileimg = '$assets${svgFolder}account-icon.svg';

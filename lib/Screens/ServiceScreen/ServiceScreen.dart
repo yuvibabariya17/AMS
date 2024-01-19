@@ -352,7 +352,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.serviceInfo!.name,
+                                 data.serviceInfo != null
+                                    ? data.serviceInfo!.name
+                                    : "",
+                              
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,

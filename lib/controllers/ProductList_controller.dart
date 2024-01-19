@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
-import 'package:booking_app/Models/ListProductModel.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -21,7 +21,7 @@ class ProductListController extends GetxController {
   late TextEditingController searchCtr;
 
   RxBool isProductCategoryList = false.obs;
-  RxList<DataList> productCategoryObjectList = <DataList>[].obs;
+  RxList<ListProductCategory> productCategoryObjectList = <ListProductCategory>[].obs;
   RxString productCategoryId = "".obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
@@ -30,7 +30,7 @@ class ProductListController extends GetxController {
 
   // List<ServiceList> serviceObjectList = []; // Your data source
   TextEditingController searchController = TextEditingController();
-  List<DataList> filterrdProductObjectList = [];
+  List<ListProductCategory> filterrdProductObjectList = [];
   @override
   void onInit() {
     searchNode = FocusNode();
@@ -56,7 +56,7 @@ class ProductListController extends GetxController {
 
     if (response.statusCode == 200) {
       if (responseData['status'] == 1) {
-      var data = ListOfProduct.fromJson(responseData);
+      var data = ProductCategoryListModel.fromJson(responseData);
 
         state.value = ScreenState.apiSuccess;
         productCategoryObjectList.clear();
@@ -89,7 +89,7 @@ class ProductListController extends GetxController {
           allowHeader: true);
       isProductCategoryList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+      logcat("PRODUCTDELETE CATEGORY RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = DeleteSuccessModel.fromJson(responseData);
@@ -99,7 +99,7 @@ class ProductListController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
+          logcat("PRODUCTDELETE CATEGORY", jsonEncode(productCategoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

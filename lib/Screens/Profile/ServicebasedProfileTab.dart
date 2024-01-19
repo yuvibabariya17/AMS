@@ -154,7 +154,10 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  capitalizeFirst(data.serviceInfo!.name),
+                                   data.serviceInfo != null
+                                    ? data.serviceInfo!.name
+                                    : "",
+                              
                                   style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
@@ -165,6 +168,14 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                 // SizedBox(height: 5.0),
                               ],
                             ),
+                            Text(
+                                '₹ ${data.fees.toString()}',
+                                style: TextStyle(
+                                  fontFamily: opensansMedium,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                           ],
                         ),
 

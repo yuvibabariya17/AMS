@@ -78,9 +78,12 @@ class ListofProduct {
         amount: json["amount"],
         qty: json["qty"],
         createdAt: json["created_at"],
-        uploadInfo: UploadInfo.fromJson(json["upload_info"]),
-        productCategoryInfo:
-            ProductCategoryInfo.fromJson(json["product_category_info"]),
+        uploadInfo: json["upload_info"] != null
+            ? UploadInfo.fromJson(json["upload_info"])
+            : UploadInfo(image: ''),
+        productCategoryInfo: json["product_category_info"] != null
+            ? ProductCategoryInfo.fromJson(json["product_category_info"])
+            : ProductCategoryInfo(name: '', description: ''),
       );
 
   Map<String, dynamic> toJson() => {

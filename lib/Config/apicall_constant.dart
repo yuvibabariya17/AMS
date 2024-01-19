@@ -1,7 +1,7 @@
 class ApiUrl {
-  static const buildApiUrl = "http://192.168.1.9:4000/api/";
+  static const buildApiUrl = "http://192.168.1.14:4000/api/";
 
-  static const ImgUrl = "http://192.168.1.9:4000/uploads/";
+  static const ImgUrl = "http://192.168.1.14:4000/uploads/";
 
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";
@@ -9,8 +9,8 @@ class ApiUrl {
   static const customerList = "customer/list";
   static const editCustomer = "customer/edit";
   static const addService = "vendor/service/add";
-  static const addServiceList = "service/list";
-  static const ServiceList = "vendor/service/list";
+  static const serviceList = "service/list";
+  static const vendorServiceList = "vendor/service/list";
   static const deleteCustomer = "customer/delete";
   static const deleteProduct = "product/delete";
 
@@ -51,4 +51,8 @@ class ApiUrl {
   static const getAppointment = "appointment/get";
   static const deleteAppointment = "appointment/delete";
   static const updateVendor = "vendor/update";
+  static const addStudent = "student/add";
+  static const studentList = "student/list";
+  static const studentCourseList = "student/course/list";
+  static const deleteStudentCourseList = "student/course/delete";
 }

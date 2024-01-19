@@ -423,14 +423,19 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                    
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
-                                          controller.UpdateExpert(context, widget.editExpert!.id );
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.addExpertApi(context);
+
+                                        if (controller.isFormInvalidate.value ==
+                                            true) {
+                                      controller.addExpertApi(context);
                                         }
+                                    
+                                        // if (widget.isEdit == true) {
+                                        //   // Call updateCourse API
+                                        //   controller.UpdateExpert(context, widget.editExpert!.id );
+                                        // } else {
+                                        //   // Call AddCourseApi API
+                                        //   controller.addExpertApi(context);
+                                        // }
                                     
                                     }, CommonConstant.submit,
                                         validate:

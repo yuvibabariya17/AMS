@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/DataSource.dart';
 import 'package:booking_app/Screens/NotificationScreen/NotificationScreen.dart';
-import 'package:booking_app/Screens/SpecialRegions.dart';
 import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/Common/appbar.dart';
@@ -14,9 +13,13 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../controllers/internet_controller.dart';
@@ -207,6 +210,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+     Timer(Duration(milliseconds: 600), () {
+      try {
+        controller.manuallyFocusToItem(0);
+      } catch (e) {}
+    });
     Common().trasparent_statusbar();
     WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuild());
     return CustomScaffold(
@@ -258,119 +266,484 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5.h, top: 2.5.h, left: 3.h),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text("Today",
+                physics: BouncingScrollPhysics(),
+                child: Column(children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 5.h, top: 2.5.h, left: 3.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text("Today",
+                                  style: TextStyle(
+                                      fontSize: 17.5.sp,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: opensansMedium,
+                                      fontWeight: FontWeight.w700)),
+                            ),
+                            Obx(
+                              () {
+                                return FadeInDown(
+                                  from: 70,
+                                  child: Text(
+                                    (controller.picDate.value.toString()),
                                     style: TextStyle(
-                                        fontSize: 17.5.sp,
+                                        fontSize: 16.5.sp,
                                         color: isDarkMode() ? white : black,
                                         fontFamily: opensansMedium,
-                                        fontWeight: FontWeight.w700)),
-                              ),
-                              Obx(
-                                () {
-                                  return FadeInDown(
-                                    from: 70,
-                                    child: Text(
-                                      (controller.picDate.value.toString()),
-                                      style: TextStyle(
-                                          fontSize: 16.5.sp,
-                                          color: isDarkMode() ? white : black,
-                                          fontFamily: opensansMedium,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                    child: DatePicker(
+                      DateTime.now(),
+                      width: 7.h,
+                      height: 12.h,
+                      controller: controller.datePickerController,
+                      initialSelectedDate: DateTime.now(),
+                      selectionColor: isDarkMode() ? white : black,
+                      selectedTextColor: isDarkMode() ? black : white,
+                      dayTextStyle: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                      monthTextStyle: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                      dateTextStyle: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                      //   deactivatedColor: isDarkMode() ? Graycolor : black,
+                      inactiveDates: [],
+                      onDateChange: (date) {
+                        setState(() {
+                          controller.selectedValue = date;
+                        });
+                      },
+                    ),
+                  ),
+                  Divider(
+                    endIndent: 3.h,
+                    indent: 3.h,
+                    thickness: 0.5.sp,
+                    height: 5.h,
+                    color: Colors.grey,
+                  ),
+                  Column(children: [
                     Container(
-                      padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                      child: DatePicker(
-                        DateTime.now(),
-                        width: 7.h,
-                        height: 12.h,
-                        controller: controller.datePickerController,
-                        initialSelectedDate: DateTime.now(),
-                        selectionColor: isDarkMode() ? white : black,
-                        selectedTextColor: isDarkMode() ? black : white,
-                        dayTextStyle: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: fontRegular),
-                        monthTextStyle: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: fontRegular),
-                        dateTextStyle: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: fontRegular),
-                        //   deactivatedColor: isDarkMode() ? Graycolor : black,
-                        inactiveDates: [],
-                        onDateChange: (date) {
-                          setState(() {
-                            controller.selectedValue = date;
-                          });
-                        },
-                      ),
+                      margin: EdgeInsets.only(left: 7.w),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Time Slot",
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700),
+                            )
+                          ]),
                     ),
-                    Divider(
-                      endIndent: 3.h,
-                      indent: 3.h,
-                      thickness: 0.5.sp,
-                      height: 5.h,
-                      color: Colors.grey,
+                    SizedBox(
+                      height: 1.5.h,
                     ),
-                    Column(
+                    Row(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 3.h),
-                          child: Row(
+                        Obx(() {
+                          var data = Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Time Slot",
-                                  style: TextStyle(
-                                      color: isDarkMode() ? white : black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w700),
-                                )
+                                Container(
+                                  margin: EdgeInsets.only(left: 5.w),
+                                  height: SizerUtil.height,
+                                  alignment: Alignment.topLeft,
+                                  width:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 70
+                                          : 150,
+                                  child: ScrollSnapList(
+                                    listViewPadding: EdgeInsets.only(
+                                        bottom: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 700
+                                            : 700),
+                                    key: controller.keydata,
+                                    initialIndex: 0,
+                                    focusToItem: (p0) {
+                                      controller.manuallyFocusToItem(0);
+                                    },
+                                    scrollDirection: Axis.vertical,
+                                    selectedItemAnchor:
+                                        SelectedItemAnchor.START,
+                                    onItemFocus: (p0) {
+                                      controller.onItemFocus(p0);
+                                    },
+                                    itemSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 90
+                                        : 150,
+                                    itemBuilder: _buildListItem,
+                                    itemCount: controller.times.length,
+                                  ),
+                                ),
+                              ]);
+                          return data;
+                        }),
+                        Expanded(
+                            flex: 2,
+                            child: 
+                            AnimatedSize(
+                              duration: Duration(milliseconds: 1000),
+                              child: Stack(children: [
+                                AnimatedContainer(
+                                  width: double.infinity,
+                                  duration: Duration(milliseconds: 1000),
+                                  margin: EdgeInsets.only(left: 1.h),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                    child: SvgPicture.asset(
+                                      Asset.clipArrow,
+                                      height: 3.h,
+                                      width: 3.h,
+                                    ),
+                                  ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            DottedBorder(
+                                              borderType: BorderType.RRect,
+                                              color: primaryColor,
+                                              dashPattern: [2, 2],
+                                              radius: Radius.circular(
+                                                  SizerUtil.deviceType ==
+                                                          DeviceType.mobile
+                                                      ? 4.w
+                                                      : 2.5.w),
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5.w, vertical: 2.h),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border(),
+                                                  borderRadius: BorderRadius.circular(
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 4.w
+                                                          : 2.5.w),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(0.1),
+                                                        blurRadius: 10.0,
+                                                        offset: const Offset(0, 1),
+                                                        spreadRadius: 3.0)
+                                                  ],
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 1.5.h,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            "Book Appointment",
+                                                            style: TextStyle(
+                                                                fontSize: SizerUtil
+                                                                            .deviceType ==
+                                                                        DeviceType
+                                                                            .mobile
+                                                                    ? 15.sp
+                                                                    : 17.sp,
+                                                                color: Colors.black,
+                                                                fontFamily: fontBold),
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            // addLifeStory(
+                                                            //     context, false,
+                                                            //     model: lifeStoryController
+                                                            //             .data.value[
+                                                            //         lifeStoryController
+                                                            //             .focusedIndex
+                                                            //             .value],
+                                                            //     uuid: lifeStoryController
+                                                            //         .profileController
+                                                            //         .profileUniqueId);
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal: 1.w,
+                                                                    vertical: 1.w),
+                                                            decoration: BoxDecoration(
+                                                                color:
+                                                                    Color(0XFF43C778),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.w)),
+                                                            child: Icon(
+                                                              Icons.edit_outlined,
+                                                              size: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .mobile
+                                                                  ? 3.w
+                                                                  : 2.w,
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 1.5.w,
+                                                        ),
+                                                        InkWell(
+                                                          // onTap: () {
+                                                          //   controller.deleteLifeStory(
+                                                          //       context,
+                                                          //       lifeStory: lifeStoryController
+                                                          //               .data.value[
+                                                          //           lifeStoryController
+                                                          //               .focusedIndex
+                                                          //               .value]);
+                                                          // },
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.symmetric(
+                                                                    horizontal: 1.1.w,
+                                                                    vertical: 1.1.w),
+                                                            decoration: BoxDecoration(
+                                                                color:
+                                                                    Color(0XFFFF5959),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.w)),
+                                                            child: Icon(
+                                                              Icons.delete_rounded,
+                                                              color: isDarkMode()
+                                                                  ? Colors.grey
+                                                                  : Colors.grey,
+                                                              size: 3.h,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 2.h,
+                                                    ),
+                                                    Text(
+                                                      "Description",
+                                                      style: TextStyle(
+                                                          fontSize: SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType.mobile
+                                                              ? 9.sp
+                                                              : 7.sp,
+                                                          color: Colors.black,
+                                                          fontFamily: fontRegular),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Positioned(
+                                //   top: 2
+                                //       .h, 
+                                //   left: 0.5.h,
+                                //   child: Container(
+                                //     child: SvgPicture.asset(
+                                //       Asset.clipArrow,
+                                //       height: 3.h,
+                                //       width: 3.h,
+                                //     ),
+                                //   ),
+                                // )
                               ]),
-                        ),
-                    
-                        SpecialRegionsCalendar(),
-                    
-                        // SfCalendar(
-                        //   view: CalendarView.timelineDay,
-                        //   dataSource: MeetingDataSource(_getDataSource()),
-                        //   timeSlotViewSettings: TimeSlotViewSettings(
-                        //     timeInterval: Duration(minutes: 30),
-                        //     timelineAppointmentHeight: 50,
-                        //     timeFormat: 'h:mm a',
-                        //   ),
-                        //   // controller: ,
-                        // ),
+
+                              // Stepper(
+                              //   currentStep: 0,
+                              //   type: StepperType.vertical,
+                              //   steps: [
+                              //     Step(
+                              //       label:Text("Hey") ,
+                              //       subtitle: Text("Hey"),
+                              //       title: Text("10:00 AM"),
+                              //       content: Container(
+                              //         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: Colors.grey),
+                              //         width: 200, // Adjust the width as needed
+                              //         child: Text("Good Morning"),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+
+                              // SpecialRegionsCalendar(),
+
+                              // SfCalendar(
+                              //   view: CalendarView.timelineDay,
+                              //   dataSource: MeetingDataSource(_getDataSource()),
+                              //   timeSlotViewSettings: TimeSlotViewSettings(
+                              //     timeInterval: Duration(minutes: 30),
+                              //     timelineAppointmentHeight: 50,
+                              //     timeFormat: 'h:mm a',
+                              //   ),
+                              //   // controller: ,
+                              // ),
+                            ))
                       ],
                     ),
-                  ])),
-            ),
+                  ])
+                ]),
+              ),
+            )
           ],
         );
       })),
     );
+  }
+
+  Widget _buildListItem(BuildContext context, int index) {
+    return Obx(() {
+      return Row(
+        children: [
+          SizedBox(
+            height: SizerUtil.deviceType == DeviceType.mobile ? 90 : 150,
+            width: SizerUtil.deviceType == DeviceType.mobile ? 70 : 130,
+            child: GestureDetector(
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    top: 0,
+                    bottom: controller.data.length - 1 == index
+                        ? SizerUtil.deviceType == DeviceType.mobile
+                            ? 30
+                            : 50
+                        : 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: index == 0 ? 50 : 0,
+                              bottom: index == 29 ? 50 : 0),
+                          height: SizerUtil.deviceType == DeviceType.mobile
+                              ? 100
+                              : 150,
+                          width: 2.5,
+                          color: !isDarkMode()
+                              ? Color(0xFFE1EAEE)
+                              : Colors.grey[600],
+                        ),
+                      ],
+                    ),
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    height: controller.focusedIndex == index
+                        ? SizerUtil.deviceType == DeviceType.mobile
+                            ? 65
+                            : 70
+                        : SizerUtil.deviceType == DeviceType.mobile
+                            ? 65
+                            : 70,
+                    width: controller.focusedIndex == index
+                        ? SizerUtil.deviceType == DeviceType.mobile
+                            ? 65
+                            : 70
+                        : SizerUtil.deviceType == DeviceType.mobile
+                            ? 65
+                            : 70,
+                    padding: EdgeInsets.only(
+                      bottom: controller.focusedIndex == index ? 2.h : 0.2.h,
+                      top: controller.focusedIndex == index ? 2.h : 0.2.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: controller.focusedIndex == index
+                          ? primaryColor
+                          : !isDarkMode()
+                              ? Color(0xFFE1EAEE)
+                              : Colors.grey[600],
+                      borderRadius: BorderRadius.circular(
+                          SizerUtil.deviceType == DeviceType.mobile
+                              ? controller.focusedIndex == index
+                                  ? 5.w
+                                  : 3.w
+                              : 2.5.w),
+                      boxShadow: [
+                        BoxShadow(
+                            color: controller.focusedIndex == index
+                                ? primaryColor.withOpacity(0.3)
+                                : primaryColor.withOpacity(0.01),
+                            blurRadius: 10.0,
+                            offset: const Offset(0, 1))
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      controller.times[index].toString(),
+                      // ignore: invalid_use_of_protected_member
+                      // "${LifeStoryController.data.value[index].year}",
+                      style: TextStyle(
+                        fontFamily: controller.focusedIndex == index
+                            ? fontMedium
+                            : fontBold,
+                        color: controller.focusedIndex == index
+                            ? Colors.white
+                            : !isDarkMode()
+                                ? Colors.black
+                                : Colors.white,
+                        fontSize: controller.focusedIndex == index
+                            ? SizerUtil.deviceType == DeviceType.mobile
+                                ? 11.sp
+                                : 8.sp
+                            : SizerUtil.deviceType == DeviceType.mobile
+                                ? 8.sp
+                                : 6.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () {
+                controller.manuallyFocusToItem(index);
+              },
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   SfCalendar _getSpecialRegionCalendar(

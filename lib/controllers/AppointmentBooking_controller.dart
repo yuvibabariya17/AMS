@@ -454,7 +454,7 @@ class AppointmentBookingController extends GetxController {
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.ServiceList, allowHeader: true);
+          await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("RESPONSE", jsonEncode(responseData));

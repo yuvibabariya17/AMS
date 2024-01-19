@@ -380,7 +380,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 15.5.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w700),
                               )),
                               SizedBox(height: 5.0),

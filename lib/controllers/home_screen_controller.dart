@@ -3,6 +3,7 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../Models/expert.dart';
 import '../Models/expert_model.dart';
 import '../Models/offers.dart';
@@ -26,6 +27,7 @@ class HomeScreenController extends GetxController {
   DateTime selectedValue = DateTime.now();
   bool switch_state = false;
   bool switch_state1 = false;
+  GlobalKey<ScrollSnapListState> keydata = GlobalKey();
 
   var icon;
   var leading;
@@ -89,4 +91,50 @@ class HomeScreenController extends GetxController {
 
   //   update();
   // }
+
+  RxList data = [].obs;
+  RxInt focusedIndex = 0.obs;
+  // void initData() {
+  //   ModelProfile? profile = profileController.profile.value;
+  //   if (profile != null && profile.lifeStory != null) {
+  //     for (LifeStory model in profile.lifeStory!) {
+  //       data.add(model);
+  //     }
+  //     onItemFocus(0);
+  //   }
+  //  }
+
+final List<String> times = [
+  "9:00 AM",
+  "9:30 AM",
+  "10:00 AM",
+  "10:30 AM",
+  "11:00 AM",
+  "11:30 AM",
+  "12:00 PM",
+  "12:30 PM",
+  "1:00 PM",
+].obs;
+
+  // var profileController = Get.put(HomeScreenController());
+
+  // RxBool isViewerIsAllowToEdit = false.obs;
+  // isAllow() async {
+  //   ModelProfile? profile = profileController.profile.value;
+  //   if (profile != null) {
+  //     isViewerIsAllowToEdit.value = await allowToEditProfile(profile.uuid);
+  //     print("RIGHT: ${isViewerIsAllowToEdit.value}");
+  //   }
+  //   update();
+  // }
+
+  void manuallyFocusToItem(int index) {
+    keydata.currentState!.focusToItem(index);
+    update();
+  }
+
+  void onItemFocus(int index) {
+    focusedIndex.value = index;
+    update();
+  }
 }

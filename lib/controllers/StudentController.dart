@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
+import 'package:booking_app/Models/StudentModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
-import '../Models/ServiceModel.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
 import '../core/utils/log.dart';
@@ -12,15 +12,15 @@ import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
-class serviceController extends GetxController {
+class StudentController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode searchNode;
   late TextEditingController searchCtr;
 
-  RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-  RxString serviceId = "".obs;
+  RxBool isStudentList = false.obs;
+  RxList<StudentList> studentObjectList = <StudentList>[].obs;
+  RxString studentId = "".obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxString message = "".obs;
@@ -28,7 +28,7 @@ class serviceController extends GetxController {
 
   // List<ServiceList> serviceObjectList = []; // Your data source
   TextEditingController searchController = TextEditingController();
-  List<ServiceList> filteredServiceObjectList = [];
+  List<StudentList> filteredStudentObjectList = [];
   @override
   void onInit() {
     searchNode = FocusNode();
@@ -36,9 +36,9 @@ class serviceController extends GetxController {
     super.onInit();
   }
 
-  void getServiceList(context) async {
+  void getStudentList(context) async {
     state.value = ScreenState.apiLoading;
-    isServiceTypeApiList.value = true;
+    isStudentList.value = true;
     // try {
     if (networkManager.connectionType == 0) {
       showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -47,18 +47,18 @@ class serviceController extends GetxController {
       return;
     }
     var response =
-        await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
-    isServiceTypeApiList.value = false;
+        await Repository.post({}, ApiUrl.studentList, allowHeader: true);
+    isStudentList.value = false;
     var responseData = jsonDecode(response.body);
     logcat(" SERVICE RESPONSE", jsonEncode(responseData));
 
     if (response.statusCode == 200) {
-      var data = ServiceModel.fromJson(responseData);
+      var data = StudentModel.fromJson(responseData);
       if (data.status == 1) {
         state.value = ScreenState.apiSuccess;
-        serviceObjectList.clear();
-        serviceObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+        studentObjectList.clear();
+        studentObjectList.addAll(data.data);
+        logcat("SERVICE RESPONSE", jsonEncode(studentObjectList));
       } else {
         showDialogForScreen(context, responseData['message'], callback: () {});
       }
@@ -73,7 +73,7 @@ class serviceController extends GetxController {
 
   void deleteServiceList(context, String itemId) async {
     state.value = ScreenState.apiLoading;
-    isServiceTypeApiList.value = true;
+    isStudentList.value = true;
     try {
       if (networkManager.connectionType == 0) {
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -84,7 +84,7 @@ class serviceController extends GetxController {
       var response = await Repository.delete(
           {}, '${ApiUrl.deleteVendorService}/$itemId',
           allowHeader: true);
-      isServiceTypeApiList.value = false;
+      isStudentList.value = false;
       var responseData = jsonDecode(response.body);
       logcat(" SERVICE RESPONSE", jsonEncode(responseData));
 
@@ -96,7 +96,7 @@ class serviceController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+          logcat("SERVICE RESPONSE", jsonEncode(studentObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -106,17 +106,17 @@ class serviceController extends GetxController {
       }
     } catch (e) {
       logcat('Exception', e);
-      isServiceTypeApiList.value = false;
+      isStudentList.value = false;
     }
   }
 
   void updateLocalList(String deletedItemId) {
     int deletedItemIndex =
-        serviceObjectList.indexWhere((item) => item.id == deletedItemId);
+        studentObjectList.indexWhere((item) => item.id == deletedItemId);
 
     if (deletedItemIndex != -1) {
       // Remove the deleted item from the list
-      serviceObjectList.removeAt(deletedItemIndex);
+      studentObjectList.removeAt(deletedItemIndex);
     }
   }
 

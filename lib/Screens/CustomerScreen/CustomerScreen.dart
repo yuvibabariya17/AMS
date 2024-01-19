@@ -263,8 +263,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     ListofCustomer data =
                         controller.filteredCustomerObjectList[index];
 
-                    final imageUrl =
-                        'http://192.168.1.7:4000/uploads/${data.picInfo.image}';
+                    // final imageUrl =
+                    //    " 'http://192.168.1.7:4000/uploads/${data.picInfo!.image}';";
                     return Container(
                       padding: EdgeInsets.only(left: 1.w, right: 1.w),
                       decoration: BoxDecoration(
@@ -299,7 +299,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       Radius.circular(15)),
                                   child: CachedNetworkImage(
                                     fit: BoxFit.cover,
-                                    imageUrl: imageUrl,
+                                    imageUrl:" imageUrl,",
                                     placeholder: (context, url) => const Center(
                                       child: CircularProgressIndicator(
                                           color: primaryColor),
@@ -376,7 +376,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       style: TextStyle(
                                           color: isDarkMode() ? white : black,
                                           fontFamily: opensansMedium,
-                                          fontSize: 12.sp,
+                                          fontSize: 11.sp,
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Spacer(),

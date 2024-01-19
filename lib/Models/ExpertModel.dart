@@ -25,13 +25,14 @@ class ExpertModel {
   });
 
   factory ExpertModel.fromJson(Map<String, dynamic> json) => ExpertModel(
-        status: json["status"],
-        message: json["message"] ?? '',
-        data: List<ExpertList>.from(
-            json["data"].map((x) => ExpertList.fromJson(x))),
-        totalRecord: json["totalRecord"],
-        totalPages: json["totalPages"],
-      );
+      status: json["status"],
+      message: json["message"] ?? '',
+      data: (json["data"] as List<dynamic>?)
+          ?.map((x) => ExpertList.fromJson(x))
+          .toList() ?? [], // Add a null check here
+      totalRecord: json["totalRecord"],
+      totalPages: json["totalPages"],
+    );
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -64,10 +65,10 @@ class ExpertList {
         name: json["name"] ?? '',
         amount: json["amount"],
         createdAt: json["created_at"],
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]),
+        vendorInfo: VendorInfo.fromJson(json["vendor_info"]?? {}),
         serviceInfo: json["service_info"] == null
             ? null
-            : ServiceInfo.fromJson(json["service_info"]),
+            : ServiceInfo.fromJson(json["service_info"]?? {}) ,
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,7 +95,7 @@ class ServiceInfo {
   factory ServiceInfo.fromJson(Map<String, dynamic> json) => ServiceInfo(
         id: json["_id"] ?? '',
         name: json["name"] ?? '',
-        description: json["description"],
+        description: json["description"]??'',
       );
 
   Map<String, dynamic> toJson() => {

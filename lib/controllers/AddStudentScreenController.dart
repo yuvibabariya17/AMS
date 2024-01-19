@@ -17,7 +17,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-class StudentScreenController extends GetxController {
+class AddStudentController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode nameNode,
@@ -275,13 +275,16 @@ class StudentScreenController extends GetxController {
     update();
   }
 
+   Rx<File?> uploadLogo = null.obs;
+  Rx<File?> uploadBreachers = null.obs;
+
   Rx<File?> uploadProfile = null.obs;
   RxString uploadProfileId = ''.obs;
 
-  void getIdProof(context) async {
-    var loadingIndicator = LoadingProgressDialog();
-    loadingIndicator.show(context, '');
 
+
+   void AddStudent(context) async {
+    var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
@@ -290,36 +293,43 @@ class StudentScreenController extends GetxController {
         });
         return;
       }
-      var response = await Repository.multiPartPost({
-        "file": uploadProfile.value!.path.split('/').last,
-      }, ApiUrl.uploadImage,
-          multiPart: uploadProfile.value != null
-              ? http.MultipartFile(
-                  'file',
-                  uploadProfile.value!.readAsBytes().asStream(),
-                  uploadProfile.value!.lengthSync(),
-                  filename: uploadProfile.value!.path.split('/').last,
-                )
-              : null,
-          allowHeader: true);
-      var responseDetail = await response.stream.toBytes();
-      loadingIndicator.hide(context);
+      loadingIndicator.show(context, '');
+    //  var retrievedObject = await UserPreferences().getSignInInfo();
 
-      var result = String.fromCharCodes(responseDetail);
-      var json = jsonDecode(result);
-      var responseData = UploadImageModel.fromJson(json);
+      // logcat("ADDCOURSE", {
+      //   "name": Studentctr.text.toString().trim(),
+      //   "thumbnail_url": uploadImageId.value.toString(),
+      //   "duration": Durationctr.text.toString().trim(),
+      //   "fees": Feesctr.text.toString().trim(),
+      //   "description": Descctr.text.toString().trim(),
+      //   "vendor_id": retrievedObject!.id.toString().trim()
+      // });
+
+      var response = await Repository.post({
+    "name": namectr.text.toString().trim(),
+    "address": addressctr.text.toString().trim(),
+    "email":emailctr.text.toString().trim(),
+    "contact":contactctr.text.toString().trim(),
+    "photo_url": uploadLogo.value.toString(),
+    "id_proof_url": uploadBreachers.value.toString(),
+}, ApiUrl.addStudent, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("ADDCOURSE", data);
+      // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
-        logcat("responseData", jsonEncode(responseData));
-        if (responseData.status == "True") {
-          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadProfileId.value = responseData.data.id.toString();
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, data['message'].toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
@@ -329,7 +339,7 @@ class StudentScreenController extends GetxController {
     }
   }
 
-  void getImage(context) async {
+  void getImageApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
 
@@ -342,14 +352,14 @@ class StudentScreenController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadReportFile.value!.path.split('/').last,
+        "file": uploadLogo.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadReportFile.value != null
+          multiPart: uploadLogo.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadReportFile.value!.readAsBytes().asStream(),
-                  uploadReportFile.value!.lengthSync(),
-                  filename: uploadReportFile.value!.path.split('/').last,
+                  uploadLogo.value!.readAsBytes().asStream(),
+                  uploadLogo.value!.lengthSync(),
+                  filename: uploadLogo.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -380,6 +390,58 @@ class StudentScreenController extends GetxController {
     }
   }
 
+  void getIdProof(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadBreachers.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadBreachers.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadBreachers.value!.readAsBytes().asStream(),
+                  uploadBreachers.value!.lengthSync(),
+                  filename: uploadBreachers.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadBreacherId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+
   actionClickUploadImage(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(
@@ -391,52 +453,12 @@ class StudentScreenController extends GetxController {
         .then((file) async {
       if (file != null) {
         //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+      
         if (file != null) {
           uploadReportFile = File(file.path).obs;
           imgctr.text = file.name;
           validateImage(imgctr.text);
-          getImage(context);
+          getImageApi(context);
         }
 
         // if (croppedFile != null) {

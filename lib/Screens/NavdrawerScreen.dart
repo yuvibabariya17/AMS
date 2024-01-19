@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
-import 'package:booking_app/Screens/AddProductCategory.dart';
-import 'package:booking_app/Screens/ProductList.dart';
+import 'package:booking_app/Screens/ProductCategoryList.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
+import 'package:booking_app/Screens/StudentScreen/AddStudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
@@ -240,7 +240,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 }),
                   setNavtile(Asset.product, "Product Category", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(ProductListScreen());
+                  Get.to(ProductCategoryListScreen());
                 }),
                 SizedBox(height: 9.5.h),
                 setNavtile(Asset.share, ScreenTitle.signOut, () {

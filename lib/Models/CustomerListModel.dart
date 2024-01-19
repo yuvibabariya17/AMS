@@ -55,8 +55,8 @@ class ListofCustomer {
   DateTime dateOfAnniversary;
   String address;
   int createdAt;
-  PicInfo picInfo;
-  VendorInfo vendorInfo;
+  PicInfo? picInfo;
+  VendorInfo? vendorInfo;
 
   ListofCustomer({
     required this.id,
@@ -69,8 +69,8 @@ class ListofCustomer {
     required this.dateOfAnniversary,
     required this.address,
     required this.createdAt,
-    required this.picInfo,
-    required this.vendorInfo,
+     this.picInfo,
+     this.vendorInfo,
   });
 
   factory ListofCustomer.fromJson(Map<String, dynamic> json) => ListofCustomer(
@@ -80,12 +80,12 @@ class ListofCustomer {
         whatsappNo: json["whatsapp_no"] ?? '',
         email: json["email"] ?? '',
         pic: json["pic"] ?? '',
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
-        dateOfAnniversary: DateTime.parse(json["date_of_anniversary"]),
+        dateOfBirth: DateTime.parse(json["date_of_birth"]??""),
+        dateOfAnniversary: DateTime.parse(json["date_of_anniversary"]??''),
         address: json["address"] ?? '',
-        createdAt: json["created_at"],
-        picInfo: PicInfo.fromJson(json["pic_info"]),
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]),
+        createdAt: json["created_at"]?? 0,
+        picInfo: json["pic_info"] != null ? PicInfo.fromJson(json["pic_info"]) : null,
+        vendorInfo: json["vendor_info"] != null ? VendorInfo.fromJson(json["vendor_info"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -99,8 +99,8 @@ class ListofCustomer {
         "date_of_anniversary": dateOfAnniversary.toIso8601String(),
         "address": address,
         "created_at": createdAt,
-        "pic_info": picInfo.toJson(),
-        "vendor_info": vendorInfo.toJson(),
+        "pic_info": picInfo?.toJson(),
+        "vendor_info": vendorInfo?.toJson(),
       };
 }
 

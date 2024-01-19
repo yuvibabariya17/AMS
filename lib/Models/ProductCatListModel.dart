@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
-//     final productListModel = productListModelFromJson(jsonString);
+//     final productCategoryListModel = productCategoryListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ListOfProduct productListModelFromJson(String str) => ListOfProduct.fromJson(json.decode(str));
+ProductCategoryListModel productCategoryListModelFromJson(String str) => ProductCategoryListModel.fromJson(json.decode(str));
 
-String productListModelToJson(ListOfProduct data) => json.encode(data.toJson());
+String productCategoryListModelToJson(ProductCategoryListModel data) => json.encode(data.toJson());
 
-class ListOfProduct {
+class ProductCategoryListModel {
     int status;
     String message;
-    List<DataList> data;
+    List<ListProductCategory> data;
     int totalRecord;
     int totalPages;
 
-    ListOfProduct({
+    ProductCategoryListModel({
         required this.status,
         required this.message,
         required this.data,
@@ -23,12 +23,15 @@ class ListOfProduct {
         required this.totalPages,
     });
 
-    factory ListOfProduct.fromJson(Map<String, dynamic> json) => ListOfProduct(
-        status: json["status"],
-        message: json["message"],
-        data: List<DataList>.from(json["data"].map((x) => DataList.fromJson(x))),
-        totalRecord: json["totalRecord"],
-        totalPages: json["totalPages"],
+    factory ProductCategoryListModel.fromJson(Map<String, dynamic> json) => ProductCategoryListModel(
+        status: json["status"]?? 0,
+        message: json["message"]?? '',
+       data: (json["data"] as List<dynamic>?)
+              ?.map((x) => ListProductCategory.fromJson(x))
+              .toList() ??
+          [],
+        totalRecord: json["totalRecord"]?? 0,
+        totalPages: json["totalPages"]?? 0,
     );
 
     Map<String, dynamic> toJson() => {
@@ -40,7 +43,7 @@ class ListOfProduct {
     };
 }
 
-class DataList {
+class ListProductCategory {
     String id;
     String name;
     String uploadId;
@@ -48,7 +51,7 @@ class DataList {
     int createdAt;
     UploadInfo uploadInfo;
 
-    DataList({
+    ListProductCategory({
         required this.id,
         required this.name,
         required this.uploadId,
@@ -57,13 +60,13 @@ class DataList {
         required this.uploadInfo,
     });
 
-    factory DataList.fromJson(Map<String, dynamic> json) => DataList(
-        id: json["_id"],
-        name: json["name"],
-        uploadId: json["upload_id"],
-        description: json["description"],
-        createdAt: json["created_at"],
-        uploadInfo: UploadInfo.fromJson(json["upload_info"]),
+    factory ListProductCategory.fromJson(Map<String, dynamic> json) => ListProductCategory(
+        id: json["_id"]??'',
+        name: json["name"]??'',
+        uploadId: json["upload_id"]??'',
+        description: json["description"]??'',
+        createdAt: json["created_at"]?? 0,
+       uploadInfo: json["upload_info"] != null ? UploadInfo.fromJson(json["upload_info"]) : UploadInfo(image: ''), 
     );
 
     Map<String, dynamic> toJson() => {

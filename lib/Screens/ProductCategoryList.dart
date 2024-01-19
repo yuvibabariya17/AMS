@@ -1,4 +1,4 @@
-import 'package:booking_app/Models/ListProductModel.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Screens/AddProductCategory.dart';
 import 'package:booking_app/controllers/ProductList_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -16,14 +16,14 @@ import '../../core/themes/font_constant.dart';
 import '../../core/utils/helper.dart';
 import '../../core/utils/log.dart';
 
-class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({super.key});
+class ProductCategoryListScreen extends StatefulWidget {
+  const ProductCategoryListScreen({super.key});
 
   @override
-  State<ProductListScreen> createState() => _ProductListScreenState();
+  State<ProductCategoryListScreen> createState() => _ProductCategoryListScreenState();
 }
 
-class _ProductListScreenState extends State<ProductListScreen> {
+class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
   final controller = Get.put(ProductListController());
 
   TextEditingController search = TextEditingController();
@@ -279,7 +279,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    DataList data =
+                    ListProductCategory data =
                         controller.filterrdProductObjectList[index];
 
                     return Container(
@@ -353,7 +353,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
-                                  fontSize: 11.sp,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                                 textAlign: TextAlign.center,
@@ -368,10 +368,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                data.name,
+                                data.description,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
-                                  fontSize: 11.sp,
+                                  fontSize: 7.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),

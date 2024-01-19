@@ -25,12 +25,14 @@ class ServiceModel {
   });
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) => ServiceModel(
-        status: json["status"],
-        message: json["message"],
-        data: List<ServiceList>.from(
-            json["data"].map((x) => ServiceList.fromJson(x))),
-        totalRecord: json["totalRecord"],
-        totalPages: json["totalPages"],
+        status: json["status"] ?? 0,
+        message: json["message"] ?? '',
+        data: (json["data"] as List<dynamic>?)
+                ?.map((x) => ServiceList.fromJson(x))
+                .toList() ??
+            [],
+        totalRecord: json["totalRecord"] ?? 0,
+        totalPages: json["totalPages"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,7 +52,7 @@ class ServiceList {
   DateTime oppoxSettingDuration;
   int oppoxSettingDaysInverval;
   int createdAt;
-  VendorInfo vendorInfo;
+  VendorInfo? vendorInfo;
   ServiceInfo? serviceInfo; // Make it nullable
   CategoryInfo? categoryInfo; // Make it nullable
   CategoryInfo? subCategoryInfo;
@@ -70,14 +72,19 @@ class ServiceList {
   });
 
   factory ServiceList.fromJson(Map<String, dynamic> json) => ServiceList(
-        id: json["_id"],
-        fees: json["fees"],
+        id: json["_id"] ?? '',
+        fees: json["fees"] ?? 0,
         oppoxTime: DateTime.parse(json["oppox_time"]),
-        oppoxSetting: json["oppox_setting"],
+        oppoxSetting: json["oppox_setting"] ?? 0,
         oppoxSettingDuration: DateTime.parse(json["oppox_setting_duration"]),
-        oppoxSettingDaysInverval: json["oppox_setting_days_inverval"],
-        createdAt: json["created_at"],
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]),
+        oppoxSettingDaysInverval: json["oppox_setting_days_inverval"] ?? 0,
+        createdAt: json["created_at"] ?? 0,
+        vendorInfo: json["vendor_info"] == null
+            ? null
+            : VendorInfo.fromJson(json["vendor_info"]),
+
+        // VendorInfo.fromJson(json["vendor_info"]),
+
         serviceInfo: json["service_info"] == null
             ? null
             : ServiceInfo.fromJson(json["service_info"]),
@@ -97,7 +104,7 @@ class ServiceList {
         "oppox_setting_duration": oppoxSettingDuration.toIso8601String(),
         "oppox_setting_days_inverval": oppoxSettingDaysInverval,
         "created_at": createdAt,
-        "vendor_info": vendorInfo.toJson(),
+        "vendor_info": vendorInfo?.toJson(),
         "service_info": serviceInfo?.toJson(),
         "category_info": categoryInfo?.toJson(),
         "sub_category_info": subCategoryInfo?.toJson(),

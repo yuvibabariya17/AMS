@@ -298,7 +298,7 @@ class AddserviceController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
-      }, ApiUrl.addServiceList, allowHeader: true);
+      }, ApiUrl.serviceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("RESPONSE", jsonEncode(responseData));

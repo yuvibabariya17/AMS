@@ -301,7 +301,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: imageUrl,
+                                      imageUrl: "imageUrl,",
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
