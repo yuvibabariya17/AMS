@@ -1,3 +1,5 @@
+import 'package:booking_app/Models/hairservice.dart';
+import 'package:booking_app/Models/hairservice_model.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,12 @@ import '../Models/expert.dart';
 import '../Models/expert_model.dart';
 import '../Models/offers.dart';
 import '../Models/offers_model.dart';
-import '../Models/service_item_model.dart';
-import '../Models/service_name.dart';
 import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
 class HomeScreenController extends GetxController {
+  List<hairservice> staticData = hairserviceItems;
   var currentPage = 0;
 
   List pageNavigation = [];
@@ -34,7 +35,7 @@ class HomeScreenController extends GetxController {
   var isfilter;
   var title;
   DatePickerController datePickerController = DatePickerController();
-  List<Service_Item> staticData = ServicesItems;
+
   List<ExpertItem> staticData1 = expertItems;
   List<OfferItem> staticData2 = offersItems;
   RxString picDate = "".obs;
@@ -104,17 +105,17 @@ class HomeScreenController extends GetxController {
   //   }
   //  }
 
-final List<String> times = [
-  "9:00 AM",
-  "9:30 AM",
-  "10:00 AM",
-  "10:30 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "12:00 PM",
-  "12:30 PM",
-  "1:00 PM",
-].obs;
+  final List<String> times = [
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+    "12:30 PM",
+    "1:00 PM",
+  ].obs;
 
   // var profileController = Get.put(HomeScreenController());
 

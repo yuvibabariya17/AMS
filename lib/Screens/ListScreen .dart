@@ -84,234 +84,271 @@ class _ListScreenState extends State<ListScreen> {
                     ],
                   ),
                   // SizedBox(width: 4.w),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 5.h),
-                        child: SvgPicture.asset(
-                          Asset.clipArrow,
-                          height: 2.5.h,
-                          width: 2.5.h,
-                          color: isDarkMode() ? white : black,
-                        ),
-                      ),
-                      Container(
-                        // margin: EdgeInsets.symmetric(horizontal: 4.w),
-                       width: 0,
-                        child: DottedLine(
-                          dashColor: Colors.grey,
-                          dashLength: 4.0,
-                          dashGapLength: 2.0,
-                          dashRadius: 0.0,
-                        ),
-                      ),
-                    ],
+                  // Container(
+                  //   margin: EdgeInsets.only(bottom: 5.h),
+                  //   child: SvgPicture.asset(
+                  //     Asset.clipArrow,
+                  //     height: 2.5.h,
+                  //     width: 2.5.h,
+                  //     color: isDarkMode() ? white : black,
+                  //   ),
+                  // ),
+                  CustomPaint(painter: DrawDottedhorizontalline()),
+                  SizedBox(
+                    width: 3.w,
                   ),
+
                   Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: data.details.map((serviceDetailData) {
-                          return Container(
-                              margin: EdgeInsets.only(
-                                right: 10.w,
-                              ),
-                              width: 50.w,
-                              child: DottedBorder(
-                                borderType: BorderType.RRect,
-                                color: isDarkMode() ? white : black,
-                                dashPattern: [2, 2],
-                                radius: Radius.circular(
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 4.w
-                                        : 2.5.w),
-                                child: Container(
-                                  // height: 10.h,
-                                  width: 50.w,
-                                  padding: EdgeInsets.only(
-                                      right: 2.w,
-                                      left: 2.w,
-                                      top: 1.h,
-                                      bottom: 1.h),
-                                  decoration: BoxDecoration(
-                                    color: isDarkMode() ? black : white,
-                                    border: Border(),
-                                    borderRadius: BorderRadius.circular(
-                                        SizerUtil.deviceType ==
-                                                DeviceType.mobile
-                                            ? 4.w
-                                            : 2.5.w),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 10.0,
-                                          offset: const Offset(0, 1),
-                                          spreadRadius: 3.0)
-                                    ],
-                                  ),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [],
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              // title: Center(child: Text('Details')),
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: data.details.map((serviceDetailData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          serviceDetailData.title,
+                                          style: TextStyle(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        Row(
-                                          children: [
+                                      ),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'Description: ${serviceDetailData.description}',
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'Duration: ${serviceDetailData.duration}',
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                      // Add more details as needed
+                                      SizedBox(height: 16.0),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: data.details.map((serviceDetailData) {
+                            return Container(
+                                margin: EdgeInsets.only(
+                                  right: 10.w,
+                                ),
+                                width: 50.w,
+                                child: DottedBorder(
+                                  borderType: BorderType.RRect,
+                                  color: isDarkMode() ? white : black,
+                                  dashPattern: [2, 2],
+                                  radius: Radius.circular(
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 4.w
+                                          : 2.5.w),
+                                  child: Container(
+                                    // height: 10.h,
+                                    width: 50.w,
+                                    padding: EdgeInsets.only(
+                                        right: 2.w,
+                                        left: 2.w,
+                                        top: 1.h,
+                                        bottom: 1.h),
+                                    decoration: BoxDecoration(
+                                      color: isDarkMode() ? black : white,
+                                      border: Border(),
+                                      borderRadius: BorderRadius.circular(
+                                          SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 4.w
+                                              : 2.5.w),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.1),
+                                            blurRadius: 10.0,
+                                            offset: const Offset(0, 1),
+                                            spreadRadius: 3.0)
+                                      ],
+                                    ),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [],
+                                          ),
+                                          Row(
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 14.sp
+                                                        : 14.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontBold,
+                                                  ),
+                                                  children: [
+                                                    // TextSpan(
+                                                    //   text: 'Title : ',
+                                                    //   style: TextStyle(
+                                                    //     fontWeight: FontWeight.bold,
+                                                    //   ),
+                                                    // ),
+                                                    TextSpan(
+                                                      text: serviceDetailData
+                                                          .title,
+                                                      style: TextStyle(
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 1.w,
+                                                    right: 1.w,
+                                                    top: 0.5.h,
+                                                    bottom: 0.5.h),
+                                                decoration: BoxDecoration(
+                                                    color: Color(0XFF43C778),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.w)),
+                                                child: Icon(
+                                                  Icons.edit_outlined,
+                                                  size: 1.h,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 1.5.w,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 0.5.w,
+                                                    right: 0.5.w,
+                                                    top: 0.3.h,
+                                                    bottom: 0.3.h),
+                                                decoration: BoxDecoration(
+                                                    color: Color(0XFFFF5959),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.w)),
+                                                child: Icon(
+                                                  Icons.delete_rounded,
+                                                  color: Colors.white,
+                                                  size: 1.5.h,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Description : ",
+                                                style: TextStyle(
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  serviceDetailData.description,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: SizerUtil
+                                                                  .deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 9.sp
+                                                          : 7.sp,
+                                                      color: isDarkMode()
+                                                          ? white
+                                                          : black,
+                                                      fontFamily: fontRegular),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 0.5.h,
+                                          ),
+                                          Row(children: [
                                             RichText(
                                               text: TextSpan(
                                                 style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 14.sp
-                                                          : 14.sp,
+                                                  fontSize: 8.sp,
+                                                  fontWeight: FontWeight.w700,
                                                   color: isDarkMode()
                                                       ? white
                                                       : black,
                                                   fontFamily: fontBold,
                                                 ),
                                                 children: [
-                                                  // TextSpan(
-                                                  //   text: 'Title : ',
-                                                  //   style: TextStyle(
-                                                  //     fontWeight: FontWeight.bold,
-                                                  //   ),
-                                                  // ),
                                                   TextSpan(
-                                                    text:
-                                                        serviceDetailData.title,
+                                                    text: 'Duration : ',
                                                     style: TextStyle(
-                                                      fontSize: 13.sp,
                                                       fontWeight:
-                                                          FontWeight.w900,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
+                                                          FontWeight.w800,
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            Spacer(),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 1.w,
-                                                  right: 1.w,
-                                                  top: 0.5.h,
-                                                  bottom: 0.5.h),
-                                              decoration: BoxDecoration(
-                                                  color: Color(0XFF43C778),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.w)),
-                                              child: Icon(
-                                                Icons.edit_outlined,
-                                                size: 1.h,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 1.5.w,
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 0.5.w,
-                                                  right: 0.5.w,
-                                                  top: 0.3.h,
-                                                  bottom: 0.3.h),
-                                              decoration: BoxDecoration(
-                                                  color: Color(0XFFFF5959),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.w)),
-                                              child: Icon(
-                                                Icons.delete_rounded,
-                                                color: Colors.white,
-                                                size: 1.5.h,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
                                             Text(
-                                              "Description : ",
+                                              serviceDetailData.duration,
                                               style: TextStyle(
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.w800,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                serviceDetailData.description,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: SizerUtil
-                                                                .deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 9.sp
-                                                        : 7.sp,
-                                                    color: isDarkMode()
-                                                        ? white
-                                                        : black,
-                                                    fontFamily: fontRegular),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 0.5.h,
-                                        ),
-                                        Row(children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              style: TextStyle(
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontBold,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Duration : ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            serviceDetailData.duration,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 9.sp
-                                                        : 7.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          )
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 9.sp
+                                                          : 7.sp,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontFamily: fontRegular),
+                                            )
+                                          ]),
                                         ]),
-                                      ]),
-                                ),
-                              ));
-                        }).toList(),
+                                  ),
+                                ));
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -590,5 +627,13 @@ class _ListScreenState extends State<ListScreen> {
     //     );
     //   },
     // );
+  }
+
+  late Paint _paint;
+  DrawDottedhorizontalline() {
+    _paint = Paint();
+    _paint.color = Colors.black; //dots color
+    _paint.strokeWidth = 2; //dots thickness
+    _paint.strokeCap = StrokeCap.square; //dots corner edges
   }
 }
