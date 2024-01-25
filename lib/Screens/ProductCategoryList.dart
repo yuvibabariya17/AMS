@@ -384,7 +384,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                 child: Container(
                                   child: SvgPicture.asset(
                                     Asset.edit,
-                                    height: 2.3.h,
+                                    height: 2.2.h,
                                     color: isDarkMode()
                                         ? Colors.grey
                                         : Colors.grey,
@@ -402,7 +402,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                     color: isDarkMode()
                                         ? Colors.grey
                                         : Colors.grey,
-                                    size: 3.h,
+                                    size: 2.9.h,
                                   ),
                                 ),
                               ),

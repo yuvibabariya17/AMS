@@ -216,7 +216,7 @@ class AddexpertController extends GetxController {
         "service_id": serviceId.value.toString(),
         "amount": int.parse(Pricectr.text),
       }, ApiUrl.addExpert, allowHeader: true);
-      loadingIndicator.hide(context);
+      loadingIndicator.hide(context); 
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:booking_app/Models/ServiceModelNew.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -263,12 +263,12 @@ class AddserviceController extends GetxController {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text =
-                    serviceObjectList[index].name.capitalize.toString();
+                    serviceObjectList[index].vendorInfo.userName.capitalize.toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].name.toString(),
+                serviceObjectList[index].vendorInfo.emailId.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -279,7 +279,7 @@ class AddserviceController extends GetxController {
   }
 
   RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
   RxString ServiceId = "".obs;
 
   void ServiceListApi(context) async {
@@ -304,7 +304,7 @@ class AddserviceController extends GetxController {
       logcat("RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = ServiceModelNew.fromJson(responseData);
+        var data = VendorServiceModel.fromJson(responseData);
         if (data.status == 1) {
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
+import 'package:booking_app/Models/CommonModel.dart';
+import 'package:booking_app/Models/CourseModel.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/Models/StudentModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
@@ -14,6 +16,7 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -189,9 +192,6 @@ class AddStudentCourseController extends GetxController {
     enableSignUpButton();
   }
 
-
-
-
   RxBool isExpertTypeApiList = false.obs;
   RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
   RxString expertId = "".obs;
@@ -268,7 +268,6 @@ class AddStudentCourseController extends GetxController {
       );
     });
   }
-
 
   RxBool isStudentTypeList = false.obs;
   RxList<StudentList> studentObjectList = <StudentList>[].obs;
@@ -348,41 +347,43 @@ class AddStudentCourseController extends GetxController {
   }
 
   RxBool isStudentCourseTypeList = false.obs;
-  RxList<StudentList> studentCourseObjectList = <StudentList>[].obs;
+  RxList<ListofCourse> studentCourseObjectList = <ListofCourse>[].obs;
   RxString studentCourseId = "".obs;
 
   void getCourseList(context) async {
+    state.value = ScreenState.apiLoading;
     isStudentCourseTypeList.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response = await Repository.post({}, ApiUrl.courselist,
-          allowHeader: true);
-      isStudentCourseTypeList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = StudentModel.fromJson(responseData);
-        if (data.status == 1) {
-          studentCourseObjectList.clear();
-          studentCourseObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(studentCourseObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isStudentTypeList.value = false;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
     }
+    var response =
+        await Repository.post({}, ApiUrl.courselist, allowHeader: true);
+    isStudentCourseTypeList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat(" COURSE LIST", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = CourseListModel.fromJson(responseData);
+      if (data.status == 1) {
+        state.value = ScreenState.apiSuccess;
+        studentCourseObjectList.clear();
+        studentCourseObjectList.addAll(data.data);
+
+        logcat("COURSE LIST", jsonEncode(studentCourseObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isCourseTypeApiList.value = false;
+    // }
   }
 
   Widget setCourseList() {
@@ -407,7 +408,8 @@ class AddStudentCourseController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                studentCourseId.value = studentCourseObjectList[index].name.toString();
+                studentCourseId.value =
+                    studentCourseObjectList[index].name.toString();
                 coursectr.text =
                     studentCourseObjectList[index].name.capitalize.toString();
 
@@ -501,57 +503,54 @@ class AddStudentCourseController extends GetxController {
     }
   }
 
-  // void getVideo(context) async {
-  //   var loadingIndicator = LoadingProgressDialog();
-  //   loadingIndicator.show(context, '');
+  void AddStudentCourseApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
 
-  //   try {
-  //     if (networkManager.connectionType == 0) {
-  //       loadingIndicator.hide(context);
-  //       showDialogForScreen(context, Connection.noConnection, callback: () {
-  //         Get.back();
-  //       });
-  //       return;
-  //     }
-  //     var response = await Repository.multiPartPost({
-  //       "file": uploadVideoFile.value!.path.split('/').last,
-  //     }, ApiUrl.uploadImage,
-  //         multiPart: uploadVideoFile.value != null
-  //             ? http.MultipartFile(
-  //                 'file',
-  //                 uploadVideoFile.value!.readAsBytes().asStream(),
-  //                 uploadVideoFile.value!.lengthSync(),
-  //                 filename: uploadVideoFile.value!.path.split('/').last,
-  //               )
-  //             : null,
-  //         allowHeader: true);
-  //     var responseDetail = await response.stream.toBytes();
-  //     loadingIndicator.hide(context);
+      var response = await Repository.post({
+        "student_id": studentId.value.toString(),
+        "course_id": studentCourseId.value.toString(),
+        "fees": Feesctr.text.toString().trim(),
+        "starting_from": startDatectr.text.toString().trim(),
+        "other_notes": notesctr.text.toString().trim(),
+        "id_proof_url": uploadImageId.value.toString()
+      }, ApiUrl.addStudentCourse, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
 
-  //     var result = String.fromCharCodes(responseDetail);
-  //     var json = jsonDecode(result);
-  //     var responseData = UploadImageModel.fromJson(json);
-  //     if (response.statusCode == 200) {
-  //       logcat("responseData", jsonEncode(responseData));
-  //       if (responseData.status == "True") {
-  //         logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-  //         uploadBreacherId.value = responseData.data.id.toString();
-  //       } else {
-  //         showDialogForScreen(context, responseData.message.toString(),
-  //             callback: () {});
-  //       }
-  //     } else {
-  //       state.value = ScreenState.apiError;
-  //       showDialogForScreen(context, responseData.message.toString(),
-  //           callback: () {});
-  //     }
-  //   } catch (e) {
-  //     logcat("Exception", e);
-  //     showDialogForScreen(context, Connection.servererror, callback: () {});
-  //     loadingIndicator.hide(context);
-  //   }
-  // }
-
+ 
   actionClickUploadImage(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(

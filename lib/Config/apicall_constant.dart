@@ -55,4 +55,14 @@ class ApiUrl {
   static const studentList = "student/list";
   static const studentCourseList = "student/course/list";
   static const deleteStudentCourseList = "student/course/delete";
+  static const addStudentCourse = "student/course/add";
+  static const packageList = "package/list";
+  static const deletePackage = "package/delete";
+  static const addPackage = "package/add";
+
+
+
+
+
+
 }

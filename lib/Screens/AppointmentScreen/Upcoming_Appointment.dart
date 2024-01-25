@@ -1,3 +1,5 @@
+import 'package:booking_app/Models/AppointmentListModel.dart';
+import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../Models/notification_model.dart';
 import '../../Models/product.dart';
-import '../../controllers/notification_screen_controller.dart';
 import '../../core/Common/Common.dart';
 import '../../core/constants/assets.dart';
 import '../../core/themes/color_const.dart';
@@ -21,12 +22,13 @@ class UpcomingAppointment extends StatefulWidget {
 }
 
 class _UpcomingAppointmentState extends State<UpcomingAppointment> {
-  var controller = Get.put(NotificationScreenController());
+  var controller = Get.put(UpcomingAppointmentController());
   List<ProductItem> staticData = notificationItems;
   bool state = false;
 
   @override
   void initState() {
+    controller.getAppointmentList(context);
     super.initState();
   }
 
@@ -38,7 +40,8 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
         shrinkWrap: false,
         clipBehavior: Clip.antiAlias,
         itemBuilder: (context, index) {
-          ProductItem data = staticData[index];
+             ProductItem data = staticData[index];
+       //   ListofAppointment data = controller.filteredExpertObjectList[index];
           return Container(
             margin:
                 EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h, top: 3.h),
@@ -49,11 +52,12 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'March 22,2023',
+                      'March 22,2023',
+              //  data.customerInfo.contactNo,
                   style: TextStyle(
                     fontFamily: opensansMedium,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15.sp,
+                    fontSize: 10.sp,
                     color: isDarkMode() ? white : black,
                   ),
                 ),
@@ -87,11 +91,12 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                             children: [
                               Container(
                                 child: Text(
-                                  data.Name,
+                                   data.Name,
+                                //  data.customerInfo.name ,
                                   style: TextStyle(
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
-                                      fontSize: 14.sp,
+                                      fontSize: 10.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
                               ),
@@ -99,7 +104,8 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                           ),
                           Container(
                               child: Text(
-                            data.title,
+                                   data.title,
+                                  //  data.customerInfo.email,
                             style: TextStyle(
                                 color: isDarkMode() ? white : black,
                                 fontFamily: opensansMedium,
@@ -171,7 +177,9 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                       child: Center(
                         child: Text(
                           "Cancel",
-                          style: TextStyle( color: isDarkMode() ? black : white,),
+                          style: TextStyle(
+                            color: isDarkMode() ? black : white,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -209,5 +217,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
           );
         },
         itemCount: staticData.length);
+       // itemCount: controller.filteredExpertObjectList.length,);
   }
 }

@@ -12,7 +12,7 @@ String serviceModelToJson(ServiceModelNew data) => json.encode(data.toJson());
 class ServiceModelNew {
   int status;
   String message;
-  List<ServiceList> data;
+  List<ServiceListNew> data;
   int totalRecord;
   int totalPages;
 
@@ -28,8 +28,8 @@ class ServiceModelNew {
       ServiceModelNew(
         status: json["status"],
         message: json["message"],
-        data: List<ServiceList>.from(
-            json["data"].map((x) => ServiceList.fromJson(x))),
+        data: List<ServiceListNew>.from(
+            json["data"].map((x) => ServiceListNew.fromJson(x))),
         totalRecord: json["totalRecord"],
         totalPages: json["totalPages"],
       );
@@ -43,7 +43,7 @@ class ServiceModelNew {
       };
 }
 
-class ServiceList {
+class ServiceListNew {
   String id;
   String name;
   String categoryId;
@@ -55,7 +55,7 @@ class ServiceList {
   CategoryInfo subCategoryInfo;
   UploadInfo uploadInfo;
 
-  ServiceList({
+  ServiceListNew({
     required this.id,
     required this.name,
     required this.categoryId,
@@ -68,7 +68,7 @@ class ServiceList {
     required this.uploadInfo,
   });
 
-  factory ServiceList.fromJson(Map<String, dynamic> json) => ServiceList(
+  factory ServiceListNew.fromJson(Map<String, dynamic> json) => ServiceListNew(
         id: json["_id"] ?? "",
         name: json["name"] ?? "",
         categoryId: json["category_id"] ?? "",

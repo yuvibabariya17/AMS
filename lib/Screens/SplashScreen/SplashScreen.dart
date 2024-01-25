@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/OnboardingScreen/IntroScreen%20.dart';
-import 'package:booking_app/Screens/StudentScreen/StudentScreen.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

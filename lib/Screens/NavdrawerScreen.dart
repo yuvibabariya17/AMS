@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
+import 'package:booking_app/Screens/PackageScreen/AddPackageScreen%20.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
 import 'package:booking_app/Screens/ProductCategoryList.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
@@ -236,7 +237,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 }),
                 setNavtile(Asset.product, "Package Screen", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(PackageScreen());
+                  Get.to(AddPackageScreen());
                 }),
                   setNavtile(Asset.product, "Product Category", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();

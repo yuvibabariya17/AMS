@@ -48,6 +48,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
 
   @override
   void initState() {
+    
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
     super.initState();
   }

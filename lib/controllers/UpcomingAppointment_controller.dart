@@ -1,34 +1,48 @@
 import 'dart:convert';
 import 'package:booking_app/Config/apicall_constant.dart';
-import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/api_handle/Repository.dart';
-import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-
+import '../Models/notification_model.dart';
+import '../Models/product.dart';
+import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
-class ServiceBasedProfileController extends GetxController {
+
+class UpcomingAppointmentController extends GetxController {
+  List<ProductItem> staticData = notificationItems;
+  late TabController tabController;
+  RxInt currentPage = 0.obs;
+  bool isOnline = true;
+  
+
+  changeIndex(int index) async {
+    currentPage.value = index;
+    update();
+  }
+
+
+
+
+
   final InternetController networkManager = Get.find<InternetController>();
 
-  RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxBool isExpertTypeApiList = false.obs;
+  RxList<ListofAppointment> expertObjectList = <ListofAppointment>[].obs;
   RxString expertId = "".obs;
   RxBool isLoading = false.obs;
 
-  RxString profilePic = "".obs;
-
-  RxString message = "".obs;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
+  RxString message = "".obs;
   RxList memberList = [].obs;
 
-  List<ServiceList> filteredServiceObjectList = [];
+  List<ListofAppointment> filteredExpertObjectList = [];
 
-  void getServiceList(context) async {
+  void getAppointmentList(context) async {
     state.value = ScreenState.apiLoading;
     // isExpertTypeApiList.value = true;
     try {
@@ -39,18 +53,20 @@ class ServiceBasedProfileController extends GetxController {
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
-      isServiceTypeApiList.value = false;
+          await Repository.post({}, ApiUrl.appointmentList, allowHeader: true);
+      isExpertTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("SERVICERESPONSE", jsonEncode(responseData));
+      logcat("APPOINTMENT LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = ServiceModel.fromJson(responseData);
+        var data = AppointmentModel.fromJson(responseData);
         if (data.status == 1) {
           state.value = ScreenState.apiSuccess;
-          serviceObjectList.clear();
-          serviceObjectList.addAll(data.data);
-          logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+          expertObjectList.clear();
+          expertObjectList.addAll(data.data);
+          logcat("APPOINTMENT LIST", jsonEncode(expertObjectList));
+
+          
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -60,11 +76,13 @@ class ServiceBasedProfileController extends GetxController {
       }
     } catch (e) {
       logcat('Exception', e);
-      isServiceTypeApiList.value = false;
+      isExpertTypeApiList.value = false;
     }
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+
+
+    showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -77,5 +95,14 @@ class ServiceBasedProfileController extends GetxController {
         title: ScreenTitle.expert,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
+  }
+
+ 
+
+  void hideKeyboard(context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }

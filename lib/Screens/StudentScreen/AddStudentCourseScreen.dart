@@ -260,7 +260,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                       return getFormButton(() {
                                         if (controller.isFormInvalidate.value ==
                                             true) {
-                                          //  controller.AddCourseApi(context);
+                                           controller.AddStudentCourseApi(context);
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

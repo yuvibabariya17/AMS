@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/api_handle/Repository.dart';
-import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:get/get.dart';
 
+
+
+enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 class StaffController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
