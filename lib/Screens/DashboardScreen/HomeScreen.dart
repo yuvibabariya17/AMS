@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ]),
             ),
-              SizedBox(height: 1.h,),
+               SizedBox(height: 1.h,),
             Expanded(child: ListScreen())
           ],
         );

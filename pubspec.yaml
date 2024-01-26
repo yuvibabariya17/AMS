@@ -64,6 +64,7 @@ dependencies:
   syncfusion_flutter_calendar: ^22.2.11
   dotted_line: ^3.2.2
   scroll_snap_list: ^0.9.1
+  dashed_line: ^0.1.0+3
   
 
 dev_dependencies:

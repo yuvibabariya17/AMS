@@ -24,6 +24,14 @@ class ProductSellingScreen extends StatefulWidget {
 class _ProductSellingScreenState extends State<ProductSellingScreen> {
   final controller = Get.put(ProductSellingController());
 
+
+    @override
+  void initState() {
+    controller.getCustomerList(context);
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -77,9 +85,15 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                                       initialDate: controller
                                                           .selectedStartDate,
                                                       firstDate: DateTime(1950),
-                                                      lastDate: DateTime.now()
-                                                          .add(const Duration(
-                                                              days: 0)));
+                                                      lastDate: DateTime(2050)
+                                                         
+                                                         
+                                                          // .add(const Duration(
+                                                          //     days: 0))
+                                                              
+                                                              
+                                                              
+                                                              );
                                               if (pickedDate != null &&
                                                   pickedDate !=
                                                       controller
@@ -122,6 +136,18 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                               controller.validateProduct(val);
                                               setState(() {});
                                             },
+                                              onTap: () {
+                                          controller.coursectr.text = "";
+
+                                          showDropDownDialog(
+                                              context,
+                                              controller.setCustomerList(),
+                                              "Customer List");
+                                          // showDropdownMessage(
+                                          //     context,
+                                          //     controller.setCategoryList(),
+                                          //     'Select Category');
+                                        },
                                             isReadOnly: true,
                                             errorText: controller
                                                 .ProductModel.value.error,

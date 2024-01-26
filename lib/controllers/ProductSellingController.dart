@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
+import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
 import 'package:booking_app/api_handle/Repository.dart';
@@ -8,6 +9,7 @@ import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
@@ -16,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 
 class ProductSellingController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
@@ -223,6 +226,88 @@ class ProductSellingController extends GetxController {
     }
   }
 
+
+ RxBool isCustomerTypeApiList = false.obs;
+  RxList<ListofCustomer> customerObjectList = <ListofCustomer>[].obs;
+  RxString customerId = "".obs;
+
+
+   void getCustomerList(context) async {
+    state.value = ScreenState.apiLoading;
+    isCustomerTypeApiList.value = true;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
+    }
+    var response =
+        await Repository.post({}, ApiUrl.customerList, allowHeader: true);
+    isCustomerTypeApiList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat(" CUSTOMER RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = CustomerListModel.fromJson(responseData);
+      if (data.status == 1) {
+        state.value = ScreenState.apiSuccess;
+        customerObjectList.clear();
+        customerObjectList.addAll(data.data);
+        logcat("CUSTOMER RESPONSE", jsonEncode(customerObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isCourseTypeApiList.value = false;
+    // }
+  }
+
+
+   Widget setCustomerList() {
+    return Obx(() {
+      if (isCustomerTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isCustomerTypeApiList.value);
+
+      return setDropDownTestContent(
+        customerObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: customerObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                customerId.value =
+                    customerObjectList[index].name.toString();
+                coursectr.text =
+                    customerObjectList[index].name.capitalize.toString();
+
+              //  validateStudent(val);
+              },
+              title: Text(
+                customerObjectList[index].name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
         context: context,
@@ -288,6 +373,8 @@ class ProductSellingController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
+
+
 
   // void getVideo(context) async {
   //   var loadingIndicator = LoadingProgressDialog();

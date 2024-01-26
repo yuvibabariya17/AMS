@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:booking_app/Models/CategoryModel.dart';
+import 'package:booking_app/Models/ProductCategoryModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
@@ -340,14 +340,14 @@ class addProductController extends GetxController {
           allowHeader: true);
       isCategoryTypeApiCall.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
+      logcat("CATEGORY LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = CategoryModel.fromJson(responseData);
+        var data = ProductCategoryModel.fromJson(responseData);
         if (data.status == 1) {
           categoryObjectList.clear();
           categoryObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(categoryObjectList));
+          logcat("CATEGORY LIST", jsonEncode(categoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

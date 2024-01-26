@@ -78,57 +78,67 @@ class ServiceDetails {
 
  List<ServiceSlot> hairserviceItems = <ServiceSlot>[
     ServiceSlot(
-      time: '09:00 AM',
+      time: '09:00\nAM',
       details: [
         ServiceDetails(
           title: 'Hair Cut',
-          description: 'Description for Hair Cut',
-          duration: '09:00 AM TO 09:30 AM',
+          description: 'Description for Hair Cut Description for Hair Cut Description for Hair Cut Description for Hair Cut Description for Hair Cut',
+          duration: '09:00 AM-09:30 AM',
         ),
         ServiceDetails(
           title: 'Hair Cut',
           description: 'Description for Hair Cut',
-          duration: '09:00 AM TO 09:30 AM',
+          duration: '09:00 AM-09:30 AM',
+        ),
+          ServiceDetails(
+          title: 'Hair Cut',
+          description: 'Description for Hair Cut',
+          duration: '09:00 AM-09:30 AM',
         ),
       ],
     ),
     ServiceSlot(
-      time: '09:30 AM',
+      time: '10:00\nAM',
       details: [
         ServiceDetails(
           title: 'Nail Treatments',
           description: 'Description for Nail Treatments',
-          duration: '09:00 AM TO 09:30 AM',
+          duration: '09:00 AM-09:30 AM',
+        ),
+          ServiceDetails(
+          title: 'Hair Cut',
+          description: 'Description for Hair Cut',
+          duration: '09:00 AM-09:30 AM',
         ),
       ],
     ),
      ServiceSlot(
-      time: '10:00 AM',
+      time: '11:00\nAM',
       details: [
         ServiceDetails(
           title: 'Nail Treatments',
           description: 'Description for Nail Treatments',
-          duration: '09:00 AM TO 09:30 AM',
+          duration: '09:00 AM-09:30 AM',
         ),
       ],
     ),
      ServiceSlot(
-      time: '10:30 AM',
+      time: '12:00\nPM',
       details: [
         ServiceDetails(
           title: 'Nail Treatments',
           description: 'Description for Nail Treatments',
-          duration: '09:00 AM TO 09:30 AM',
+          duration: '09:00 AM-09:30 AM',
         ),
       ],
     ),
      ServiceSlot(
-      time: '11:00 AM',
+      time: '01:00\nPM',
       details: [
         ServiceDetails(
           title: 'Nail Treatments',
           description: 'Description for Nail Treatments',
-          duration: '09:00 AM TO 09:30 AM',
+          duration: '09:00 AM-09:30 AM',
         ),
       ],
     ),

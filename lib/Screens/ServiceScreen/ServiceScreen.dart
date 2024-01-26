@@ -1,3 +1,4 @@
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/controllers/Service_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../Models/ServiceModel.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
 import '../../core/constants/strings.dart';
@@ -279,7 +279,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    ServiceList data =
+                    VendorServiceList data =
                         controller.filteredServiceObjectList[index];
 
                     return Container(
@@ -352,9 +352,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                 data.serviceInfo != null
-                                    ? data.serviceInfo!.name
-                                    : "",
+
+                                data.subCategoryInfo.name,
+                                //  data.serviceInfo != null
+                                //     ? data.serviceInfo!.name
+                                //     : "",
                               
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

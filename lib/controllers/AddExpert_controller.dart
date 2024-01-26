@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/UploadImageModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/CommonModel.dart';
-import '../Models/ServiceModel.dart';
 import '../Models/sign_in_form_validation.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
@@ -287,6 +287,47 @@ class AddexpertController extends GetxController {
     }
   }
 
+  // Widget setServiceList() {
+  //   return Obx(() {
+  //     if (isServiceTypeApiList.value == true)
+  //       return setDropDownContent([].obs, Text("Loading"),
+  //           isApiIsLoading: isServiceTypeApiList.value);
+
+  //     return setDropDownTestContent(
+  //       serviceObjectList,
+  //       ListView.builder(
+  //         shrinkWrap: true,
+  //         itemCount: serviceObjectList.length,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return ListTile(
+  //             dense: true,
+  //             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+  //             contentPadding:
+  //                 const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+  //             horizontalTitleGap: null,
+  //             minLeadingWidth: 5,
+  //             onTap: () {
+  //               Get.back();
+  //               serviceId.value = serviceObjectList[index].id.toString();
+  //               Servicectr.text = serviceObjectList[index]
+  //                   .serviceInfo!
+  //                   .name
+  //                   .capitalize
+  //                   .toString();
+
+  //               validateServicename(Servicectr.text);
+  //             },
+  //             title: Text(
+  //               serviceObjectList[index].serviceInfo!.name.toString(),
+  //               style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   });
+  // }
+
   Widget setServiceList() {
     return Obx(() {
       if (isServiceTypeApiList.value == true)
@@ -297,6 +338,7 @@ class AddexpertController extends GetxController {
         serviceObjectList,
         ListView.builder(
           shrinkWrap: true,
+          
           itemCount: serviceObjectList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -308,17 +350,14 @@ class AddexpertController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                serviceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index]
-                    .serviceInfo!
-                    .name
-                    .capitalize
-                    .toString();
+                ServiceId.value = serviceObjectList[index].id.toString();
+                Servicectr.text =
+                    serviceObjectList[index].vendorInfo.userName.capitalize.toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].serviceInfo!.name.toString(),
+                serviceObjectList[index].vendorInfo.emailId.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -329,44 +368,95 @@ class AddexpertController extends GetxController {
   }
 
   RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-  RxString serviceId = "".obs;
-  RxString uploadImageId = ''.obs;
+  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
+  RxString ServiceId = "".obs;
 
   void getServiceList(context) async {
     isServiceTypeApiList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
-    isServiceTypeApiList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat("RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      var data = ServiceModel.fromJson(responseData);
-      if (data.status == 1) {
-        serviceObjectList.clear();
-        serviceObjectList.addAll(data.data);
-        logcat("RESPONSE", jsonEncode(serviceObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {
-          Get.back(result: true);
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
         });
+        return;
       }
-    } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+      }, ApiUrl.vendorServiceList, allowHeader: true);
+      isServiceTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("SERVICE LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = VendorServiceModel.fromJson(responseData);
+        if (data.status == 1) {
+          serviceObjectList.clear();
+          serviceObjectList.addAll(data.data);
+
+          logcat("SERVICE LIST", jsonEncode(serviceObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceTypeApiList.value = false;
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isServiceTypeApiList.value = false;
-    // }
   }
+
+
+
+
+
+
+
+  // RxBool isServiceTypeApiList = false.obs;
+  // RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+   RxString serviceId = "".obs;
+  RxString uploadImageId = ''.obs;
+
+  // void getServiceList(context) async {
+  //   isServiceTypeApiList.value = true;
+  //   // try {
+  //   if (networkManager.connectionType == 0) {
+  //     showDialogForScreen(context, Connection.noConnection, callback: () {
+  //       Get.back();
+  //     });
+  //     return;
+  //   }
+  //   var response =
+  //       await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
+  //   isServiceTypeApiList.value = false;
+  //   var responseData = jsonDecode(response.body);
+  //   logcat("RESPONSE", jsonEncode(responseData));
+
+  //   if (response.statusCode == 200) {
+  //     var data = ServiceModel.fromJson(responseData);
+  //     if (data.status == 1) {
+  //       serviceObjectList.clear();
+  //       serviceObjectList.addAll(data.data);
+  //       logcat("RESPONSE", jsonEncode(serviceObjectList));
+  //     } else {
+  //       showDialogForScreen(context, responseData['message'], callback: () {
+  //         Get.back(result: true);
+  //       });
+  //     }
+  //   } else {
+  //     showDialogForScreen(context, Connection.servererror, callback: () {});
+  //   }
+  //   // } catch (e) {
+  //   //   logcat('Exception', e);
+  //   //   isServiceTypeApiList.value = false;
+  //   // }
+  // }
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(

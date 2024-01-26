@@ -282,7 +282,7 @@ class AddserviceController extends GetxController {
   RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
   RxString ServiceId = "".obs;
 
-  void ServiceListApi(context) async {
+  void getServiceList(context) async {
     isServiceTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
@@ -298,10 +298,10 @@ class AddserviceController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
-      }, ApiUrl.serviceList, allowHeader: true);
+      }, ApiUrl.vendorServiceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
+      logcat("SERVICE LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = VendorServiceModel.fromJson(responseData);
@@ -309,7 +309,7 @@ class AddserviceController extends GetxController {
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
 
-          logcat("RESPONSE", jsonEncode(serviceObjectList));
+          logcat("SERVICE LIST", jsonEncode(serviceObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

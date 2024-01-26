@@ -25,7 +25,7 @@ class _SplashscreenState extends State<Splashscreen> {
       if (retrievedObject != null) {
         Get.offAll(const dashboard());
       } else {
-        Get.offAll(const dashboard());
+        Get.offAll(const IntroScreen());
         // Get.offAll(const IntroScreen());
       }
     });

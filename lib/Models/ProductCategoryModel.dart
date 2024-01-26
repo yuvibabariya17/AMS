@@ -13,7 +13,7 @@ String productCategoryModelToJson(ProductCategoryModel data) =>
 class ProductCategoryModel {
   int status;
   String message;
-  List<Datum> data;
+  List<ProductCategoryList> data;
   int totalRecord;
   int totalPages;
 
@@ -29,7 +29,10 @@ class ProductCategoryModel {
       ProductCategoryModel(
         status: json["status"],
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: (json["data"] as List<dynamic>?)
+                ?.map((x) => ProductCategoryList.fromJson(x))
+                .toList() ??
+            [],
         totalRecord: json["totalRecord"],
         totalPages: json["totalPages"],
       );
@@ -43,7 +46,7 @@ class ProductCategoryModel {
       };
 }
 
-class Datum {
+class ProductCategoryList {
   String id;
   String name;
   String uploadId;
@@ -51,7 +54,7 @@ class Datum {
   int createdAt;
   UploadInfo uploadInfo;
 
-  Datum({
+  ProductCategoryList({
     required this.id,
     required this.name,
     required this.uploadId,
@@ -60,7 +63,8 @@ class Datum {
     required this.uploadInfo,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory ProductCategoryList.fromJson(Map<String, dynamic> json) =>
+      ProductCategoryList(
         id: json["_id"],
         name: json["name"],
         uploadId: json["upload_id"],

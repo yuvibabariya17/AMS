@@ -1,5 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/controllers/AddService_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
@@ -15,7 +15,7 @@ import '../../custom_componannt/form_inputs.dart';
 class AddServiceScreen extends StatefulWidget {
   AddServiceScreen({super.key, this.isEdit, this.editService});
   bool? isEdit;
-  ServiceList? editService;
+  VendorServiceList? editService;
 
   @override
   State<AddServiceScreen> createState() => _AddServiceScreenState();
@@ -68,7 +68,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
        validateFields() ;
     }
 
-    controller.ServiceListApi(context);
+    controller.getServiceList(context);
     super.initState();
   }
 

@@ -394,9 +394,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                data.serviceInfo != null
-                                    ? data.serviceInfo!.name
-                                    : "",
+                               '₹ ${data.amount.toString()}',
+                                // data.serviceInfo != null
+                                //     ? data.serviceInfo!.name
+                                //     : "",
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
