@@ -425,15 +425,14 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Container(
-              // margin: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Text(
-                CommonConstant.noDataFound,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 31.h),
+            child: Text(
+              CommonConstant.noDataFound,
+                 
+              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],

@@ -69,14 +69,16 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                       color: isDarkMode() ? Colors.grey : black,
                       fontSize: 13.5.sp),
                 ),
-                IconButton(
-                    alignment: Alignment.topRight,
-                    onPressed: () {
-                      Get.to(UpdateVendor());
-                    },
-                    icon: SvgPicture.asset(Asset.edit,
-                        height: 2.3.h,
-                        color: isDarkMode() ? Colors.grey : Colors.grey))
+                MouseRegion( cursor: SystemMouseCursors.click, 
+                  child: IconButton(
+                      alignment: Alignment.topRight,
+                      onPressed: () {
+                        Get.to(UpdateVendor());
+                      },
+                      icon: SvgPicture.asset(Asset.edit,
+                          height: 2.3.h,
+                          color: isDarkMode() ? Colors.grey : Colors.grey)),
+                )
               ],
             ),
             SizedBox(height: 0.5.h),

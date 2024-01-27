@@ -116,7 +116,7 @@ class ServiceDetails {
       time: '11:00\nAM',
       details: [
         ServiceDetails(
-          title: 'Nail Treatments',
+          title: 'Tanning',
           description: 'Description for Nail Treatments',
           duration: '09:00 AM-09:30 AM',
         ),
@@ -126,7 +126,7 @@ class ServiceDetails {
       time: '12:00\nPM',
       details: [
         ServiceDetails(
-          title: 'Nail Treatments',
+          title: 'Bridal MakeUp',
           description: 'Description for Nail Treatments',
           duration: '09:00 AM-09:30 AM',
         ),
@@ -136,7 +136,7 @@ class ServiceDetails {
       time: '01:00\nPM',
       details: [
         ServiceDetails(
-          title: 'Nail Treatments',
+          title: 'Skin Treatment',
           description: 'Description for Nail Treatments',
           duration: '09:00 AM-09:30 AM',
         ),

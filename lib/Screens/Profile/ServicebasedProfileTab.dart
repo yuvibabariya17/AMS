@@ -210,6 +210,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                               Text(
                                 '₹ ${data.fees.toString()}',
                                 style: TextStyle(
+                                      color: isDarkMode() ? white : black,
                                   fontFamily: opensansMedium,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,

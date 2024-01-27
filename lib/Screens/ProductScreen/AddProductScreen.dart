@@ -215,7 +215,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                           showDropDownDialog(
                                               context,
                                               controller.setCategoryList(),
-                                              "Select Category");
+                                              "Category List");
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setCategoryList(),

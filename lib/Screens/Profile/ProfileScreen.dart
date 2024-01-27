@@ -194,6 +194,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                 : isDarkMode()
                     ? Colors.white
                     : Colors.white,
+
+                     border: Border.all(
+                color: isDarkMode()
+                    ? Colors.white
+                    : Colors.transparent),
             boxShadow: [
               BoxShadow(
                   color: isDarkMode()

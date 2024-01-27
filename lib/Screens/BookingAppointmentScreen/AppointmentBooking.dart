@@ -25,13 +25,15 @@ class AppointmentBookingScreen extends StatefulWidget {
 
 class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
   final controller = Get.put(AppointmentBookingController());
+  late TimeOfDay selectedTime;
   DateTime selectedDate = DateTime.now();
   bool check1 = false;
 
   @override
   void initState() {
-    controller.getServieList(context);
+    controller.getServiceList(context);
     controller.getExpertList(context);
+    controller.getCustomerList(context);
     super.initState();
   }
 
@@ -83,14 +85,26 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         controller: controller.Customerctr,
                                         hintLabel: AppointmentBookingConstant
                                             .customer_hint,
-                                        // wantSuffix: true,
-                                        // isdown: true,
+                                        wantSuffix: true,
+                                        isdown: true,
                                         onChanged: (val) {
                                           controller.validateCustomer(val);
                                         },
+                                        isReadOnly: true,
+                                        onTap: () {
+                                          controller.Customerctr.text = "";
+                                          showDropDownDialog(
+                                              context,
+                                              controller.setCustomerList(),
+                                              "Customer List");
+                                          // showDropdownMessage(
+                                          //     context,
+                                          //     controller.setExpertList(),
+                                          //     'Select Expert');
+                                        },
                                         errorText: controller
                                             .CustomerModel.value.error,
-                                        inputType: TextInputType.name,
+                                        inputType: TextInputType.none,
                                       );
                                     }))),
                             getTitle(AppointmentBookingConstant.Services),
@@ -110,12 +124,13 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           controller.validateService(val);
                                           setState(() {});
                                         },
+                                        isReadOnly: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),
-                                              "Select Service");
+                                              "Service List");
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setServiceList(),
@@ -126,7 +141,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
-                            getTitle("Add Experts"),
+                            getTitle("Experts"),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -138,6 +153,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         hintLabel: "Select Expert",
                                         wantSuffix: true,
                                         isDropdown: true,
+                                        isReadOnly: true,
                                         onAddBtn: () {
                                           Get.to(AddExpertScreen());
                                         },
@@ -151,7 +167,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           showDropDownDialog(
                                               context,
                                               controller.setExpertList(),
-                                              "Select Expert");
+                                              "Expert List");
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setExpertList(),
@@ -206,6 +222,101 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
+                            getTitle("Duration"),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.durationNode,
+                                        controller: controller.durationctr,
+                                        wantSuffix: true,
+                                        time: true,
+                                        hintLabel: "Enter Duration",
+                                        isReadOnly: true,
+                                        onChanged: (val) {
+                                          controller.validateDuration(val);
+                                          setState(() {});
+                                        },
+                                          onTap: () async {
+                                          final TimeOfDay? pickedDuration =
+                                              await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.now(),
+                                          );
+
+                                          if (pickedDuration != null) {
+                                            final DateTime currentDate =
+                                                DateTime.now();
+                                            final DateTime combinedDateTime =
+                                                DateTime(
+                                              currentDate.year,
+                                              currentDate.month,
+                                              currentDate.day,
+                                              pickedDuration.hour,
+                                              pickedDuration.minute,
+                                              0,
+                                              704,
+                                            );
+
+                                            final SittingDurationTime =
+                                                "${pickedDuration.format(context)}";
+                                            //For All Format
+                                            controller.sitingTime =
+                                                "${DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(combinedDateTime)}Z";
+
+                                            controller.updateSittingDuration(
+                                                SittingDurationTime);
+                                            controller.validateDuration(
+                                                SittingDurationTime);
+                                            setState(() {
+                                              selectedTime = pickedDuration;
+                                              print(
+                                                  "Selected Time: $SittingDurationTime");
+                                            });
+                                          }
+
+                                          // DateTime? pickedDate =
+                                          //     await showDatePicker(
+                                          //   context: context,
+                                          //   initialDate: controller.durationDate,
+                                          //   firstDate: DateTime(1950),
+                                          //   lastDate: DateTime(2050),
+                                          //   // lastDate: DateTime.now().add(
+                                          //   //     const Duration(days: 0))
+                                          // );
+                                          // if (pickedDate != null &&
+                                          //     pickedDate !=
+                                          //         controller.durationDate) {
+                                          //   setState(() {
+                                          //     controller.durationDate = pickedDate;
+                                          //     controller.durationDate = DateTime(
+                                          //       pickedDate.year,
+                                          //       pickedDate.month,
+                                          //       pickedDate.day,
+                                          //       controller.durationDate.hour,
+                                          //       controller.durationDate.minute,
+                                          //       controller.durationDate.second,
+                                          //     );
+                                          //   });
+                                          // }
+                                          // if (pickedDate != null) {
+                                          //   String formattedDate =
+                                          //       DateFormat(Strings.oldDateFormat)
+                                          //           .format(pickedDate);
+                                          //   controller.updateSittingDuration(
+                                          //       formattedDate);
+                                          //   controller
+                                          //       .validateDuration(formattedDate);
+                                          // }
+                                        },
+                                        errorText: controller
+                                            .durationModel.value.error,
+                                        inputType: TextInputType.none,
+                                      );
+                                    }))),
+
                             getTitle(
                                 AppointmentBookingConstant.Appointment_slot),
                             SizedBox(
@@ -280,6 +391,27 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         errorText:
                                             controller.AmountModel.value.error,
                                         inputType: TextInputType.number,
+                                      );
+                                    }))),
+                            getTitle("Appointment Type"),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.appointmentTypeNode,
+                                        controller:
+                                            controller.appointmentTypectr,
+                                        hintLabel: "Enter Appointment Type",
+                                        onChanged: (val) {
+                                          controller
+                                              .validateAppointmentType(val);
+                                          setState(() {});
+                                        },
+                                        errorText: controller
+                                            .appointmentTypeModel.value.error,
+                                        inputType: TextInputType.name,
                                       );
                                     }))),
                             getTitle(AddCourseConstant.notes),
@@ -413,7 +545,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         true) {
                                       // controller.AddBookingAppointmentAPI(context);
                                     }
-                                  }, "Sign In",
+                                  }, "Submit",
                                       validate:
                                           controller.isFormInvalidate.value);
                                 })),

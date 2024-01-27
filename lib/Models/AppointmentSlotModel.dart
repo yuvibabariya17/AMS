@@ -11,7 +11,7 @@ String appointmentSlotModelToJson(AppointmentSlotModel data) => json.encode(data
 class AppointmentSlotModel {
     int status;
     String message;
-    List<Datum> data;
+    List<SlotList> data;
     int totalRecord;
     int totalPages;
 
@@ -26,7 +26,7 @@ class AppointmentSlotModel {
     factory AppointmentSlotModel.fromJson(Map<String, dynamic> json) => AppointmentSlotModel(
         status: json["status"],
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<SlotList>.from(json["data"].map((x) => SlotList.fromJson(x))),
         totalRecord: json["totalRecord"],
         totalPages: json["totalPages"],
     );
@@ -40,7 +40,7 @@ class AppointmentSlotModel {
     };
 }
 
-class Datum {
+class SlotList {
     String id;
     String vendorId;
     String exportId;
@@ -50,7 +50,7 @@ class Datum {
     VendorInfo vendorInfo;
     ExpertInfo expertInfo;
 
-    Datum({
+    SlotList({
         required this.id,
         required this.vendorId,
         required this.exportId,
@@ -61,7 +61,7 @@ class Datum {
         required this.expertInfo,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory SlotList.fromJson(Map<String, dynamic> json) => SlotList(
         id: json["_id"],
         vendorId: json["vendor_id"],
         exportId: json["export_id"],

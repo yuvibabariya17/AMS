@@ -234,7 +234,7 @@ getFormButton(Function fun, str, {required bool validate}) {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
             SizerUtil.deviceType == DeviceType.mobile ? 5.h : 1.4.h),
-        color: validate ? black : Colors.grey,
+        color: validate ? isDarkMode() ? white : black : Colors.grey,
         boxShadow: [
           BoxShadow(
               color: validate
@@ -248,7 +248,7 @@ getFormButton(Function fun, str, {required bool validate}) {
       child: Text(
         str,
         style: TextStyle(
-            color: Colors.white,
+            color:isDarkMode() ? black : white,
             fontFamily: fontBold,
             fontSize: SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 8.sp),
       ),

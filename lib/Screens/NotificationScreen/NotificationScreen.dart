@@ -146,6 +146,10 @@ class _NotificationScreenState extends State<NotificationScreen>
                 color: controller.currentPage.value == index
                     ? Colors.black
                     : Colors.white,
+                      border: Border.all(
+                color: isDarkMode()
+                    ? Colors.white
+                    : Colors.transparent),
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 10,

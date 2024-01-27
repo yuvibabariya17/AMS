@@ -129,8 +129,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),
-                                              AlertDialogConstant
-                                                  .selectService);
+                                              "Service List");
                                         },
 
                                         onChanged: (val) {

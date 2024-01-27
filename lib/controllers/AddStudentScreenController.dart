@@ -167,8 +167,11 @@ class AddStudentController extends GetxController {
 
   void validateContact(String? val) {
     ContactModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Contact Number";
+      if (val == null || val.isEmpty) {
+        model!.error = "Enter Contact No.1";
+        model.isValidate = false;
+      } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
+        model!.error = "Enter Valid Contact No";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -181,7 +184,7 @@ class AddStudentController extends GetxController {
 
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
-  RxString uploadBreacherId = ''.obs;
+  RxString uploadIdproof = ''.obs;
 
   void hideKeyboard(context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -205,85 +208,7 @@ class AddStudentController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
-  actionClickUploadImageForIdproof(context, {bool? isCamera}) async {
-    await ImagePicker()
-        .pickImage(
-            //source: ImageSource.gallery,
-            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
-        .then((file) async {
-      if (file != null) {
-        //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-        if (file != null) {
-          uploadProfile = File(file.path).obs;
-          idctr.text = file.name;
-          validateId(idctr.text);
-          getIdProof(context);
-        }
-
-        // if (croppedFile != null) {
-        //   uploadImageFile = File(croppedFile.path).obs;
-        //   profilePic.value = croppedFile.path;
-        //   update();
-        // }
-      }
-    });
-
-    update();
-  }
-
-   Rx<File?> uploadLogo = null.obs;
-  Rx<File?> uploadBreachers = null.obs;
-
-  Rx<File?> uploadProfile = null.obs;
-  RxString uploadProfileId = ''.obs;
-
-
-
-   void AddStudent(context) async {
+  void AddStudent(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -294,25 +219,27 @@ class AddStudentController extends GetxController {
         return;
       }
       loadingIndicator.show(context, '');
-    //  var retrievedObject = await UserPreferences().getSignInInfo();
+      //  var retrievedObject = await UserPreferences().getSignInInfo();
 
-      // logcat("ADDCOURSE", {
-      //   "name": Studentctr.text.toString().trim(),
-      //   "thumbnail_url": uploadImageId.value.toString(),
-      //   "duration": Durationctr.text.toString().trim(),
-      //   "fees": Feesctr.text.toString().trim(),
-      //   "description": Descctr.text.toString().trim(),
-      //   "vendor_id": retrievedObject!.id.toString().trim()
-      // });
+      logcat("ADDCOURSE", {
+        ({
+          "name": namectr.text.toString().trim(),
+          "address": addressctr.text.toString().trim(),
+          "email": emailctr.text.toString().trim(),
+          "contact": contactctr.text.toString().trim(),
+          "photo_url": uploadImageId.value.toString(),
+          "id_proof_url": uploadIdproof.value.toString(),
+        })
+      });
 
       var response = await Repository.post({
-    "name": namectr.text.toString().trim(),
-    "address": addressctr.text.toString().trim(),
-    "email":emailctr.text.toString().trim(),
-    "contact":contactctr.text.toString().trim(),
-    "photo_url": uploadLogo.value.toString(),
-    "id_proof_url": uploadBreachers.value.toString(),
-}, ApiUrl.addStudent, allowHeader: true);
+        "name": namectr.text.toString().trim(),
+        "address": addressctr.text.toString().trim(),
+        "email": emailctr.text.toString().trim(),
+        "contact": contactctr.text.toString().trim(),
+        "photo_url": uploadImageId.value.toString(),
+        "id_proof_url": uploadIdproof.value.toString(),
+      }, ApiUrl.addStudent, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("ADDCOURSE", data);
@@ -339,6 +266,51 @@ class AddStudentController extends GetxController {
     }
   }
 
+  Rx<File?> uploadImageFile = null.obs;
+  Rx<File?> uploadIdProof = null.obs;
+
+  actionClickUploadImage(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadImageFile = File(file.path).obs;
+          imgctr.text = file.name;
+          validateImage(imgctr.text);
+          getImageApi(context);
+        }
+      }
+    });
+
+    update();
+  }
+
+  actionClickUploadIdProof(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadIdProof = File(file.path).obs;
+          idctr.text = file.name;
+          validateId(idctr.text);
+          getIdproofApi(context);
+        }
+      }
+    });
+
+    update();
+  }
+
   void getImageApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
@@ -352,14 +324,14 @@ class AddStudentController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadLogo.value!.path.split('/').last,
+        "file": uploadImageFile.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadLogo.value != null
+          multiPart: uploadImageFile.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadLogo.value!.readAsBytes().asStream(),
-                  uploadLogo.value!.lengthSync(),
-                  filename: uploadLogo.value!.path.split('/').last,
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -390,7 +362,7 @@ class AddStudentController extends GetxController {
     }
   }
 
-  void getIdProof(context) async {
+  void getIdproofApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
 
@@ -403,14 +375,14 @@ class AddStudentController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadBreachers.value!.path.split('/').last,
+        "file": uploadIdProof.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadBreachers.value != null
+          multiPart: uploadIdProof.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadBreachers.value!.readAsBytes().asStream(),
-                  uploadBreachers.value!.lengthSync(),
-                  filename: uploadBreachers.value!.path.split('/').last,
+                  uploadIdProof.value!.readAsBytes().asStream(),
+                  uploadIdProof.value!.lengthSync(),
+                  filename: uploadIdProof.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -424,7 +396,7 @@ class AddStudentController extends GetxController {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadBreacherId.value = responseData.data.id.toString();
+          uploadIdproof.value = responseData.data.id.toString();
         } else {
           showDialogForScreen(context, responseData.message.toString(),
               callback: () {});
@@ -440,38 +412,4 @@ class AddStudentController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
-
-
-  actionClickUploadImage(context, {bool? isCamera}) async {
-    await ImagePicker()
-        .pickImage(
-            //source: ImageSource.gallery,
-            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
-        .then((file) async {
-      if (file != null) {
-        //Cropping the image
-      
-        if (file != null) {
-          uploadReportFile = File(file.path).obs;
-          imgctr.text = file.name;
-          validateImage(imgctr.text);
-          getImageApi(context);
-        }
-
-        // if (croppedFile != null) {
-        //   uploadImageFile = File(croppedFile.path).obs;
-        //   profilePic.value = croppedFile.path;
-        //   update();
-        // }
-      }
-    });
-
-    update();
-  }
-
-  Rx<File?> uploadReportFile = null.obs;
-  Rx<File?> uploadVideoFile = null.obs;
 }

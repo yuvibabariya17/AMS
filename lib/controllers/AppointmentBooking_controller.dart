@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:booking_app/Models/AppointmentSlotModel.dart';
+import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +31,9 @@ class AppointmentBookingController extends GetxController {
   late FocusNode NoteNode;
   late FocusNode RemindNode;
   late FocusNode expertNode;
+  late FocusNode appointmentTypeNode;
+  late FocusNode durationNode;
+  late FocusNode dateNode;
 
   late TextEditingController Customerctr;
   late TextEditingController Servicectr;
@@ -36,9 +42,9 @@ class AppointmentBookingController extends GetxController {
   late TextEditingController Notectr;
   late TextEditingController Remindctr;
   late TextEditingController expertctr;
-
+  late TextEditingController appointmentTypectr;
+  late TextEditingController durationctr;
   late TextEditingController datectr;
-  late FocusNode dateNode;
 
   final formKey = GlobalKey<FormState>();
   RxBool isClickd = false.obs;
@@ -56,6 +62,8 @@ class AppointmentBookingController extends GetxController {
     RemindNode = FocusNode();
     expertNode = FocusNode();
     dateNode = FocusNode();
+    appointmentTypeNode = FocusNode();
+    durationNode = FocusNode();
 
     Customerctr = TextEditingController();
     expertctr = TextEditingController();
@@ -66,6 +74,8 @@ class AppointmentBookingController extends GetxController {
     Notectr = TextEditingController();
     Remindctr = TextEditingController();
     datectr = TextEditingController();
+    appointmentTypectr = TextEditingController();
+    durationctr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();
@@ -109,6 +119,16 @@ class AppointmentBookingController extends GetxController {
     update();
   }
 
+   String sitingTime = "";
+
+
+   
+  void updateSittingDuration(date) {
+    durationctr.text = date;
+    print("PICKED_DATE${durationctr.value}");
+    update();
+  }
+
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
@@ -120,12 +140,10 @@ class AppointmentBookingController extends GetxController {
   var expertsModel = ValidationModel(null, null, isValidate: false).obs;
   var dateModel = ValidationModel(null, null, isValidate: false).obs;
   var slotModel = ValidationModel(null, null, isValidate: false).obs;
+  var appointmentTypeModel = ValidationModel(null, null, isValidate: false).obs;
+  var durationModel = ValidationModel(null, null, isValidate: false).obs;
 
-  void 
-  
-  
-  
-  enableSignUpButton() {
+  void enableSignUpButton() {
     if (CustomerModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (ServicesModel.value.isValidate == false) {
@@ -144,9 +162,11 @@ class AppointmentBookingController extends GetxController {
       isFormInvalidate.value = false;
     } else if (slotModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    }
-    
-    else {
+    } else if (appointmentTypeModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (durationModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else {
       isFormInvalidate.value = true;
     }
   }
@@ -207,7 +227,6 @@ class AppointmentBookingController extends GetxController {
     enableSignUpButton();
   }
 
-  
   void validateSlot(String? val) {
     slotModel.update((model) {
       if (val != null && val.isEmpty) {
@@ -264,6 +283,34 @@ class AppointmentBookingController extends GetxController {
     enableSignUpButton();
   }
 
+  void validateDuration(String? val) {
+    durationModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Name";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateAppointmentType(String? val) {
+    appointmentTypeModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Appointment Type";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
   RxBool isFormInvalidate = false.obs;
 
   void hideKeyboard(context) {
@@ -289,12 +336,22 @@ class AppointmentBookingController extends GetxController {
       var retrievedObject = await UserPreferences().getSignInInfo();
       var response = await Repository.post({
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "customer_id": retrievedObject!.id.toString().trim(),
-        "vendor_service_id": serviceId.value.toString().trim(),
+        "customer_id": retrievedObject.id.toString().trim(),
+        "vendor_service_id": ServiceId.value.toString().trim(),
+        "appointment_slot_id": "6500476bf3b6019b811a1e22",
+        "amount": Amountctr.text.toString().trim(),
+        "appointment_type": appointmentTypectr.text.toString().trim(),
+        "duration": durationctr.text.toString().trim(),
+        "date_of_appointment": datectr.text.toString().trim(),
+        "make_reminder": 1,
+        "is_confirmed": 1,
+        "is_finished": 0,
+        "is_cancelled": 0,
+        "is_reschedule": 0,
+        "notes": Notectr.text.toString().trim()
         // "appointment_slot_id": Feesctr.text.toString().trim(),
         // "duration": .text.toString().trim(),
-        "date_of_appointment": retrievedObject!.id.toString().trim(),
-      }, ApiUrl.addCourse, allowHeader: true);
+      }, ApiUrl.addAppointment, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -318,9 +375,53 @@ class AppointmentBookingController extends GetxController {
     }
   }
 
+// APPOITNTMENT SLOT LIST 
+
+  void getAppointmentSlot(context) async {
+    isSlotApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.slotList, allowHeader: true);
+      isSlotApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("SLOT LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = AppointmentSlotModel.fromJson(responseData);
+        if (data.status == 1) {
+          slotObjectList.clear();
+          slotObjectList.addAll(data.data);
+          logcat("SLOT LIST", jsonEncode(expertObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isSlotApiList.value = false;
+    }
+  }
+
+
+  // EXPERT LISTTTT
+
   RxBool isExpertTypeApiList = false.obs;
   RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
   RxString expertId = "".obs;
+
+
+  RxBool isSlotApiList = false.obs;
+  RxList<SlotList> slotObjectList = <SlotList>[].obs;
+  RxString slotId = "".obs;
 
   void getExpertList(context) async {
     isExpertTypeApiList.value = true;
@@ -335,14 +436,14 @@ class AppointmentBookingController extends GetxController {
           await Repository.post({}, ApiUrl.expertList, allowHeader: true);
       isExpertTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
+      logcat("EXPERT LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = ExpertModel.fromJson(responseData);
         if (data.status == 1) {
           expertObjectList.clear();
           expertObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(expertObjectList));
+          logcat("EXPERT LIST", jsonEncode(expertObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -377,12 +478,13 @@ class AppointmentBookingController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("ONTAP", "SACHIN");
+                logcat("SETEXPERTLIST", "EXPERT");
                 expertId.value = expertObjectList[index].serviceInfo.toString();
                 expertctr.text =
                     expertObjectList[index].name.capitalize.toString();
 
                 validateExpert(expertctr.text);
+                getAppointmentSlot(context);
               },
               title: Text(
                 expertObjectList[index].name.toString(),
@@ -394,8 +496,6 @@ class AppointmentBookingController extends GetxController {
       );
     });
   }
-
-  // SERVICE LIST
 
   Widget setServiceList() {
     return Obx(() {
@@ -418,19 +518,17 @@ class AppointmentBookingController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("ONTAP", "SACHIN");
-                serviceId.value =
-                    serviceObjectList[index].serviceInfo.toString();
+                ServiceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text = serviceObjectList[index]
-                    .serviceInfo!
-                    .name
+                    .vendorInfo
+                    .userName
                     .capitalize
                     .toString();
 
                 validateService(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].serviceInfo!.name.toString(),
+                serviceObjectList[index].vendorInfo.emailId.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -441,10 +539,10 @@ class AppointmentBookingController extends GetxController {
   }
 
   RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-  RxString serviceId = "".obs;
+  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
+  RxString ServiceId = "".obs;
 
-  void getServieList(context) async {
+  void getServiceList(context) async {
     isServiceTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
@@ -453,18 +551,25 @@ class AppointmentBookingController extends GetxController {
         });
         return;
       }
-      var response =
-          await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+      }, ApiUrl.vendorServiceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
+      logcat("SERVICE LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = ServiceModel.fromJson(responseData);
+        var data = VendorServiceModel.fromJson(responseData);
         if (data.status == 1) {
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(serviceObjectList));
+
+          logcat("SERVICE LIST", jsonEncode(serviceObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -476,6 +581,83 @@ class AppointmentBookingController extends GetxController {
       logcat('Exception', e);
       isServiceTypeApiList.value = false;
     }
+  }
+
+  RxBool isCustomerTypeApiList = false.obs;
+  RxList<ListofCustomer> customerObjectList = <ListofCustomer>[].obs;
+  RxString customerId = "".obs;
+
+  void getCustomerList(context) async {
+    isCustomerTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.customerList, allowHeader: true);
+      isCustomerTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("CUSTOMER LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = CustomerListModel.fromJson(responseData);
+        if (data.status == 1) {
+          customerObjectList.clear();
+          customerObjectList.addAll(data.data);
+          logcat("CUSTOMER LIST", jsonEncode(customerObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isCustomerTypeApiList.value = false;
+    }
+  }
+
+  Widget setCustomerList() {
+    return Obx(() {
+      if (isCustomerTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isCustomerTypeApiList.value);
+
+      return setDropDownTestContent(
+        customerObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: customerObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("SETCUSTOMERLIST", "CUSTOMER");
+                customerId.value = customerObjectList[index].name.toString();
+                Customerctr.text =
+                    customerObjectList[index].name.capitalize.toString();
+
+                validateCustomer(Customerctr.text);
+              },
+              title: Text(
+                customerObjectList[index].name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {

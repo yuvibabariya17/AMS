@@ -48,7 +48,6 @@ class _AppointmentScreenState extends State<AppointmentScreen>
 
   @override
   void initState() {
-    
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
     super.initState();
   }
@@ -147,6 +146,10 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: currentPage == index ? Colors.black : Colors.white,
+            border: Border.all(
+                color: isDarkMode()
+                    ? Colors.white
+                    : Colors.transparent),
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,

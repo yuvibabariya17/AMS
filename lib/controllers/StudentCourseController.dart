@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/CommonModel.dart';
 import 'package:booking_app/Models/CourseModel.dart';
-import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/Models/StudentModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
@@ -11,7 +10,6 @@ import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
@@ -19,7 +17,6 @@ import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
@@ -190,83 +187,6 @@ class AddStudentCourseController extends GetxController {
     });
 
     enableSignUpButton();
-  }
-
-  RxBool isExpertTypeApiList = false.obs;
-  RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
-  RxString expertId = "".obs;
-
-  void getExpertList(context) async {
-    isExpertTypeApiList.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response =
-          await Repository.post({}, ApiUrl.expertList, allowHeader: true);
-      isExpertTypeApiList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = ExpertModel.fromJson(responseData);
-        if (data.status == 1) {
-          expertObjectList.clear();
-          expertObjectList.addAll(data.data);
-          logcat("RESPONSE", jsonEncode(expertObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isExpertTypeApiList.value = false;
-    }
-  }
-
-  Widget setExpertList() {
-    return Obx(() {
-      if (isExpertTypeApiList.value == true)
-        return setDropDownContent([].obs, Text("Loading"),
-            isApiIsLoading: isExpertTypeApiList.value);
-
-      return setDropDownTestContent(
-        expertObjectList,
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: expertObjectList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              dense: true,
-              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-              contentPadding:
-                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-              horizontalTitleGap: null,
-              minLeadingWidth: 5,
-              onTap: () {
-                Get.back();
-                logcat("ONTAP", "SACHIN");
-                expertId.value = expertObjectList[index].serviceInfo.toString();
-                studentctr.text =
-                    expertObjectList[index].name.capitalize.toString();
-
-                validateStudent(studentctr.text);
-              },
-              title: Text(
-                expertObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
-              ),
-            );
-          },
-        ),
-      );
-    });
   }
 
   RxBool isStudentTypeList = false.obs;
@@ -452,7 +372,128 @@ class AddStudentCourseController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
-  void getImage(context) async {
+  void AddStudentCourseApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      //  var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("STUDENTCOURSE", {
+        ({
+          "student_id": studentId.value.toString(),
+          "course_id": studentCourseId.value.toString(),
+          "fees": Feesctr.text.toString().trim(),
+          "starting_from": startDatectr.text.toString().trim(),
+          "other_notes": notesctr.text.toString().trim(),
+          "id_proof_url": uploadIdproof.value.toString()
+        })
+      });
+
+      var response = await Repository.post(
+        
+      {
+        "student_id": studentId.value.toString(),
+        "course_id": studentCourseId.value.toString(),
+        "fees": Feesctr.text.toString().trim(),
+        "starting_from": startDatectr.text.toString().trim(),
+        "other_notes": notesctr.text.toString().trim(),
+        "id_proof_url": uploadIdproof.value.toString()
+      }, ApiUrl.addStudentCourse, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("ADDCOURSE", data);
+      // var responseDetail = GetLoginModel.fromJson(data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  // void AddStudentCourseApi(context) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       loadingIndicator.hide(context);
+  //       showDialogForScreen(context, Connection.noConnection, callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     loadingIndicator.show(context, '');
+  //     var retrievedObject = await UserPreferences().getSignInInfo();
+
+  //     logcat("STUDENTCOURSE", {
+  //       ({
+  //         "student_id": studentId.value.toString(),
+  //         "course_id": studentCourseId.value.toString(),
+  //         "fees": Feesctr.text.toString().trim(),
+  //         "starting_from": startDatectr.text.toString().trim(),
+  //         "other_notes": notesctr.text.toString().trim(),
+  //         "id_proof_url": uploadIdproof.value.toString()
+  //       })
+  //     });
+
+  //     var response = await Repository.post(
+  //       {
+  //       "student_id": studentId.value.toString(),
+  //       "course_id": studentCourseId.value.toString(),
+  //       "fees": Feesctr.text.toString().trim(),
+  //       "starting_from": startDatectr.text.toString().trim(),
+  //       "other_notes": notesctr.text.toString().trim(),
+  //       "id_proof_url": uploadIdproof.value.toString()
+  //     }, ApiUrl.addStudentCourse, allowHeader: true);
+  //     loadingIndicator.hide(context);
+  //     var data = jsonDecode(response.body);
+  //     logcat("RESPOSNE", data);
+  //     if (response.statusCode == 200) {
+  //       var responseDetail = CommonModel.fromJson(data);
+  //       if (responseDetail.status == 1) {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {
+  //           Get.back(result: true);
+  //         });
+  //       } else {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       state.value = ScreenState.apiError;
+  //       showDialogForScreen(context, data['message'].toString(),
+  //           callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat("Exception", e);
+  //     showDialogForScreen(context, Connection.servererror, callback: () {});
+  //     loadingIndicator.hide(context);
+  //   }
+  // }
+
+  RxString uploadIdproof = ''.obs;
+
+  void getIdproofApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
 
@@ -465,14 +506,14 @@ class AddStudentCourseController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadReportFile.value!.path.split('/').last,
+        "file": uploadIdProof.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadReportFile.value != null
+          multiPart: uploadIdProof.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadReportFile.value!.readAsBytes().asStream(),
-                  uploadReportFile.value!.lengthSync(),
-                  filename: uploadReportFile.value!.path.split('/').last,
+                  uploadIdProof.value!.readAsBytes().asStream(),
+                  uploadIdProof.value!.lengthSync(),
+                  filename: uploadIdProof.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -486,7 +527,7 @@ class AddStudentCourseController extends GetxController {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadImageId.value = responseData.data.id.toString();
+          uploadIdproof.value = responseData.data.id.toString();
         } else {
           showDialogForScreen(context, responseData.message.toString(),
               callback: () {});
@@ -503,124 +544,26 @@ class AddStudentCourseController extends GetxController {
     }
   }
 
-  void AddStudentCourseApi(context) async {
-    var loadingIndicator = LoadingProgressDialog();
-    try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      loadingIndicator.show(context, '');
-      var retrievedObject = await UserPreferences().getSignInInfo();
+  Rx<File?> uploadIdProof = null.obs;
 
-      var response = await Repository.post({
-        "student_id": studentId.value.toString(),
-        "course_id": studentCourseId.value.toString(),
-        "fees": Feesctr.text.toString().trim(),
-        "starting_from": startDatectr.text.toString().trim(),
-        "other_notes": notesctr.text.toString().trim(),
-        "id_proof_url": uploadImageId.value.toString()
-      }, ApiUrl.addStudentCourse, allowHeader: true);
-      loadingIndicator.hide(context);
-      var data = jsonDecode(response.body);
-      logcat("RESPOSNE", data);
-      if (response.statusCode == 200) {
-        var responseDetail = CommonModel.fromJson(data);
-        if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {
-            Get.back(result: true);
-          });
-        } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {});
-        }
-      } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
-            callback: () {});
-      }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
-  }
-
- 
-  actionClickUploadImage(context, {bool? isCamera}) async {
+  actionClickUploadIdProof(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(
-            //source: ImageSource.gallery,
             source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
             maxWidth: 1080,
             maxHeight: 1080,
             imageQuality: 100)
         .then((file) async {
       if (file != null) {
-        //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
         if (file != null) {
-          uploadReportFile = File(file.path).obs;
+          uploadIdProof = File(file.path).obs;
           imgctr.text = file.name;
           validateImage(imgctr.text);
-          getImage(context);
+          getIdproofApi(context);
         }
-
-        // if (croppedFile != null) {
-        //   uploadImageFile = File(croppedFile.path).obs;
-        //   profilePic.value = croppedFile.path;
-        //   update();
-        // }
       }
     });
 
     update();
   }
-
-  Rx<File?> uploadReportFile = null.obs;
-  Rx<File?> uploadVideoFile = null.obs;
 }

@@ -725,15 +725,16 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
       );
     } else {
-      return Column(
+     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
+                 
+              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],

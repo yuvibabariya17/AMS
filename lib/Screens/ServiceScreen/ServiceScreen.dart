@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -191,40 +192,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               ),
             ),
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.end,
-            //       children: [
-            //         Container(
-            //           width: 6.1.h,
-            //           height: 6.1.h,
-            //           margin: EdgeInsets.only(bottom: 5.h, right: 7.w),
-            //           child: RawMaterialButton(
-            //             fillColor: isDarkMode() ? white : black,
-            //             shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.all(Radius.circular(15))),
-            //             onPressed: () {
-            //               Get.to(const AddServiceScreen())?.then((value) {
-            //                 if (value == true) {
-            //                   controller.getServiceList(
-            //                     context,
-            //                   );
-            //                 }
-            //               });
-            //             },
-            //             child: Icon(
-            //               Icons.add,
-            //               size: 3.5.h,
-            //               color: isDarkMode() ? black : white,
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // )
+
+      
+        
+        
           ])),
     );
   }
@@ -424,173 +395,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               )
 
-            // ListView.builder(
-            //     shrinkWrap: true,
-            //     clipBehavior: Clip.antiAlias,
-            //     physics: BouncingScrollPhysics(),
-            //     itemBuilder: (context, index) {
-            //       ServiceList data =
-            //           controller.filteredServiceObjectList[index];
-            //       // hairservice data = staticData[index];
-            //       // logcat("DATAAA", controller.serviceObjectList);
-            //       return Container(
-            //         margin: EdgeInsets.only(
-            //             top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
-            //         child: Expanded(
-            //           child: Container(
-            //             padding: EdgeInsets.only(
-            //                 top: 1.h, left: 3.w, right: 4.w, bottom: 1.h),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               children: [
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.start,
-            //                   crossAxisAlignment: CrossAxisAlignment.center,
-            //                   children: [
-            //                     Stack(children: [
-            //                       CircleAvatar(
-            //                         radius: 3.5.h,
-            //                         backgroundColor: Colors.white,
-            //                         child: SvgPicture.asset(
-            //                           Asset.profileimg,
-            //                           fit: BoxFit.cover,
-            //                         ),
-            //                       ),
-            //                     ]),
-            //                     SizedBox(width: 5.5.w),
-            //                     Expanded(
-            //                       child: Column(
-            //                         mainAxisAlignment: MainAxisAlignment.start,
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.start,
-            //                         children: [
-            //                           Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.start,
-            //                               crossAxisAlignment:
-            //                                   CrossAxisAlignment.center,
-            //                               children: [
-            //                                 Container(
-            //                                   child: Text(
-            //                                     data.categoryInfo != null
-            //                                         ? data.categoryInfo!.name
-            //                                         : "",
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 15.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w700),
-            //                                   ),
-            //                                 ),
-            //                                 Spacer(),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     Get.to(AddServiceScreen(
-            //                                         isEdit: true,
-            //                                         editService: data));
-            //                                   },
-            //                                   child: Container(
-            //                                       child: SvgPicture.asset(
-            //                                           Asset.edit,
-            //                                           height: 2.3.h,
-            //                                           color: isDarkMode()
-            //                                               ? Colors.grey
-            //                                               : Colors.grey)),
-            //                                 ),
-            //                                 SizedBox(
-            //                                   width: 2.w,
-            //                                 ),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     showDeleteConfirmationDialog(
-            //                                         data.id);
-            //                                     // controller.deleteServiceList(
-            //                                     //     context, data.id);
-            //                                   },
-            //                                   child: Container(
-            //                                       child: Icon(
-            //                                     Icons.delete_rounded,
-            //                                     color: isDarkMode()
-            //                                         ? Colors.grey
-            //                                         : Colors.grey,
-            //                                     size: 3.h,
-            //                                   )),
-            //                                 ),
-            //                               ]),
-            //                           Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.spaceBetween,
-            //                               crossAxisAlignment:
-            //                                   CrossAxisAlignment.center,
-            //                               children: [
-            //                                 Container(
-            //                                   child: Text(
-            //                                     data.vendorInfo.userName
-            //                                         .toString(),
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 11.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w400),
-            //                                   ),
-            //                                 ),
-            //                                 Container(
-            //                                   margin:
-            //                                       EdgeInsets.only(top: 0.5.h),
-            //                                   child: Text(
-            //                                     '₹ ${data.fees.toString()}',
-            //                                     // data.fees.toString(),
-            //                                     // '${model.fullName.capitalize} (${model.age} Years)'
-            //                                     style: TextStyle(
-            //                                         fontFamily: opensansMedium,
-            //                                         fontSize: 14.5.sp,
-            //                                         fontWeight:
-            //                                             FontWeight.w600),
-            //                                   ),
-            //                                 ),
-            //                               ]),
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //             decoration: BoxDecoration(
-            //               color: isDarkMode() ? black : white,
-            //               borderRadius: BorderRadius.all(Radius.circular(25)),
-            //               boxShadow: [
-            //                 BoxShadow(
-            //                     color: isDarkMode()
-            //                         ? Colors.white.withOpacity(0.2)
-            //                         : Colors.black.withOpacity(0.2),
-            //                     spreadRadius: 0.1,
-            //                     blurRadius: 10,
-            //                     offset: Offset(0.5, 0.5)),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     itemCount: controller.filteredServiceObjectList.length,
-            //   )
-
-            : Center(child: Text(CommonConstant.noDataFound)),
+          
+            : Center(child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(CommonConstant.noDataFound),
+              ],
+            )),
       );
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Container(
-              // margin: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Text(
-                CommonConstant.noDataFound,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
-              ),
+          Container(
+            margin: EdgeInsets.only(top: 31.h),
+            child: Text(
+              CommonConstant.noDataFound,
+                 
+              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -600,20 +423,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
-      return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+     return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Column(
+        children: [
+          Container(
+            // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+            height: SizerUtil.height / 1.5, // Adjust the height as needed
+            color: Colors.white, // Placeholder color
           ),
-        ),
-      );
+        ],
+      ),
+    );
     }
 
     Widget? button;
@@ -689,3 +511,4 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 }
+

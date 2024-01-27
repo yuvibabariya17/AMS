@@ -24,13 +24,11 @@ class ProductSellingScreen extends StatefulWidget {
 class _ProductSellingScreenState extends State<ProductSellingScreen> {
   final controller = Get.put(ProductSellingController());
 
-
-    @override
+  @override
   void initState() {
     controller.getCustomerList(context);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +68,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                           return getReactiveFormField(
                                             node: controller.orderNode,
                                             controller: controller.orderDatectr,
-                                            hintLabel: "Start Date",
+                                            hintLabel: "Select Order Date",
                                             wantSuffix: true,
                                             isCalender: true,
                                             onChanged: (val) {
@@ -86,14 +84,11 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                                           .selectedStartDate,
                                                       firstDate: DateTime(1950),
                                                       lastDate: DateTime(2050)
-                                                         
-                                                         
-                                                          // .add(const Duration(
-                                                          //     days: 0))
-                                                              
-                                                              
-                                                              
-                                                              );
+
+                                                      // .add(const Duration(
+                                                      //     days: 0))
+
+                                                      );
                                               if (pickedDate != null &&
                                                   pickedDate !=
                                                       controller
@@ -127,27 +122,27 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             const Duration(milliseconds: 300),
                                         child: Obx(() {
                                           return getReactiveFormField(
-                                            node: controller.courseNode,
-                                            controller: controller.coursectr,
+                                            node: controller.customerNode,
+                                            controller: controller.customerctr,
                                             hintLabel: "Select Customer",
                                             wantSuffix: true,
                                             isdown: true,
                                             onChanged: (val) {
-                                              controller.validateProduct(val);
+                                              controller.validateCustomer(val);
                                               setState(() {});
                                             },
-                                              onTap: () {
-                                          controller.coursectr.text = "";
+                                            onTap: () {
+                                              controller.customerctr.text = "";
 
-                                          showDropDownDialog(
-                                              context,
-                                              controller.setCustomerList(),
-                                              "Customer List");
-                                          // showDropdownMessage(
-                                          //     context,
-                                          //     controller.setCategoryList(),
-                                          //     'Select Category');
-                                        },
+                                              showDropDownDialog(
+                                                  context,
+                                                  controller.setCustomerList(),
+                                                  "Customer List");
+                                              // showDropdownMessage(
+                                              //     context,
+                                              //     controller.setCategoryList(),
+                                              //     'Select Category');
+                                            },
                                             isReadOnly: true,
                                             errorText: controller
                                                 .ProductModel.value.error,
@@ -162,8 +157,8 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             const Duration(milliseconds: 300),
                                         child: Obx(() {
                                           return getReactiveFormField(
-                                            node: controller.courseNode,
-                                            controller: controller.coursectr,
+                                            node: controller.productCatNode,
+                                            controller: controller.productCatctr,
                                             hintLabel: "Select Product",
                                             wantSuffix: true,
                                             isReadOnly: true,

@@ -34,6 +34,7 @@ class ProductSellingController extends GetxController {
       productNameNode,
       qtyNode,
       priceNode,
+      customerNode,
       feesNode;
 
   Rx<File?> avatarFile = null.obs;
@@ -54,6 +55,7 @@ class ProductSellingController extends GetxController {
       brandctr,
       productNamectr,
       qtyctr,
+      customerctr,
       pricectr;
   // endTimectr
 
@@ -71,6 +73,7 @@ class ProductSellingController extends GetxController {
     productCatNode = FocusNode();
     brandNode = FocusNode();
     productNameNode = FocusNode();
+    customerNode = FocusNode();
 
     qtyNode = FocusNode();
     priceNode = FocusNode();
@@ -87,6 +90,7 @@ class ProductSellingController extends GetxController {
     productNamectr = TextEditingController();
     brandctr = TextEditingController();
     productCatctr = TextEditingController();
+    customerctr = TextEditingController();
 
     // endTimectr = TextEditingController();
 
@@ -112,6 +116,7 @@ class ProductSellingController extends GetxController {
   var NameModel = ValidationModel(null, null, isValidate: false).obs;
   var QtyModel = ValidationModel(null, null, isValidate: false).obs;
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
+  var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
     if (StudentModel.value.isValidate == false) {
@@ -126,7 +131,10 @@ class ProductSellingController extends GetxController {
       isFormInvalidate.value = false;
     } else if (OrderDateModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else {
+    } else if (CustomerModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    }
+    else {
       isFormInvalidate.value = true;
     }
   }
@@ -135,6 +143,21 @@ class ProductSellingController extends GetxController {
     StudentModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Name";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  
+  void validateCustomer(String? val) {
+    StudentModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Customer";
         model.isValidate = false;
       } else {
         model!.error = null;

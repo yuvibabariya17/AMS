@@ -27,13 +27,14 @@ class AppointmentModel {
 
   factory AppointmentModel.fromJson(Map<String, dynamic> json) =>
       AppointmentModel(
-        status: json["status"]??0,
-        message: json["message"]??'',
-        data:(json["data"] as List<dynamic>?)
-          ?.map((x) => ListofAppointment.fromJson(x))
-          .toList() ?? [],
-        totalRecord: json["totalRecord"]??0,
-        totalPages: json["totalPages"]??0,
+        status: json["status"] ?? 0,
+        message: json["message"] ?? '',
+        data: (json["data"] as List<dynamic>?)
+                ?.map((x) => ListofAppointment.fromJson(x))
+                .toList() ??
+            [],
+        totalRecord: json["totalRecord"] ?? 0,
+        totalPages: json["totalPages"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -99,7 +100,7 @@ class ListofAppointment {
         appointmentSlotId: json["appointment_slot_id"] ?? '',
         amount: json["amount"] ?? 0,
         appointmentType: json["appointment_type"] ?? '',
-     dateOfAppointment: json["date_of_appointment"] != null
+        dateOfAppointment: json["date_of_appointment"] != null
             ? DateTime.parse(json["date_of_appointment"])
             : DateTime.now(),
         duration: json["duration"] ?? 0,
@@ -111,9 +112,11 @@ class ListofAppointment {
         notes: json["notes"] ?? '',
         createdAt: json["created_at"] ?? 0,
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
-      customerInfo: CustomerInfo.fromJson(json["customer_info"] ?? {}),
-      appointmentSlotInfo: AppointmentSlotInfo.fromJson(json["appointment_slot_info"] ?? {}),
-      vendorServiceInfo: VendorServiceInfo.fromJson(json["vendor_service_info"] ?? {}),
+        customerInfo: CustomerInfo.fromJson(json["customer_info"] ?? {}),
+        appointmentSlotInfo:
+            AppointmentSlotInfo.fromJson(json["appointment_slot_info"] ?? {}),
+        vendorServiceInfo:
+            VendorServiceInfo.fromJson(json["vendor_service_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -271,7 +274,7 @@ class VendorServiceInfo {
         oppoxTime: DateTime.parse(json["oppox_time"]),
         oppoxSetting: json["oppox_setting"] ?? 0,
         oppoxSettingDuration: DateTime.parse(json["oppox_setting_duration"]),
-        oppoxSettingDaysInverval: json["oppox_setting_days_inverval"]??0,
+        oppoxSettingDaysInverval: json["oppox_setting_days_inverval"] ?? 0,
         serviceInfo: ServiceInfo.fromJson(json["service_info"]),
       );
 

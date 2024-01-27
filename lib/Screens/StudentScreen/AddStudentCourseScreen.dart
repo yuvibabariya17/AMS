@@ -79,7 +79,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               showDropDownDialog(
                                                   context,
                                                   controller.setStudentList(),
-                                                  "Select Student");
+                                                  "Student List");
                                             },
                                             errorText: controller
                                                 .StudentNameModel.value.error,
@@ -109,7 +109,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               showDropDownDialog(
                                                   context,
                                                   controller.setCourseList(),
-                                                  "Select Course");
+                                                  "Course List");
                                             },
                                             errorText: controller
                                                 .CourseModel.value.error,
@@ -126,7 +126,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                           return getReactiveFormField(
                                             node: controller.startNode,
                                             controller: controller.startDatectr,
-                                            hintLabel: "Start Date",
+                                            hintLabel: "Select Date",
                                             wantSuffix: true,
                                             isCalender: true,
                                             onChanged: (val) {
@@ -178,7 +178,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                           return getReactiveFormField(
                                             node: controller.feesNode,
                                             controller: controller.Feesctr,
-                                            hintLabel: "Fees",
+                                            hintLabel: "Enter Fee",
                                             onChanged: (val) {
                                               controller.validateFees(val);
                                               setState(() {});
@@ -209,12 +209,12 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               selectImageFromCameraOrGallery(
                                                   context, cameraClick: () {
                                                 controller
-                                                    .actionClickUploadImage(
+                                                    .actionClickUploadIdProof(
                                                         context,
                                                         isCamera: true);
                                               }, galleryClick: () {
                                                 controller
-                                                    .actionClickUploadImage(
+                                                    .actionClickUploadIdProof(
                                                         context,
                                                         isCamera: false);
                                               });

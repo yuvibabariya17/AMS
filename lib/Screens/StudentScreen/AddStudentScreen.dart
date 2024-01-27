@@ -132,12 +132,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                                 controller
                                                     .actionClickUploadImage(
                                                         context,
-                                                        isCamera: true);
+                                                        isCamera: true
+                                                       );
                                               }, galleryClick: () {
                                                 controller
                                                     .actionClickUploadImage(
                                                         context,
-                                                        isCamera: false);
+                                                         isCamera: true
+                                                       );
                                               });
                                               // await controller.PopupDialogs(context);
                                               setState(() {});
@@ -172,14 +174,16 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               selectImageFromCameraOrGallery(
                                                   context, cameraClick: () {
                                                 controller
-                                                    .actionClickUploadImageForIdproof(
+                                                    .actionClickUploadIdProof(
                                                         context,
-                                                        isCamera: true);
+                                                         isCamera: true
+                                                      );
                                               }, galleryClick: () {
                                                 controller
-                                                    .actionClickUploadImageForIdproof(
+                                                    .actionClickUploadIdProof(
                                                         context,
-                                                        isCamera: false);
+                                                         isCamera: true
+                                                       );
                                               });
                                               // await controller.PopupDialogs(context);
                                               setState(() {});

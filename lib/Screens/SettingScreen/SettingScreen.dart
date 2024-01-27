@@ -67,10 +67,13 @@ class _SettingsState extends State<Settings> {
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    settingRow(Asset.user, SettingConstant.profile_info, () {
-                      Get.to(ProfileInformationScreen());
-                    }, Asset.rightbackbutton),
-                    dividerforSetting(),
+                    //PROFILE INFORMATION SCREEN
+
+                    // settingRow(Asset.user, SettingConstant.profile_info, () {
+                    //   Get.to(ProfileInformationScreen());
+                    // }, Asset.rightbackbutton),
+                    // dividerforSetting(),
+
                     settingRow(Asset.invite, SettingConstant.invite_frd, () {
                       Get.to(InviteFriendScreen());
                     }, Asset.rightbackbutton),
@@ -98,16 +101,12 @@ class _SettingsState extends State<Settings> {
                           ),
                         ),
                         Spacer(),
-
-
-
                         Container(
                           width: 20.w,
                           height: 1.h,
                           // margin: const EdgeInsets.only(
                           //     right: 16.0), // Adjust right margin as needed
                           child: CupertinoSwitch(
-                             
                             value: isDarkMode() ? true : false,
                             onChanged: (value) async {
                               print("Switch Click");
@@ -131,10 +130,8 @@ class _SettingsState extends State<Settings> {
                                 ? CupertinoColors.white
                                 : CupertinoColors.black,
                             trackColor: Colors.grey,
-                         
                           ),
                         ),
-                     
                       ],
                     ),
 
