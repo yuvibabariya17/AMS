@@ -162,7 +162,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
                                     );
                                   }, galleryClick: () {
                                     controller.actionClickUploadVideo(context,
-                                        isCamera: false);
+                                        isCamera: true);
                                   });
                                   // await controller.PopupDialogs(context);
                                   setState(() {});

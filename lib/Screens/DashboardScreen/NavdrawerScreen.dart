@@ -1,8 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Screens/BrandCategoryScreen.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
 import 'package:booking_app/Screens/PackageScreen/AddPackageScreen%20.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
-import 'package:booking_app/Screens/ProductCategoryList.dart';
+import 'package:booking_app/Screens/ProductCategoryScreen/ProductCategoryList.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
 import 'package:booking_app/Screens/StudentScreen/AddStudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentCourseScreen.dart';
@@ -20,16 +21,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../controllers/NavdrawerController.dart';
-import '../controllers/home_screen_controller.dart';
-import '../core/Common/toolbar.dart';
-import '../core/Common/util.dart';
-import 'CourseScreen/CourseScreen.dart';
-import 'ExpertScreen/ExpertScreen.dart';
-import 'OfferScreen/OfferForm.dart';
-import 'ProductScreen/ProductScreen.dart';
-import 'ServiceScreen/ServiceScreen.dart';
-import 'SettingScreen/SettingScreen.dart';
+import '../../controllers/NavdrawerController.dart';
+import '../../controllers/home_screen_controller.dart';
+import '../../core/Common/toolbar.dart';
+import '../../core/Common/util.dart';
+import '../CourseScreen/CourseScreen.dart';
+import '../ExpertScreen/ExpertScreen.dart';
+import '../OfferScreen/OfferForm.dart';
+import '../ProductScreen/ProductScreen.dart';
+import '../ServiceScreen/ServiceScreen.dart';
+import '../SettingScreen/SettingScreen.dart';
 
 class NavdrawerScreen extends StatefulWidget {
   const NavdrawerScreen({super.key});
@@ -182,7 +183,6 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
             padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
-                
                 setNavtile(Asset.serviceNav, "Service", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
@@ -237,11 +237,15 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 }),
                 setNavtile(Asset.product, "Package Screen", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(AddPackageScreen());
+                  Get.to(PackageScreen());
                 }),
-                  setNavtile(Asset.product, "Product Category", isBig: true, () {
+                setNavtile(Asset.product, "Product Category", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductCategoryListScreen());
+                }),
+                setNavtile(Asset.product, "Brand Category", isBig: true, () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(BrandCategoryScreen());
                 }),
                 SizedBox(height: 9.5.h),
                 setNavtile(Asset.share, ScreenTitle.signOut, () {

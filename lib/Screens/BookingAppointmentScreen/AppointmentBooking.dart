@@ -239,10 +239,11 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           controller.validateDuration(val);
                                           setState(() {});
                                         },
-                                          onTap: () async {
+                                        onTap: () async {
                                           final TimeOfDay? pickedDuration =
                                               await showTimePicker(
                                             context: context,
+                                            
                                             initialTime: TimeOfDay.now(),
                                           );
 
@@ -543,7 +544,8 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                   return getFormButton(() {
                                     if (controller.isFormInvalidate.value ==
                                         true) {
-                                      // controller.AddBookingAppointmentAPI(context);
+                                      controller.AddBookingAppointmentAPI(
+                                          context);
                                     }
                                   }, "Submit",
                                       validate:

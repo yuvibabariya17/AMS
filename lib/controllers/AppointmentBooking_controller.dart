@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/CommonModel.dart';
-import '../Models/ServiceModel.dart';
 import '../Models/sign_in_form_validation.dart';
 import '../Screens/BookingAppointmentScreen/TimeSlot.dart';
 import '../api_handle/Repository.dart';
@@ -119,10 +118,8 @@ class AppointmentBookingController extends GetxController {
     update();
   }
 
-   String sitingTime = "";
+  String sitingTime = "";
 
-
-   
   void updateSittingDuration(date) {
     durationctr.text = date;
     print("PICKED_DATE${durationctr.value}");
@@ -336,7 +333,7 @@ class AppointmentBookingController extends GetxController {
       var retrievedObject = await UserPreferences().getSignInInfo();
       var response = await Repository.post({
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "customer_id": retrievedObject.id.toString().trim(),
+        "customer_id": customerId.value.toString().trim(),
         "vendor_service_id": ServiceId.value.toString().trim(),
         "appointment_slot_id": "6500476bf3b6019b811a1e22",
         "amount": Amountctr.text.toString().trim(),
@@ -375,7 +372,7 @@ class AppointmentBookingController extends GetxController {
     }
   }
 
-// APPOITNTMENT SLOT LIST 
+// APPOITNTMENT SLOT LIST
 
   void getAppointmentSlot(context) async {
     isSlotApiList.value = true;
@@ -411,13 +408,11 @@ class AppointmentBookingController extends GetxController {
     }
   }
 
-
   // EXPERT LISTTTT
 
   RxBool isExpertTypeApiList = false.obs;
   RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
   RxString expertId = "".obs;
-
 
   RxBool isSlotApiList = false.obs;
   RxList<SlotList> slotObjectList = <SlotList>[].obs;

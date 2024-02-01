@@ -3,7 +3,6 @@ import 'package:booking_app/Screens/OtpScreen.dart';
 import 'package:booking_app/controllers/EmailController.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/constants/strings.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

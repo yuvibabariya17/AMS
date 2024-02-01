@@ -54,14 +54,14 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   @override
   void initState() {
     if (widget.isEdit == true && widget.editService != null) {
-      controller.Servicectr.text = widget.editService!.serviceInfo!.name;
+      controller.Servicectr.text = widget.editService!.serviceInfo.name;
       controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
       controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
       controller.durationctr.text =
           widget.editService!.oppoxSettingDuration.toString();
       controller.Pricectr.text = widget.editService!.fees.toString();
       controller.daysctr.text =
-          widget.editService!.serviceInfo!.name.toString();
+          widget.editService!.serviceInfo.name.toString();
       // Set other fields as well
     }
      if(widget.isEdit == true){
@@ -477,7 +477,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
                                      if (controller.isFormInvalidate.value ==
                                           true) {
-                                        controller.addServiceApi(context);
+                                        controller.addVendorService(context);
                                       }
                                   
                                   }, CommonConstant.submit,

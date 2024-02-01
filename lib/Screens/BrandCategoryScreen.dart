@@ -1,6 +1,7 @@
-import 'package:booking_app/Models/ProductCatListModel.dart';
-import 'package:booking_app/Screens/AddProductCategory.dart';
-import 'package:booking_app/controllers/ProductList_controller.dart';
+import 'package:booking_app/Models/BrandCategoryModel.dart';
+import 'package:booking_app/Screens/AddBrandCategoryScreen.dart';
+import 'package:booking_app/Screens/ProductCategoryScreen/AddProductCategory.dart';
+import 'package:booking_app/controllers/BrandCategoryController.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,49 +9,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../core/Common/toolbar.dart';
-import '../../core/constants/assets.dart';
-import '../../core/constants/strings.dart';
-import '../../core/themes/color_const.dart';
-import '../../core/themes/font_constant.dart';
-import '../../core/utils/helper.dart';
-import '../../core/utils/log.dart';
+import '../../../core/Common/toolbar.dart';
+import '../../../core/constants/assets.dart';
+import '../../../core/constants/strings.dart';
+import '../../../core/themes/color_const.dart';
+import '../../../core/themes/font_constant.dart';
+import '../../../core/utils/helper.dart';
+import '../../../core/utils/log.dart';
 
-class ProductCategoryListScreen extends StatefulWidget {
-  const ProductCategoryListScreen({super.key});
+class BrandCategoryScreen extends StatefulWidget {
+  const BrandCategoryScreen({super.key});
 
   @override
-  State<ProductCategoryListScreen> createState() => _ProductCategoryListScreenState();
+  State<BrandCategoryScreen> createState() => _BrandCategoryScreenState();
 }
 
-class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
-  final controller = Get.put(ProductListController());
+class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
+  final controller = Get.put(BrandCategoryController());
 
   TextEditingController search = TextEditingController();
 
   @override
   void initState() {
-    controller.getProductCategoryList(context);
-    controller.filterrdProductObjectList = controller.productCategoryObjectList;
+    controller.getBrandCategoryList(context);
+    controller.filterrdBrandObjectList = controller.BrnadCategoryObjectList;
     super.initState();
   }
 
   void filetProductCategoryList(String query) {
     setState(() {
       if (query.isEmpty) {
-        controller.filterrdProductObjectList =
-            controller.productCategoryObjectList;
+        controller.filterrdBrandObjectList = controller.BrnadCategoryObjectList;
       } else {
-        controller.filterrdProductObjectList = controller
-            .productCategoryObjectList
-            .where((data) =>
+        controller.filterrdBrandObjectList =
+            controller.BrnadCategoryObjectList.where((data) =>
                 data.name.toLowerCase().contains(query.toLowerCase()) ||
                 data.description
                     .toString()
                     .toString()
                     .toLowerCase()
-                    .contains(query.toLowerCase()))
-            .toList();
+                    .contains(query.toLowerCase())).toList();
       }
     });
   }
@@ -90,10 +88,10 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0)),
                 onPressed: () {
-                  Get.to(AddProductCategoryScreen())?.then((value) {
+                  Get.to(AddBrandCategoryScreen())?.then((value) {
                     if (value == true) {
                       logcat("ISDONE", "DONE");
-                      controller.getProductCategoryList(
+                      controller.getBrandCategoryList(
                         context,
                       );
                     }
@@ -110,7 +108,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                       )),
           ),
           body: Column(children: [
-            getCommonToolbar("Product Category List", () {
+            getCommonToolbar("Brand Category List", () {
               Get.back();
             }),
             Container(
@@ -156,7 +154,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getProductCategoryList(context);
+                        controller.getBrandCategoryList(context);
                       },
                     );
                   },
@@ -261,12 +259,12 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
   }
 
   Widget apiSuccess(ScreenState state) {
-    logcat("LENGTH", controller.productCategoryObjectList.length.toString());
+    logcat("LENGTH", controller.BrnadCategoryObjectList.length.toString());
     // ignore: unrelated_type_quality_checks
     if (controller.state == ScreenState.apiSuccess &&
-        controller.productCategoryObjectList.isNotEmpty) {
+        controller.BrnadCategoryObjectList.isNotEmpty) {
       return Expanded(
-        child: controller.filterrdProductObjectList.isNotEmpty
+        child: controller.filterrdBrandObjectList.isNotEmpty
             ? Container(
                 margin: EdgeInsets.only(left: 8.w, right: 8.w),
                 child: GridView.builder(
@@ -279,8 +277,8 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    ListProductCategory data =
-                        controller.filterrdProductObjectList[index];
+                    BrandCatList data =
+                        controller.filterrdBrandObjectList[index];
 
                     return Container(
                       padding: EdgeInsets.only(
@@ -350,6 +348,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                             children: [
                               Text(
                                 data.name,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
@@ -361,25 +360,29 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                               // SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
+
                           // SizedBox(height: 5.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                data.description,
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontSize: 7.sp,
-                                  fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: Text(
+                                  data.description,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                              Spacer(),
+                              // Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  // Get.to(AddServiceScreen(
-                                  //     isEdit: true, editService: data));
+                                  Get.to(AddBrandCategoryScreen(
+                                      isEdit: true, editProductCategory: data));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -391,7 +394,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 5.0),
+                              SizedBox(width: 1.w),
                               GestureDetector(
                                 onTap: () {
                                   showDeleteConfirmationDialog(data.id);
@@ -412,13 +415,13 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                       ),
                     );
                   },
-                  itemCount: controller.filterrdProductObjectList.length,
+                  itemCount: controller.filterrdBrandObjectList.length,
                 ),
               )
             : Center(child: Text(CommonConstant.noDataFound)),
       );
     } else {
-     return Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -426,8 +429,8 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -438,43 +441,31 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 30,
-            width: 30,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 100,
-              height: 100,
-            ),
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
     }
 
-    Widget? button;
     // if (controller.filterList.isEmpty) {
     //   Container();
     // }
-    if (state == ScreenState.noDataFound) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
-    if (state == ScreenState.noNetwork) {
-      button = getMiniButton(() {
-        controller.getProductCategoryList(
-          context,
-        );
-      }, "Try Again");
-    }
+    if (state == ScreenState.noDataFound) {}
+    if (state == ScreenState.noNetwork) {}
 
-    if (state == ScreenState.apiError) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
+    if (state == ScreenState.apiError) {}
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

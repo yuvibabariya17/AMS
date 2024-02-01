@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Models/PackageModel.dart';
 import 'package:booking_app/controllers/AddPackageController.dart';
 import 'package:booking_app/custom_componannt/customeBackground.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,11 @@ import '../../core/constants/strings.dart';
 import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
 
+// ignore: must_be_immutable
 class AddPackageScreen extends StatefulWidget {
-  const AddPackageScreen({super.key});
+  AddPackageScreen({super.key, this.isEdit, this.editPackage});
+  bool? isEdit;
+  PackageList? editPackage;
 
   @override
   State<AddPackageScreen> createState() => _AddPackageScreenState();
@@ -19,8 +23,39 @@ class AddPackageScreen extends StatefulWidget {
 
 class _AddPackageScreenState extends State<AddPackageScreen> {
   final controller = Get.put(AddPackageController());
-  
+
   late TimeOfDay selectedTime;
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateName(controller.nameCtr.text);
+    controller.validateActFees(controller.actfeesCtr.text);
+    controller.validatePackFees(controller.packFeesCtr.text);
+    controller.validateFromDuration(controller.fromDurationCtr.text);
+    controller.validateToDuration(controller.toDurationCtr.text);
+    controller.validateNote(controller.noteCtr.text);
+
+    // Add validation for other fields as needed
+  }
+
+  @override
+  void initState() {
+    if (widget.isEdit == true && widget.editPackage != null) {
+      controller.nameCtr.text = widget.editPackage!.name;
+      controller.actfeesCtr.text = widget.editPackage!.actFees.toString();
+      controller.packFeesCtr.text = widget.editPackage!.packFees.toString();
+      controller.fromDurationCtr.text =
+          widget.editPackage!.durationFrom.toString();
+      controller.toDurationCtr.text = widget.editPackage!.durationTo.toString();
+      controller.noteCtr.text = widget.editPackage!.otherNotes.toString();
+      // Set other fields as well
+    }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +63,8 @@ class _AddPackageScreenState extends State<AddPackageScreen> {
         body: SingleChildScrollView(
       child: Column(
         children: [
-          getCommonToolbar("Add Package", () {
+          getCommonToolbar(
+              widget.isEdit == true ? "Update Package" : "Add Package", () {
             Get.back();
           }),
           Container(
@@ -116,108 +152,94 @@ class _AddPackageScreenState extends State<AddPackageScreen> {
                                 inputType: TextInputType.number,
                               );
                             }))),
-                      getTitle("Duration Start From"),
-                              FadeInUp(
-                                  from: 30,
-                                  child: AnimatedSize(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      child: Obx(() {
-                                        return getReactiveFormField(
-                                          node: controller.fromDurationNode,
-                                          controller: controller.fromDurationCtr,
-                                          hintLabel: Strings.dob_hint,
-                                          wantSuffix: true,
-                                          isCalender: true,
-                                          onChanged: (val) {
-                                            controller.validateFromDuration(val);
-                                            setState(() {});
-                                          },
-                                          onTap: () async {
-                                            DateTime? pickedDate =
-                                                await showDatePicker(
-                                                    context: context,
-                                                    initialDate:
-                                                        controller.selectedDate,
-                                                    firstDate: DateTime(1950),
-                                                    lastDate: DateTime(2050));
-                                            if (pickedDate != null &&
-                                                pickedDate !=
-                                                    controller.selectedDate) {
-                                              setState(() {
-                                                controller.selectedDate =
-                                                    pickedDate;
-                                              });
-                                            }
-                                            if (pickedDate != null) {
-                                              String formattedDate = DateFormat(
-                                                      Strings.oldDateFormat)
-                                                  .format(pickedDate);
-                                              controller
-                                                  .updateDate(formattedDate);
-                                              controller
-                                                  .validateFromDuration(formattedDate);
-                                            }
-                                          },
-                                          errorText:
-                                              controller.FromDurationModel.value.error,
-                                          inputType: TextInputType.text,
-                                        );
-                                      }))),
-                              getTitle("Duration End to"),
-                              FadeInUp(
-                                  from: 30,
-                                  child: AnimatedSize(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      child: Obx(() {
-                                        return getReactiveFormField(
-                                          node: controller.toDurationNode,
-                                          controller: controller.toDurationCtr,
-                                          hintLabel: Strings.dob_hint,
-                                          wantSuffix: true,
-                                          isCalender: true,
-                                          onChanged: (val) {
-                                            controller.validateToDuration(val);
-                                            setState(() {});
-                                          },
-                                          onTap: () async {
-                                            DateTime? pickedDate =
-                                                await showDatePicker(
-                                                    context: context,
-                                                    initialDate: controller
-                                                        .selectedAnniversaryDate,
-                                                    firstDate: DateTime(1950),
-                                                    lastDate: DateTime(2050)
-                                                      );
-                                            if (pickedDate != null &&
-                                                pickedDate !=
-                                                    controller
-                                                        .selectedAnniversaryDate) {
-                                              setState(() {
-                                                controller
-                                                        .selectedAnniversaryDate =
-                                                    pickedDate;
-                                              });
-                                            }
-                                            if (pickedDate != null) {
-                                              String formattedDate = DateFormat(
-                                                      Strings.oldDateFormat)
-                                                  .format(pickedDate);
-                                              controller.updateAnniversaryDate(
-                                                  formattedDate);
-                                              controller
-                                                  .validateToDuration(formattedDate);
-                                            }
-                                          },
-                                          errorText:
-                                              controller.ToDurationModel.value.error,
-                                          inputType: TextInputType.text,
-                                        );
-                                      }))),
-
-
-
+                    getTitle("Duration Start From"),
+                    FadeInUp(
+                        from: 30,
+                        child: AnimatedSize(
+                            duration: const Duration(milliseconds: 300),
+                            child: Obx(() {
+                              return getReactiveFormField(
+                                node: controller.fromDurationNode,
+                                controller: controller.fromDurationCtr,
+                                hintLabel: Strings.dob_hint,
+                                wantSuffix: true,
+                                isCalender: true,
+                                onChanged: (val) {
+                                  controller.validateFromDuration(val);
+                                  setState(() {});
+                                },
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: controller.selectedDate,
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+                                  if (pickedDate != null &&
+                                      pickedDate != controller.selectedDate) {
+                                    setState(() {
+                                      controller.selectedDate = pickedDate;
+                                    });
+                                  }
+                                  if (pickedDate != null) {
+                                    String formattedDate =
+                                        DateFormat(Strings.oldDateFormat)
+                                            .format(pickedDate);
+                                    controller.updateDate(formattedDate);
+                                    controller
+                                        .validateFromDuration(formattedDate);
+                                  }
+                                },
+                                errorText:
+                                    controller.FromDurationModel.value.error,
+                                inputType: TextInputType.text,
+                              );
+                            }))),
+                    getTitle("Duration End to"),
+                    FadeInUp(
+                        from: 30,
+                        child: AnimatedSize(
+                            duration: const Duration(milliseconds: 300),
+                            child: Obx(() {
+                              return getReactiveFormField(
+                                node: controller.toDurationNode,
+                                controller: controller.toDurationCtr,
+                                hintLabel: Strings.dob_hint,
+                                wantSuffix: true,
+                                isCalender: true,
+                                onChanged: (val) {
+                                  controller.validateToDuration(val);
+                                  setState(() {});
+                                },
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          controller.selectedAnniversaryDate,
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+                                  if (pickedDate != null &&
+                                      pickedDate !=
+                                          controller.selectedAnniversaryDate) {
+                                    setState(() {
+                                      controller.selectedAnniversaryDate =
+                                          pickedDate;
+                                    });
+                                  }
+                                  if (pickedDate != null) {
+                                    String formattedDate =
+                                        DateFormat(Strings.oldDateFormat)
+                                            .format(pickedDate);
+                                    controller
+                                        .updateAnniversaryDate(formattedDate);
+                                    controller
+                                        .validateToDuration(formattedDate);
+                                  }
+                                },
+                                errorText:
+                                    controller.ToDurationModel.value.error,
+                                inputType: TextInputType.text,
+                              );
+                            }))),
 
                     //         FadeInUp(
                     //     from: 30,
@@ -381,7 +403,7 @@ class _AddPackageScreenState extends State<AddPackageScreen> {
                         child: Obx(() {
                           return getFormButton(() {
                             if (controller.isFormInvalidate.value == true) {
-                               controller.AddPackageApi(context);
+                              controller.AddPackageApi(context);
                             }
                           }, CommonConstant.submit,
                               validate: controller.isFormInvalidate.value);

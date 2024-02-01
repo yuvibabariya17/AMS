@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
-import 'package:booking_app/Models/StudentModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -12,15 +12,15 @@ import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
-class StudentController extends GetxController {
+class BrandCategoryController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode searchNode;
   late TextEditingController searchCtr;
 
-  RxBool isStudentList = false.obs;
-  RxList<StudentList> studentObjectList = <StudentList>[].obs;
-  RxString studentId = "".obs;
+  RxBool isBrandCategoryList = false.obs;
+  RxList<BrandCatList> BrnadCategoryObjectList = <BrandCatList>[].obs;
+  RxString brandCategoryId = "".obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxString message = "".obs;
@@ -28,7 +28,7 @@ class StudentController extends GetxController {
 
   // List<ServiceList> serviceObjectList = []; // Your data source
   TextEditingController searchController = TextEditingController();
-  List<StudentList> filteredStudentObjectList = [];
+  List<BrandCatList> filterrdBrandObjectList = [];
   @override
   void onInit() {
     searchNode = FocusNode();
@@ -36,9 +36,9 @@ class StudentController extends GetxController {
     super.onInit();
   }
 
-  void getStudentList(context) async {
+  void getBrandCategoryList(context) async {
     state.value = ScreenState.apiLoading;
-    isStudentList.value = true;
+    isBrandCategoryList.value = true;
     // try {
     if (networkManager.connectionType == 0) {
       showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -47,18 +47,19 @@ class StudentController extends GetxController {
       return;
     }
     var response =
-        await Repository.post({}, ApiUrl.studentList, allowHeader: true);
-    isStudentList.value = false;
+        await Repository.post({}, ApiUrl.brandCategoryList, allowHeader: true);
+    isBrandCategoryList.value = false;
     var responseData = jsonDecode(response.body);
     logcat(" SERVICE RESPONSE", jsonEncode(responseData));
 
     if (response.statusCode == 200) {
-      var data = StudentModel.fromJson(responseData);
-      if (data.status == 1) {
+      if (responseData['status'] == 1) {
+        var data = BrandCategoryModel.fromJson(responseData);
+
         state.value = ScreenState.apiSuccess;
-        studentObjectList.clear();
-        studentObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(studentObjectList));
+        BrnadCategoryObjectList.clear();
+        BrnadCategoryObjectList.addAll(data.data);
+        logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
       } else {
         showDialogForScreen(context, responseData['message'], callback: () {});
       }
@@ -71,9 +72,9 @@ class StudentController extends GetxController {
     // }
   }
 
-  void deleteServiceList(context, String itemId) async {
+  void deleteProductCategoryList(context, String itemId) async {
     state.value = ScreenState.apiLoading;
-    isStudentList.value = true;
+    isBrandCategoryList.value = true;
     try {
       if (networkManager.connectionType == 0) {
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -82,11 +83,11 @@ class StudentController extends GetxController {
         return;
       }
       var response = await Repository.delete(
-          {}, '${ApiUrl.deleteStudent}/$itemId',
+          {}, '${ApiUrl.deletebrandCategoryList}/$itemId',
           allowHeader: true);
-      isStudentList.value = false;
+      isBrandCategoryList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+      logcat("PRODUCTDELETE CATEGORY RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = DeleteSuccessModel.fromJson(responseData);
@@ -96,7 +97,7 @@ class StudentController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(studentObjectList));
+          logcat("PRODUCTDELETE CATEGORY", jsonEncode(BrnadCategoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -106,17 +107,17 @@ class StudentController extends GetxController {
       }
     } catch (e) {
       logcat('Exception', e);
-      isStudentList.value = false;
+      isBrandCategoryList.value = false;
     }
   }
 
   void updateLocalList(String deletedItemId) {
     int deletedItemIndex =
-        studentObjectList.indexWhere((item) => item.id == deletedItemId);
+        BrnadCategoryObjectList.indexWhere((item) => item.id == deletedItemId);
 
     if (deletedItemIndex != -1) {
       // Remove the deleted item from the list
-      studentObjectList.removeAt(deletedItemIndex);
+      BrnadCategoryObjectList.removeAt(deletedItemIndex);
     }
   }
 
@@ -148,7 +149,7 @@ class StudentController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.service,
+        title: "Product Category",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

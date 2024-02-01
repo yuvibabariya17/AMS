@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/controllers/AddProductCategoryController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
@@ -10,15 +11,45 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class AddProductCategoryScreen extends StatefulWidget {
-  const AddProductCategoryScreen({super.key});
+  AddProductCategoryScreen({super.key, this.isEdit, this.editProductCategory});
+  bool? isEdit;
+  ListProductCategory? editProductCategory;
 
   @override
-  State<AddProductCategoryScreen> createState() => _AddProductCategoryScreenState();
+  State<AddProductCategoryScreen> createState() =>
+      _AddProductCategoryScreenState();
 }
 
 class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
   final controller = Get.put(AddProductCategoryController());
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateName(controller.namectr.text);
+    controller.validateImage(controller.imgctr.text);
+    controller.validateDescription(controller.descCtr.text);
+  }
+
+  @override
+  void initState() {
+    if (widget.isEdit == true && widget.editProductCategory != null) {
+      controller.namectr.text = widget.editProductCategory!.name;
+      controller.imgctr.text =
+          widget.editProductCategory!.uploadInfo.image.toString();
+      controller.descCtr.text =
+          widget.editProductCategory!.description.toString();
+
+      if (widget.isEdit == true) {
+        validateFields();
+      }
+
+      // Set other fields as well
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +61,10 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
           body: Container(
         child: Column(
           children: [
-            getCommonToolbar("Product Category", () {
+            getCommonToolbar(
+                widget.isEdit == true
+                    ? "Update Product Category"
+                    : "Add Product Category", () {
               Get.back();
             }),
             Expanded(
@@ -67,8 +101,7 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                             inputType: TextInputType.text,
                                           );
                                         }))),
-
-                                          getTitle("Photo"),
+                                getTitle("Photo"),
                                 FadeInUp(
                                     from: 30,
                                     child: AnimatedSize(
@@ -110,8 +143,6 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                             inputType: TextInputType.number,
                                           );
                                         }))),
-                                
-                               
                                 getTitle("Description"),
                                 FadeInUp(
                                     from: 30,
@@ -125,7 +156,8 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                             hintLabel: "Enter Description",
                                             isExpand: true,
                                             onChanged: (val) {
-                                              controller.validateDescription(val);
+                                              controller
+                                                  .validateDescription(val);
                                               setState(() {});
                                             },
                                             errorText: controller
@@ -133,8 +165,6 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                             inputType: TextInputType.text,
                                           );
                                         }))),
-                              
-                             
                                 SizedBox(
                                   height: 4.h,
                                 ),
@@ -144,7 +174,8 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                       return getFormButton(() {
                                         if (controller.isFormInvalidate.value ==
                                             true) {
-                                         controller.AddProductCategory(context);
+                                          controller.AddProductCategory(
+                                              context);
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

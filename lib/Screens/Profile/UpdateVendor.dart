@@ -15,7 +15,9 @@ import '../../custom_componannt/form_inputs.dart';
 import '../../preference/UserPreference.dart';
 
 class UpdateVendor extends StatefulWidget {
-  const UpdateVendor({super.key});
+  UpdateVendor({
+    super.key,
+  });
 
   @override
   State<UpdateVendor> createState() => _UpdateVendorState();
@@ -46,6 +48,25 @@ class _UpdateVendorState extends State<UpdateVendor> {
     controller.whatsappctr.text = retrievedObject.whatsappNo.toString();
 
     setState(() {});
+  }
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateVendorname(controller.Vendornamectr.text);
+    controller.validateAddressname(controller.addressctr.text);
+    controller.validateBreacher(controller.breacherctr.text);
+    controller.validateCompanyname(controller.companyctr.text);
+    controller.validateLogo(controller.logoctr.text);
+    controller.validatePass(controller.passctr.text);
+    controller.validatePhone1(controller.contact_onectr.text);
+    controller.validateEmail(controller.emailctr.text);
+    controller.validatePhone2(controller.contact_twoctr.text);
+    controller.validatePhone3(controller.whatsappctr.text);
+
+    controller.validateProfile(controller.profilectr.text);
+    controller.validateProperty(controller.propertyctr.text);
+
+    // Add validation for other fields as needed
   }
 
   @override
@@ -227,7 +248,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                     return getReactiveFormField(
                                       node: controller.WhatsappNode,
                                       controller: controller.whatsappctr,
-                                     // formType: FieldType.Mobile,
+                                      // formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
                                         controller.validatePhone3(val);
@@ -413,15 +434,19 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.none,
                                     );
                                   }))),
-                          Container(
-                              margin: EdgeInsets.only(top: 5.h),
-                              width: double.infinity,
-                              height: 6.h,
-                              child: getButton(() {
-                                if (controller.isFormInvalidate.value) {
-                                Get.to(UpdateVendor());
-                                }
-                              })),
+                                  SizedBox(height: 3.h,),
+                          FadeInUp(
+                              from: 50,
+                              child: Obx(() {
+                                return getFormButton(() {
+                                  if (controller.isFormInvalidate.value ==
+                                      true) {
+                                    // controller.UpdateVendorApi(context);
+                                  }
+                                }, CommonConstant.submit,
+                                    validate:
+                                        controller.isFormInvalidate.value);
+                              }))
                         ],
                       )),
                 ),

@@ -192,10 +192,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               ),
             ),
-
-      
-        
-        
           ])),
     );
   }
@@ -255,10 +251,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                        left: 1.5.w,
-                        right: 1.5.w,
-                        top: 0.5.h
-                      ),
+                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -323,12 +316,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-
                                 data.subCategoryInfo.name,
                                 //  data.serviceInfo != null
                                 //     ? data.serviceInfo!.name
                                 //     : "",
-                              
+
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
@@ -394,14 +386,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   itemCount: controller.filteredServiceObjectList.length,
                 ),
               )
-
-          
-            : Center(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(CommonConstant.noDataFound),
-              ],
-            )),
+            : Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(CommonConstant.noDataFound),
+                ],
+              )),
       );
     } else {
       return Column(
@@ -412,8 +403,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -423,19 +414,40 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
-     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Column(
-        children: [
-          Container(
-            // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-            height: SizerUtil.height / 1.5, // Adjust the height as needed
-            color: Colors.white, // Placeholder color
+      // SHIMMER EFFECT
+
+      // return Shimmer.fromColors(
+      //   baseColor: Colors.grey[300]!,
+      //   highlightColor: Colors.grey[100]!,
+      //   child: Column(
+      //     children: [
+      //       Container(
+      //         // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+      //         height: SizerUtil.height / 1.5, // Adjust the height as needed
+      //         color: Colors.white, // Placeholder color
+      //       ),
+      //     ],
+      //   ),
+      // );
+
+      return Center(
+        child: ClipOval(
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              color: isDarkMode() ? black : white,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Image.asset(
+              "assets/gif/apiloader.gif",
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
           ),
-        ],
-      ),
-    );
+        ),
+      );
     }
 
     Widget? button;
@@ -511,4 +523,3 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 }
-

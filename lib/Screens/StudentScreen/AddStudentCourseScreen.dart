@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/controllers/StudentCourseController.dart';
+import 'package:booking_app/Models/StudentCourseListModel.dart';
+import 'package:booking_app/controllers/AddStudent_courseController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -11,8 +12,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class AddStudentCourseScreen extends StatefulWidget {
-  const AddStudentCourseScreen({super.key});
+  AddStudentCourseScreen({super.key, this.isEdit, this.editStudentCourse});
+  bool? isEdit;
+  ListofStudentCourse? editStudentCourse;
 
   @override
   State<AddStudentCourseScreen> createState() => _AddStudentCourseScreenState();
@@ -21,11 +25,37 @@ class AddStudentCourseScreen extends StatefulWidget {
 class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
   final controller = Get.put(AddStudentCourseController());
 
+  void validateFields() {
+    // Validate all fields here
+    controller.validateStudent(controller.studentctr.text);
+    controller.validateCourse(controller.coursectr.text);
+    controller.validateStartDate(controller.startDatectr.text);
+    controller.validateFees(controller.Feesctr.text);
+    controller.validateImage(controller.imgctr.text);
+    controller.validateNotes(controller.notesctr.text);
+
+    // Add validation for other fields as needed
+  }
 
   @override
   void initState() {
+    if (widget.isEdit == true && widget.editStudentCourse != null) {
+      controller.studentctr.text = widget.editStudentCourse!.id.toString();
+      controller.coursectr.text = widget.editStudentCourse!.id.toString();
+      controller.startDatectr.text =
+          widget.editStudentCourse!.startingFrom.toString();
+      controller.Feesctr.text = widget.editStudentCourse!.fees.toString();
+      controller.imgctr.text = widget.editStudentCourse!.idProofUrl.toString();
+      controller.notesctr.text =
+          widget.editStudentCourse!.otherNotes.toString();
+      // Set other fields as well
+    }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
     controller.getCourseList(context);
     controller.getStudentList(context);
+
     super.initState();
   }
 
@@ -39,7 +69,10 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
           body: Container(
         child: Column(
           children: [
-            getCommonToolbar("Add Student Course", () {
+            getCommonToolbar(
+                widget.isEdit == true
+                    ? "Update Student Course"
+                    : "Add Student Course", () {
               Get.back();
             }),
             Expanded(
@@ -104,7 +137,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               controller.validateCourse(val);
                                               setState(() {});
                                             },
-                                              onTap: () {
+                                            onTap: () {
                                               controller.coursectr.text = "";
                                               showDropDownDialog(
                                                   context,
@@ -209,12 +242,12 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               selectImageFromCameraOrGallery(
                                                   context, cameraClick: () {
                                                 controller
-                                                    .actionClickUploadIdProof(
+                                                    .actionClickUploadImage(
                                                         context,
                                                         isCamera: true);
                                               }, galleryClick: () {
                                                 controller
-                                                    .actionClickUploadIdProof(
+                                                    .actionClickUploadImage(
                                                         context,
                                                         isCamera: false);
                                               });
@@ -260,7 +293,8 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                       return getFormButton(() {
                                         if (controller.isFormInvalidate.value ==
                                             true) {
-                                           controller.AddStudentCourseApi(context);
+                                          controller.AddStudentCourseApi(
+                                              context);
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

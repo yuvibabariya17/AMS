@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
-import 'package:booking_app/Models/CommonModel.dart';
 import 'package:booking_app/Models/CourseModel.dart';
 import 'package:booking_app/Models/StudentModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
@@ -14,7 +13,6 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
-import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -392,19 +390,17 @@ class AddStudentCourseController extends GetxController {
           "fees": Feesctr.text.toString().trim(),
           "starting_from": startDatectr.text.toString().trim(),
           "other_notes": notesctr.text.toString().trim(),
-          "id_proof_url": uploadIdproof.value.toString()
+          "id_proof_url": uploadImageId.value.toString()
         })
       });
 
-      var response = await Repository.post(
-        
-      {
+      var response = await Repository.post({
         "student_id": studentId.value.toString(),
         "course_id": studentCourseId.value.toString(),
         "fees": Feesctr.text.toString().trim(),
         "starting_from": startDatectr.text.toString().trim(),
         "other_notes": notesctr.text.toString().trim(),
-        "id_proof_url": uploadIdproof.value.toString()
+        "id_proof_url": uploadImageId.value.toString()
       }, ApiUrl.addStudentCourse, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
@@ -506,14 +502,14 @@ class AddStudentCourseController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadIdProof.value!.path.split('/').last,
+        "file": uploadImageFile.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadIdProof.value != null
+          multiPart: uploadImageFile.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadIdProof.value!.readAsBytes().asStream(),
-                  uploadIdProof.value!.lengthSync(),
-                  filename: uploadIdProof.value!.path.split('/').last,
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -544,9 +540,32 @@ class AddStudentCourseController extends GetxController {
     }
   }
 
-  Rx<File?> uploadIdProof = null.obs;
+  // Rx<File?> uploadIdProof = null.obs;
 
-  actionClickUploadIdProof(context, {bool? isCamera}) async {
+  // actionClickUploadIdProof(context, {bool? isCamera}) async {
+  //   await ImagePicker()
+  //       .pickImage(
+  //           source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+  //           maxWidth: 1080,
+  //           maxHeight: 1080,
+  //           imageQuality: 100)
+  //       .then((file) async {
+  //     if (file != null) {
+  //       if (file != null) {
+  //         uploadIdProof = File(file.path).obs;
+  //         imgctr.text = file.name;
+  //         validateImage(imgctr.text);
+  //         getIdproofApi(context);
+  //       }
+  //     }
+  //   });
+
+  //   update();
+  // }
+
+  Rx<File?> uploadImageFile = null.obs;
+
+  actionClickUploadImage(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(
             source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
@@ -556,14 +575,65 @@ class AddStudentCourseController extends GetxController {
         .then((file) async {
       if (file != null) {
         if (file != null) {
-          uploadIdProof = File(file.path).obs;
+          uploadImageFile = File(file.path).obs;
           imgctr.text = file.name;
           validateImage(imgctr.text);
-          getIdproofApi(context);
+          getImageApi(context);
         }
       }
     });
 
     update();
+  }
+
+  void getImageApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    loadingIndicator.show(context, '');
+
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.multiPartPost({
+        "file": uploadImageFile.value!.path.split('/').last,
+      }, ApiUrl.uploadImage,
+          multiPart: uploadImageFile.value != null
+              ? http.MultipartFile(
+                  'file',
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
+                )
+              : null,
+          allowHeader: true);
+      var responseDetail = await response.stream.toBytes();
+      loadingIndicator.hide(context);
+
+      var result = String.fromCharCodes(responseDetail);
+      var json = jsonDecode(result);
+      var responseData = UploadImageModel.fromJson(json);
+      if (response.statusCode == 200) {
+        logcat("responseData", jsonEncode(responseData));
+        if (responseData.status == "True") {
+          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
+          uploadImageId.value = responseData.data.id.toString();
+        } else {
+          showDialogForScreen(context, responseData.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, responseData.message.toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
   }
 }

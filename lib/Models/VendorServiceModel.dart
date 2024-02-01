@@ -71,7 +71,7 @@ class VendorServiceList {
 
   factory VendorServiceList.fromJson(Map<String, dynamic> json) =>
       VendorServiceList(
-        id: json["_id"] ?? "",
+        id: json["_id"] ?? '',
         fees: json["fees"] ?? 0,
         oppoxTime: json["oppox_time"] != null
             ? DateTime.parse(json["oppox_time"])
@@ -81,26 +81,10 @@ class VendorServiceList {
             ? DateTime.parse(json["oppox_setting_duration"])
             : DateTime.now(),
         createdAt: json["created_at"] ?? 0,
-        vendorInfo: json["vendor_info"] != null
-            ? VendorInfo.fromJson(json["vendor_info"])
-            : VendorInfo(
-                vendorType: null,
-                companyName: "",
-                contactNo1: null,
-                emailId: "",
-                whatsappNo: null,
-                role: "",
-                userName: null,
-                contactPersonName: ""),
-        serviceInfo: json["service_info"] != null
-            ? ServiceInfo.fromJson(json["service_info"])
-            : ServiceInfo(name: "", categoryId: "", subCategoryId: ""),
-        categoryInfo: json["category_info"] != null
-            ? CategoryInfo.fromJson(json["category_info"])
-            : CategoryInfo(name: ""),
-        subCategoryInfo: json["sub_category_info"] != null
-            ? CategoryInfo.fromJson(json["sub_category_info"])
-            : CategoryInfo(name: ""),
+        vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
+        serviceInfo: ServiceInfo.fromJson(json["service_info"] ?? {}),
+        categoryInfo: CategoryInfo.fromJson(json["category_info"] ?? {}),
+        subCategoryInfo: CategoryInfo.fromJson(json["sub_category_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -125,7 +109,7 @@ class CategoryInfo {
   });
 
   factory CategoryInfo.fromJson(Map<String, dynamic> json) => CategoryInfo(
-        name: json["name"],
+        name: json["name"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -145,9 +129,9 @@ class ServiceInfo {
   });
 
   factory ServiceInfo.fromJson(Map<String, dynamic> json) => ServiceInfo(
-        name: json["name"],
-        categoryId: json["category_id"],
-        subCategoryId: json["sub_category_id"],
+        name: json["name"] ?? '',
+        categoryId: json["category_id"] ?? '',
+        subCategoryId: json["sub_category_id"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -179,14 +163,14 @@ class VendorInfo {
   });
 
   factory VendorInfo.fromJson(Map<String, dynamic> json) => VendorInfo(
-        vendorType: json?["vendor_type"],
-        companyName: json?["company_name"] ?? "",
-        contactNo1: json?["contact_no1"],
-        emailId: json?["email_id"] ?? "",
-        whatsappNo: json?["whatsapp_no"],
-        role: json?["role"] ?? "",
-        userName: json?["user_name"],
-        contactPersonName: json?["contact_person_name"] ?? "",
+        vendorType: json["vendor_type"],
+        companyName: json["company_name"] ?? '',
+        contactNo1: json["contact_no1"] ?? '',
+        emailId: json["email_id"] ?? '',
+        whatsappNo: json["whatsapp_no"] ?? '',
+        role: json["role"] ?? '',
+        userName: json["user_name"] ?? '',
+        contactPersonName: json["contact_person_name"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

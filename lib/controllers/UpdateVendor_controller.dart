@@ -530,7 +530,7 @@ class UpdateVendorController extends GetxController {
   }
 
 
-   void UpdateVendor(context, String customerId) async {
+   void UpdateVendorApi(context, String customerId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -567,7 +567,7 @@ class UpdateVendorController extends GetxController {
     "contact_person_name": fullName.toString().trim(),
     "area_id": "647858c499ee0654f9cdec0a"
 
-      },  '${ApiUrl.editCourse}/$customerId',allowHeader: true);
+      },  '${ApiUrl.updateVendor}/$customerId',allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

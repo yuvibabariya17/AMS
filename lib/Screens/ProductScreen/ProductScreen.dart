@@ -132,7 +132,7 @@ class _ProductScreenState extends State<ProductScreen> {
             Expanded(
               child: Container(
                 child: RefreshIndicator(
-                 color: isDarkMode() ? white : black,
+                  color: isDarkMode() ? white : black,
                   onRefresh: () {
                     return Future.delayed(
                       const Duration(seconds: 1),
@@ -267,7 +267,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         'http://192.168.1.7:4000/uploads/${data.uploadInfo.image}';
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                      padding: EdgeInsets.only(
+                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -725,7 +726,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
       );
     } else {
-     return Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -733,8 +734,8 @@ class _ProductScreenState extends State<ProductScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -745,19 +746,22 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
     }
 
     Widget? button;

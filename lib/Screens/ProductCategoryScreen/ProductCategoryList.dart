@@ -1,6 +1,6 @@
-import 'package:booking_app/Models/StudentModel.dart';
-import 'package:booking_app/Screens/StudentScreen/AddStudentScreen.dart';
-import 'package:booking_app/controllers/StudentController.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
+import 'package:booking_app/Screens/ProductCategoryScreen/AddProductCategory.dart';
+import 'package:booking_app/controllers/ProductList_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,42 +8,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../core/Common/toolbar.dart';
-import '../../core/constants/assets.dart';
-import '../../core/constants/strings.dart';
-import '../../core/themes/color_const.dart';
-import '../../core/themes/font_constant.dart';
-import '../../core/utils/helper.dart';
-import '../../core/utils/log.dart';
+import '../../../core/Common/toolbar.dart';
+import '../../../core/constants/assets.dart';
+import '../../../core/constants/strings.dart';
+import '../../../core/themes/color_const.dart';
+import '../../../core/themes/font_constant.dart';
+import '../../../core/utils/helper.dart';
+import '../../../core/utils/log.dart';
 
-class StudentScreen extends StatefulWidget {
-  const StudentScreen({super.key});
+class ProductCategoryListScreen extends StatefulWidget {
+  const ProductCategoryListScreen({super.key});
 
   @override
-  State<StudentScreen> createState() => _StudentScreenState();
+  State<ProductCategoryListScreen> createState() =>
+      _ProductCategoryListScreenState();
 }
 
-class _StudentScreenState extends State<StudentScreen> {
-  final controller = Get.put(StudentController());
+class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
+  final controller = Get.put(ProductListController());
 
   TextEditingController search = TextEditingController();
 
   @override
   void initState() {
-    controller.getStudentList(context);
-    controller.filteredStudentObjectList = controller.studentObjectList;
+    controller.getProductCategoryList(context);
+    controller.filterrdProductObjectList = controller.productCategoryObjectList;
     super.initState();
   }
 
-  void filterServiceList(String query) {
+  void filetProductCategoryList(String query) {
     setState(() {
       if (query.isEmpty) {
-        controller.filteredStudentObjectList = controller.studentObjectList;
+        controller.filterrdProductObjectList =
+            controller.productCategoryObjectList;
       } else {
-        controller.filteredStudentObjectList = controller.studentObjectList
+        controller.filterrdProductObjectList = controller
+            .productCategoryObjectList
             .where((data) =>
                 data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.contact
+                data.description
                     .toString()
                     .toString()
                     .toLowerCase()
@@ -88,10 +91,10 @@ class _StudentScreenState extends State<StudentScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0)),
                 onPressed: () {
-                  Get.to(AddStudentScreen())?.then((value) {
+                  Get.to(AddProductCategoryScreen())?.then((value) {
                     if (value == true) {
                       logcat("ISDONE", "DONE");
-                      controller.getStudentList(
+                      controller.getProductCategoryList(
                         context,
                       );
                     }
@@ -108,7 +111,7 @@ class _StudentScreenState extends State<StudentScreen> {
                       )),
           ),
           body: Column(children: [
-            getCommonToolbar("Student", () {
+            getCommonToolbar("Product Category List", () {
               Get.back();
             }),
             Container(
@@ -118,7 +121,7 @@ class _StudentScreenState extends State<StudentScreen> {
                 height: 5.5.h,
                 child: TextField(
                   onChanged: ((value) {
-                    filterServiceList(value);
+                    filetProductCategoryList(value);
                   }),
                   decoration: InputDecoration(
                       contentPadding:
@@ -154,7 +157,7 @@ class _StudentScreenState extends State<StudentScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getStudentList(context);
+                        controller.getProductCategoryList(context);
                       },
                     );
                   },
@@ -244,7 +247,7 @@ class _StudentScreenState extends State<StudentScreen> {
             ),
             TextButton(
               onPressed: () {
-                controller.deleteServiceList(context, serviceId);
+                controller.deleteProductCategoryList(context, serviceId);
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: Text(
@@ -259,12 +262,12 @@ class _StudentScreenState extends State<StudentScreen> {
   }
 
   Widget apiSuccess(ScreenState state) {
-    logcat("LENGTH", controller.studentObjectList.length.toString());
+    logcat("LENGTH", controller.productCategoryObjectList.length.toString());
     // ignore: unrelated_type_quality_checks
     if (controller.state == ScreenState.apiSuccess &&
-        controller.studentObjectList.isNotEmpty) {
+        controller.productCategoryObjectList.isNotEmpty) {
       return Expanded(
-        child: controller.filteredStudentObjectList.isNotEmpty
+        child: controller.filterrdProductObjectList.isNotEmpty
             ? Container(
                 margin: EdgeInsets.only(left: 8.w, right: 8.w),
                 child: GridView.builder(
@@ -277,8 +280,8 @@ class _StudentScreenState extends State<StudentScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    StudentList data =
-                        controller.filteredStudentObjectList[index];
+                    ListProductCategory data =
+                        controller.filterrdProductObjectList[index];
 
                     return Container(
                       padding: EdgeInsets.only(
@@ -348,10 +351,11 @@ class _StudentScreenState extends State<StudentScreen> {
                             children: [
                               Text(
                                 data.name,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
-                                  fontSize: 13.sp,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                                 textAlign: TextAlign.center,
@@ -359,37 +363,41 @@ class _StudentScreenState extends State<StudentScreen> {
                               // SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
+
                           // SizedBox(height: 5.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                data.contact,
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: Text(
+                                  data.description,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                              Spacer(),
+                              // Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(AddStudentScreen(
-                                      isEdit: true, editStudent: data));
+                                  Get.to(AddProductCategoryScreen(
+                                      isEdit: true, editProductCategory: data));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
                                     Asset.edit,
-                                    height: 2.3.h,
+                                    height: 2.2.h,
                                     color: isDarkMode()
                                         ? Colors.grey
                                         : Colors.grey,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 5.0),
+                              SizedBox(width: 1.w),
                               GestureDetector(
                                 onTap: () {
                                   showDeleteConfirmationDialog(data.id);
@@ -400,7 +408,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                     color: isDarkMode()
                                         ? Colors.grey
                                         : Colors.grey,
-                                    size: 3.h,
+                                    size: 2.9.h,
                                   ),
                                 ),
                               ),
@@ -410,7 +418,7 @@ class _StudentScreenState extends State<StudentScreen> {
                       ),
                     );
                   },
-                  itemCount: controller.filteredStudentObjectList.length,
+                  itemCount: controller.filterrdProductObjectList.length,
                 ),
               )
             : Center(child: Text(CommonConstant.noDataFound)),
@@ -454,28 +462,13 @@ class _StudentScreenState extends State<StudentScreen> {
       ));
     }
 
-    Widget? button;
     // if (controller.filterList.isEmpty) {
     //   Container();
     // }
-    if (state == ScreenState.noDataFound) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
-    if (state == ScreenState.noNetwork) {
-      button = getMiniButton(() {
-        controller.getStudentList(
-          context,
-        );
-      }, "Try Again");
-    }
+    if (state == ScreenState.noDataFound) {}
+    if (state == ScreenState.noNetwork) {}
 
-    if (state == ScreenState.apiError) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
+    if (state == ScreenState.apiError) {}
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

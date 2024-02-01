@@ -8,7 +8,7 @@ class ApiUrl {
   static const addCustomer = "customer/add";
   static const customerList = "customer/list";
   static const editCustomer = "customer/edit";
-  static const addService = "vendor/service/add";
+  static const addVendorService = "vendor/service/add";
   static const serviceList = "service/list";
   static const vendorServiceList = "vendor/service/list";
   static const deleteCustomer = "customer/delete";
@@ -59,10 +59,10 @@ class ApiUrl {
   static const packageList = "package/list";
   static const deletePackage = "package/delete";
   static const addPackage = "package/add";
-
-
-
-
+  static const addBrandCategory = "brand/category/add";
+  static const brandCategoryList = "brand/category/list";
+  static const deletebrandCategoryList = "brand/category/delete";
+  static const deleteStudent = "student/delete/";
 
 
 }

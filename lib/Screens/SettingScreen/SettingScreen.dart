@@ -1,5 +1,4 @@
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
-import 'package:booking_app/Screens/ProfileInformationScreen.dart';
 import 'package:booking_app/Screens/SettingScreen/InviteFriendScreen.dart';
 import 'package:booking_app/Screens/SettingScreen/ReportBugScreen.dart';
 import 'package:booking_app/controllers/theme_controller.dart';

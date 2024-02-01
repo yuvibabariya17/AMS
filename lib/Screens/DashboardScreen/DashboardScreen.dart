@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../controllers/home_screen_controller.dart';
-import '../NavdrawerScreen.dart';
+import 'NavdrawerScreen.dart';
 import 'HomeScreen.dart';
 
 class dashboard extends StatelessWidget {

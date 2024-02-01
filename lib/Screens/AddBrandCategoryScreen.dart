@@ -1,8 +1,6 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Models/StudentModel.dart';
-import 'package:booking_app/controllers/AddStudentScreenController.dart';
+import 'package:booking_app/Models/BrandCategoryModel.dart';
+import 'package:booking_app/controllers/AddBrandCategory_controller.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -11,46 +9,42 @@ import 'package:booking_app/custom_componannt/form_inputs.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
-class AddStudentScreen extends StatefulWidget {
-  AddStudentScreen({super.key, this.isEdit, this.editStudent});
+// ignore: must_be_immutable
+class AddBrandCategoryScreen extends StatefulWidget {
+  AddBrandCategoryScreen({super.key, this.isEdit, this.editProductCategory});
   bool? isEdit;
-  StudentList? editStudent;
+  BrandCatList? editProductCategory;
 
   @override
-  State<AddStudentScreen> createState() => _AddStudentScreenState();
+  State<AddBrandCategoryScreen> createState() => _AddBrandCategoryScreenState();
 }
 
-class _AddStudentScreenState extends State<AddStudentScreen> {
-  final controller = Get.put(AddStudentController());
+class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
+  final controller = Get.put(AddBrandCategoryController());
 
   void validateFields() {
     // Validate all fields here
     controller.validateName(controller.namectr.text);
-    controller.validateEmail(controller.emailctr.text);
-    controller.validateAddress(controller.addressctr.text);
     controller.validateImage(controller.imgctr.text);
-    controller.validateId(controller.idctr.text);
-    controller.validateContact(controller.contactctr.text);
-
-    // Add validation for other fields as needed
+    controller.validateDescription(controller.descCtr.text);
   }
 
   @override
   void initState() {
-    if (widget.isEdit == true && widget.editStudent != null) {
-      controller.namectr.text = widget.editStudent!.name;
-      controller.emailctr.text = widget.editStudent!.email.toString();
-      controller.addressctr.text = widget.editStudent!.address.toString();
-      controller.imgctr.text = widget.editStudent!.photoUrl.toString();
-      controller.idctr.text = widget.editStudent!.idProofUrl.toString();
-      controller.contactctr.text = widget.editStudent!.contact.toString();
+    if (widget.isEdit == true && widget.editProductCategory != null) {
+      controller.namectr.text = widget.editProductCategory!.name;
+      controller.imgctr.text =
+          widget.editProductCategory!.uploadInfo.image.toString();
+      controller.descCtr.text =
+          widget.editProductCategory!.description.toString();
+
+      if (widget.isEdit == true) {
+        validateFields();
+      }
+
       // Set other fields as well
-    }
-    if (widget.isEdit == true) {
-      validateFields();
     }
 
     super.initState();
@@ -67,7 +61,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
         child: Column(
           children: [
             getCommonToolbar(
-                widget.isEdit == true ? "Update Student" : "Add Student", () {
+                widget.isEdit == true
+                    ? "Update Brand Category"
+                    : "Add Brand Category", () {
               Get.back();
             }),
             Expanded(
@@ -104,47 +100,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                             inputType: TextInputType.text,
                                           );
                                         }))),
-                                getTitle("Email"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.emailNode,
-                                            controller: controller.emailctr,
-                                            hintLabel: "Enter Email",
-                                            onChanged: (val) {
-                                              controller.validateEmail(val);
-                                              setState(() {});
-                                            },
-                                            errorText: controller
-                                                .EmailModel.value.error,
-                                            inputType: TextInputType.text,
-                                          );
-                                        }))),
-                                getTitle("Address"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.addressNode,
-                                            controller: controller.addressctr,
-                                            hintLabel: "Enter Address",
-                                            isExpand: true,
-                                            onChanged: (val) {
-                                              controller.validateAddress(val);
-                                              setState(() {});
-                                            },
-                                            errorText: controller
-                                                .AddressModel.value.error,
-                                            inputType: TextInputType.text,
-                                          );
-                                        }))),
                                 getTitle("Photo"),
                                 FadeInUp(
                                     from: 30,
@@ -173,7 +128,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                                 controller
                                                     .actionClickUploadImage(
                                                         context,
-                                                        isCamera: true);
+                                                        isCamera: false);
                                               });
                                               // await controller.PopupDialogs(context);
                                               setState(() {});
@@ -187,7 +142,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                             inputType: TextInputType.number,
                                           );
                                         }))),
-                                getTitle("Id Proof"),
+                                getTitle("Description"),
                                 FadeInUp(
                                     from: 30,
                                     child: AnimatedSize(
@@ -195,58 +150,18 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                             const Duration(milliseconds: 300),
                                         child: Obx(() {
                                           return getReactiveFormField(
-                                            node: controller.idNode,
-                                            controller: controller.idctr,
-                                            hintLabel: "Select Id Proof",
-                                            wantSuffix: true,
+                                            node: controller.descNode,
+                                            controller: controller.descCtr,
+                                            hintLabel: "Enter Description",
+                                            isExpand: true,
                                             onChanged: (val) {
-                                              controller.validateId(val);
-                                              setState(() {});
-                                            },
-                                            isReadOnly: true,
-                                            onTap: () async {
-                                              selectImageFromCameraOrGallery(
-                                                  context, cameraClick: () {
-                                                controller
-                                                    .actionClickUploadIdProof(
-                                                        context,
-                                                        isCamera: true);
-                                              }, galleryClick: () {
-                                                controller
-                                                    .actionClickUploadIdProof(
-                                                        context,
-                                                        isCamera: true);
-                                              });
-                                              // await controller.PopupDialogs(context);
-                                              setState(() {});
-                                            },
-                                            // onTap: () async {
-                                            //   await controller
-                                            //       .actionClickUploadProfile(context);
-                                            // },
-                                            errorText:
-                                                controller.IdModel.value.error,
-                                            inputType: TextInputType.none,
-                                          );
-                                        }))),
-                                getTitle("Contact No."),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.contactNode,
-                                            controller: controller.contactctr,
-                                            hintLabel: "Enter Contact No.",
-                                            onChanged: (val) {
-                                              controller.validateContact(val);
+                                              controller
+                                                  .validateDescription(val);
                                               setState(() {});
                                             },
                                             errorText: controller
-                                                .ContactModel.value.error,
-                                            inputType: TextInputType.number,
+                                                .DescriptionModel.value.error,
+                                            inputType: TextInputType.text,
                                           );
                                         }))),
                                 SizedBox(
@@ -258,7 +173,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                       return getFormButton(() {
                                         if (controller.isFormInvalidate.value ==
                                             true) {
-                                          controller.AddStudent(context);
+                                          controller.AddBrandCategory(context);
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

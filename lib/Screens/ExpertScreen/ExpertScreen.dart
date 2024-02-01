@@ -394,7 +394,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                               '₹ ${data.amount.toString()}',
+                                '₹ ${data.amount.toString()}',
                                 // data.serviceInfo != null
                                 //     ? data.serviceInfo!.name
                                 //     : "",
@@ -407,10 +407,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  // Get.to(AddExpertScreen(
-                                  //   isEdit: true,
-                                  //   editExpert: data,
-                                  // ));
+                                  Get.to(AddExpertScreen(
+                                    isEdit: true,
+                                    editExpert: data,
+                                  ));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -585,8 +585,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -597,19 +597,37 @@ class _ExpertScreenState extends State<ExpertScreen> {
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
+
+      // Center(
+      //   child: ClipRRect(
+      //     borderRadius: BorderRadius.circular(100),
+      //     child: Container(
+      //       height: 50,
+      //       width: 50,
+      //       child: Image.asset(
+      //         "assets/gif/apiloader.gif",
+      //         width: 50,
+      //         height: 50,
+      //       ),
+      //     ),
+      //   ),
+      // );
     }
 
     Widget? button;

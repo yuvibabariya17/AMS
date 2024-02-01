@@ -42,7 +42,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
       } else {
         controller.filteredStudentObjectList = controller.studentObjectList
             .where((data) =>
-                data.fees.toString()
+                data.fees
+                    .toString()
                     .toLowerCase()
                     .contains(query.toLowerCase()) ||
                 data.otherNotes
@@ -110,7 +111,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                       )),
           ),
           body: Column(children: [
-            getCommonToolbar("Student Course",  () {
+            getCommonToolbar("Student Course", () {
               Get.back();
             }),
             Container(
@@ -284,10 +285,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                        left: 1.5.w,
-                        right: 1.5.w,
-                        top: 0.5.h
-                      ),
+                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -352,7 +350,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.fees.toString(),
+                                data.otherNotes,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
@@ -371,7 +369,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                             data.otherNotes,
+                                '₹ ${data.fees.toString()}',
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
                                   fontSize: 11.sp,
@@ -381,8 +379,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  // Get.to(AddServiceScreen(
-                                  //     isEdit: true, editService: data));
+                                  Get.to(AddStudentCourseScreen(
+                                      isEdit: true, editStudentCourse: data));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -418,8 +416,6 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   itemCount: controller.filteredStudentObjectList.length,
                 ),
               )
-
-        
             : Center(child: Text(CommonConstant.noDataFound)),
       );
     } else {
@@ -431,8 +427,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -443,43 +439,31 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
     }
 
-    Widget? button;
     // if (controller.filterList.isEmpty) {
     //   Container();
     // }
-    if (state == ScreenState.noDataFound) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
-    if (state == ScreenState.noNetwork) {
-      button = getMiniButton(() {
-        controller.getStudentCourseList(
-          context,
-        );
-      }, "Try Again");
-    }
+    if (state == ScreenState.noDataFound) {}
+    if (state == ScreenState.noNetwork) {}
 
-    if (state == ScreenState.apiError) {
-      button = getMiniButton(() {
-        Get.back();
-      }, "Back");
-    }
+    if (state == ScreenState.apiError) {}
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

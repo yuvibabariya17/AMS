@@ -29,14 +29,13 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
   void initState() {
     if (widget.isEdit == true && widget.editExpert != null) {
       controller.Servicectr.text = widget.editExpert!.name;
-      controller.Expertctr.text = widget.editExpert!.serviceInfo!.name;
+      controller.Expertctr.text = widget.editExpert!.name;
 
       controller.Pricectr.text = widget.editExpert!.amount.toString();
 
-        if(widget.isEdit == true){
-       validateFields() ;
-    }
-
+      if (widget.isEdit == true) {
+        validateFields();
+      }
 
       // Set other fields as well
     }
@@ -61,8 +60,7 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
     controller.validateEndTime(controller.Endctr.text);
     controller.validatePrice(controller.Pricectr.text);
     controller.validateServicename(controller.Servicectr.text);
-  
-    
+
     // Add validation for other fields as needed
   }
 
@@ -150,6 +148,40 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                       // },
                                       errorText:
                                           controller.ProfileModel.value.error,
+                                      inputType: TextInputType.text,
+                                    );
+                                  }))),
+
+                          getTitle("Service"),
+                          FadeInUp(
+                              from: 30,
+                              child: AnimatedSize(
+                                  duration: const Duration(milliseconds: 300),
+                                  child: Obx(() {
+                                    return getReactiveFormField(
+                                      node: controller.ServiceNode,
+                                      controller: controller.Servicectr,
+                                      hintLabel: "Select Service",
+                                      onChanged: (val) {
+                                        controller.validateServicename(val);
+                                        setState(() {});
+                                      },
+                                      isReadOnly: true,
+                                      wantSuffix: true,
+                                      isdown: true,
+                                      onTap: () {
+                                        controller.Servicectr.text = "";
+
+                                        showDropDownDialog(
+                                            context,
+                                            controller.setServiceList(),
+                                            "Service List");
+                                        // showDropdownMessage(
+                                        //     context,
+                                        //     controller.setServiceList(),
+                                        //     'Select Service');
+                                      },
+                                      errorText: controller.Model.value.error,
                                       inputType: TextInputType.text,
                                     );
                                   }))),
@@ -363,39 +395,7 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                       inputType: TextInputType.none,
                                     );
                                   }))),
-                          getTitle(AddExpertConstant.service),
-                          FadeInUp(
-                              from: 30,
-                              child: AnimatedSize(
-                                  duration: const Duration(milliseconds: 300),
-                                  child: Obx(() {
-                                    return getReactiveFormField(
-                                      node: controller.ServiceNode,
-                                      controller: controller.Servicectr,
-                                      hintLabel: "Select Service",
-                                      onChanged: (val) {
-                                        controller.validateServicename(val);
-                                        setState(() {});
-                                      },
-                                      isReadOnly: true,
-                                      wantSuffix: true,
-                                      isdown: true,
-                                      onTap: () {
-                                        controller.Servicectr.text = "";
 
-                                        showDropDownDialog(
-                                            context,
-                                            controller.setServiceList(),
-                                            "Service List");
-                                        // showDropdownMessage(
-                                        //     context,
-                                        //     controller.setServiceList(),
-                                        //     'Select Service');
-                                      },
-                                      errorText: controller.Model.value.error,
-                                      inputType: TextInputType.text,
-                                    );
-                                  }))),
                           getTitle(AddExpertConstant.price),
                           FadeInUp(
                               from: 30,
@@ -418,29 +418,26 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                             height: 4.h,
                           ),
 
+                          FadeInUp(
+                              from: 50,
+                              child: Obx(() {
+                                return getFormButton(() {
+                                  if (controller.isFormInvalidate.value ==
+                                      true) {
+                                    controller.addExpertApi(context);
+                                  }
 
-                            FadeInUp(
-                                  from: 50,
-                                  child: Obx(() {
-                                    return getFormButton(() {
-
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
-                                      controller.addExpertApi(context);
-                                        }
-                                    
-                                        // if (widget.isEdit == true) {
-                                        //   // Call updateCourse API
-                                        //   controller.UpdateExpert(context, widget.editExpert!.id );
-                                        // } else {
-                                        //   // Call AddCourseApi API
-                                        //   controller.addExpertApi(context);
-                                        // }
-                                    
-                                    }, CommonConstant.submit,
-                                        validate:
-                                            controller.isFormInvalidate.value);
-                                  }))
+                                  // if (widget.isEdit == true) {
+                                  //   // Call updateCourse API
+                                  //   controller.UpdateExpert(context, widget.editExpert!.id );
+                                  // } else {
+                                  //   // Call AddCourseApi API
+                                  //   controller.addExpertApi(context);
+                                  // }
+                                }, CommonConstant.submit,
+                                    validate:
+                                        controller.isFormInvalidate.value);
+                              }))
                           // FadeInUp(
                           //     from: 50,
                           //     child: Obx(() {

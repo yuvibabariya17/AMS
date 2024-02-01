@@ -2,7 +2,6 @@ import 'package:booking_app/Models/PackageModel.dart';
 import 'package:booking_app/Screens/PackageScreen/AddPackageScreen%20.dart';
 import 'package:booking_app/controllers/PackageController.dart';
 import 'package:booking_app/core/Common/Common.dart';
-import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -338,33 +337,33 @@ class _PackageScreenState extends State<PackageScreen> {
                               // ),
 
                               //CLICPRRECT
-                              // Container(
-                              //     height: 10.h,
-                              //     width: 60.w,
-                              //     // padding: EdgeInsets.all(
-                              //     //   SizerUtil.deviceType == DeviceType.mobile
-                              //     //       ? 1.2.w
-                              //     //       : 1.0.w,
-                              //     // ),
-                              //     child: ClipRRect(
-                              //       borderRadius: const BorderRadius.all(
-                              //           Radius.circular(15)),
-                              //       child: CachedNetworkImage(
-                              //         fit: BoxFit.cover,
-                              //         imageUrl: "",
-                              //         placeholder: (context, url) =>
-                              //             const Center(
-                              //           child: CircularProgressIndicator(
-                              //               color: primaryColor),
-                              //         ),
-                              //         errorWidget: (context, url, error) =>
-                              //             Image.asset(
-                              //           Asset.placeholder,
-                              //           height: 10.h,
-                              //           fit: BoxFit.cover,
-                              //         ),
-                              //       ),
-                              //     ))
+                              Container(
+                                  height: 10.h,
+                                  width: 60.w,
+                                  // padding: EdgeInsets.all(
+                                  //   SizerUtil.deviceType == DeviceType.mobile
+                                  //       ? 1.2.w
+                                  //       : 1.0.w,
+                                  // ),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: "",
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                        child: CircularProgressIndicator(
+                                            color: primaryColor),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                        Asset.placeholder,
+                                        height: 10.h,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ))
                             ],
                           ),
                           SizedBox(height: 10.0),
@@ -374,7 +373,10 @@ class _PackageScreenState extends State<PackageScreen> {
                             children: [
                               Container(
                                   child: Text(
-                                data.name,
+                                //  data.serviceInfo != null
+                                //     ? data.serviceInfo!.name
+                                //     : "",
+                                data.name != null ? data.name : "",
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
@@ -390,21 +392,25 @@ class _PackageScreenState extends State<PackageScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                data.name,
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.w400),
+                              Expanded(
+                                child: Text(
+                                  data.durationFrom.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: opensansMedium,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               ),
-                              Spacer(),
+                              // Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  // Get.to(AddExpertScreen(
-                                  //   isEdit: true,
-                                  //   editExpert: data,
-                                  // ));
+                                  Get.to(AddPackageScreen(
+                                    isEdit: true,
+                                    editPackage: data,
+                                  ));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -590,19 +596,22 @@ class _PackageScreenState extends State<PackageScreen> {
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
     }
 
     Widget? button;

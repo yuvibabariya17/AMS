@@ -249,7 +249,6 @@ class AddserviceController extends GetxController {
         serviceObjectList,
         ListView.builder(
           shrinkWrap: true,
-          
           itemCount: serviceObjectList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -262,8 +261,11 @@ class AddserviceController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text =
-                    serviceObjectList[index].vendorInfo.userName.capitalize.toString();
+                Servicectr.text = serviceObjectList[index]
+                    .vendorInfo
+                    .userName
+                    .capitalize
+                    .toString();
 
                 validateServicename(Servicectr.text);
               },
@@ -370,7 +372,7 @@ class AddserviceController extends GetxController {
         "oppox_setting_duration":
             sitingTime.replaceAll(' ', '').toString().trim(),
         "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-      },  '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
+      }, '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -397,61 +399,61 @@ class AddserviceController extends GetxController {
     }
   }
 
-  void addServiceApi(context) async {
+  void addVendorService(context) async {
     var loadingIndicator = LoadingProgressDialog();
-    // try {
-    if (networkManager.connectionType == 0) {
-      loadingIndicator.hide(context);
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    loadingIndicator.show(context, '');
-    var retrievedObject = await UserPreferences().getSignInInfo();
-    logcat("ADDDDD SERVICE", {
-      "vendor_id": retrievedObject!.id.toString().trim(),
-      "service_id": ServiceId.toString().trim(),
-      "fees": int.parse(Pricectr.text),
-      "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-      "oppox_setting": sittingctr.text.toString().trim(),
-      "oppox_setting_duration":
-          sitingTime.replaceAll(' ', '').toString().trim(),
-      "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-    });
-    var response = await Repository.post({
-      "vendor_id": retrievedObject.id.toString().trim(),
-      "service_id": ServiceId.toString().trim(),
-      "fees": int.parse(Pricectr.text),
-      "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-      "oppox_setting": sittingctr.text.toString().trim(),
-      "oppox_setting_duration":
-          sitingTime.replaceAll(' ', '').toString().trim(),
-      "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-    }, ApiUrl.addService, allowHeader: true);
-    loadingIndicator.hide(context);
-    var data = jsonDecode(response.body);
-    logcat("RESPOSNE", data);
-    if (response.statusCode == 200) {
-      var responseDetail = CommonModel.fromJson(data);
-      if (responseDetail.status == 1) {
-        showDialogForScreen(context, responseDetail.message.toString(),
-            callback: () {
-          Get.back(result: true);
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
         });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+      logcat("ADDDDD SERVICE", {
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": ServiceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      });
+      var response = await Repository.post({
+        "vendor_id": retrievedObject.id.toString().trim(),
+        "service_id": ServiceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      }, ApiUrl.addVendorService, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
       } else {
-        showDialogForScreen(context, responseDetail.message.toString(),
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
-    } else {
-      state.value = ScreenState.apiError;
-      showDialogForScreen(context, data['message'].toString(), callback: () {});
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
     }
   }
-  //   catch (e) {
-  //     logcat("Exception", e);
-  //     showDialogForScreen(context, Strings.servererror, callback: () {});
-  //     loadingIndicator.hide(context);
-  //   }
-  // }
 }

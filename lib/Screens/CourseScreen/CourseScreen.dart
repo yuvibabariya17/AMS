@@ -540,20 +540,23 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
-      return Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Container(
-            height: 50,
-            width: 50,
-            child: Image.asset(
-              "assets/gif/apiloader.gif",
-              width: 50,
-              height: 50,
-            ),
+       return Center(
+          child: ClipOval(
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Image.asset(
+            "assets/gif/apiloader.gif",
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
           ),
         ),
-      );
+      ));
     }
 
     Widget? button;
