@@ -223,7 +223,9 @@ class _ProductScreenState extends State<ProductScreen> {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel', style: TextStyle(fontSize: 11.sp)),
+              child: Text('Cancel',
+                  style: TextStyle(
+                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
             ),
             TextButton(
               onPressed: () {
@@ -232,7 +234,8 @@ class _ProductScreenState extends State<ProductScreen> {
               },
               child: Text(
                 'Yes',
-                style: TextStyle(color: Colors.red, fontSize: 11.sp),
+                style: TextStyle(
+                    color: isDarkMode() ? white : black, fontSize: 11.sp),
               ),
             ),
           ],

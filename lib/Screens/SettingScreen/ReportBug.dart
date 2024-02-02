@@ -1,4 +1,6 @@
-import 'package:booking_app/controllers/Expert_controller.dart';
+import 'package:booking_app/Models/ReportBugModel.dart';
+import 'package:booking_app/Screens/SettingScreen/AddReportBugScreen.dart';
+import 'package:booking_app/controllers/ReportBugController.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -8,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import '../../Models/ExpertModel.dart';
 import '../../Models/Listofexpert.dart';
 import '../../Models/Listofexpert_model.dart';
 import '../../controllers/internet_controller.dart';
@@ -18,17 +19,16 @@ import '../../core/themes/color_const.dart';
 import '../../core/themes/font_constant.dart';
 import '../../core/utils/helper.dart';
 import '../../core/utils/log.dart';
-import 'AddExpertScreen.dart';
 
-class ExpertScreen extends StatefulWidget {
-  const ExpertScreen({super.key});
+class ReportBugScreen extends StatefulWidget {
+  const ReportBugScreen({super.key});
 
   @override
-  State<ExpertScreen> createState() => _ExpertScreenState();
+  State<ReportBugScreen> createState() => _ReportBugScreenState();
 }
 
-class _ExpertScreenState extends State<ExpertScreen> {
-  var controller = Get.put(expertcontroller());
+class _ReportBugScreenState extends State<ReportBugScreen> {
+  var controller = Get.put(ReportBugController());
   List<ExpertItems> staticData = Expert_Items;
   final InternetController networkManager = Get.find<InternetController>();
 
@@ -36,24 +36,26 @@ class _ExpertScreenState extends State<ExpertScreen> {
 
   @override
   void initState() {
-    controller.getExpertList(context);
-    controller.filteredExpertObjectList = controller.expertObjectList;
+    controller.getReportBugList(context);
+    controller.filteredReportObjectList = controller.reportObjectList;
     super.initState();
   }
 
   void filterExpertList(String query) {
     setState(() {
       if (query.isEmpty) {
-        controller.filteredExpertObjectList = controller.expertObjectList;
-      } else {
-        controller.filteredExpertObjectList = controller.expertObjectList
-            .where((data) =>
-                data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.vendorInfo.userName
-                    .toLowerCase()
-                    .contains(query.toLowerCase()))
-            .toList();
+        controller.filteredReportObjectList = controller.reportObjectList;
       }
+      // else {
+      //   controller.filteredReportObjectList = controller.reportObjectList
+      //       .where((data) =>
+      //           data.
+      //           imgUploadInfo.  toLowerCase().contains(query.toLowerCase()) ||
+      //           data.vendorInfo.userName
+      //               .toLowerCase()
+      //               .contains(query.toLowerCase()))
+      //       .toList();
+      // }
     });
   }
 
@@ -70,10 +72,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
               onPressed: () {
-                Get.to(AddExpertScreen())?.then((value) {
+                Get.to(AddReportBugScreen())?.then((value) {
                   if (value == true) {
                     logcat("ISDONE", "DONE");
-                    controller.getExpertList(
+                    controller.getReportBugList(
                       context,
                     );
                   }
@@ -91,7 +93,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
         ),
         body: Column(
           children: [
-            getCommonToolbar(ScreenTitle.expert, () {
+            getCommonToolbar("Report Bug", () {
               Get.back();
             }),
             Container(
@@ -141,7 +143,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getExpertList(context);
+                        controller.getReportBugList(context);
                       },
                     );
                   },
@@ -270,9 +272,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
               child: Text(
                 'Yes',
                 style: TextStyle(
-                  color: isDarkMode() ? white : black,
-                  fontSize: 11.sp,
-                ),
+                    color: isDarkMode() ? white : black, fontSize: 11.sp),
               ),
             ),
           ],
@@ -282,12 +282,12 @@ class _ExpertScreenState extends State<ExpertScreen> {
   }
 
   Widget apiSuccess(ScreenState state) {
-    logcat("LENGTH", controller.expertObjectList.length.toString());
+    logcat("LENGTH", controller.reportObjectList.length.toString());
     // ignore: unrelated_type_equality_checks
     if (controller.state == ScreenState.apiSuccess &&
-        controller.expertObjectList.isNotEmpty) {
+        controller.reportObjectList.isNotEmpty) {
       return Expanded(
-        child: controller.filteredExpertObjectList.isNotEmpty
+        child: controller.filteredReportObjectList.isNotEmpty
             ? Container(
                 margin: EdgeInsets.only(left: 8.w, right: 8.w),
                 child: GridView.builder(
@@ -300,8 +300,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    ExpertList data =
-                        controller.filteredExpertObjectList[index];
+                    ReportBugList data =
+                        controller.filteredReportObjectList[index];
 
                     return Container(
                       padding: EdgeInsets.only(
@@ -382,7 +382,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             children: [
                               Container(
                                   child: Text(
-                                data.name,
+                                "data.vendorInfo.userName,",
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
@@ -399,7 +399,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                '₹ ${data.amount.toString()}',
+                                "data.vendorInfo.whatsappNo,",
+                                // '₹ ${data.amount.toString()}',
                                 // data.serviceInfo != null
                                 //     ? data.serviceInfo!.name
                                 //     : "",
@@ -412,10 +413,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(AddExpertScreen(
-                                    isEdit: true,
-                                    editExpert: data,
-                                  ));
+                                  // Get.to(AddExpertScreen(
+                                  //   isEdit: true,
+                                  //   editExpert: data,
+                                  // ));
                                 },
                                 child: Container(
                                   child: SvgPicture.asset(
@@ -448,7 +449,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                       ),
                     );
                   },
-                  itemCount: controller.filteredExpertObjectList.length,
+                  itemCount: controller.filteredReportObjectList.length,
                 ),
               )
 
@@ -646,7 +647,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
     }
     if (state == ScreenState.noNetwork) {
       button = getMiniButton(() {
-        controller.getExpertList(
+        controller.getReportBugList(
           context,
         );
       }, "Try Again");

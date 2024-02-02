@@ -1,7 +1,7 @@
 class ApiUrl {
-  static const buildApiUrl = "http://192.168.1.14:4000/api/";
+  static const buildApiUrl = "http://192.168.1.15:4000/api/";
 
-  static const ImgUrl = "http://192.168.1.14:4000/uploads/";
+  static const ImgUrl = "http://192.168.1.15:4000/uploads/";
 
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";
@@ -62,7 +62,11 @@ class ApiUrl {
   static const addBrandCategory = "brand/category/add";
   static const brandCategoryList = "brand/category/list";
   static const deletebrandCategoryList = "brand/category/delete";
-  static const deleteStudent = "student/delete/";
+  static const deleteStudent = "student/delete";
+  static const reportList = "reportBug/list";
+
+  
+
 
 
 }

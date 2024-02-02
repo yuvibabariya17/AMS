@@ -1,10 +1,11 @@
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/SettingScreen/InviteFriendScreen.dart';
-import 'package:booking_app/Screens/SettingScreen/ReportBugScreen.dart';
+import 'package:booking_app/Screens/SettingScreen/AddReportBugScreen.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   List<SettingItem> staticData = SettingsItems;
   get index => null;
-  int _isDarkMode = 0;
+  int _isDarkMode = 1;
   final getStorage = GetStorage();
 
   bool state = false;
@@ -77,63 +78,73 @@ class _SettingsState extends State<Settings> {
                       Get.to(InviteFriendScreen());
                     }, Asset.rightbackbutton),
                     dividerforSetting(),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          Asset.moon,
-                          color: isDarkMode() ? white : black,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 5.5.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                SettingConstant.change_theme,
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontSize: 13.5.sp,
-                                  fontWeight: FontWeight.w400,
+                    Container(
+                      width: SizerUtil.width,
+                      height: 3.h,
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            Asset.moon,
+                            color: isDarkMode() ? white : black,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 5.5.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  SettingConstant.change_theme,
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontSize: 13.5.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                        Container(
-                          width: 20.w,
-                          height: 1.h,
-                          // margin: const EdgeInsets.only(
-                          //     right: 16.0), // Adjust right margin as needed
-                          child: CupertinoSwitch(
-                            value: isDarkMode() ? true : false,
-                            onChanged: (value) async {
-                              print("Switch Click");
-                              state = value;
-                              setState(() {
-                                _isDarkMode = _isDarkMode == 0 ? 1 : 0;
-                              });
-                              await getStorage.write(
-                                  GetStorageKey.IS_DARK_MODE, _isDarkMode);
-                              Get.find<ThemeController>()
-                                  .updateState(_isDarkMode);
-                              Get.find<ThemeController>().update();
-                              print(
-                                  getStorage.read(GetStorageKey.IS_DARK_MODE));
-                              setState(() {});
-                            },
-                            thumbColor: isDarkMode()
-                                ? CupertinoColors.black
-                                : CupertinoColors.white,
-                            activeColor: isDarkMode()
-                                ? CupertinoColors.white
-                                : CupertinoColors.black,
-                            trackColor: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
+                          Spacer(),
+                          Container(
+                            // width: 20.w,
+                            // height: 1.h,
+                            // margin: const EdgeInsets.only(
+                            //     right: 16.0), // Adjust right margin as needed
+                            child: CupertinoSwitch(
+                              value: isDarkMode() ? true : false,
+                              onChanged: (value) async {
+                                print("Switch Click");
+                                logcat("_isDarkMode", _isDarkMode.toString());
 
+                                //state = value;
+                                _isDarkMode = getStorage
+                                            .read(GetStorageKey.IS_DARK_MODE) ==
+                                        0
+                                    ? 1
+                                    : 0;
+                                setState(() {});
+                                await Future.delayed(
+                                    const Duration(milliseconds: 30));
+                                await getStorage.write(
+                                    GetStorageKey.IS_DARK_MODE, _isDarkMode);
+                                Get.find<ThemeController>()
+                                    .updateState(_isDarkMode);
+                                Get.find<ThemeController>().update();
+                                logcat("_isDarkMode", _isDarkMode.toString());
+
+                                setState(() {});
+                              },
+                              thumbColor: isDarkMode()
+                                  ? CupertinoColors.black
+                                  : CupertinoColors.white,
+                              activeColor: isDarkMode()
+                                  ? CupertinoColors.white
+                                  : CupertinoColors.black,
+                              trackColor: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     // ListTile(
                     //     leading: SvgPicture.asset(
                     //       Asset.moon,
@@ -183,7 +194,7 @@ class _SettingsState extends State<Settings> {
 
                     dividerforSetting(),
                     settingRow(Asset.bug, "Report Bug", () {
-                      Get.to(ReportBugScreen());
+                      Get.to(AddReportBugScreen());
                     }, Asset.rightbackbutton),
                     dividerforSetting(),
                     settingRow(Asset.rate_us, SettingConstant.rate_us, () {},

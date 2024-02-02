@@ -17,6 +17,7 @@ class ProfileController extends GetxController {
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   late TabController tabController;
+  late PageController pageController;
   List<ServiceItem> staticData = SettingsItems;
   List<StaffItem> staticData1 = StaffItems;
   var currentPage = 0;

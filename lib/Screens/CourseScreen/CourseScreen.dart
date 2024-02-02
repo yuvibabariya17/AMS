@@ -189,7 +189,9 @@ class _CourseScreenState extends State<CourseScreen> {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel', style: TextStyle(fontSize: 11.sp)),
+              child: Text('Cancel',
+                  style: TextStyle(
+                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
             ),
             TextButton(
               onPressed: () {
@@ -198,7 +200,8 @@ class _CourseScreenState extends State<CourseScreen> {
               },
               child: Text(
                 'Yes',
-                style: TextStyle(color: Colors.red, fontSize: 11.sp),
+                style: TextStyle(
+                    color: isDarkMode() ? white : black, fontSize: 11.sp),
               ),
             ),
           ],
@@ -529,8 +532,8 @@ class _CourseScreenState extends State<CourseScreen> {
             margin: EdgeInsets.only(top: 31.h),
             child: Text(
               CommonConstant.noDataFound,
-                 
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp, color: black),
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
         ],
@@ -540,7 +543,7 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
-       return Center(
+      return Center(
           child: ClipOval(
         child: Container(
           height: 50,

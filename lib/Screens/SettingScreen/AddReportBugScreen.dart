@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import '../../controllers/ReportBug_controller.dart';
+import '../../controllers/AddReportBug_controller.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/strings.dart';
 import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
 
-class ReportBugScreen extends StatefulWidget {
-  const ReportBugScreen({super.key});
+class AddReportBugScreen extends StatefulWidget {
+  const AddReportBugScreen({super.key});
 
   @override
-  State<ReportBugScreen> createState() => _ReportBugScreenState();
+  State<AddReportBugScreen> createState() => _AddReportBugScreenState();
 }
-
-class _ReportBugScreenState extends State<ReportBugScreen> {
-  final controller = Get.put(ReportBugController());
+ 
+class _AddReportBugScreenState extends State<AddReportBugScreen> {
+  final controller = Get.put(AddReportBugController());
 
   @override
   Widget build(BuildContext context) {

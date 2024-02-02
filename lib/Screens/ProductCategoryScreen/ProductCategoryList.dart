@@ -236,14 +236,17 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
-          content: Text('Are you sure you want to delete this Service?',
+          content: Text(
+              'Are you sure you want to delete this Product Category?',
               style: TextStyle(fontSize: 12.sp)),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel', style: TextStyle(fontSize: 11.sp)),
+              child: Text('Cancel',
+                  style: TextStyle(
+                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
             ),
             TextButton(
               onPressed: () {
@@ -252,7 +255,8 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
               },
               child: Text(
                 'Yes',
-                style: TextStyle(color: Colors.red, fontSize: 11.sp),
+                style: TextStyle(
+                    color: isDarkMode() ? white : black, fontSize: 11.sp),
               ),
             ),
           ],

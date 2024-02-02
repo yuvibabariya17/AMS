@@ -36,11 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen>
   final controller = Get.put(ProfileController());
   String name = '';
   String number = '';
+  int selectedTabIndex = 0;
 
   @override
   void initState() {
     controller.tabController =
-        TabController(vsync: this, length: 3, initialIndex: 0);
+        TabController(vsync: this, length: 3, initialIndex: selectedTabIndex);
     initDataSet(context);
 
     //  controller.isDarkModes = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
@@ -175,9 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen>
       duration: Duration(milliseconds: 200),
       onPressed: (() {
         controller.currentPage = index;
-        if (controller.tabController.indexIsChanging == false) {
-          controller.tabController.index = index;
-        }
+        selectedTabIndex = index;
+        controller.tabController.index = index;
         setState(() {});
       }),
       child: AnimatedContainer(
@@ -189,16 +189,13 @@ class _ProfileScreenState extends State<ProfileScreen>
         padding: EdgeInsets.only(top: 11, bottom: 11),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: controller.currentPage == index
+            color: selectedTabIndex == index
                 ? black
                 : isDarkMode()
                     ? Colors.white
                     : Colors.white,
-
-                     border: Border.all(
-                color: isDarkMode()
-                    ? Colors.white
-                    : Colors.transparent),
+            border: Border.all(
+                color: isDarkMode() ? Colors.white : Colors.transparent),
             boxShadow: [
               BoxShadow(
                   color: isDarkMode()
@@ -218,7 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fontSize: 12.2.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
-                  color: controller.currentPage == index
+                  color: selectedTabIndex == index
                       ? white
                       : isDarkMode()
                           ? black

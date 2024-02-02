@@ -16,7 +16,7 @@ import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
 import 'package:http/http.dart' as http;
 
-class ReportBugController extends GetxController {
+class AddReportBugController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
   late FocusNode SelectvendorNode, ImageNode, VideoNode, NoteNode, dateNode;
@@ -150,7 +150,7 @@ class ReportBugController extends GetxController {
 
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
-  RxString uploadBreacherId = ''.obs;
+  RxString uploadVideoId = ''.obs;
 
   void hideKeyboard(context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -179,24 +179,26 @@ class ReportBugController extends GetxController {
       var response = await Repository.multiPartPost({
         "date_of_submit": datectr.text.toString().trim(),
         "notes": notesctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim()
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "img_url": uploadImageId.value.toString(),
+        "video_url": uploadVideoId.value.toString()
       }, ApiUrl.addReportBug,
-          multiPart: avatarFile.value != null
-              ? http.MultipartFile(
-                  'img_url',
-                  avatarFile.value!.readAsBytes().asStream(),
-                  avatarFile.value!.lengthSync(),
-                  filename: avatarFile.value!.path.split('/').last,
-                )
-              : null,
-          multiPartData: videoFile.value != null
-              ? http.MultipartFile(
-                  'video_url',
-                  videoFile.value!.readAsBytes().asStream(),
-                  videoFile.value!.lengthSync(),
-                  filename: videoFile.value!.path.split('/').last,
-                )
-              : null,
+          // multiPart: uploadImageFile.value != null
+          //     ? http.MultipartFile(
+          //         'img_url',
+          //         uploadImageFile.value!.readAsBytes().asStream(),
+          //         uploadImageFile.value!.lengthSync(),
+          //         filename: uploadImageFile.value!.path.split('/').last,
+          //       )
+          //     : null,
+          // multiPartData: uploadVideoFile.value != null
+          //     ? http.MultipartFile(
+          //         'video_url',
+          //         uploadVideoFile.value!.readAsBytes().asStream(),
+          //         uploadVideoFile.value!.lengthSync(),
+          //         filename: uploadVideoFile.value!.path.split('/').last,
+          //       )
+          //     : null,
           allowHeader: true);
       var responseData = await response.stream.toBytes();
       loadingIndicator.hide(context);
@@ -238,6 +240,9 @@ class ReportBugController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
+  Rx<File?> uploadImageFile = null.obs;
+  Rx<File?> uploadVideoFile = null.obs;
+
   void getImage(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
@@ -251,14 +256,14 @@ class ReportBugController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadReportFile.value!.path.split('/').last,
+        "file": uploadImageFile.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadReportFile.value != null
+          multiPart: uploadImageFile.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadReportFile.value!.readAsBytes().asStream(),
-                  uploadReportFile.value!.lengthSync(),
-                  filename: uploadReportFile.value!.path.split('/').last,
+                  uploadImageFile.value!.readAsBytes().asStream(),
+                  uploadImageFile.value!.lengthSync(),
+                  filename: uploadImageFile.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -323,7 +328,7 @@ class ReportBugController extends GetxController {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
           logcat("UPLOAD_VIDEO_ID", responseData.data.id.toString());
-          uploadBreacherId.value = responseData.data.id.toString();
+          uploadVideoId.value = responseData.data.id.toString();
         } else {
           showDialogForScreen(context, responseData.message.toString(),
               callback: () {});
@@ -393,7 +398,7 @@ class ReportBugController extends GetxController {
         //     ],
         //     aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
         if (file != null) {
-          uploadReportFile = File(file.path).obs;
+          uploadImageFile = File(file.path).obs;
           imgctr.text = file.name;
           validateImage(imgctr.text);
           getImage(context);
@@ -477,9 +482,6 @@ class ReportBugController extends GetxController {
 
     update();
   }
-
-  Rx<File?> uploadReportFile = null.obs;
-  Rx<File?> uploadVideoFile = null.obs;
 
   // actionClickUploadImage(context) async {
   //   await ImagePicker()
