@@ -305,7 +305,9 @@ class _ExpertScreenState extends State<ExpertScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                        left: 1.5.w,
+                        right: 1.5.w,
+                      ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -347,7 +349,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
 
                               //CLICPRRECT
                               Container(
-                                  height: 10.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -368,14 +370,14 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ))
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,

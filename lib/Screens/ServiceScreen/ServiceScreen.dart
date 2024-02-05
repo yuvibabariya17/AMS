@@ -313,16 +313,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               // ),
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.subCategoryInfo.name,
-                                //  data.serviceInfo != null
-                                //     ? data.serviceInfo!.name
-                                //     : "",
+                                // data.subCategoryInfo.name,
+                                data.serviceInfo != null
+                                    ? data.serviceInfo!.name
+                                    : "",
 
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
