@@ -1,6 +1,5 @@
 import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Screens/AddBrandCategoryScreen.dart';
-import 'package:booking_app/Screens/ProductCategoryScreen/AddProductCategory.dart';
 import 'package:booking_app/controllers/BrandCategoryController.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -285,7 +284,9 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                        left: 1.5.w,
+                        right: 1.5.w,
+                      ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -307,7 +308,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.8.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -328,7 +329,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -344,21 +345,22 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                               // ),
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                data.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w700,
+                              Expanded(
+                                child: Text(
+                                  data.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                               // SizedBox(height: 5.0),
                             ],
@@ -376,7 +378,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontFamily: opensansMedium,
-                                    fontSize: 10.sp,
+                                    fontSize: 11.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),

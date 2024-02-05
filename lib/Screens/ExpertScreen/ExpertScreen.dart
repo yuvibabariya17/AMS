@@ -382,9 +382,11 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              Expanded(
                                   child: Text(
                                 data.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
@@ -394,7 +396,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                               SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
                           // SizedBox(height: 5.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,

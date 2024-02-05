@@ -288,7 +288,9 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                        left: 1.5.w,
+                        right: 1.5.w,
+                      ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -310,7 +312,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.8.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -331,7 +333,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -347,25 +349,27 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                               // ),
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                data.otherNotes,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w700,
+                              Expanded(
+                                child: Text(
+                                  data.otherNotes,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                               // SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
+
                           // SizedBox(height: 5.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,

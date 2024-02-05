@@ -271,7 +271,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                        left: 1.5.w,
+                        right: 1.5.w,
+                      ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -293,7 +295,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -314,7 +316,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -342,7 +344,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               // )
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,8 +375,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               Spacer(),

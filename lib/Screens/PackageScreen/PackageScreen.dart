@@ -299,7 +299,9 @@ class _PackageScreenState extends State<PackageScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                        left: 1.5.w,
+                        right: 1.5.w,
+                      ),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -341,7 +343,7 @@ class _PackageScreenState extends State<PackageScreen> {
 
                               //CLICPRRECT
                               Container(
-                                  height: 10.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -362,34 +364,35 @@ class _PackageScreenState extends State<PackageScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ))
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              Expanded(
                                   child: Text(
                                 //  data.serviceInfo != null
                                 //     ? data.serviceInfo!.name
                                 //     : "",
                                 data.name != null ? data.name : "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w700),
                               )),
-                              SizedBox(height: 5.0),
+                              // SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
                           // SizedBox(height: 5.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,

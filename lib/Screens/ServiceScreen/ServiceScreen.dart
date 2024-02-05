@@ -1,4 +1,4 @@
-import 'package:booking_app/Models/VendorServiceModel.dart';
+import 'package:booking_app/Models/ServiceModel.dart';
 import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/controllers/Service_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -43,10 +42,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
       } else {
         controller.filteredServiceObjectList = controller.serviceObjectList
             .where((data) =>
-                data.serviceInfo!.name
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
-                data.fees
+                data.name.toLowerCase().contains(query.toLowerCase()) ||
+                data.categoryInfo.name
                     .toString()
                     .toString()
                     .toLowerCase()
@@ -249,12 +246,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     mainAxisSpacing: 10.0,
                   ),
                   itemBuilder: (context, index) {
-                    VendorServiceList data =
+                    ServiceList data =
                         controller.filteredServiceObjectList[index];
 
                     return Container(
-                      padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 0.5.h),
+                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -276,7 +272,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           Stack(
                             children: [
                               Container(
-                                  height: 10.8.h,
+                                  height: 11.h,
                                   width: 60.w,
                                   // padding: EdgeInsets.all(
                                   //   SizerUtil.deviceType == DeviceType.mobile
@@ -297,7 +293,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       errorWidget: (context, url, error) =>
                                           Image.asset(
                                         Asset.placeholder,
-                                        height: 10.8.h,
+                                        height: 11.h,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -319,30 +315,30 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                // data.subCategoryInfo.name,
-                                data.serviceInfo != null
-                                    ? data.serviceInfo!.name
-                                    : "",
-
+                                // "dmffkkg",
+                                data.name,
+                                // data.serviceInfo != null
+                                //     ? data.serviceInfo!.name
+                                //     : "",
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
+                                  color: black,
                                   fontFamily: opensansMedium,
-                                  fontSize: 13.sp,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
-                                textAlign: TextAlign.center,
+                                // textAlign: TextAlign.center,
                               ),
-                              // SizedBox(height: 5.0),
                             ],
                           ),
-                          Row(children: []),
-                          // SizedBox(height: 5.0),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                '₹ ${data.fees.toString()}',
+                                data.categoryInfo.name,
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
                                   fontSize: 11.sp,

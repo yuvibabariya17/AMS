@@ -8,10 +8,8 @@ import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:get/get.dart';
 
-
-
-
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
+
 class ServiceBasedProfileController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
@@ -39,7 +37,7 @@ class ServiceBasedProfileController extends GetxController {
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
+          await Repository.post({}, ApiUrl.serviceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("SERVICERESPONSE", jsonEncode(responseData));

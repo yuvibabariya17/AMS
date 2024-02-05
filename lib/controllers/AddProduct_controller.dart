@@ -284,45 +284,6 @@ class addProductController extends GetxController {
     }
   }
 
-  Widget setCategoryList() {
-    return Obx(() {
-      if (isCategoryTypeApiCall.value == true)
-        return setDropDownContent([].obs, Text("Loading"),
-            isApiIsLoading: isCategoryTypeApiCall.value);
-
-      return setDropDownTestContent(
-        categoryObjectList,
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: categoryObjectList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              dense: true,
-              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-              contentPadding:
-                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-              horizontalTitleGap: null,
-              minLeadingWidth: 5,
-              onTap: () {
-                Get.back();
-                logcat("ONTAP", "SACHIN");
-                categoryId.value = categoryObjectList[index].id.toString();
-                categroryCtr.text =
-                    categoryObjectList[index].name.capitalize.toString();
-
-                validateCategory(categroryCtr.text);
-              },
-              title: Text(
-                categoryObjectList[index].name.capitalize.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
-              ),
-            );
-          },
-        ),
-      );
-    });
-  }
-
   RxBool isCategoryTypeApiCall = false.obs;
   RxList<ProductCategoryList> categoryObjectList = <ProductCategoryList>[].obs;
   RxString categoryId = "".obs;
@@ -359,6 +320,45 @@ class addProductController extends GetxController {
       logcat('Exception', e);
       isCategoryTypeApiCall.value = false;
     }
+  }
+
+  Widget setCategoryList() {
+    return Obx(() {
+      if (isCategoryTypeApiCall.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isCategoryTypeApiCall.value);
+
+      return setDropDownTestContent(
+        categoryObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: categoryObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                categoryId.value = categoryObjectList[index].name.toString();
+                categroryCtr.text =
+                    categoryObjectList[index].name.capitalize.toString();
+
+                validateCategory(categroryCtr.text);
+              },
+              title: Text(
+                categoryObjectList[index].name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
   }
 
   RxString uploadImageId = ''.obs;

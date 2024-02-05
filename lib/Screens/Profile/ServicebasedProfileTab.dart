@@ -1,5 +1,4 @@
 import '../../Models/ServiceModel.dart';
-
 import 'package:booking_app/controllers/ServiceBasedProfileController.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
@@ -148,8 +147,11 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                               Stack(
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.only(top: 0.5.h),
-                                      height: 10.8.h,
+                                      padding: EdgeInsets.only(
+                                          top: 0.5.h,
+                                          left: 0.5.w,
+                                          right: 0.5.w),
+                                      height: 11.h,
                                       width: 60.w,
                                       // padding: EdgeInsets.all(
                                       //   SizerUtil.deviceType == DeviceType.mobile
@@ -170,7 +172,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                           errorWidget: (context, url, error) =>
                                               Image.asset(
                                             Asset.placeholder,
-                                            height: 10.8.h,
+                                            height: 11.h,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -195,9 +197,10 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        data.serviceInfo != null
-                                            ? data.serviceInfo!.name
-                                            : "",
+                                        data.name,
+                                        // data.serviceInfo != null
+                                        //     ? data.serviceInfo!.name
+                                        //     : "",
                                         style: TextStyle(
                                           color: isDarkMode() ? white : black,
                                           fontFamily: opensansMedium,
@@ -208,15 +211,15 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                       // SizedBox(height: 5.0),
                                     ],
                                   ),
-                                  Text(
-                                    '₹ ${data.fees.toString()}',
-                                    style: TextStyle(
-                                      color: isDarkMode() ? white : black,
-                                      fontFamily: opensansMedium,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   '₹ ${data..toString()}',
+                                  //   style: TextStyle(
+                                  //     color: isDarkMode() ? white : black,
+                                  //     fontFamily: opensansMedium,
+                                  //     fontSize: 12.sp,
+                                  //     fontWeight: FontWeight.w500,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
 
@@ -224,6 +227,13 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             ],
                           ),
                         );
+                     
+                     
+                     
+                     
+                     
+                     
+                     
                       })))
           : Center(
               child: Text("Data not Found"),

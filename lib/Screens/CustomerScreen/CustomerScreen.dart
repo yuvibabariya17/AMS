@@ -269,7 +269,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     // final imageUrl =
                     //    " 'http://192.168.1.7:4000/uploads/${data.picInfo!.image}';";
                     return Container(
-                      padding: EdgeInsets.only(left: 1.w, right: 1.w),
+                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -290,7 +290,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         children: [
                           Stack(children: [
                             Container(
-                                height: 10.8.h,
+                                height: 11.h,
                                 width: 60.w,
                                 // padding: EdgeInsets.all(
                                 //   SizerUtil.deviceType == DeviceType.mobile
@@ -310,7 +310,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     errorWidget: (context, url, error) =>
                                         Image.asset(
                                       Asset.placeholder,
-                                      height: 10.h,
+                                      height: 11.h,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -344,7 +344,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             //   ),
                             // ),
                           ]),
-                          SizedBox(height: 10.0),
+                          // SizedBox(height: 10.0),
                           Container(
                             padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
                             child: Column(
@@ -353,18 +353,19 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    Expanded(
                                       child: Text(
-                                        data.contactNo,
-                                        // data.fees.toString(),
-                                        // '${model.fullName.capitalize} (${model.age} Years)'
+                                        data.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
+                                            color: isDarkMode() ? white : black,
                                             fontFamily: opensansMedium,
                                             fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600),
+                                            fontWeight: FontWeight.w700),
                                       ),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    // SizedBox(height: 5.0),
                                   ],
                                 ),
 
@@ -373,14 +374,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      data.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: isDarkMode() ? white : black,
-                                          fontFamily: opensansMedium,
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w700),
+                                    Container(
+                                      child: Text(
+                                        data.contactNo,
+                                        // data.fees.toString(),
+                                        // '${model.fullName.capitalize} (${model.age} Years)'
+                                        style: TextStyle(
+                                            fontFamily: opensansMedium,
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w400),
+                                      ),
                                     ),
                                     Spacer(),
                                     GestureDetector(

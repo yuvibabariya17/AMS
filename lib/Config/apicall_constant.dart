@@ -64,9 +64,6 @@ class ApiUrl {
   static const deletebrandCategoryList = "brand/category/delete";
   static const deleteStudent = "student/delete";
   static const reportList = "reportBug/list";
-
-  
-
-
-
+  static const serviceCategoryList = "service/category/list";
+  static const subCategoryList = "service/subCategory/list";
 }

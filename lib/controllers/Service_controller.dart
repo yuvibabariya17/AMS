@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
-import 'package:booking_app/Models/VendorServiceModel.dart';
+import 'package:booking_app/Models/ServiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -19,7 +19,7 @@ class serviceController extends GetxController {
   late TextEditingController searchCtr;
 
   RxBool isServiceTypeApiList = false.obs;
-  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
+  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
   RxString serviceId = "".obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
@@ -28,7 +28,7 @@ class serviceController extends GetxController {
 
   // List<ServiceList> serviceObjectList = []; // Your data source
   TextEditingController searchController = TextEditingController();
-  List<VendorServiceList> filteredServiceObjectList = [];
+  List<ServiceList> filteredServiceObjectList = [];
   @override
   void onInit() {
     searchNode = FocusNode();
@@ -38,7 +38,7 @@ class serviceController extends GetxController {
 
   void getServiceList(context) async {
     state.value = ScreenState.apiLoading;
-    isServiceTypeApiList.value = true;
+    // isServiceTypeApiList.value = true;
     // try {
     if (networkManager.connectionType == 0) {
       showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -47,13 +47,13 @@ class serviceController extends GetxController {
       return;
     }
     var response =
-        await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
+        await Repository.post({}, ApiUrl.serviceList, allowHeader: true);
     isServiceTypeApiList.value = false;
     var responseData = jsonDecode(response.body);
     logcat(" SERVICE RESPONSE", jsonEncode(responseData));
 
     if (response.statusCode == 200) {
-      var data = VendorServiceModel.fromJson(responseData);
+      var data = ServiceModel.fromJson(responseData);
       if (data.status == 1) {
         state.value = ScreenState.apiSuccess;
         serviceObjectList.clear();

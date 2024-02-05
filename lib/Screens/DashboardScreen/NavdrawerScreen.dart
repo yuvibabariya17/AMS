@@ -1,11 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/BrandCategoryScreen.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
-import 'package:booking_app/Screens/PackageScreen/AddPackageScreen%20.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
 import 'package:booking_app/Screens/ProductCategoryScreen/ProductCategoryList.dart';
 import 'package:booking_app/Screens/ProductSelling.dart';
-import 'package:booking_app/Screens/StudentScreen/AddStudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentCourseScreen.dart';
 import 'package:booking_app/Screens/StudentScreen/StudentScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';

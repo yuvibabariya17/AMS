@@ -1,5 +1,7 @@
 import 'dart:convert';
-import 'package:booking_app/Models/VendorServiceModel.dart';
+import 'package:booking_app/Models/ServiceCategoryModel.dart';
+import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/SubCategoryModel.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,7 +46,9 @@ class AddserviceController extends GetxController {
       sittingNode,
       durationNode,
       intervalNode,
-      daysNode;
+      daysNode,
+      categoryNode,
+      subCategoryNode;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
   late TextEditingController Servicectr,
@@ -54,8 +58,9 @@ class AddserviceController extends GetxController {
       sittingctr,
       durationctr,
       intervalctr,
-      daysctr;
-
+      daysctr,
+      categoryctr,
+      subCategoryctr;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -68,6 +73,8 @@ class AddserviceController extends GetxController {
     durationNode = FocusNode();
     daysNode = FocusNode();
     intervalNode = FocusNode();
+    categoryNode = FocusNode();
+    subCategoryNode = FocusNode();
 
     Servicectr = TextEditingController();
     Expertctr = TextEditingController();
@@ -77,6 +84,8 @@ class AddserviceController extends GetxController {
     durationctr = TextEditingController();
     daysctr = TextEditingController();
     intervalctr = TextEditingController();
+    categoryctr = TextEditingController();
+    subCategoryctr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();
@@ -95,6 +104,8 @@ class AddserviceController extends GetxController {
   var durationModel = ValidationModel(null, null, isValidate: false).obs;
   var daysModel = ValidationModel(null, null, isValidate: false).obs;
   var intervalModel = ValidationModel(null, null, isValidate: false).obs;
+  var categoryModel = ValidationModel(null, null, isValidate: false).obs;
+  var subCategoryModel = ValidationModel(null, null, isValidate: false).obs;
 
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
 
@@ -113,15 +124,47 @@ class AddserviceController extends GetxController {
       isFormInvalidate.value = false;
     } else if (intervalModel.value.isValidate == false) {
       isFormInvalidate.value = false;
+    } else if (categoryModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (subCategoryModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
     }
   }
 
+  void validateCategory(String? val) {
+    categoryModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Category";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateSubCategory(String? val) {
+    subCategoryModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Sub Category";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
   void validateServicename(String? val) {
     serviceModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Service Name";
+        model!.error = "Select Service";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -239,6 +282,239 @@ class AddserviceController extends GetxController {
     }
   }
 
+  // SERVICE CATEGORY
+
+  RxBool isServiceCategoryList = false.obs;
+  RxList<ServiceCategoryList> serviceCategoryList = <ServiceCategoryList>[].obs;
+  RxString categoryId = "".obs;
+
+  void getServiceCategoryList(context) async {
+    isServiceCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({
+        "search": {
+          "startAt": "2023-06-06T00:00:00.704Z",
+          "endAt": "2023-06-06T23:55:00.704Z"
+        },
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 10,
+          "sortBy": "name",
+          "sortDirection": 1
+        }
+      }, ApiUrl.serviceCategoryList, allowHeader: true);
+      isServiceCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("CATEGORY LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ServiceCategoryModel.fromJson(responseData);
+        if (data.status == 1) {
+          serviceCategoryList.clear();
+          serviceCategoryList.addAll(data.data);
+
+          logcat("CATEGORY LIST", jsonEncode(serviceCategoryList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceCategoryList.value = false;
+    }
+  }
+
+  Widget setServiceCategoryList() {
+    return Obx(() {
+      if (isServiceCategoryList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isServiceCategoryList.value);
+
+      return setDropDownTestContent(
+        serviceCategoryList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: serviceCategoryList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("CATEGORY List", "CATEGORY");
+                categoryId.value = serviceCategoryList[index].name.toString();
+                categoryctr.text = serviceCategoryList[index].name.toString();
+
+                validateCategory(categoryctr.text);
+              },
+              title: Text(
+                serviceCategoryList[index].name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+// SERVICE SUB CATEGORY LIST
+
+  RxBool isSubCategoryList = false.obs;
+  RxList<ServiceSubCategoryList> subcategoryList =
+      <ServiceSubCategoryList>[].obs;
+  RxString subCategoryId = "".obs;
+
+  void getSubCategoryList(context, String city) async {
+    isSubCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          "startAt": "2023-06-06T00:00:00.704Z",
+          "endAt": "2023-06-06T00:00:00.704Z",
+          "category_id": categoryId.value.toString(),
+        }
+      }, ApiUrl.subCategoryList, allowHeader: true);
+      isSubCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("SUBCATEGORY LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = SubCategoryModel.fromJson(responseData);
+        if (data.status == 1) {
+          subcategoryList.clear();
+          subcategoryList.addAll(data.data);
+
+          logcat("SUBCATEGORY LIST", jsonEncode(subcategoryList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isSubCategoryList.value = false;
+    }
+  }
+
+  Widget setSubCategoryList() {
+    return Obx(() {
+      if (isSubCategoryList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isSubCategoryList.value);
+
+      return setDropDownTestContent(
+        subcategoryList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: subcategoryList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("SUBCATEGORY List", "SUBCATEGORY");
+                subCategoryId.value = subcategoryList[index].name.toString();
+                subCategoryctr.text = subcategoryList[index].name.toString();
+
+                validateSubCategory(subCategoryctr.text);
+              },
+              title: Text(
+                subcategoryList[index].name.toString(),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  // SERVICE LIST
+
+  RxBool isServiceTypeApiList = false.obs;
+  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxString ServiceId = "".obs;
+
+  void getServiceList(context) async {
+    isServiceTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          "startAt": "2023-06-06T00:00:00.704Z",
+          "endAt": "2023-06-06T00:00:00.704Z",
+          "category_id": categoryId.value.toString(),
+          "sub_category_id": subCategoryId.value.toString(),
+        }
+      }, ApiUrl.serviceList, allowHeader: true);
+      isServiceTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("SERVICE LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ServiceModel.fromJson(responseData);
+        if (data.status == 1) {
+          serviceObjectList.clear();
+          serviceObjectList.addAll(data.data);
+
+          logcat("SERVICE LIST", jsonEncode(serviceObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceTypeApiList.value = false;
+    }
+  }
+
   Widget setServiceList() {
     return Obx(() {
       if (isServiceTypeApiList.value == true)
@@ -260,17 +536,14 @@ class AddserviceController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index]
-                    .vendorInfo
-                    .userName
-                    .capitalize
-                    .toString();
+                logcat("Service List", "LIST");
+                ServiceId.value = serviceObjectList[index].name.toString();
+                Servicectr.text = serviceObjectList[index].name.toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].vendorInfo.emailId.toString(),
+                serviceObjectList[index].name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -278,51 +551,6 @@ class AddserviceController extends GetxController {
         ),
       );
     });
-  }
-
-  RxBool isServiceTypeApiList = false.obs;
-  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
-  RxString ServiceId = "".obs;
-
-  void getServiceList(context) async {
-    isServiceTypeApiList.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response = await Repository.post({
-        "pagination": {
-          "pageNo": 1,
-          "recordPerPage": 20,
-          "sortBy": "name",
-          "sortDirection": "asc"
-        },
-      }, ApiUrl.vendorServiceList, allowHeader: true);
-      isServiceTypeApiList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("SERVICE LIST", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = VendorServiceModel.fromJson(responseData);
-        if (data.status == 1) {
-          serviceObjectList.clear();
-          serviceObjectList.addAll(data.data);
-
-          logcat("SERVICE LIST", jsonEncode(serviceObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isServiceTypeApiList.value = false;
-    }
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {

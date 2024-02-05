@@ -1,8 +1,12 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Models/VendorServiceModel.dart';
+import 'package:booking_app/Models/ServiceModel.dart';
 import 'package:booking_app/controllers/AddService_controller.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +19,7 @@ import '../../custom_componannt/form_inputs.dart';
 class AddServiceScreen extends StatefulWidget {
   AddServiceScreen({super.key, this.isEdit, this.editService});
   bool? isEdit;
-  VendorServiceList? editService;
+  ServiceList? editService;
 
   @override
   State<AddServiceScreen> createState() => _AddServiceScreenState();
@@ -34,11 +38,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     controller.sittingctr.text = "";
     controller.durationctr.text = "";
     controller.daysctr.text = "";
-    
+
     super.dispose();
   }
 
-   void validateFields() {
+  void validateFields() {
     // Validate all fields here
     controller.validateServicename(controller.Servicectr.text);
     controller.validateApproxtime(controller.approxtimectr.text);
@@ -47,28 +51,31 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     controller.validatePrice(controller.Pricectr.text);
     controller.validateDays(controller.daysctr.text);
     controller.validateIntervalDuration(controller.intervalctr.text);
-    
+
     // Add validation for other fields as needed
   }
 
   @override
   void initState() {
-    if (widget.isEdit == true && widget.editService != null) {
-      controller.Servicectr.text = widget.editService!.serviceInfo.name;
-      controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
-      controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
-      controller.durationctr.text =
-          widget.editService!.oppoxSettingDuration.toString();
-      controller.Pricectr.text = widget.editService!.fees.toString();
-      controller.daysctr.text =
-          widget.editService!.serviceInfo.name.toString();
-      // Set other fields as well
-    }
-     if(widget.isEdit == true){
-       validateFields() ;
-    }
+    // FOR EDIT SERVICE
 
-    controller.getServiceList(context);
+    // if (widget.isEdit == true && widget.editService != null) {
+    //   controller.Servicectr.text = widget.editService!.serviceInfo.name;
+    //   controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
+    //   controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
+    //   controller.durationctr.text =
+    //       widget.editService!.oppoxSettingDuration.toString();
+    //   controller.Pricectr.text = widget.editService!.fees.toString();
+    //   controller.daysctr.text = widget.editService!.serviceInfo.name.toString();
+    //   // Set other fields as well
+    // }
+    // if (widget.isEdit == true) {
+    //   validateFields();
+    // }
+
+   // controller.getServiceList(context);
+    controller.getServiceCategoryList(context);
+    //controller.getSubCategoryList(context);
     super.initState();
   }
 
@@ -104,7 +111,87 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getTitle(AddServiceConstant.service),
+                            getTitle("Service Category"),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.categoryNode,
+                                        controller: controller.categoryctr,
+                                        hintLabel: "Select Category",
+                                        // wantSuffix: true,
+                                        // isdown: true,
+                                        isReadOnly: true,
+
+                                        wantSuffix: true,
+                                        isdown: true,
+                                        // onAddBtn: () {
+                                        //   //Get.to(AddExpertScreen());
+                                        // },
+
+                                        onTap: () {
+                                          // controller.categoryctr.text = "";
+                                          showDropDownDialog(
+                                              context,
+                                              controller
+                                                  .setServiceCategoryList(),
+                                              "Service Category");
+                                        },
+
+                                        onChanged: (val) {
+                                          controller.validateCategory(val);
+                                        },
+                                        errorText: controller
+                                            .categoryModel.value.error,
+                                        inputType: TextInputType.name,
+                                      );
+                                    }))),
+                            getTitle("Service Sub Category"),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.subCategoryNode,
+                                        controller: controller.subCategoryctr,
+                                        hintLabel: "Select SubCategory",
+                                        isReadOnly: true,
+                                        wantSuffix: true,
+                                        isdown: true,
+                                        // onAddBtn: () {
+                                        //   //Get.to(AddExpertScreen());
+                                        // },
+
+                                        onTap: () {
+                                          //controller.subCategoryctr.text = "";
+
+                                          if (controller
+                                              .categoryctr.text.isEmpty) {
+                                            return PopupDialogs(
+                                              context,
+                                              "Service",
+                                              "Category Field is Required",
+                                            );
+                                          }
+
+                                          showDropDownDialog(
+                                              context,
+                                              controller.setSubCategoryList(),
+                                              "Service Sub Category");
+                                        },
+
+                                        onChanged: (val) {
+                                          controller.validateSubCategory(val);
+                                        },
+                                        errorText: controller
+                                            .subCategoryModel.value.error,
+                                        inputType: TextInputType.name,
+                                      );
+                                    }))),
+                            getTitle("Service"),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -114,10 +201,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         node: controller.ServiceNode,
                                         controller: controller.Servicectr,
                                         hintLabel: "Select Service",
-                                        // wantSuffix: true,
-                                        // isdown: true,
                                         isReadOnly: true,
-
                                         wantSuffix: true,
                                         isDropdown: true,
                                         // onAddBtn: () {
@@ -126,6 +210,14 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
+                                          if (controller
+                                              .subCategoryctr.text.isEmpty) {
+                                            return PopupDialogs(
+                                              context,
+                                              "Service",
+                                              "Category Field and Sub Category Field is Required",
+                                            );
+                                          }
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),
@@ -161,6 +253,68 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                           final TimeOfDay? pickedTime =
                                               await showTimePicker(
                                             context: context,
+                                            builder: (BuildContext context,
+                                                Widget? child) {
+                                              return Theme(
+                                                data: isDarkMode()
+                                                    ? ThemeData.dark().copyWith(
+                                                        primaryColor:
+                                                            primaryColor,
+                                                        backgroundColor: white,
+                                                        buttonTheme:
+                                                            ButtonThemeData(
+                                                          textTheme:
+                                                              ButtonTextTheme
+                                                                  .primary,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50), // Set your border radius
+                                                          ),
+                                                        ),
+                                                        useMaterial3: true,
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .light(
+                                                          primary: Colors
+                                                              .teal, // Set your primary color
+                                                        ).copyWith(
+                                                                secondary:
+                                                                    secondaryColor),
+                                                      )
+                                                    : ThemeData.light()
+                                                        .copyWith(
+                                                        primaryColor:
+                                                            primaryColor,
+                                                        backgroundColor: white,
+                                                        buttonTheme:
+                                                            ButtonThemeData(
+                                                          textTheme:
+                                                              ButtonTextTheme
+                                                                  .primary,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50), // Set your border radius
+                                                          ),
+                                                        ),
+                                                        useMaterial3: true,
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .light(
+                                                          primary: Colors
+                                                              .teal, // Set your primary color
+                                                        ).copyWith(
+                                                                secondary:
+                                                                    secondaryColor),
+                                                      ),
+                                                child: child!,
+                                              );
+                                            },
                                             initialTime: TimeOfDay.now(),
                                           );
 
@@ -451,41 +605,36 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                               height: 4.h,
                             ),
 
+                            // FadeInUp(
+                            //     from: 50,
+                            //     child: Obx(() {
+                            //       return getFormButton(() {
 
-                              // FadeInUp(
-                              //     from: 50,
-                              //     child: Obx(() {
-                              //       return getFormButton(() {
-                                    
-                              //           if (widget.isEdit == true) {
-                              //             // Call updateCourse API
-                              //             controller.UpdateVendorServiceApi(context, widget.editService!.id );
-                              //           } else {
-                              //             // Call AddCourseApi API
-                              //             controller.addServiceApi(context);
-                              //           }
-                                    
-                              //       }, CommonConstant.submit,
-                              //           validate:
-                              //               controller.isFormInvalidate.value);
-                              //     }))
+                            //           if (widget.isEdit == true) {
+                            //             // Call updateCourse API
+                            //             controller.UpdateVendorServiceApi(context, widget.editService!.id );
+                            //           } else {
+                            //             // Call AddCourseApi API
+                            //             controller.addServiceApi(context);
+                            //           }
+
+                            //       }, CommonConstant.submit,
+                            //           validate:
+                            //               controller.isFormInvalidate.value);
+                            //     }))
 
                             FadeInUp(
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-
-                                     if (controller.isFormInvalidate.value ==
-                                          true) {
-                                        controller.addVendorService(context);
-                                      }
-                                  
+                                    if (controller.isFormInvalidate.value ==
+                                        true) {
+                                      controller.addVendorService(context);
+                                    }
                                   }, CommonConstant.submit,
-                                      validate: 
-                                           controller.isFormInvalidate.value);
+                                      validate:
+                                          controller.isFormInvalidate.value);
                                 }))
-
-                         
                           ],
                         )),
                   ),
@@ -496,5 +645,61 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
         ],
       )),
     );
+  }
+
+  static Future<Object?> PopupDialogs(
+      BuildContext context, String title, String subtext) {
+    return showGeneralDialog(
+        barrierColor: black.withOpacity(0.6),
+        transitionBuilder: (context, a1, a2, widget) {
+          return Transform.scale(
+            scale: a1.value,
+            child: Opacity(
+                opacity: a1.value,
+                child: CupertinoAlertDialog(
+                  title: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: black,
+                      fontFamily: fontBold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  content: Text(
+                    subtext,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: black,
+                      fontFamily: fontMedium,
+                    ),
+                  ),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      isDefaultAction: true,
+                      isDestructiveAction: true,
+                      child: Text("Continue",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: black,
+                            fontFamily: fontBold,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    // The "No" button
+                  ],
+                )),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        });
   }
 }

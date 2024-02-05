@@ -54,8 +54,12 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         title: CommonConstant.ams,
                         theme: !ctr.isDark.value
-                            ? ThemeData.light()
-                            : ThemeData.dark(),
+                            ? ThemeData.light(
+                               useMaterial3: true
+                            )
+                            : ThemeData.dark(
+                              useMaterial3: true
+                            ),
                         debugShowCheckedModeBanner: false,
                         home: Splashscreen(),
                         defaultTransition: Transition.rightToLeftWithFade,

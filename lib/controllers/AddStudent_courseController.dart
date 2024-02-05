@@ -30,8 +30,6 @@ class AddStudentCourseController extends GetxController {
       startNode,
       feesNode;
 
-  Rx<File?> avatarFile = null.obs;
-  Rx<File?> videoFile = null.obs;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
   DateTime selectedStartDate = DateTime.now();
@@ -75,6 +73,8 @@ class AddStudentCourseController extends GetxController {
     startDatectr.text = date;
     update();
   }
+
+  RxBool isFormInvalidate = false.obs;
 
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -344,10 +344,6 @@ class AddStudentCourseController extends GetxController {
     });
   }
 
-  RxBool isFormInvalidate = false.obs;
-  RxString uploadImageId = ''.obs;
-  RxString uploadBreacherId = ''.obs;
-
   void hideKeyboard(context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
@@ -390,7 +386,7 @@ class AddStudentCourseController extends GetxController {
           "fees": Feesctr.text.toString().trim(),
           "starting_from": startDatectr.text.toString().trim(),
           "other_notes": notesctr.text.toString().trim(),
-          "id_proof_url": uploadImageId.value.toString()
+          "id_proof_url": uploadId.value.toString()
         })
       });
 
@@ -400,7 +396,7 @@ class AddStudentCourseController extends GetxController {
         "fees": Feesctr.text.toString().trim(),
         "starting_from": startDatectr.text.toString().trim(),
         "other_notes": notesctr.text.toString().trim(),
-        "id_proof_url": uploadImageId.value.toString()
+        "id_proof_url": uploadId.value.toString()
       }, ApiUrl.addStudentCourse, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
@@ -428,66 +424,29 @@ class AddStudentCourseController extends GetxController {
     }
   }
 
-  // void AddStudentCourseApi(context) async {
-  //   var loadingIndicator = LoadingProgressDialog();
-  //   try {
-  //     if (networkManager.connectionType == 0) {
-  //       loadingIndicator.hide(context);
-  //       showDialogForScreen(context, Connection.noConnection, callback: () {
-  //         Get.back();
-  //       });
-  //       return;
-  //     }
-  //     loadingIndicator.show(context, '');
-  //     var retrievedObject = await UserPreferences().getSignInInfo();
+  actionClickUploadIdProof(context, {bool? isCamera}) async {
+    await ImagePicker()
+        .pickImage(
+            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
+            maxWidth: 1080,
+            maxHeight: 1080,
+            imageQuality: 100)
+        .then((file) async {
+      if (file != null) {
+        if (file != null) {
+          uploadIdProof = File(file.path).obs;
+          imgctr.text = file.name;
+          validateImage(imgctr.text);
+          getIdproofApi(context);
+        }
+      }
+    });
 
-  //     logcat("STUDENTCOURSE", {
-  //       ({
-  //         "student_id": studentId.value.toString(),
-  //         "course_id": studentCourseId.value.toString(),
-  //         "fees": Feesctr.text.toString().trim(),
-  //         "starting_from": startDatectr.text.toString().trim(),
-  //         "other_notes": notesctr.text.toString().trim(),
-  //         "id_proof_url": uploadIdproof.value.toString()
-  //       })
-  //     });
+    update();
+  }
 
-  //     var response = await Repository.post(
-  //       {
-  //       "student_id": studentId.value.toString(),
-  //       "course_id": studentCourseId.value.toString(),
-  //       "fees": Feesctr.text.toString().trim(),
-  //       "starting_from": startDatectr.text.toString().trim(),
-  //       "other_notes": notesctr.text.toString().trim(),
-  //       "id_proof_url": uploadIdproof.value.toString()
-  //     }, ApiUrl.addStudentCourse, allowHeader: true);
-  //     loadingIndicator.hide(context);
-  //     var data = jsonDecode(response.body);
-  //     logcat("RESPOSNE", data);
-  //     if (response.statusCode == 200) {
-  //       var responseDetail = CommonModel.fromJson(data);
-  //       if (responseDetail.status == 1) {
-  //         showDialogForScreen(context, responseDetail.message.toString(),
-  //             callback: () {
-  //           Get.back(result: true);
-  //         });
-  //       } else {
-  //         showDialogForScreen(context, responseDetail.message.toString(),
-  //             callback: () {});
-  //       }
-  //     } else {
-  //       state.value = ScreenState.apiError;
-  //       showDialogForScreen(context, data['message'].toString(),
-  //           callback: () {});
-  //     }
-  //   } catch (e) {
-  //     logcat("Exception", e);
-  //     showDialogForScreen(context, Connection.servererror, callback: () {});
-  //     loadingIndicator.hide(context);
-  //   }
-  // }
-
-  RxString uploadIdproof = ''.obs;
+  RxString uploadId = ''.obs;
+  Rx<File?> uploadIdProof = null.obs;
 
   void getIdproofApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
@@ -502,14 +461,14 @@ class AddStudentCourseController extends GetxController {
         return;
       }
       var response = await Repository.multiPartPost({
-        "file": uploadImageFile.value!.path.split('/').last,
+        "file": uploadIdProof.value!.path.split('/').last,
       }, ApiUrl.uploadImage,
-          multiPart: uploadImageFile.value != null
+          multiPart: uploadIdProof.value != null
               ? http.MultipartFile(
                   'file',
-                  uploadImageFile.value!.readAsBytes().asStream(),
-                  uploadImageFile.value!.lengthSync(),
-                  filename: uploadImageFile.value!.path.split('/').last,
+                  uploadIdProof.value!.readAsBytes().asStream(),
+                  uploadIdProof.value!.lengthSync(),
+                  filename: uploadIdProof.value!.path.split('/').last,
                 )
               : null,
           allowHeader: true);
@@ -523,104 +482,7 @@ class AddStudentCourseController extends GetxController {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadIdproof.value = responseData.data.id.toString();
-        } else {
-          showDialogForScreen(context, responseData.message.toString(),
-              callback: () {});
-        }
-      } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
-            callback: () {});
-      }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
-  }
-
-  // Rx<File?> uploadIdProof = null.obs;
-
-  // actionClickUploadIdProof(context, {bool? isCamera}) async {
-  //   await ImagePicker()
-  //       .pickImage(
-  //           source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-  //           maxWidth: 1080,
-  //           maxHeight: 1080,
-  //           imageQuality: 100)
-  //       .then((file) async {
-  //     if (file != null) {
-  //       if (file != null) {
-  //         uploadIdProof = File(file.path).obs;
-  //         imgctr.text = file.name;
-  //         validateImage(imgctr.text);
-  //         getIdproofApi(context);
-  //       }
-  //     }
-  //   });
-
-  //   update();
-  // }
-
-  Rx<File?> uploadImageFile = null.obs;
-
-  actionClickUploadImage(context, {bool? isCamera}) async {
-    await ImagePicker()
-        .pickImage(
-            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
-        .then((file) async {
-      if (file != null) {
-        if (file != null) {
-          uploadImageFile = File(file.path).obs;
-          imgctr.text = file.name;
-          validateImage(imgctr.text);
-          getImageApi(context);
-        }
-      }
-    });
-
-    update();
-  }
-
-  void getImageApi(context) async {
-    var loadingIndicator = LoadingProgressDialog();
-    loadingIndicator.show(context, '');
-
-    try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response = await Repository.multiPartPost({
-        "file": uploadImageFile.value!.path.split('/').last,
-      }, ApiUrl.uploadImage,
-          multiPart: uploadImageFile.value != null
-              ? http.MultipartFile(
-                  'file',
-                  uploadImageFile.value!.readAsBytes().asStream(),
-                  uploadImageFile.value!.lengthSync(),
-                  filename: uploadImageFile.value!.path.split('/').last,
-                )
-              : null,
-          allowHeader: true);
-      var responseDetail = await response.stream.toBytes();
-      loadingIndicator.hide(context);
-
-      var result = String.fromCharCodes(responseDetail);
-      var json = jsonDecode(result);
-      var responseData = UploadImageModel.fromJson(json);
-      if (response.statusCode == 200) {
-        logcat("responseData", jsonEncode(responseData));
-        if (responseData.status == "True") {
-          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadImageId.value = responseData.data.id.toString();
+          uploadId.value = responseData.data.id.toString();
         } else {
           showDialogForScreen(context, responseData.message.toString(),
               callback: () {});

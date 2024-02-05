@@ -242,12 +242,12 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               selectImageFromCameraOrGallery(
                                                   context, cameraClick: () {
                                                 controller
-                                                    .actionClickUploadImage(
+                                                    .actionClickUploadIdProof(
                                                         context,
                                                         isCamera: true);
                                               }, galleryClick: () {
                                                 controller
-                                                    .actionClickUploadImage(
+                                                    .actionClickUploadIdProof(
                                                         context,
                                                         isCamera: false);
                                               });

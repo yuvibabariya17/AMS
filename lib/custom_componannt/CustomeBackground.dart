@@ -35,11 +35,13 @@ class CustomScaffold extends StatelessWidget {
                   ),
           ),
           Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             backgroundColor:
                 transparent, // Make the Scaffold's background transparent
             body: SafeArea(child: body),
             floatingActionButton: floatingActionBtn,
+            
+            
           ),
         ],
       ),

@@ -24,32 +24,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final controller = Get.put(addProductController());
 
   @override
-  void dispose() {
-    controller.NameCtr.text = "";
-    controller.productimgCtr.text = "";
-    controller.descriptionCtr.text = "";
-    controller.categroryCtr.text = "";
-    controller.amountCtr.text = "";
-    controller.quantityCtr.text = "";
-
-
-
-    super.dispose();
-  }
-  void validateFields() {
-    // Validate all fields here
-    controller.validatename(controller.NameCtr.text);
-    controller.validateProductimg(controller.productimgCtr.text);
-    controller.validateDescription(controller.descriptionCtr.text);
-    controller.validateCategory(controller.categroryCtr.text);
-    controller.validateAmount(controller.amountCtr.text);
-    controller.validateQuantity(controller.quantityCtr.text);
-   
-    
-    // Add validation for other fields as needed
-  }
-
-  @override
   void initState() {
     if (widget.isEdit == true && widget.editProduct != null) {
       controller.NameCtr.text = widget.editProduct!.name;
@@ -61,28 +35,53 @@ class _AddProductScreenState extends State<AddProductScreen> {
           widget.editProduct!.productCategoryInfo.name.toString();
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
-      if(widget.isEdit == true ){
-        validateFields();
-      }
 
       // Set other fields as well
     }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
+    controller.getProductCategory(context);
 
-    getProductCategoryAPI(context);
+    //   getProductCategoryAPI(context);
     super.initState();
   }
 
-  void getProductCategoryAPI(BuildContext context) async {
-    try {
-      if (mounted) {
-        await Future.delayed(const Duration(seconds: 1)).then((value) {
-          controller.getProductCategory(context);
-        });
-      }
-    } catch (e) {
-      logcat("ERROR", e);
-    }
+  @override
+  void dispose() {
+    controller.NameCtr.text = "";
+    controller.productimgCtr.text = "";
+    controller.descriptionCtr.text = "";
+    controller.categroryCtr.text = "";
+    controller.amountCtr.text = "";
+    controller.quantityCtr.text = "";
+
+    super.dispose();
   }
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validatename(controller.NameCtr.text);
+    controller.validateProductimg(controller.productimgCtr.text);
+    controller.validateDescription(controller.descriptionCtr.text);
+    controller.validateCategory(controller.categroryCtr.text);
+    controller.validateAmount(controller.amountCtr.text);
+    controller.validateQuantity(controller.quantityCtr.text);
+
+    // Add validation for other fields as needed
+  }
+
+  // void getProductCategoryAPI(BuildContext context) async {
+  //   try {
+  //     if (mounted) {
+  //       await Future.delayed(const Duration(seconds: 1)).then((value) {
+  //         controller.getProductCategory(context);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     logcat("ERROR", e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -211,15 +210,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         isReadOnly: true,
                                         onTap: () {
                                           controller.categroryCtr.text = "";
-
                                           showDropDownDialog(
                                               context,
                                               controller.setCategoryList(),
-                                              "Category List");
-                                          // showDropdownMessage(
-                                          //     context,
-                                          //     controller.setCategoryList(),
-                                          //     'Select Category');
+                                              "Product Category List");
                                         },
                                         errorText: controller
                                             .categroryModel.value.error,

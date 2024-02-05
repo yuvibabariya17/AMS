@@ -314,7 +314,6 @@ class AddStudentController extends GetxController {
   void getImageApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
-
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
