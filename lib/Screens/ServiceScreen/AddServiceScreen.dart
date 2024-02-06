@@ -73,7 +73,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     //   validateFields();
     // }
 
-   // controller.getServiceList(context);
+    // controller.getServiceList(context);
     controller.getServiceCategoryList(context);
     //controller.getSubCategoryList(context);
     super.initState();
@@ -157,7 +157,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                       return getReactiveFormField(
                                         node: controller.subCategoryNode,
                                         controller: controller.subCategoryctr,
-                                        hintLabel: "Select SubCategory",
+                                        hintLabel: "Select Sub Category",
                                         isReadOnly: true,
                                         wantSuffix: true,
                                         isdown: true,
@@ -166,16 +166,16 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         // },
 
                                         onTap: () {
-                                          //controller.subCategoryctr.text = "";
+                                          controller.subCategoryctr.text = "";
 
-                                          if (controller
-                                              .categoryctr.text.isEmpty) {
-                                            return PopupDialogs(
-                                              context,
-                                              "Service",
-                                              "Category Field is Required",
-                                            );
-                                          }
+                                          // if (controller
+                                          //     .categoryctr.text.isEmpty) {
+                                          //   return PopupDialogs(
+                                          //     context,
+                                          //     "Service",
+                                          //     "Category Field is Required",
+                                          //   );
+                                          // }
 
                                           showDropDownDialog(
                                               context,
@@ -210,14 +210,15 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
-                                          if (controller
-                                              .subCategoryctr.text.isEmpty) {
-                                            return PopupDialogs(
-                                              context,
-                                              "Service",
-                                              "Category Field and Sub Category Field is Required",
-                                            );
-                                          }
+                                          // if (controller
+                                          //     .subCategoryctr.text.isEmpty) {
+                                          //   return PopupDialogs(
+                                          //     context,
+                                          //     "Service",
+                                          //     "Category Field and Sub Category Field is Required",
+                                          //   );
+                                          // }
+
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),

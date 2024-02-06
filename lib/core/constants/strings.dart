@@ -132,7 +132,7 @@ class Strings {
   static const String doa = 'Date Of Anniversary';
   static const String doa_hint = 'Date Of Anniversary';
   static const String profile_photo = 'Profile Photo';
-  static const String profile_photo_hint = 'Select Profile Photo';
+  static const String profile_photo_hint = 'Upload Profile Photo';
   static const String enteraddress = 'Enter Address';
 
   //AddProduct

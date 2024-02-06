@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/ProductCategoryModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
@@ -194,7 +195,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": categoryId.value.toString(),
+        "product_category_id": productCategoryId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -203,7 +204,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": categoryId.value.toString(),
+        "product_category_id": productCategoryId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       }, ApiUrl.addProduct, allowHeader: true);
@@ -246,7 +247,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": categoryId.value.toString(),
+        "product_category_id": productCategoryId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -255,7 +256,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": categoryId.value.toString(),
+        "product_category_id": productCategoryId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       }, ApiUrl.editProduct, allowHeader: true);
@@ -284,55 +285,58 @@ class addProductController extends GetxController {
     }
   }
 
-  RxBool isCategoryTypeApiCall = false.obs;
-  RxList<ProductCategoryList> categoryObjectList = <ProductCategoryList>[].obs;
-  RxString categoryId = "".obs;
+  RxBool isProductCategoryList = false.obs;
+  RxList<ListProductCategory> productCategoryObjectList =
+      <ListProductCategory>[].obs;
+  RxString productCategoryId = "".obs;
 
-  void getProductCategory(context) async {
-    isCategoryTypeApiCall.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response = await Repository.post({}, ApiUrl.productCategoryList,
-          allowHeader: true);
-      isCategoryTypeApiCall.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("CATEGORY LIST", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = ProductCategoryModel.fromJson(responseData);
-        if (data.status == 1) {
-          categoryObjectList.clear();
-          categoryObjectList.addAll(data.data);
-          logcat("CATEGORY LIST", jsonEncode(categoryObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isCategoryTypeApiCall.value = false;
+  void getProductCategoryList(context) async {
+    state.value = ScreenState.apiLoading;
+    isProductCategoryList.value = true;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
     }
+    var response = await Repository.post({}, ApiUrl.productCategoryList,
+        allowHeader: true);
+    isProductCategoryList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      if (responseData['status'] == 1) {
+        var data = ProductCategoryListModel.fromJson(responseData);
+
+        state.value = ScreenState.apiSuccess;
+        productCategoryObjectList.clear();
+        productCategoryObjectList.addAll(data.data);
+        logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isServiceTypeApiList.value = false;
+    // }
   }
 
   Widget setCategoryList() {
     return Obx(() {
-      if (isCategoryTypeApiCall.value == true)
+      if (isProductCategoryList.value == true)
         return setDropDownContent([].obs, Text("Loading"),
-            isApiIsLoading: isCategoryTypeApiCall.value);
+            isApiIsLoading: isProductCategoryList.value);
 
       return setDropDownTestContent(
-        categoryObjectList,
+        productCategoryObjectList,
         ListView.builder(
           shrinkWrap: true,
-          itemCount: categoryObjectList.length,
+          itemCount: productCategoryObjectList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               dense: true,
@@ -344,14 +348,15 @@ class addProductController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                categoryId.value = categoryObjectList[index].name.toString();
+                productCategoryId.value =
+                    productCategoryObjectList[index].name.toString();
                 categroryCtr.text =
-                    categoryObjectList[index].name.capitalize.toString();
+                    productCategoryObjectList[index].name.capitalize.toString();
 
                 validateCategory(categroryCtr.text);
               },
               title: Text(
-                categoryObjectList[index].name.toString(),
+                productCategoryObjectList[index].name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -463,47 +468,47 @@ class addProductController extends GetxController {
         .then((file) async {
       if (file != null) {
         //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+        // CroppedFile? croppedFile = await ImageCropper().cropImage(
+        //     sourcePath: file.path,
+        //     maxWidth: 1080,
+        //     maxHeight: 1080,
+        //     cropStyle: CropStyle.rectangle,
+        //     aspectRatioPresets: Platform.isAndroid
+        //         ? [
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ]
+        //         : [
+        //             CropAspectRatioPreset.original,
+        //             CropAspectRatioPreset.square,
+        //             CropAspectRatioPreset.ratio3x2,
+        //             CropAspectRatioPreset.ratio4x3,
+        //             CropAspectRatioPreset.ratio5x3,
+        //             CropAspectRatioPreset.ratio5x4,
+        //             CropAspectRatioPreset.ratio7x5,
+        //             CropAspectRatioPreset.ratio16x9
+        //           ],
+        //     uiSettings: [
+        //       AndroidUiSettings(
+        //           toolbarTitle: 'Crop Image',
+        //           cropGridColor: primaryColor,
+        //           toolbarColor: primaryColor,
+        //           statusBarColor: primaryColor,
+        //           toolbarWidgetColor: white,
+        //           activeControlsWidgetColor: primaryColor,
+        //           initAspectRatio: CropAspectRatioPreset.original,
+        //           lockAspectRatio: false),
+        //       IOSUiSettings(
+        //         title: 'Crop Image',
+        //         cancelButtonTitle: 'Cancel',
+        //         doneButtonTitle: 'Done',
+        //         aspectRatioLockEnabled: false,
+        //       ),
+        //     ],
+        //     aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
         if (file != null) {
           uploadImageFile = File(file.path).obs;
           productimgCtr.text = file.name;

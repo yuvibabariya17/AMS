@@ -215,7 +215,7 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                   ),
                 ),
                 content: Text(
-                  isVideo == true ? "Select Video From" : "Select Photo From",
+                  isVideo == true ? "Upload Video From" : "Upload Photo From",
                   style: TextStyle(
                     fontSize: 13,
                     color: isDarkMode() ? white : black,

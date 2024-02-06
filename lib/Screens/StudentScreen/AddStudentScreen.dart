@@ -155,7 +155,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                           return getReactiveFormField(
                                             node: controller.imageNode,
                                             controller: controller.imgctr,
-                                            hintLabel: "Select Photo",
+                                            hintLabel: "Upload Photo",
                                             wantSuffix: true,
                                             onChanged: (val) {
                                               controller.validateImage(val);
@@ -197,7 +197,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                           return getReactiveFormField(
                                             node: controller.idNode,
                                             controller: controller.idctr,
-                                            hintLabel: "Select Id Proof",
+                                            hintLabel: "Upload Image",
                                             wantSuffix: true,
                                             onChanged: (val) {
                                               controller.validateId(val);

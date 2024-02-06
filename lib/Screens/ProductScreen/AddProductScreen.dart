@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/strings.dart';
-import '../../core/utils/log.dart';
 import '../../custom_componannt/CustomeBackground.dart';
 import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
@@ -41,7 +40,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (widget.isEdit == true) {
       validateFields();
     }
-    controller.getProductCategory(context);
+    controller.getProductCategoryList(context);
 
     //   getProductCategoryAPI(context);
     super.initState();
@@ -137,7 +136,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         node: controller.productimgNode,
                                         controller: controller.productimgCtr,
                                         hintLabel:
-                                            AddProductConstant.product_img_hint,
+                                           "Upload Photo",
                                         wantSuffix: true,
                                         onChanged: (val) {
                                           controller.validateProductimg(val);

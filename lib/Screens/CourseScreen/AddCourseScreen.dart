@@ -13,7 +13,11 @@ import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
 
 class AddCourseScreen extends StatefulWidget {
-  AddCourseScreen({super.key, this.isEdit, this.editCourse, });
+  AddCourseScreen({
+    super.key,
+    this.isEdit,
+    this.editCourse,
+  });
 
   bool? isEdit;
   ListofCourse? editCourse;
@@ -45,8 +49,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     // validateFields() : Container();
     getCourseApi(context);
     super.initState();
-
-    
   }
 
   void validateFields() {
@@ -137,7 +139,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           inputType: TextInputType.name,
                                         );
                                       }))),
-                              
                               getTitle(AddCourseConstant.fees),
                               FadeInUp(
                                   from: 30,
@@ -159,8 +160,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         );
                                       }))),
                               getTitle(AddCourseConstant.duration),
-
-                            
                               FadeInDown(
                                 child: AnimatedSize(
                                   duration: const Duration(milliseconds: 300),
@@ -170,7 +169,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         controller: controller.Durationctr,
                                         hintLabel:
                                             AddCourseConstant.durationHint,
-                                       
                                         onChanged: (val) {
                                           controller.validateStartDate(val);
                                         },
@@ -222,7 +220,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           inputType: TextInputType.text,
                                         );
                                       }))),
-                              getTitle(AddCourseConstant.id),
+                              getTitle("Course Photo"),
                               FadeInUp(
                                   from: 30,
                                   child: AnimatedSize(
@@ -232,7 +230,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         return getReactiveFormField(
                                           node: controller.IdNode,
                                           controller: controller.Idctr,
-                                          hintLabel: AddCourseConstant.idHint,
+                                          hintLabel: "Upload Course Photo",
                                           wantSuffix: true,
                                           onChanged: (val) {
                                             controller.validateId(val);
@@ -271,25 +269,22 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
+                                      if (controller.isFormInvalidate.value ==
+                                          true) {
+                                        controller.AddCourseApi(context);
+                                      }
 
-                                           if (controller.isFormInvalidate.value ==
-                                            true) {
-                                      controller.AddCourseApi(context);
-                                        }
-                                    
-                                        // if (widget.isEdit == true) {
-                                        //   // Call updateCourse API
-                                        //   controller.UpdateCourse(context, widget.editCourse!.id );
-                                        // } else {
-                                        //   // Call AddCourseApi API
-                                        //   controller.AddCourseApi(context);
-                                        // }
-                                    
+                                      // if (widget.isEdit == true) {
+                                      //   // Call updateCourse API
+                                      //   controller.UpdateCourse(context, widget.editCourse!.id );
+                                      // } else {
+                                      //   // Call AddCourseApi API
+                                      //   controller.AddCourseApi(context);
+                                      // }
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);
                                   }))
-                              
                             ],
                           )),
                     ),

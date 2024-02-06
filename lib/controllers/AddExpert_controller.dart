@@ -216,7 +216,7 @@ class AddexpertController extends GetxController {
         "service_id": serviceId.value.toString(),
         "amount": int.parse(Pricectr.text),
       }, ApiUrl.addExpert, allowHeader: true);
-      loadingIndicator.hide(context); 
+      loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
@@ -260,7 +260,7 @@ class AddexpertController extends GetxController {
         "vendor_id": retrievedObject!.id.toString().trim(),
         "service_id": serviceId.value.toString(),
         "amount": int.parse(Pricectr.text),
-      },  '${ApiUrl.editCourse}/$expertId', allowHeader: true);
+      }, '${ApiUrl.editCourse}/$expertId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -338,7 +338,6 @@ class AddexpertController extends GetxController {
         serviceObjectList,
         ListView.builder(
           shrinkWrap: true,
-          
           itemCount: serviceObjectList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -351,13 +350,16 @@ class AddexpertController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text =
-                    serviceObjectList[index].vendorInfo.userName.capitalize.toString();
+                Servicectr.text = serviceObjectList[index]
+                    .serviceInfo
+                    .name
+                    .capitalize
+                    .toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].vendorInfo.emailId.toString(),
+                serviceObjectList[index].serviceInfo.name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -412,15 +414,9 @@ class AddexpertController extends GetxController {
     }
   }
 
-
-
-
-
-
-
   // RxBool isServiceTypeApiList = false.obs;
   // RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-   RxString serviceId = "".obs;
+  RxString serviceId = "".obs;
   RxString uploadImageId = ''.obs;
 
   // void getServiceList(context) async {

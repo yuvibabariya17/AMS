@@ -30,6 +30,30 @@ class UserPreferences {
     return null;
   }
 
+  Future<void> setCategory(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("Category", value);
+  }
+
+  getCategory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String? stringValue = prefs.getString('Category');
+    return stringValue;
+  }
+
+  Future<void> setSubCategory(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("SubCategory", value);
+  }
+
+  getSubCategory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String? stringValue = prefs.getString('SubCategory');
+    return stringValue;
+  }
+
   Future<void> setToken(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(tokenKey, value);
