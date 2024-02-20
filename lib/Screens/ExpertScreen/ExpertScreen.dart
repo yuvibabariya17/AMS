@@ -49,9 +49,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
         controller.filteredExpertObjectList = controller.expertObjectList
             .where((data) =>
                 data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.vendorInfo.userName
-                    .toLowerCase()
-                    .contains(query.toLowerCase()))
+                data.amount.toString().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -361,7 +359,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: "",
+                                      imageUrl:
+                                          'http://192.168.1.15:4000/${data.upload_info.image}',
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -581,7 +580,14 @@ class _ExpertScreenState extends State<ExpertScreen> {
             //     },
             //     itemCount: controller.filteredExpertObjectList.length)
             : Center(
-                child: Text("Data not Found"),
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
               ),
       );
     } else {

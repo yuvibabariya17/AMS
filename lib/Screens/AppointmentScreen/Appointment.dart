@@ -17,6 +17,7 @@ import 'package:sizer/sizer.dart';
 import '../../core/Common/Common.dart';
 import '../../core/themes/color_const.dart';
 
+// ignore: must_be_immutable
 class AppointmentScreen extends StatefulWidget {
   AppointmentScreen({
     super.key,

@@ -307,7 +307,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: "imageUrl,",
+                                      imageUrl: data.uploadInfo.image != null
+                                          ? 'http://192.168.1.15:4000/${data.uploadInfo.image}'
+                                          : "",
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -727,7 +729,14 @@ class _ProductScreenState extends State<ProductScreen> {
             //   )
 
             : Center(
-                child: Text(CommonConstant.noDataFound),
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
               ),
       );
     } else {

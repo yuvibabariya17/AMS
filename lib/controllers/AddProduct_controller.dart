@@ -349,7 +349,7 @@ class addProductController extends GetxController {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
                 productCategoryId.value =
-                    productCategoryObjectList[index].name.toString();
+                    productCategoryObjectList[index].id.toString();
                 categroryCtr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
 

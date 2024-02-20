@@ -97,106 +97,135 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.expertObjectList.isNotEmpty) {
       return controller.filteredExpertObjectList.isNotEmpty
-          ? Container(
-              margin: EdgeInsets.only(top: 3.h),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  clipBehavior: Clip.antiAlias,
-                  itemBuilder: (context, index) {
-                    ExpertList data =
-                        controller.filteredExpertObjectList[index];
-                    return Container(
-                      margin: EdgeInsets.only(
-                          top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Handle View More tap
+                      },
                       child: Container(
-                        padding: EdgeInsets.only(
-                            top: 1.5.h, left: 4.w, right: 4.w, bottom: 1.5.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Stack(children: [
-                                  CircleAvatar(
-                                    radius: 3.7.h,
-                                    backgroundColor: Colors.white,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            "  data., ", // URL of the expert's image
-                                        placeholder: (context, url) =>
-                                            SvgPicture.asset(Asset.profileimg),
-                                        errorWidget: (context, url, error) =>
-                                            SvgPicture.asset(Asset.profileimg),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // CircleAvatar(
-                                  //   radius: 3.7.h,
-                                  //   backgroundColor: Colors.white,
-                                  //   child: SvgPicture.asset(
-                                  //     Asset.profileimg,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  // ),
-                                ]),
-                                SizedBox(width: 3.w),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          child: Text(
-                                        data.name,
-                                        style: TextStyle(
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontSize: 15.5.sp,
-                                            fontWeight: FontWeight.w700),
-                                      )),
-                                      SizedBox(
-                                        height: 0.5.h,
-                                      ),
-                                      Text(
-                                        '₹ ${data.amount.toString()}',
-                                        style: TextStyle(
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontSize: 11.sp,
-                                            fontWeight: FontWeight.w400),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: isDarkMode() ? black : white,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: isDarkMode()
-                                    ? Colors.white.withOpacity(0.2)
-                                    : Colors.black.withOpacity(0.2),
-                                spreadRadius: 0.1,
-                                blurRadius: 10,
-                                offset: Offset(0.5, 0.5)),
-                          ],
+                        margin: EdgeInsets.only(top: 1.h, right: 7.w),
+                        child: Text(
+                          "View More >",
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 13.sp,
+                          ),
                         ),
                       ),
-                    );
-                  },
-                  itemCount: controller.filteredExpertObjectList.length),
+                    ),
+                  ],
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    clipBehavior: Clip.antiAlias,
+                    itemBuilder: (context, index) {
+                      ExpertList data =
+                          controller.filteredExpertObjectList[index];
+                      return Container(
+                        margin: EdgeInsets.only(
+                            top: 1.h, left: 8.w, right: 8.w, bottom: 1.h),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Stack(children: [
+                                    CircleAvatar(
+                                      radius: 3.h,
+                                      backgroundColor: Colors.white,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              "  data., ", // URL of the expert's image
+                                          placeholder: (context, url) =>
+                                              SvgPicture.asset(
+                                                  Asset.profileimg),
+                                          errorWidget: (context, url, error) =>
+                                              SvgPicture.asset(
+                                                  Asset.profileimg),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // CircleAvatar(
+                                    //   radius: 3.7.h,
+                                    //   backgroundColor: Colors.white,
+                                    //   child: SvgPicture.asset(
+                                    //     Asset.profileimg,
+                                    //     fit: BoxFit.cover,
+                                    //   ),
+                                    // ),
+                                  ]),
+                                  SizedBox(width: 3.w),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            child: Text(
+                                          data.name,
+                                          style: TextStyle(
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: opensansMedium,
+                                              fontSize: 15.5.sp,
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                        SizedBox(
+                                          height: 0.5.h,
+                                        ),
+                                        Text(
+                                          '₹ ${data.amount.toString()}',
+                                          style: TextStyle(
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: opensansMedium,
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: isDarkMode() ? black : white,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: isDarkMode()
+                                      ? Colors.white.withOpacity(0.2)
+                                      : Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0.1,
+                                  blurRadius: 10,
+                                  offset: Offset(0.5, 0.5)),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: controller.filteredExpertObjectList.length),
+              ],
             )
           : Center(
               child: Text("Data not Found"),

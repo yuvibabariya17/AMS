@@ -321,7 +321,9 @@ class _StudentScreenState extends State<StudentScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: "",
+                                      imageUrl: data.photoUrlInfo.image != null
+                                          ? 'http://192.168.1.15:4000/${data.photoUrlInfo.image}'
+                                          : "",
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -419,7 +421,16 @@ class _StudentScreenState extends State<StudentScreen> {
                   itemCount: controller.filteredStudentObjectList.length,
                 ),
               )
-            : Center(child: Text(CommonConstant.noDataFound)),
+            : Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
+              ),
       );
     } else {
       return Column(

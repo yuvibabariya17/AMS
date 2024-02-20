@@ -1,4 +1,4 @@
-import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/controllers/Service_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -42,10 +42,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
       } else {
         controller.filteredServiceObjectList = controller.serviceObjectList
             .where((data) =>
-                data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.categoryInfo.name
-                    .toString()
-                    .toString()
+                data.fees.toString().contains(query.toLowerCase()) ||
+                data.vendorInfo.userName
                     .toLowerCase()
                     .contains(query.toLowerCase()))
             .toList();
@@ -146,6 +144,31 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               ),
             ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Get.bottomSheet(Container(
+            //         child: Wrap(
+            //       children: [
+            //         ListTile(
+            //           leading: Icon(Icons.wb_sunny_outlined),
+            //           title: Text('Light Theme'),
+            //           onTap: () => Get.changeTheme(ThemeData.light()),
+            //         ),
+            //         ListTile(
+            //           leading: Icon(Icons.wb_sunny),
+            //           title: Text('Dark Theme'),
+            //           onTap: () => Get.changeTheme(ThemeData.dark()),
+            //         )
+            //       ],
+            //     )));
+            //   },
+            //   child: Container(
+            //     height: 3.h,
+            //     width: 10.w,
+            //     child: Text("Text"),
+            //     decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
+            //   ),
+            // ),
             Expanded(
               child: Container(
                 child: RefreshIndicator(
@@ -235,22 +258,29 @@ class _ServiceScreenState extends State<ServiceScreen> {
       return Expanded(
         child: controller.filteredServiceObjectList.isNotEmpty
             ? Container(
-                margin: EdgeInsets.only(left: 8.w, right: 8.w),
-                child: GridView.builder(
+                margin: EdgeInsets.only(
+                  left: 8.w,
+                  right: 8.w,
+                ),
+                // padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                child: ListView.builder(
                   shrinkWrap: true,
                   clipBehavior: Clip.antiAlias,
                   physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Adjust the number of columns as needed
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                  ),
+
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 2, // Adjust the number of columns as needed
+                  //   crossAxisSpacing: 10.0,
+                  //   mainAxisSpacing: 10.0,
+                  // ),
                   itemBuilder: (context, index) {
-                    ServiceList data =
+                    VendorServiceList data =
                         controller.filteredServiceObjectList[index];
 
                     return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                      padding: EdgeInsets.only(
+                          left: 1.5.w, right: 1.5.w, top: 1.h, bottom: 1.h),
+                      margin: EdgeInsets.only(bottom: 1.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -269,56 +299,58 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  height: 11.h,
-                                  width: 60.w,
-                                  // padding: EdgeInsets.all(
-                                  //   SizerUtil.deviceType == DeviceType.mobile
-                                  //       ? 1.2.w
-                                  //       : 1.0.w,
-                                  // ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(15)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: "",
-                                      placeholder: (context, url) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                            color: primaryColor),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        Asset.placeholder,
-                                        height: 11.h,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ))
+                          // Stack(
+                          //   children: [
+                          //     //IMAGE SHOW
 
-                              // CircleAvatar(
-                              //   radius: 4.h,
-                              //   backgroundColor: Colors.white,
-                              //   child: SvgPicture.asset(
-                              //     Asset.profileimg,
-                              //     fit: BoxFit.cover,
-                              //   ),
-                              // ),
-                            ],
-                          ),
+                          //     // Container(
+                          //     //     height: 11.h,
+                          //     //     width: 60.w,
+                          //     //     // padding: EdgeInsets.all(
+                          //     //     //   SizerUtil.deviceType == DeviceType.mobile
+                          //     //     //       ? 1.2.w
+                          //     //     //       : 1.0.w,
+                          //     //     // ),
+                          //     //     child: ClipRRect(
+                          //     //       borderRadius: const BorderRadius.all(
+                          //     //           Radius.circular(15)),
+                          //     //       child: CachedNetworkImage(
+                          //     //         fit: BoxFit.cover,
+                          //     //         imageUrl: "",
+                          //     //         placeholder: (context, url) =>
+                          //     //             const Center(
+                          //     //           child: CircularProgressIndicator(
+                          //     //               color: primaryColor),
+                          //     //         ),
+                          //     //         errorWidget: (context, url, error) =>
+                          //     //             Image.asset(
+                          //     //           Asset.placeholder,
+                          //     //           height: 11.h,
+                          //     //           fit: BoxFit.cover,
+                          //     //         ),
+                          //     //       ),
+                          //     //     ))
+
+                          //     // CircleAvatar(
+                          //     //   radius: 4.h,
+                          //     //   backgroundColor: Colors.white,
+                          //     //   child: SvgPicture.asset(
+                          //     //     Asset.profileimg,
+                          //     //     fit: BoxFit.cover,
+                          //     //   ),
+                          //     // ),
+                          //   ],
+                          // ),
                           // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                // "dmffkkg",
-                                data.name,
-                                // data.serviceInfo != null
-                                //     ? data.serviceInfo!.name
+                                "Hair Service",
+                                // data.subCategoryInfo.name,
+                                // data.subCategoryInfo != null
+                                //     ? data.subCategoryInfo!.name
                                 //     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -338,7 +370,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                data.categoryInfo.name,
+                                '₹ ${data.fees.toString()}',
                                 style: TextStyle(
                                   fontFamily: opensansMedium,
                                   fontSize: 11.sp,
@@ -389,7 +421,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(CommonConstant.noDataFound),
+                  Container(
+                    margin: EdgeInsets.only(top: 31.h),
+                    child: Text(
+                      CommonConstant.noDataFound,
+                      style: TextStyle(
+                          fontFamily: fontMedium,
+                          fontSize: 12.sp,
+                          color: black),
+                    ),
+                  ),
                 ],
               )),
       );

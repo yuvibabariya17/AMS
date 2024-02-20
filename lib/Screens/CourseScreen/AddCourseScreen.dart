@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../../controllers/AddCourse_controller.dart';
 import '../../core/constants/strings.dart';
-import '../../core/utils/log.dart';
 import '../../custom_componannt/CustomeBackground.dart';
 import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
@@ -37,7 +36,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       controller.Feesctr.text = widget.editCourse!.fees.toString();
       controller.Durationctr.text = widget.editCourse!.duration.toString();
       controller.Descctr.text = widget.editCourse!.description;
-      controller.Notesctr.text = widget.editCourse!.vendorInfo.toString();
+      controller.Notesctr.text = widget.editCourse!.other_notes.toString();
       controller.Idctr.text =
           widget.editCourse!.thumbnailUrlInfo.image.toString();
       // Set other fields as well
@@ -47,7 +46,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     }
     // widget.isEdit == true ?
     // validateFields() : Container();
-    getCourseApi(context);
+    //  getCourseApi(context);
     super.initState();
   }
 
@@ -75,17 +74,17 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     super.dispose();
   }
 
-  void getCourseApi(BuildContext context) async {
-    try {
-      if (mounted) {
-        await Future.delayed(const Duration(seconds: 1)).then((value) {
-          controller.getCourseApi(context);
-        });
-      }
-    } catch (e) {
-      logcat("ERROR", e);
-    }
-  }
+  // void getCourseApi(BuildContext context) async {
+  //   try {
+  //     if (mounted) {
+  //       await Future.delayed(const Duration(seconds: 1)).then((value) {
+  //         controller.getCourseApi(context);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     logcat("ERROR", e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -269,18 +268,19 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                      if (controller.isFormInvalidate.value ==
-                                          true) {
-                                        controller.AddCourseApi(context);
-                                      }
-
-                                      // if (widget.isEdit == true) {
-                                      //   // Call updateCourse API
-                                      //   controller.UpdateCourse(context, widget.editCourse!.id );
-                                      // } else {
-                                      //   // Call AddCourseApi API
+                                      // if (controller.isFormInvalidate.value ==
+                                      //     true) {
                                       //   controller.AddCourseApi(context);
                                       // }
+
+                                      if (widget.isEdit == true) {
+                                        // Call updateCourse API
+                                        controller.UpdateCourse(
+                                            context, widget.editCourse!.id);
+                                      } else {
+                                        // Call AddCourseApi API
+                                        controller.AddCourseApi(context);
+                                      }
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);

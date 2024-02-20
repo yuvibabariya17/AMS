@@ -25,14 +25,15 @@ class ExpertModel {
   });
 
   factory ExpertModel.fromJson(Map<String, dynamic> json) => ExpertModel(
-      status: json["status"],
-      message: json["message"] ?? '',
-      data: (json["data"] as List<dynamic>?)
-          ?.map((x) => ExpertList.fromJson(x))
-          .toList() ?? [], // Add a null check here
-      totalRecord: json["totalRecord"],
-      totalPages: json["totalPages"],
-    );
+        status: json["status"],
+        message: json["message"] ?? '',
+        data: (json["data"] as List<dynamic>?)
+                ?.map((x) => ExpertList.fromJson(x))
+                .toList() ??
+            [], // Add a null check here
+        totalRecord: json["totalRecord"],
+        totalPages: json["totalPages"],
+      );
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -49,6 +50,7 @@ class ExpertList {
   int amount;
   int createdAt;
   VendorInfo vendorInfo;
+  UploadInfo upload_info;
   ServiceInfo? serviceInfo;
 
   ExpertList({
@@ -57,6 +59,7 @@ class ExpertList {
     required this.amount,
     required this.createdAt,
     required this.vendorInfo,
+    required this.upload_info,
     this.serviceInfo,
   });
 
@@ -65,10 +68,11 @@ class ExpertList {
         name: json["name"] ?? '',
         amount: json["amount"],
         createdAt: json["created_at"],
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]?? {}),
+        vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
+        upload_info: UploadInfo.fromJson(json["upload_info"] ?? {}),
         serviceInfo: json["service_info"] == null
             ? null
-            : ServiceInfo.fromJson(json["service_info"]?? {}) ,
+            : ServiceInfo.fromJson(json["service_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -76,8 +80,25 @@ class ExpertList {
         "name": name,
         "amount": amount,
         "created_at": createdAt,
+        "upload_info": upload_info.toJson(),
         "vendor_info": vendorInfo.toJson(),
         "service_info": serviceInfo?.toJson(),
+      };
+}
+
+class UploadInfo {
+  String image;
+
+  UploadInfo({
+    required this.image,
+  });
+
+  factory UploadInfo.fromJson(Map<String, dynamic> json) => UploadInfo(
+        image: json["image"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "image": image,
       };
 }
 
@@ -95,7 +116,7 @@ class ServiceInfo {
   factory ServiceInfo.fromJson(Map<String, dynamic> json) => ServiceInfo(
         id: json["_id"] ?? '',
         name: json["name"] ?? '',
-        description: json["description"]??'',
+        description: json["description"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

@@ -45,7 +45,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
         controller.filteredCustomerObjectList = controller.customerObjectList
             .where((data) =>
                 data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.email
+                data.contactNo
                     .toString()
                     .toLowerCase()
                     .contains(query.toLowerCase()))
@@ -302,7 +302,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       Radius.circular(15)),
                                   child: CachedNetworkImage(
                                     fit: BoxFit.cover,
-                                    imageUrl: " imageUrl,",
+                                    imageUrl: data.picInfo != null
+                                        ? 'http://192.168.1.15:4000/${data.picInfo!.image}'
+                                        : "",
                                     placeholder: (context, url) => const Center(
                                       child: CircularProgressIndicator(
                                           color: primaryColor),
@@ -591,7 +593,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
             //   )
 
             : Center(
-                child: Text(CommonConstant.noDataFound),
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
               ),
       );
     } else {

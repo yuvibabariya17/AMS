@@ -31,7 +31,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       controller.descriptionCtr.text =
           widget.editProduct!.description.toString();
       controller.categroryCtr.text =
-          widget.editProduct!.productCategoryInfo.name.toString();
+          widget.editProduct!.name.toString();
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
 
@@ -135,8 +135,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return getReactiveFormField(
                                         node: controller.productimgNode,
                                         controller: controller.productimgCtr,
-                                        hintLabel:
-                                           "Upload Photo",
+                                        hintLabel: "Upload Photo",
                                         wantSuffix: true,
                                         onChanged: (val) {
                                           controller.validateProductimg(val);

@@ -325,7 +325,9 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: "",
+                                      imageUrl: data.uploadInfo.image != null
+                                          ? 'http://192.168.1.15:4000/${data.uploadInfo.image}'
+                                          : "",
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -365,7 +367,6 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
-                               
                                 ),
                               ),
                               // SizedBox(height: 5.0),
@@ -429,7 +430,16 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                   itemCount: controller.filterrdProductObjectList.length,
                 ),
               )
-            : Center(child: Text(CommonConstant.noDataFound)),
+            : Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
+              ),
       );
     } else {
       return Column(

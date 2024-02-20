@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:booking_app/Models/CommonModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -163,7 +164,7 @@ class AddReportBugController extends GetxController {
     // Get.to(const SignUpScreen(false));
   }
 
-  void reportBugApi(context) async {
+  void AddReportBug(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -175,55 +176,100 @@ class AddReportBugController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-
-      var response = await Repository.multiPartPost({
+      var response = await Repository.post({
         "date_of_submit": datectr.text.toString().trim(),
         "notes": notesctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
         "img_url": uploadImageId.value.toString(),
         "video_url": uploadVideoId.value.toString()
-      }, ApiUrl.addReportBug,
-          // multiPart: uploadImageFile.value != null
-          //     ? http.MultipartFile(
-          //         'img_url',
-          //         uploadImageFile.value!.readAsBytes().asStream(),
-          //         uploadImageFile.value!.lengthSync(),
-          //         filename: uploadImageFile.value!.path.split('/').last,
-          //       )
-          //     : null,
-          // multiPartData: uploadVideoFile.value != null
-          //     ? http.MultipartFile(
-          //         'video_url',
-          //         uploadVideoFile.value!.readAsBytes().asStream(),
-          //         uploadVideoFile.value!.lengthSync(),
-          //         filename: uploadVideoFile.value!.path.split('/').last,
-          //       )
-          //     : null,
-          allowHeader: true);
-      var responseData = await response.stream.toBytes();
+      }, ApiUrl.addReportBug, allowHeader: true);
       loadingIndicator.hide(context);
-
-      var result = String.fromCharCodes(responseData);
-      var json = jsonDecode(result);
-
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      var responseDetail = CommonModel.fromJson(data);
       if (response.statusCode == 200) {
-        if (json['status'] == 1) {
-          // Get.to(const dashboard());
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
         } else {
-          showDialogForScreen(context, json['message'].toString(),
+          showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {});
         }
-      } else {
+      } else {  
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, json['message'].toString(),
+        showDialogForScreen(context, responseDetail.message.toString(),
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.noConnection, callback: () {});
+      showDialogForScreen(context, Connection.servererror, callback: () {});
       loadingIndicator.hide(context);
     }
   }
+
+  // void reportBugApi(context) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       loadingIndicator.hide(context);
+  //       showDialogForScreen(context, Connection.noConnection, callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     loadingIndicator.show(context, '');
+  //     var retrievedObject = await UserPreferences().getSignInInfo();
+
+  //     var response = await Repository.multiPartPost({
+  //       "date_of_submit": datectr.text.toString().trim(),
+  //       "notes": notesctr.text.toString().trim(),
+  //       "vendor_id": retrievedObject!.id.toString().trim(),
+  //       "img_url": uploadImageId.value.toString(),
+  //       "video_url": uploadVideoId.value.toString()
+  //     }, ApiUrl.addReportBug,
+  //         // multiPart: uploadImageFile.value != null
+  //         //     ? http.MultipartFile(
+  //         //         'img_url',
+  //         //         uploadImageFile.value!.readAsBytes().asStream(),
+  //         //         uploadImageFile.value!.lengthSync(),
+  //         //         filename: uploadImageFile.value!.path.split('/').last,
+  //         //       )
+  //         //     : null,
+  //         // multiPartData: uploadVideoFile.value != null
+  //         //     ? http.MultipartFile(
+  //         //         'video_url',
+  //         //         uploadVideoFile.value!.readAsBytes().asStream(),
+  //         //         uploadVideoFile.value!.lengthSync(),
+  //         //         filename: uploadVideoFile.value!.path.split('/').last,
+  //         //       )
+  //         //     : null,
+  //         allowHeader: true);
+  //     var responseData = await response.stream.toBytes();
+  //     loadingIndicator.hide(context);
+
+  //     var result = String.fromCharCodes(responseData);
+  //     var json = jsonDecode(result);
+
+  //     if (response.statusCode == 200) {
+  //       if (json['status'] == 1) {
+  //         // Get.to(const dashboard());
+  //       } else {
+  //         showDialogForScreen(context, json['message'].toString(),
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       state.value = ScreenState.apiError;
+  //       showDialogForScreen(context, json['message'].toString(),
+  //           callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat("Exception", e);
+  //     showDialogForScreen(context, Connection.noConnection, callback: () {});
+  //     loadingIndicator.hide(context);
+  //   }
+  // }
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(

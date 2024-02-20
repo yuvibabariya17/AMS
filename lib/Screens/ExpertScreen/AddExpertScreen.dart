@@ -30,7 +30,9 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
     if (widget.isEdit == true && widget.editExpert != null) {
       controller.Servicectr.text = widget.editExpert!.name;
       controller.Expertctr.text = widget.editExpert!.name;
-
+      controller.Profilectr.text = widget.editExpert!.name;
+      controller.Startctr.text = widget.editExpert!.name;
+      controller.Endctr.text = widget.editExpert!.name;
       controller.Pricectr.text = widget.editExpert!.amount.toString();
 
       if (widget.isEdit == true) {

@@ -34,7 +34,12 @@ class _CourseScreenState extends State<CourseScreen> {
   void initState() {
     controller.getCourseList(context);
     controller.filteredCourseObjectList = controller.courseObjectList;
+
     super.initState();
+  }
+
+  void initDataSet(BuildContext context) async {
+    setState(() {});
   }
 
   void filterCourseList(String query) {
@@ -271,7 +276,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
                                       imageUrl:
-                                          'http://192.168.1.9:4000/uploads/${data.thumbnailUrlInfo.image}',
+                                          'http://192.168.1.15:4000/${data.thumbnailUrlInfo.image}',
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -523,7 +528,16 @@ class _CourseScreenState extends State<CourseScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(CommonConstant.noDataFound),
+                    Container(
+                      margin: EdgeInsets.only(top: 31.h),
+                      child: Text(
+                        CommonConstant.noDataFound,
+                        style: TextStyle(
+                            fontFamily: fontMedium,
+                            fontSize: 12.sp,
+                            color: black),
+                      ),
+                    ),
                   ],
                 ),
               ),

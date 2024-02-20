@@ -209,12 +209,24 @@ class AddexpertController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
+      logcat("EXPERT DETAILS", {
+        "name": Expertctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": ServiceId.value.toString().trim(),
+        "image_id": uploadImageId.value.toString(),
+        "amount": int.parse(Pricectr.text),
+        "startTime": startTime,
+        "endTime": endTime
+      });
 
       var response = await Repository.post({
         "name": Expertctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": serviceId.value.toString(),
+        "vendor_id": retrievedObject.id.toString().trim(),
+        "service_id": ServiceId.value.toString(),
+        "image_id": uploadImageId.value.toString(),
         "amount": int.parse(Pricectr.text),
+        "startTime": startTime,
+        "endTime": endTime
       }, ApiUrl.addExpert, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
@@ -258,7 +270,7 @@ class AddexpertController extends GetxController {
       var response = await Repository.put({
         "name": Expertctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": serviceId.value.toString(),
+        "service_id": ServiceId.value.toString(),
         "amount": int.parse(Pricectr.text),
       }, '${ApiUrl.editCourse}/$expertId', allowHeader: true);
       loadingIndicator.hide(context);
@@ -287,47 +299,6 @@ class AddexpertController extends GetxController {
     }
   }
 
-  // Widget setServiceList() {
-  //   return Obx(() {
-  //     if (isServiceTypeApiList.value == true)
-  //       return setDropDownContent([].obs, Text("Loading"),
-  //           isApiIsLoading: isServiceTypeApiList.value);
-
-  //     return setDropDownTestContent(
-  //       serviceObjectList,
-  //       ListView.builder(
-  //         shrinkWrap: true,
-  //         itemCount: serviceObjectList.length,
-  //         itemBuilder: (BuildContext context, int index) {
-  //           return ListTile(
-  //             dense: true,
-  //             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-  //             contentPadding:
-  //                 const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-  //             horizontalTitleGap: null,
-  //             minLeadingWidth: 5,
-  //             onTap: () {
-  //               Get.back();
-  //               serviceId.value = serviceObjectList[index].id.toString();
-  //               Servicectr.text = serviceObjectList[index]
-  //                   .serviceInfo!
-  //                   .name
-  //                   .capitalize
-  //                   .toString();
-
-  //               validateServicename(Servicectr.text);
-  //             },
-  //             title: Text(
-  //               serviceObjectList[index].serviceInfo!.name.toString(),
-  //               style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //   });
-  // }
-
   Widget setServiceList() {
     return Obx(() {
       if (isServiceTypeApiList.value == true)
@@ -350,16 +321,12 @@ class AddexpertController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index]
-                    .serviceInfo
-                    .name
-                    .capitalize
-                    .toString();
+                Servicectr.text = serviceObjectList[index].fees.toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].serviceInfo.name.toString(),
+                serviceObjectList[index].fees.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -382,14 +349,8 @@ class AddexpertController extends GetxController {
         });
         return;
       }
-      var response = await Repository.post({
-        "pagination": {
-          "pageNo": 1,
-          "recordPerPage": 20,
-          "sortBy": "name",
-          "sortDirection": "asc"
-        },
-      }, ApiUrl.vendorServiceList, allowHeader: true);
+      var response = await Repository.post({}, ApiUrl.vendorServiceList,
+          allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("SERVICE LIST", jsonEncode(responseData));
@@ -418,41 +379,6 @@ class AddexpertController extends GetxController {
   // RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
   RxString serviceId = "".obs;
   RxString uploadImageId = ''.obs;
-
-  // void getServiceList(context) async {
-  //   isServiceTypeApiList.value = true;
-  //   // try {
-  //   if (networkManager.connectionType == 0) {
-  //     showDialogForScreen(context, Connection.noConnection, callback: () {
-  //       Get.back();
-  //     });
-  //     return;
-  //   }
-  //   var response =
-  //       await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
-  //   isServiceTypeApiList.value = false;
-  //   var responseData = jsonDecode(response.body);
-  //   logcat("RESPONSE", jsonEncode(responseData));
-
-  //   if (response.statusCode == 200) {
-  //     var data = ServiceModel.fromJson(responseData);
-  //     if (data.status == 1) {
-  //       serviceObjectList.clear();
-  //       serviceObjectList.addAll(data.data);
-  //       logcat("RESPONSE", jsonEncode(serviceObjectList));
-  //     } else {
-  //       showDialogForScreen(context, responseData['message'], callback: () {
-  //         Get.back(result: true);
-  //       });
-  //     }
-  //   } else {
-  //     showDialogForScreen(context, Connection.servererror, callback: () {});
-  //   }
-  //   // } catch (e) {
-  //   //   logcat('Exception', e);
-  //   //   isServiceTypeApiList.value = false;
-  //   // }
-  // }
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
@@ -591,4 +517,8 @@ class AddexpertController extends GetxController {
 
     update();
   }
+
+
+
+
 }

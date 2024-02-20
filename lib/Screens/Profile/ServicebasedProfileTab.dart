@@ -102,139 +102,168 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
           ? Container(
               height: SizerUtil.height,
               width: SizerUtil.width,
-              child: Container(
-                  margin: EdgeInsets.only(left: 5.w, right: 5.w, top: 3.h),
-                  child: GridView.builder(
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: false,
-                      scrollDirection: Axis.vertical,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            2, // Set the number of columns as per your requirement
-                        crossAxisSpacing:
-                            20.0, // Set the spacing between columns
-                        mainAxisSpacing: 20.0, // Set the spacing between rows
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                          margin:
+                              EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
+                          child: Text(
+                            "View More >",
+                            style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13.sp,
+                            ),
+                          )),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
+                      padding: EdgeInsets.only(
+                        left: 5.w,
+                        right: 5.w,
                       ),
-                      clipBehavior: Clip.antiAlias,
-                      itemCount: controller.filteredServiceObjectList.length,
-                      itemBuilder: (context, index) {
-                        ServiceList data =
-                            controller.filteredServiceObjectList[index];
-
-                        return Container(
-                          padding: EdgeInsets.only(
-                            left: 1.w,
-                            right: 1.w,
+                      child: GridView.builder(
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: false,
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                2, // Set the number of columns as per your requirement
+                            crossAxisSpacing:
+                                20.0, // Set the spacing between columns
+                            mainAxisSpacing:
+                                20.0, // Set the spacing between rows
                           ),
-                          decoration: BoxDecoration(
-                            color: isDarkMode() ? black : white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: isDarkMode()
-                                    ? Colors.white.withOpacity(0.2)
-                                    : Colors.black.withOpacity(0.2),
-                                spreadRadius: 0.1,
-                                blurRadius: 10,
-                                offset: Offset(0.5, 0.5),
+                          clipBehavior: Clip.antiAlias,
+                          itemCount:
+                              controller.filteredServiceObjectList.length,
+                          itemBuilder: (context, index) {
+                            ServiceList data =
+                                controller.filteredServiceObjectList[index];
+
+                            return Container(
+                              padding: EdgeInsets.only(
+                                left: 1.w,
+                                right: 1.w,
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                          top: 0.5.h,
-                                          left: 0.5.w,
-                                          right: 0.5.w),
-                                      height: 11.h,
-                                      width: 60.w,
-                                      // padding: EdgeInsets.all(
-                                      //   SizerUtil.deviceType == DeviceType.mobile
-                                      //       ? 1.2.w
-                                      //       : 1.0.w,
-                                      // ),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          imageUrl: "",
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                            child: CircularProgressIndicator(
-                                                color: primaryColor),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image.asset(
-                                            Asset.placeholder,
-                                            height: 11.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ))
-
-                                  // CircleAvatar(
-                                  //   radius: 4.h,
-                                  //   backgroundColor: Colors.white,
-                                  //   child: SvgPicture.asset(
-                                  //     Asset.profileimg,
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  // ),
+                              decoration: BoxDecoration(
+                                color: isDarkMode() ? black : white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: isDarkMode()
+                                        ? Colors.white.withOpacity(0.2)
+                                        : Colors.black.withOpacity(0.2),
+                                    spreadRadius: 0.1,
+                                    blurRadius: 10,
+                                    offset: Offset(0.5, 0.5),
+                                  ),
                                 ],
                               ),
-                              SizedBox(height: 10.0),
-                              Column(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Stack(
                                     children: [
-                                      Text(
-                                        data.name,
-                                        // data.serviceInfo != null
-                                        //     ? data.serviceInfo!.name
-                                        //     : "",
-                                        style: TextStyle(
-                                          color: isDarkMode() ? white : black,
-                                          fontFamily: opensansMedium,
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      // SizedBox(height: 5.0),
+                                      Container(
+                                          padding: EdgeInsets.only(
+                                              top: 0.5.h,
+                                              left: 0.5.w,
+                                              right: 0.5.w),
+                                          height: 11.h,
+                                          width: 60.w,
+                                          // padding: EdgeInsets.all(
+                                          //   SizerUtil.deviceType == DeviceType.mobile
+                                          //       ? 1.2.w
+                                          //       : 1.0.w,
+                                          // ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(15)),
+                                            child: CachedNetworkImage(
+                                              fit: BoxFit.cover,
+                                              imageUrl: "",
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: primaryColor),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Image.asset(
+                                                Asset.placeholder,
+                                                height: 11.h,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ))
+
+                                      // CircleAvatar(
+                                      //   radius: 4.h,
+                                      //   backgroundColor: Colors.white,
+                                      //   child: SvgPicture.asset(
+                                      //     Asset.profileimg,
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
-                                  // Text(
-                                  //   '₹ ${data..toString()}',
-                                  //   style: TextStyle(
-                                  //     color: isDarkMode() ? white : black,
-                                  //     fontFamily: opensansMedium,
-                                  //     fontSize: 12.sp,
-                                  //     fontWeight: FontWeight.w500,
-                                  //   ),
-                                  // ),
+                                  SizedBox(height: 1.h),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.name,
+                                            // data.serviceInfo != null
+                                            //     ? data.serviceInfo!.name
+                                            //     : "",
+                                            style: TextStyle(
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: opensansMedium,
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          // SizedBox(height: 5.0),
+                                        ],
+                                      ),
+                                      // Text(
+                                      //   '₹ ${data..toString()}',
+                                      //   style: TextStyle(
+                                      //     color: isDarkMode() ? white : black,
+                                      //     fontFamily: opensansMedium,
+                                      //     fontSize: 12.sp,
+                                      //     fontWeight: FontWeight.w500,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+
+                                  // SizedBox(height: 5.0),
                                 ],
                               ),
-
-                              // SizedBox(height: 5.0),
-                            ],
-                          ),
-                        );
-                     
-                     
-                     
-                     
-                     
-                     
-                     
-                      })))
+                            );
+                          }),
+                    ),
+                  ),
+                ],
+              ))
           : Center(
               child: Text("Data not Found"),
             );

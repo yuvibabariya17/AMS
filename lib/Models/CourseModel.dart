@@ -51,6 +51,7 @@ class ListofCourse {
   int duration;
   int fees;
   String description;
+  String other_notes;
   int createdAt;
   VendorInfo vendorInfo;
   ThumbnailUrlInfo thumbnailUrlInfo;
@@ -62,6 +63,7 @@ class ListofCourse {
     required this.duration,
     required this.fees,
     required this.description,
+    required this.other_notes,
     required this.createdAt,
     required this.vendorInfo,
     required this.thumbnailUrlInfo,
@@ -75,6 +77,7 @@ class ListofCourse {
         fees: json["fees"],
         description: json["description"] ?? '',
         createdAt: json["created_at"],
+        other_notes: json["other_notes"] ?? '',
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
         thumbnailUrlInfo:
             ThumbnailUrlInfo.fromJson(json["thumbnail_url_info"] ?? {}),
@@ -87,6 +90,7 @@ class ListofCourse {
         "duration": duration,
         "fees": fees,
         "description": description,
+        "other_notes": other_notes,
         "created_at": createdAt,
         "vendor_info": vendorInfo.toJson(),
         "thumbnail_url_info": thumbnailUrlInfo.toJson(),

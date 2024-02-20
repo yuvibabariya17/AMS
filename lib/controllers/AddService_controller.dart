@@ -333,6 +333,9 @@ class AddserviceController extends GetxController {
     }
   }
 
+  RxList filterList = [].obs;
+  RxList filterCityList = [].obs;
+
   Widget setServiceCategoryList() {
     return Obx(() {
       if (isServiceCategoryList.value == true)
@@ -355,9 +358,9 @@ class AddserviceController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("CATEGORY List", "CATEGORY");
-                categoryId.value = serviceCategoryList[index].name.toString();
+                categoryId.value = serviceCategoryList[index].id.toString();
                 categoryctr.text = serviceCategoryList[index].name.toString();
-
+                //   getSubCategoryList(context, categoryId.value.toString());
                 validateCategory(categoryctr.text);
               },
               title: Text(
@@ -371,6 +374,9 @@ class AddserviceController extends GetxController {
     });
   }
 
+  String? serviceCatId;
+  String? subCatId;
+
 // SERVICE SUB CATEGORY LIST
 
   RxBool isSubCategoryList = false.obs;
@@ -378,8 +384,11 @@ class AddserviceController extends GetxController {
       <ServiceSubCategoryList>[].obs;
   RxString subCategoryId = "".obs;
 
-  void getSubCategoryList(context, String city) async {
+  void getSubCategoryList(
+    context,
+  ) async {
     isSubCategoryList.value = true;
+    logcat("CATEGORY ID", categoryId);
     try {
       if (networkManager.connectionType == 0) {
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -388,18 +397,18 @@ class AddserviceController extends GetxController {
         return;
       }
       var response = await Repository.post({
-        "pagination": {
-          "pageNo": 1,
-          "recordPerPage": 20,
-          "sortBy": "name",
-          "sortDirection": "asc"
-        },
-        "search": {
-          "startAt": "2023-06-06T00:00:00.704Z",
-          "endAt": "2023-06-06T00:00:00.704Z",
-          "category_id": categoryId.value.toString(),
-        }
-      }, ApiUrl.subCategoryList, allowHeader: true);
+        // // "pagination": {
+        // //   "pageNo": 1,
+        // //   "recordPerPage": 10,
+        // //   "sortBy": "name",
+        // //   "sortDirection": "asc"
+        // // },
+        // "search": {
+        //   // "startAt": "2023-06-06T00:00:00.704Z",
+        //   // "endAt": "2023-06-06T00:00:00.704Z",
+        //   "category_id": categoryId,
+        // }
+      }, ApiUrl.servicesubCategoryList, allowHeader: true);
       isSubCategoryList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("SUBCATEGORY LIST", jsonEncode(responseData));
@@ -424,6 +433,57 @@ class AddserviceController extends GetxController {
     }
   }
 
+//WITH ID
+
+  // void getSubCategoryList(context, String categoryId) async {
+  //   isSubCategoryList.value = true;
+  //   logcat("CATEGORY ID", categoryId);
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       showDialogForScreen(context, Connection.noConnection, callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     var response = await Repository.post({
+  //       // "pagination": {
+  //       //   "pageNo": 1,
+  //       //   "recordPerPage": 10,
+  //       //   "sortBy": "name",
+  //       //   "sortDirection": "asc"
+  //       // },
+  //       "search": {
+  //         // "startAt": "2023-06-06T00:00:00.704Z",
+  //         // "endAt": "2023-06-06T00:00:00.704Z",
+  //         "category_id": categoryId,
+  //       }
+  //     }, ApiUrl.servicesubCategoryList, allowHeader: true);
+  //     isSubCategoryList.value = false;
+  //     var responseData = jsonDecode(response.body);
+  //     logcat("SUBCATEGORY LIST", jsonEncode(responseData));
+
+  //     if (response.statusCode == 200) {
+  //       var data = SubCategoryModel.fromJson(responseData);
+  //       if (data.status == 1) {
+  //         subcategoryList.clear();
+  //         subcategoryList.addAll(data.data);
+
+  //         logcat("SUBCATEGORY LIST", jsonEncode(subcategoryList));
+  //       } else {
+  //         showDialogForScreen(context, responseData['message'],
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       showDialogForScreen(context, Connection.servererror, callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat('Exception', e);
+  //     isSubCategoryList.value = false;
+  //   }
+  // }
+
+  // WITH ID
+
   Widget setSubCategoryList() {
     return Obx(() {
       if (isSubCategoryList.value == true)
@@ -446,8 +506,9 @@ class AddserviceController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("SUBCATEGORY List", "SUBCATEGORY");
-                subCategoryId.value = subcategoryList[index].name.toString();
+                subCategoryId.value = subcategoryList[index].id.toString();
                 subCategoryctr.text = subcategoryList[index].name.toString();
+                getServiceList(context);
 
                 validateSubCategory(subCategoryctr.text);
               },
@@ -461,6 +522,45 @@ class AddserviceController extends GetxController {
       );
     });
   }
+
+  //  Widget setSubCategoryList() {
+  //   return Obx(() {
+  //     if (isSubCategoryList.value == true)
+  //       return setDropDownContent([].obs, Text("Loading"),
+  //           isApiIsLoading: isSubCategoryList.value);
+
+  //     return setDropDownTestContent(
+  //       subcategoryList,
+  //       ListView.builder(
+  //         shrinkWrap: true,
+  //         itemCount: subcategoryList.length,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return ListTile(
+  //             dense: true,
+  //             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+  //             contentPadding:
+  //                 const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+  //             horizontalTitleGap: null,
+  //             minLeadingWidth: 5,
+  //             onTap: () {
+  //               Get.back();
+  //               logcat("SUBCATEGORY List", "SUBCATEGORY");
+  //               subCategoryId.value = subcategoryList[index].id.toString();
+  //               subCategoryctr.text = subcategoryList[index].name.toString();
+  //               getServiceList(context);
+
+  //               validateSubCategory(subCategoryctr.text);
+  //             },
+  //             title: Text(
+  //               subcategoryList[index].name.toString(),
+  //               style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   });
+  // }
 
   // SERVICE LIST
 
@@ -478,18 +578,18 @@ class AddserviceController extends GetxController {
         return;
       }
       var response = await Repository.post({
-        "pagination": {
-          "pageNo": 1,
-          "recordPerPage": 20,
-          "sortBy": "name",
-          "sortDirection": "asc"
-        },
-        "search": {
-          "startAt": "2023-06-06T00:00:00.704Z",
-          "endAt": "2023-06-06T00:00:00.704Z",
-          "category_id": categoryId.value.toString(),
-          "sub_category_id": subCategoryId.value.toString(),
-        }
+        // "pagination": {
+        //   "pageNo": 1,
+        //   "recordPerPage": 20,
+        //   "sortBy": "name",
+        //   "sortDirection": "asc"
+        // },
+        // "search": {
+        //   "startAt": "2023-06-06T00:00:00.704Z",
+        //   "endAt": "2023-06-06T00:00:00.704Z",
+        //   "category_id": categoryId.value.toString(),
+        //   "sub_category_id": subCategoryId.value.toString(),
+        // }
       }, ApiUrl.serviceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
@@ -537,7 +637,7 @@ class AddserviceController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("Service List", "LIST");
-                ServiceId.value = serviceObjectList[index].name.toString();
+                ServiceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text = serviceObjectList[index].name.toString();
 
                 validateServicename(Servicectr.text);
@@ -568,64 +668,66 @@ class AddserviceController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
-  void UpdateVendorServiceApi(context, String serviceId) async {
-    var loadingIndicator = LoadingProgressDialog();
-    try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      loadingIndicator.show(context, '');
-      var retrievedObject = await UserPreferences().getSignInInfo();
+  // UPDATE VENDOR API
 
-      logcat("ADDDDD SERVICE", {
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.toString().trim(),
-        "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-      });
-      var response = await Repository.put({
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.toString().trim(),
-        "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-      }, '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
-      loadingIndicator.hide(context);
-      var data = jsonDecode(response.body);
-      logcat("RESPOSNE", data);
-      if (response.statusCode == 200) {
-        var responseDetail = CommonModel.fromJson(data);
-        if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {
-            Get.back(result: true);
-          });
-        } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {});
-        }
-      } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
-            callback: () {});
-      }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
-  }
+  // void UpdateVendorServiceApi(context, String serviceId) async {
+  //   var loadingIndicator = LoadingProgressDialog();
+  //   try {
+  //     if (networkManager.connectionType == 0) {
+  //       loadingIndicator.hide(context);
+  //       showDialogForScreen(context, Connection.noConnection, callback: () {
+  //         Get.back();
+  //       });
+  //       return;
+  //     }
+  //     loadingIndicator.show(context, '');
+  //     var retrievedObject = await UserPreferences().getSignInInfo();
+
+  //     logcat("ADDDDD SERVICE", {
+  //       "vendor_id": retrievedObject!.id.toString().trim(),
+  //       "service_id": ServiceId.toString().trim(),
+  //       "fees": int.parse(Pricectr.text),
+  //       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+  //       "oppox_setting": sittingctr.text.toString().trim(),
+  //       "oppox_setting_duration":
+  //           sitingTime.replaceAll(' ', '').toString().trim(),
+  //       "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+  //     });
+  //     var response = await Repository.put({
+  //       "vendor_id": retrievedObject!.id.toString().trim(),
+  //       "service_id": ServiceId.toString().trim(),
+  //       "fees": int.parse(Pricectr.text),
+  //       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+  //       "oppox_setting": sittingctr.text.toString().trim(),
+  //       "oppox_setting_duration":
+  //           sitingTime.replaceAll(' ', '').toString().trim(),
+  //       "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+  //     }, '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
+  //     loadingIndicator.hide(context);
+  //     var data = jsonDecode(response.body);
+  //     logcat("RESPOSNE", data);
+  //     if (response.statusCode == 200) {
+  //       var responseDetail = CommonModel.fromJson(data);
+  //       if (responseDetail.status == 1) {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {
+  //           Get.back(result: true);
+  //         });
+  //       } else {
+  //         showDialogForScreen(context, responseDetail.message.toString(),
+  //             callback: () {});
+  //       }
+  //     } else {
+  //       state.value = ScreenState.apiError;
+  //       showDialogForScreen(context, data['message'].toString(),
+  //           callback: () {});
+  //     }
+  //   } catch (e) {
+  //     logcat("Exception", e);
+  //     showDialogForScreen(context, Connection.servererror, callback: () {});
+  //     loadingIndicator.hide(context);
+  //   }
+  // }
 
   void addVendorService(context) async {
     var loadingIndicator = LoadingProgressDialog();
@@ -639,25 +741,26 @@ class AddserviceController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
+
       logcat("ADDDDD SERVICE", {
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.toString().trim(),
+        "service_id": ServiceId.value.toString().trim(),
         "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+        "oppox_time": approxTime,
+        "oppox_setting": int.parse(sittingctr.text),
+        "oppox_setting_duration": sitingTime,
+        "oppox_setting_days_inverval": int.parse(intervalctr.text),
+        "Total_days": daysctr.text.toString().trim()
       });
       var response = await Repository.post({
         "vendor_id": retrievedObject.id.toString().trim(),
-        "service_id": ServiceId.toString().trim(),
+        "service_id": ServiceId.value.toString().trim(),
         "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+        "oppox_time": approxTime,
+        "oppox_setting": int.parse(sittingctr.text),
+        "oppox_setting_duration": sitingTime,
+        "oppox_setting_days_inverval": int.parse(intervalctr.text),
+        "Total_days": daysctr.text.toString().trim()
       }, ApiUrl.addVendorService, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);

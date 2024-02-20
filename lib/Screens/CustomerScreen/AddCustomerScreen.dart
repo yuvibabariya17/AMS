@@ -34,20 +34,19 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           widget.editCustomer!.dateOfAnniversary.toString();
       controller.Addressctr.text = widget.editCustomer!.address.toString();
       controller.Contact1ctr.text = widget.editCustomer!.contactNo.toString();
-      controller.Contact2ctr.text = widget.editCustomer!.contactNo.toString();
+      // controller.Contact2ctr.text = widget.editCustomer!.contactNo.toString();
       controller.Whatsappctr.text = widget.editCustomer!.whatsappNo.toString();
       controller.Emailctr.text = widget.editCustomer!.email.toString();
-      // Set other fields as well
+      controller.descctr.text = widget.editCustomer!.description.toString();
     }
-       if(widget.isEdit == true){
-       validateFields() ;
+    if (widget.isEdit == true) {
+      validateFields();
     }
     controller.addcustomerApi(context);
     super.initState();
   }
 
-
-   void validateFields() {
+  void validateFields() {
     // Validate all fields here
     controller.validateCustomerName(controller.Customerctr.text);
     controller.validateProfile(controller.Profilectr.text);
@@ -59,7 +58,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     controller.validateWhatsapp(controller.Whatsappctr.text);
     controller.validateEmail(controller.Emailctr.text);
     controller.validateDescription(controller.descctr.text);
-    
+
     // Add validation for other fields as needed
   }
 
@@ -405,19 +404,18 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                 height: 5.h,
                               ),
 
-                                FadeInUp(
+                              FadeInUp(
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                    
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
-                                          controller.UpdateCustomer(context, widget.editCustomer!.id );
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.addcustomerApi(context);
-                                        }
-                                    
+                                      if (widget.isEdit == true) {
+                                        // Call updateCourse API
+                                        controller.UpdateCustomer(
+                                            context, widget.editCustomer!.id);
+                                      } else {
+                                        // Call AddCourseApi API
+                                        controller.addcustomerApi(context);
+                                      }
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);

@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/CommonModel.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
@@ -220,10 +218,6 @@ class AddCourseController extends GetxController {
     }
   }
 
-  void navigate() {
-    // Get.to(const SignUpScreen(false));
-  }
-
   void AddCourseApi(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
@@ -243,6 +237,7 @@ class AddCourseController extends GetxController {
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
         "description": Descctr.text.toString().trim(),
+        "other_notes": Notesctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
       });
 
@@ -252,6 +247,7 @@ class AddCourseController extends GetxController {
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
         "description": Descctr.text.toString().trim(),
+        "other_notes": Notesctr.text.toString().trim(),
         "vendor_id": retrievedObject.id.toString().trim()
       }, ApiUrl.addCourse, allowHeader: true);
       loadingIndicator.hide(context);
@@ -282,52 +278,53 @@ class AddCourseController extends GetxController {
 
   void UpdateCourse(context, String courseId) async {
     var loadingIndicator = LoadingProgressDialog();
-   // try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      loadingIndicator.show(context, '');
-      var retrievedObject = await UserPreferences().getSignInInfo();
-
-      logcat("UPDATE_COURSE", {
-        "name": Studentctr.text.toString().trim(),
-        "thumbnail_url": uploadImageId.value.toString(),
-        "duration": Durationctr.text.toString().trim(),
-        "fees": Feesctr.text.toString().trim(),
-        "description": Descctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim()
-      });
-      var response = await Repository.put({
-        "name": Studentctr.text.toString().trim(),
-        "thumbnail_url": uploadImageId.value.toString(),
-        "duration": Durationctr.text.toString().trim(),
-        "fees": Feesctr.text.toString().trim(),
-        "description": Descctr.text.toString().trim(),
-        "vendor_id": retrievedObject.id.toString().trim()
-      }, '${ApiUrl.editCourse}/$courseId', allowHeader: true);
+    // try {
+    if (networkManager.connectionType == 0) {
       loadingIndicator.hide(context);
-      var data = jsonDecode(response.body);
-      logcat("RESPOSNE", data);
-      if (response.statusCode == 200) {
-        var responseDetail = CommonModel.fromJson(data);
-        if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {
-            Get.back(result: true);
-          });
-        } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {});
-        }
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
+    }
+    loadingIndicator.show(context, '');
+    var retrievedObject = await UserPreferences().getSignInInfo();
+
+    logcat("UPDATE_COURSE", {
+      "name": Studentctr.text.toString().trim(),
+      "thumbnail_url": uploadImageId.value.toString(),
+      "duration": Durationctr.text.toString().trim(),
+      "fees": Feesctr.text.toString().trim(),
+      "description": Descctr.text.toString().trim(),
+      "other_notes": Notesctr.text.toString().trim(),
+      "vendor_id": retrievedObject!.id.toString().trim()
+    });
+    var response = await Repository.put({
+      "name": Studentctr.text.toString().trim(),
+      "thumbnail_url": uploadImageId.value.toString(),
+      "duration": Durationctr.text.toString().trim(),
+      "fees": Feesctr.text.toString().trim(),
+      "description": Descctr.text.toString().trim(),
+      "other_notes": Notesctr.text.toString().trim(),
+      "vendor_id": retrievedObject.id.toString().trim()
+    }, '${ApiUrl.editCourse}/$courseId', allowHeader: true);
+    loadingIndicator.hide(context);
+    var data = jsonDecode(response.body);
+    logcat("RESPOSNE", data);
+    if (response.statusCode == 200) {
+      var responseDetail = CommonModel.fromJson(data);
+      if (responseDetail.status == 1) {
+        showDialogForScreen(context, responseDetail.message.toString(),
+            callback: () {
+          Get.back(result: true);
+        });
       } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, responseDetail.message.toString(),
             callback: () {});
       }
+    } else {
+      state.value = ScreenState.apiError;
+      showDialogForScreen(context, data['message'].toString(), callback: () {});
+    }
     // } catch (e) {
     //   logcat("Exception", e);
     //   showDialogForScreen(context, Connection.servererror, callback: () {});
@@ -339,77 +336,77 @@ class AddCourseController extends GetxController {
   RxList<ListofCourse> courseObjectList = <ListofCourse>[].obs;
   RxString courseId = "".obs;
 
-  void getCourseApi(context) async {
-    isCourseTypeApiCall.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.courselist, allowHeader: true);
-    isCourseTypeApiCall.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat("RESPONSE", jsonEncode(responseData));
+  // void getCourseApi(context) async {
+  //   isCourseTypeApiCall.value = true;
+  //   // try {
+  //   if (networkManager.connectionType == 0) {
+  //     showDialogForScreen(context, Connection.noConnection, callback: () {
+  //       Get.back();
+  //     });
+  //     return;
+  //   }
+  //   var response =
+  //       await Repository.post({}, ApiUrl.courselist, allowHeader: true);
+  //   isCourseTypeApiCall.value = false;
+  //   var responseData = jsonDecode(response.body);
+  //   logcat("RESPONSE", jsonEncode(responseData));
 
-    if (response.statusCode == 200) {
-      var data = CourseListModel.fromJson(responseData);
-      if (data.status == 1) {
-        courseObjectList.clear();
-        courseObjectList.addAll(data.data);
-        logcat("RESPONSE", jsonEncode(courseObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
-    } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-    }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isCourseTypeApiCall.value = false;
-    // }
-  }
+  //   if (response.statusCode == 200) {
+  //     var data = CourseListModel.fromJson(responseData);
+  //     if (data.status == 1) {
+  //       courseObjectList.clear();
+  //       courseObjectList.addAll(data.data);
+  //       logcat("RESPONSE", jsonEncode(courseObjectList));
+  //     } else {
+  //       showDialogForScreen(context, responseData['message'], callback: () {});
+  //     }
+  //   } else {
+  //     showDialogForScreen(context, Connection.servererror, callback: () {});
+  //   }
+  //   // } catch (e) {
+  //   //   logcat('Exception', e);
+  //   //   isCourseTypeApiCall.value = false;
+  //   // }
+  // }
 
-  Widget setCourseList() {
-    return Obx(() {
-      if (isCourseTypeApiCall.value == true)
-        return setDropDownContent([].obs, Text("Loading"),
-            isApiIsLoading: isCourseTypeApiCall.value);
+  // Widget setCourseList() {
+  //   return Obx(() {
+  //     if (isCourseTypeApiCall.value == true)
+  //       return setDropDownContent([].obs, Text("Loading"),
+  //           isApiIsLoading: isCourseTypeApiCall.value);
 
-      return setDropDownTestContent(
-        courseObjectList,
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: courseObjectList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              dense: true,
-              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-              contentPadding:
-                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-              horizontalTitleGap: null,
-              minLeadingWidth: 5,
-              onTap: () {
-                Get.back();
-                logcat("ONTAP", "SACHIN");
-                courseId.value = courseObjectList[index].name.toString();
-                Coursectr.text =
-                    courseObjectList[index].name.capitalize.toString();
+  //     return setDropDownTestContent(
+  //       courseObjectList,
+  //       ListView.builder(
+  //         shrinkWrap: true,
+  //         itemCount: courseObjectList.length,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return ListTile(
+  //             dense: true,
+  //             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+  //             contentPadding:
+  //                 const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+  //             horizontalTitleGap: null,
+  //             minLeadingWidth: 5,
+  //             onTap: () {
+  //               Get.back();
+  //               logcat("ONTAP", "SACHIN");
+  //               courseId.value = courseObjectList[index].name.toString();
+  //               Coursectr.text =
+  //                   courseObjectList[index].name.capitalize.toString();
 
-                validateCourse(Coursectr.text);
-              },
-              title: Text(
-                courseObjectList[index].name.capitalize.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
-              ),
-            );
-          },
-        ),
-      );
-    });
-  }
+  //               validateCourse(Coursectr.text);
+  //             },
+  //             title: Text(
+  //               courseObjectList[index].name.capitalize.toString(),
+  //               style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   });
+  // }
 
   RxString uploadImageId = ''.obs;
 
@@ -481,27 +478,6 @@ class AddCourseController extends GetxController {
 
   Rx<File?> uploadImageFile = null.obs;
 
-  actionClickUploadImage(context) async {
-    await ImagePicker()
-        .pickImage(
-            source: ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
-        .then((file) async {
-      if (file != null) {
-        if (file != null) {
-          uploadImageFile = File(file.path).obs;
-          Idctr.text = file.name;
-          validateId(Idctr.text);
-          getImageApi(context);
-        }
-      }
-    });
-
-    update();
-  }
-
   actionClickUploadImageFromCamera(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(
@@ -513,7 +489,7 @@ class AddCourseController extends GetxController {
         .then((file) async {
       if (file != null) {
         //Cropping the image
-      
+
         if (file != null) {
           uploadImageFile = File(file.path).obs;
           Idctr.text = file.name;

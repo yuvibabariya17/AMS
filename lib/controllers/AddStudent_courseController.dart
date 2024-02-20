@@ -247,7 +247,7 @@ class AddStudentCourseController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                studentId.value = studentObjectList[index].name.toString();
+                studentId.value = studentObjectList[index].id.toString();
                 studentctr.text =
                     studentObjectList[index].name.capitalize.toString();
 
@@ -327,7 +327,7 @@ class AddStudentCourseController extends GetxController {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
                 studentCourseId.value =
-                    studentCourseObjectList[index].name.toString();
+                    studentCourseObjectList[index].id.toString();
                 coursectr.text =
                     studentCourseObjectList[index].name.capitalize.toString();
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
 import 'package:booking_app/Models/PackageModel.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../Config/apicall_constant.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
@@ -25,38 +26,37 @@ class PackageController extends GetxController {
 
   List<PackageList> filteredPackageObjectList = [];
 
+  
+
   void getPackageList(context) async {
     state.value = ScreenState.apiLoading;
     // isExpertTypeApiList.value = true;
- //   try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response =
-          await Repository.post({}, ApiUrl.packageList, allowHeader: true);
-      isPackageTypeApiList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("EXPERTRESPONSE", jsonEncode(responseData));
+    //   try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
+    }
+    var response =
+        await Repository.post({}, ApiUrl.packageList, allowHeader: true);
+    isPackageTypeApiList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("EXPERTRESPONSE", jsonEncode(responseData));
 
-      if (response.statusCode == 200) {
-        var data = PackageModel.fromJson(responseData);
-        if (data.status == 1) {
-          state.value = ScreenState.apiSuccess;
-          packageObjectList.clear();
-          packageObjectList.addAll(data.data);
-          logcat("EXPERT RESPONSE", jsonEncode(packageObjectList));
-
-          
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
+    if (response.statusCode == 200) {
+      var data = PackageModel.fromJson(responseData);
+      if (data.status == 1) {
+        state.value = ScreenState.apiSuccess;
+        packageObjectList.clear();
+        packageObjectList.addAll(data.data);
+        logcat("EXPERT RESPONSE", jsonEncode(packageObjectList));
       } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
+        showDialogForScreen(context, responseData['message'], callback: () {});
       }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
     // } catch (e) {
     //   logcat('Exception', e);
     //   isPackageTypeApiList.value = false;

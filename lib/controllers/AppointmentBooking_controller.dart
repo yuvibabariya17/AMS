@@ -514,16 +514,12 @@ class AppointmentBookingController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index]
-                    .vendorInfo
-                    .userName
-                    .capitalize
-                    .toString();
+                Servicectr.text = serviceObjectList[index].fees.toString();
 
                 validateService(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].vendorInfo.emailId.toString(),
+                serviceObjectList[index].fees.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );

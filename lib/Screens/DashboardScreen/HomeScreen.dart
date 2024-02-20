@@ -30,12 +30,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
-
 class _HomeScreenState extends State<HomeScreen> {
   var controller = Get.put(HomeScreenController());
 
-  final CalendarController calendarController = CalendarController();
+final CalendarController calendarController = CalendarController();
 
   List<TimeRegion> regions = <TimeRegion>[];
 //  late _DataSource events;
@@ -168,9 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 1.h,),
+                SizedBox(
+                  height: 1.h,
+                ),
                 Container(
-                  padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                  padding: EdgeInsets.only(left: 5.w, right: 2.w),
                   child: DatePicker(
                     DateTime.now(),
                     width: 7.h,
@@ -221,7 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ]),
             ),
-               SizedBox(height: 1.h,),
+            SizedBox(
+              height: 1.h,
+            ),
             Expanded(child: ListScreen())
           ],
         );

@@ -475,7 +475,7 @@ getDividerForShowDialog() {
     indent: 0.1.h,
     endIndent: 0.1.h,
     thickness: 1,
-    color: primaryColor.withOpacity(0.5),
+    color: isDarkMode() ? white : primaryColor.withOpacity(0.5),
   );
 }
 

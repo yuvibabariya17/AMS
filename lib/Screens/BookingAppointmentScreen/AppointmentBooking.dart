@@ -243,7 +243,6 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           final TimeOfDay? pickedDuration =
                                               await showTimePicker(
                                             context: context,
-                                            
                                             initialTime: TimeOfDay.now(),
                                           );
 

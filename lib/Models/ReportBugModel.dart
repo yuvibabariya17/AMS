@@ -26,11 +26,9 @@ class ReportBugModel {
 
   factory ReportBugModel.fromJson(Map<String, dynamic> json) => ReportBugModel(
         status: json["status"] ?? 0,
-        message: json["message"] ?? '',
-        data: (json["data"] as List<dynamic>?)
-                ?.map((item) => ReportBugList.fromJson(item))
-                .toList() ??
-            [],
+        message: json["message"] ?? "",
+        data: List<ReportBugList>.from(
+            json["data"].map((x) => ReportBugList.fromJson(x))),
         totalRecord: json["totalRecord"] ?? 0,
         totalPages: json["totalPages"] ?? 0,
       );
@@ -68,15 +66,15 @@ class ReportBugList {
   });
 
   factory ReportBugList.fromJson(Map<String, dynamic> json) => ReportBugList(
-        id: json["_id"] ?? '',
-        vendorId: json["vendor_id"] ?? '',
-        imgUrl: json["img_url"] ?? '',
+        id: json["_id"] ?? "",
+        vendorId: json["vendor_id"] ?? "",
+        imgUrl: json["img_url"] ?? "",
         videoUrl: json["video_url"],
         dateOfSubmit: json["date_of_submit"] ?? 0,
         notes: json["notes"],
         createdAt: json["created_at"] ?? 0,
-        vendorInfo: VendorInfo.fromJson(json["vendor_info"]),
-        imgUploadInfo: ImgUploadInfo.fromJson(json["img_upload_info"]),
+        vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
+        imgUploadInfo: ImgUploadInfo.fromJson(json["img_upload_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,7 +98,7 @@ class ImgUploadInfo {
   });
 
   factory ImgUploadInfo.fromJson(Map<String, dynamic> json) => ImgUploadInfo(
-        image: json["image"] ?? '',
+        image: json["image"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,14 +128,14 @@ class VendorInfo {
   });
 
   factory VendorInfo.fromJson(Map<String, dynamic> json) => VendorInfo(
-        vendorType: json["vendor_type"] ?? '',
-        companyName: json["company_name"] ?? '',
-        contactNo1: json["contact_no1"] ?? '',
-        emailId: json["email_id"] ?? '',
-        whatsappNo: json["whatsapp_no"] ?? '',
-        role: json["role"] ?? '',
-        userName: json["user_name"] ?? '',
-        contactPersonName: json["contact_person_name"] ?? '',
+        vendorType: json["vendor_type"] ?? "",
+        companyName: json["company_name"] ?? "",
+        contactNo1: json["contact_no1"] ?? "",
+        emailId: json["email_id"] ?? "",
+        whatsappNo: json["whatsapp_no"] ?? "",
+        role: json["role"] ?? "",
+        userName: json["user_name"] ?? "",
+        contactPersonName: json["contact_person_name"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

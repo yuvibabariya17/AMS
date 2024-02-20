@@ -4,64 +4,70 @@
 
 import 'dart:convert';
 
-StudentModel studentModelFromJson(String str) => StudentModel.fromJson(json.decode(str));
+StudentModel studentModelFromJson(String str) =>
+    StudentModel.fromJson(json.decode(str));
 
 String studentModelToJson(StudentModel data) => json.encode(data.toJson());
 
 class StudentModel {
-    int status;
-    String message;
-    List<StudentList> data;
-    int totalRecord;
-    int totalPages;
+  int status;
+  String message;
+  List<StudentList> data;
+  int totalRecord;
+  int totalPages;
 
-    StudentModel({
-        required this.status,
-        required this.message,
-        required this.data,
-        required this.totalRecord,
-        required this.totalPages,
-    });
+  StudentModel({
+    required this.status,
+    required this.message,
+    required this.data,
+    required this.totalRecord,
+    required this.totalPages,
+  });
 
-    factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
+  factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
         status: json["status"],
         message: json["message"],
-        data: List<StudentList>.from(json["data"].map((x) => StudentList.fromJson(x))),
+        data: List<StudentList>.from(
+            json["data"].map((x) => StudentList.fromJson(x))),
         totalRecord: json["totalRecord"],
         totalPages: json["totalPages"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "totalRecord": totalRecord,
         "totalPages": totalPages,
-    };
+      };
 }
 
 class StudentList {
-    String id;
-    String name;
-    String address;
-    String email;
-    String contact;
-    String photoUrl;
-    String idProofUrl;
-    int createdAt;
+  String id;
+  String name;
+  String address;
+  String email;
+  String contact;
+  String photoUrl;
+  String idProofUrl;
+  int createdAt;
+  UrlInfo photoUrlInfo;
+  UrlInfo idProofUrlInfo;
 
-    StudentList({
-        required this.id,
-        required this.name,
-        required this.address,
-        required this.email,
-        required this.contact,
-        required this.photoUrl,
-        required this.idProofUrl,
-        required this.createdAt,
-    });
+  StudentList({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.email,
+    required this.contact,
+    required this.photoUrl,
+    required this.idProofUrl,
+    required this.createdAt,
+    required this.photoUrlInfo,
+    required this.idProofUrlInfo,
+  });
 
-    factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
+  factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
         id: json["_id"],
         name: json["name"],
         address: json["address"],
@@ -70,9 +76,13 @@ class StudentList {
         photoUrl: json["photo_url"],
         idProofUrl: json["id_proof_url"],
         createdAt: json["created_at"],
-    );
+        photoUrlInfo: UrlInfo.fromJson(
+            json["photo_url_info"] ?? {"image": ""}), // Handle null case
+        idProofUrlInfo:
+            UrlInfo.fromJson(json["id_proof_url_info"] ?? {"image": ""}),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
         "address": address,
@@ -81,5 +91,23 @@ class StudentList {
         "photo_url": photoUrl,
         "id_proof_url": idProofUrl,
         "created_at": createdAt,
-    };
+        "photo_url_info": photoUrlInfo.toJson(),
+        "id_proof_url_info": idProofUrlInfo.toJson(),
+      };
+}
+
+class UrlInfo {
+  String image;
+
+  UrlInfo({
+    required this.image,
+  });
+
+  factory UrlInfo.fromJson(Map<String, dynamic> json) => UrlInfo(
+        image: json["image"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "image": image,
+      };
 }

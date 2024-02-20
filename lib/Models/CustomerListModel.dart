@@ -51,6 +51,7 @@ class ListofCustomer {
   String whatsappNo;
   String email;
   String pic;
+  String description;
   DateTime dateOfBirth;
   DateTime dateOfAnniversary;
   String address;
@@ -65,12 +66,13 @@ class ListofCustomer {
     required this.whatsappNo,
     required this.email,
     required this.pic,
+    required this.description,
     required this.dateOfBirth,
     required this.dateOfAnniversary,
     required this.address,
     required this.createdAt,
-     this.picInfo,
-     this.vendorInfo,
+    this.picInfo,
+    this.vendorInfo,
   });
 
   factory ListofCustomer.fromJson(Map<String, dynamic> json) => ListofCustomer(
@@ -80,12 +82,17 @@ class ListofCustomer {
         whatsappNo: json["whatsapp_no"] ?? '',
         email: json["email"] ?? '',
         pic: json["pic"] ?? '',
-        dateOfBirth: DateTime.parse(json["date_of_birth"]??""),
-        dateOfAnniversary: DateTime.parse(json["date_of_anniversary"]??''),
+        description: json["description"] ?? '',
+        dateOfBirth: DateTime.parse(json["date_of_birth"] ?? ""),
+        dateOfAnniversary: DateTime.parse(json["date_of_anniversary"] ?? ''),
         address: json["address"] ?? '',
-        createdAt: json["created_at"]?? 0,
-        picInfo: json["pic_info"] != null ? PicInfo.fromJson(json["pic_info"]) : null,
-        vendorInfo: json["vendor_info"] != null ? VendorInfo.fromJson(json["vendor_info"]) : null,
+        createdAt: json["created_at"] ?? 0,
+        picInfo: json["pic_info"] != null
+            ? PicInfo.fromJson(json["pic_info"])
+            : null,
+        vendorInfo: json["vendor_info"] != null
+            ? VendorInfo.fromJson(json["vendor_info"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -95,6 +102,7 @@ class ListofCustomer {
         "whatsapp_no": whatsappNo,
         "email": email,
         "pic": pic,
+        "description": description,
         "date_of_birth": dateOfBirth.toIso8601String(),
         "date_of_anniversary": dateOfAnniversary.toIso8601String(),
         "address": address,

@@ -172,8 +172,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               }, galleryClick: () {
                                                 controller
                                                     .actionClickUploadImage(
-                                                        context,
-                                                        isCamera: true);
+                                                  context,
+                                                );
                                               });
                                               // await controller.PopupDialogs(context);
                                               setState(() {});
@@ -214,8 +214,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               }, galleryClick: () {
                                                 controller
                                                     .actionClickUploadIdProof(
-                                                        context,
-                                                        isCamera: true);
+                                                  context,
+                                                );
                                               });
                                               // await controller.PopupDialogs(context);
                                               setState(() {});

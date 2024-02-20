@@ -17,7 +17,7 @@ class AddReportBugScreen extends StatefulWidget {
   @override
   State<AddReportBugScreen> createState() => _AddReportBugScreenState();
 }
- 
+
 class _AddReportBugScreenState extends State<AddReportBugScreen> {
   final controller = Get.put(AddReportBugController());
 
@@ -161,8 +161,9 @@ class _AddReportBugScreenState extends State<AddReportBugScreen> {
                                       isCamera: true,
                                     );
                                   }, galleryClick: () {
-                                    controller.actionClickUploadVideo(context,
-                                        isCamera: true);
+                                    controller.actionClickUploadVideo(
+                                      context,
+                                    );
                                   });
                                   // await controller.PopupDialogs(context);
                                   setState(() {});
@@ -202,7 +203,7 @@ class _AddReportBugScreenState extends State<AddReportBugScreen> {
                         child: Obx(() {
                           return getFormButton(() {
                             if (controller.isFormInvalidate.value == true) {
-                              controller.reportBugApi(context);
+                              controller.AddReportBug(context);
                             }
                           }, CommonConstant.submit,
                               validate: controller.isFormInvalidate.value);
@@ -213,8 +214,5 @@ class _AddReportBugScreenState extends State<AddReportBugScreen> {
         ],
       ),
     ));
-
- 
- 
   }
 }

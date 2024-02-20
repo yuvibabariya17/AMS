@@ -156,6 +156,18 @@ class AddCustomerController extends GetxController {
     enableSignUpButton();
   }
 
+  void ValidateP(String? val) {
+    profileModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Profile Photo";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+  }
+
   void validateDob(String? val) {
     dobModel.update((model) {
       if (val != null && val.isEmpty) {
@@ -362,6 +374,7 @@ class AddCustomerController extends GetxController {
         "date_of_birth": Dobctr.text.toString().trim(),
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
+        "description": descctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
       });
 
@@ -374,6 +387,7 @@ class AddCustomerController extends GetxController {
         "date_of_birth": Dobctr.text.toString().trim(),
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
+        "description": descctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
       }, ApiUrl.addCustomer, allowHeader: true);
       loadingIndicator.hide(context);
@@ -422,6 +436,7 @@ class AddCustomerController extends GetxController {
         "date_of_birth": Dobctr.text.toString().trim(),
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
+        "description": descctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim()
       });
 
@@ -434,8 +449,9 @@ class AddCustomerController extends GetxController {
         "date_of_birth": Dobctr.text.toString().trim(),
         "date_of_anniversary": Doactr.text.toString().trim(),
         "address": Addressctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim()
-      },  '${ApiUrl.editCourse}/$customerId',allowHeader: true);
+        "description": descctr.text.toString().trim(),
+        "vendor_id": retrievedObject.id.toString().trim()
+      }, '${ApiUrl.editCourse}/$customerId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -460,8 +476,6 @@ class AddCustomerController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
-
-
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(

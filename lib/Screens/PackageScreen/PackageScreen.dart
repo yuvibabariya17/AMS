@@ -2,12 +2,13 @@ import 'package:booking_app/Models/PackageModel.dart';
 import 'package:booking_app/Screens/PackageScreen/AddPackageScreen%20.dart';
 import 'package:booking_app/controllers/PackageController.dart';
 import 'package:booking_app/core/Common/Common.dart';
+import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/Listofexpert.dart';
 import '../../Models/Listofexpert_model.dart';
@@ -241,6 +242,26 @@ class _PackageScreenState extends State<PackageScreen> {
         ));
   }
 
+  String formatDate(String dateTimeString) {
+    // Parse the date string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Format the DateTime object into the desired format
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+
+    return formattedDate;
+  }
+
+  void main() {
+    String backendFromDate = '2023-07-01T00:00:00.704Z';
+    String backendToDate = '2023-08-15T00:00:00.704Z';
+    String formattedFromDate = formatDate(backendFromDate);
+    String formattedToDate = formatDate(backendToDate);
+
+    String formattedDates = '$formattedFromDate To $formattedToDate';
+    print(formattedDates); // Output: 01-07-2023 To 15-08-2023
+  }
+
   Future<void> showDeleteConfirmationDialog(String expertId) async {
     return showDialog(
       context: context,
@@ -284,24 +305,23 @@ class _PackageScreenState extends State<PackageScreen> {
         child: controller.filteredPackageObjectList.isNotEmpty
             ? Container(
                 margin: EdgeInsets.only(left: 8.w, right: 8.w),
-                child: GridView.builder(
+                child: ListView.builder(
                   shrinkWrap: true,
                   clipBehavior: Clip.antiAlias,
                   physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Adjust the number of columns as needed
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                  ),
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 2, // Adjust the number of columns as needed
+                  //   crossAxisSpacing: 10.0,
+                  //   mainAxisSpacing: 10.0,
+                  // ),
                   itemBuilder: (context, index) {
                     PackageList data =
                         controller.filteredPackageObjectList[index];
 
                     return Container(
                       padding: EdgeInsets.only(
-                        left: 1.5.w,
-                        right: 1.5.w,
-                      ),
+                          left: 1.5.w, right: 1.5.w, top: 1.h, bottom: 1.h),
+                      margin: EdgeInsets.only(bottom: 1.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -317,60 +337,41 @@ class _PackageScreenState extends State<PackageScreen> {
                         ],
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Stack(
-                            children: [
-                              //Round Circle Image
-
-                              // CircleAvatar(
-                              //   radius: 3.7.h,
-                              //   backgroundColor: Colors.white,
-                              //   child: ClipRRect(
-                              //     borderRadius: BorderRadius.circular(50),
-                              //     child: CachedNetworkImage(
-                              //       imageUrl:
-                              //           "  data., ", // URL of the expert's image
-                              //       placeholder: (context, url) =>
-                              //           SvgPicture.asset(Asset.profileimg),
-                              //       errorWidget: (context, url, error) =>
-                              //           SvgPicture.asset(Asset.profileimg),
-                              //       fit: BoxFit.cover,
-                              //     ),
-                              //   ),
-                              // ),
-
-                              //CLICPRRECT
-                              Container(
-                                  height: 11.h,
-                                  width: 60.w,
-                                  // padding: EdgeInsets.all(
-                                  //   SizerUtil.deviceType == DeviceType.mobile
-                                  //       ? 1.2.w
-                                  //       : 1.0.w,
-                                  // ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(15)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: "",
-                                      placeholder: (context, url) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                            color: primaryColor),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        Asset.placeholder,
-                                        height: 11.h,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ))
-                            ],
-                          ),
+                          // Stack(
+                          //   children: [
+                          //     //CLICPRRECT
+                          //     Container(
+                          //         height: 11.h,
+                          //         width: 60.w,
+                          //         // padding: EdgeInsets.all(
+                          //         //   SizerUtil.deviceType == DeviceType.mobile
+                          //         //       ? 1.2.w
+                          //         //       : 1.0.w,
+                          //         // ),
+                          //         child: ClipRRect(
+                          //           borderRadius: const BorderRadius.all(
+                          //               Radius.circular(15)),
+                          //           child: CachedNetworkImage(
+                          //             fit: BoxFit.cover,
+                          //             imageUrl: "",
+                          //             placeholder: (context, url) =>
+                          //                 const Center(
+                          //               child: CircularProgressIndicator(
+                          //                   color: primaryColor),
+                          //             ),
+                          //             errorWidget: (context, url, error) =>
+                          //                 Image.asset(
+                          //               Asset.placeholder,
+                          //               height: 11.h,
+                          //               fit: BoxFit.cover,
+                          //             ),
+                          //           ),
+                          //         ))
+                          //   ],
+                          // ),
                           // SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -400,7 +401,11 @@ class _PackageScreenState extends State<PackageScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  data.durationFrom.toString(),
+                                  "Date" +
+                                      formatDate(data.durationFrom.toString()) +
+                                      ' to ' +
+                                      formatDate(data.durationTo.toString()),
+                                  // data.durationFrom.toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -410,6 +415,7 @@ class _PackageScreenState extends State<PackageScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                               ),
+
                               // Spacer(),
                               GestureDetector(
                                 onTap: () {
@@ -579,7 +585,14 @@ class _PackageScreenState extends State<PackageScreen> {
             //     },
             //     itemCount: controller.filteredExpertObjectList.length)
             : Center(
-                child: Text("Data not Found"),
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
               ),
       );
     } else {

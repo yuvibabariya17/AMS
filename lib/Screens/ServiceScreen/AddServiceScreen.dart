@@ -1,5 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/controllers/AddService_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
@@ -19,7 +19,7 @@ import '../../custom_componannt/form_inputs.dart';
 class AddServiceScreen extends StatefulWidget {
   AddServiceScreen({super.key, this.isEdit, this.editService});
   bool? isEdit;
-  ServiceList? editService;
+  VendorServiceList? editService;
 
   @override
   State<AddServiceScreen> createState() => _AddServiceScreenState();
@@ -59,23 +59,24 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   void initState() {
     // FOR EDIT SERVICE
 
-    // if (widget.isEdit == true && widget.editService != null) {
-    //   controller.Servicectr.text = widget.editService!.serviceInfo.name;
-    //   controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
-    //   controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
-    //   controller.durationctr.text =
-    //       widget.editService!.oppoxSettingDuration.toString();
-    //   controller.Pricectr.text = widget.editService!.fees.toString();
-    //   controller.daysctr.text = widget.editService!.serviceInfo.name.toString();
-    //   // Set other fields as well
-    // }
-    // if (widget.isEdit == true) {
-    //   validateFields();
-    // }
+    if (widget.isEdit == true && widget.editService != null) {
+      controller.Servicectr.text = widget.editService!.fees.toString();
+      controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
+      controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
+      //  controller.intervalctr.text = widget.editService.i
+      controller.durationctr.text =
+          widget.editService!.oppoxSettingDuration.toString();
+      controller.Pricectr.text = widget.editService!.fees.toString();
+      controller.daysctr.text = widget.editService!.serviceInfo.name.toString();
+      // Set other fields as well
+    }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
 
-    // controller.getServiceList(context);
+    controller.getServiceList(context);
     controller.getServiceCategoryList(context);
-    //controller.getSubCategoryList(context);
+    controller.getSubCategoryList(context);
     super.initState();
   }
 
@@ -168,14 +169,14 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         onTap: () {
                                           controller.subCategoryctr.text = "";
 
-                                          // if (controller
-                                          //     .categoryctr.text.isEmpty) {
-                                          //   return PopupDialogs(
-                                          //     context,
-                                          //     "Service",
-                                          //     "Category Field is Required",
-                                          //   );
-                                          // }
+                                          if (controller
+                                              .categoryctr.text.isEmpty) {
+                                            return PopupDialogs(
+                                              context,
+                                              "Service",
+                                              "Category Field is Required",
+                                            );
+                                          }
 
                                           showDropDownDialog(
                                               context,
@@ -210,14 +211,14 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
-                                          // if (controller
-                                          //     .subCategoryctr.text.isEmpty) {
-                                          //   return PopupDialogs(
-                                          //     context,
-                                          //     "Service",
-                                          //     "Category Field and Sub Category Field is Required",
-                                          //   );
-                                          // }
+                                          if (controller
+                                              .subCategoryctr.text.isEmpty) {
+                                            return PopupDialogs(
+                                              context,
+                                              "Service",
+                                              "Category Field and Sub Category Field is Required",
+                                            );
+                                          }
 
                                           showDropDownDialog(
                                               context,
@@ -488,6 +489,8 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                               0,
                                               704,
                                             );
+                                            print(
+                                                "Selected Time: $pickedDuration");
 
                                             final SittingDurationTime =
                                                 "${pickedDuration.format(context)}";
@@ -495,10 +498,16 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                             controller.sitingTime =
                                                 "${DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(combinedDateTime)}Z";
 
+                                            // print(
+                                            //     "Controller Sitting Time: ${controller.sitingTime}");
+
                                             controller.updateSittingDuration(
                                                 SittingDurationTime);
                                             controller.validateDuration(
                                                 SittingDurationTime);
+
+                                            print(
+                                                "Controller Sitting Time: ${controller.sitingTime}");
                                             setState(() {
                                               selectedTime = pickedDuration;
                                               print(
@@ -660,18 +669,18 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 child: CupertinoAlertDialog(
                   title: Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontBold,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   content: Text(
                     subtext,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: black,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontMedium,
                     ),
                   ),
@@ -683,9 +692,9 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                       isDefaultAction: true,
                       isDestructiveAction: true,
                       child: Text("Continue",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
-                            color: black,
+                            color: isDarkMode() ? white : black,
                             fontFamily: fontBold,
                             fontWeight: FontWeight.bold,
                           )),

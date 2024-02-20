@@ -22,7 +22,7 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 void main() async {
- WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
           return Sizer(
             builder: (context, orientation, deviceType) {
               return ThemeProvider(
-                initTheme: isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
+                initTheme:
+                    isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
                 child: Builder(builder: (context) {
                   return GetBuilder<ThemeController>(
                     init: ThemeController(),
@@ -54,12 +55,8 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         title: CommonConstant.ams,
                         theme: !ctr.isDark.value
-                            ? ThemeData.light(
-                               useMaterial3: true
-                            )
-                            : ThemeData.dark(
-                              useMaterial3: true
-                            ),
+                            ? ThemeData.light(useMaterial3: true)
+                            : ThemeData.dark(useMaterial3: true),
                         debugShowCheckedModeBanner: false,
                         home: Splashscreen(),
                         defaultTransition: Transition.rightToLeftWithFade,

@@ -382,7 +382,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
                             children: [
                               Container(
                                   child: Text(
-                                "data.vendorInfo.userName,",
+                                "  data.vendorInfo.userName.toString(),",
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
@@ -399,7 +399,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "data.vendorInfo.whatsappNo,",
+                                " data.notes.toString(),",
                                 // '₹ ${data.amount.toString()}',
                                 // data.serviceInfo != null
                                 //     ? data.serviceInfo!.name

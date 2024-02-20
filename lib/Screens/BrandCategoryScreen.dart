@@ -320,7 +320,9 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                         Radius.circular(15)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: "",
+                                      imageUrl: data.uploadInfo.image != null
+                                          ? 'http://192.168.1.15:4000/${data.uploadInfo.image}'
+                                          : "",
                                       placeholder: (context, url) =>
                                           const Center(
                                         child: CircularProgressIndicator(
@@ -423,7 +425,16 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                   itemCount: controller.filterrdBrandObjectList.length,
                 ),
               )
-            : Center(child: Text(CommonConstant.noDataFound)),
+            : Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 31.h),
+                  child: Text(
+                    CommonConstant.noDataFound,
+                    style: TextStyle(
+                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  ),
+                ),
+              ),
       );
     } else {
       return Column(

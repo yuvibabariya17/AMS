@@ -1,4 +1,3 @@
-import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
