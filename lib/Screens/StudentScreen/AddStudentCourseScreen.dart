@@ -3,6 +3,8 @@ import 'package:booking_app/Models/StudentCourseListModel.dart';
 import 'package:booking_app/controllers/AddStudent_courseController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:booking_app/custom_componannt/form_inputs.dart';
@@ -172,6 +174,72 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                                       context: context,
                                                       initialDate: controller
                                                           .selectedStartDate,
+                                                      builder:
+                                                          (BuildContext context,
+                                                              Widget? child) {
+                                                        return Theme(
+                                                          data: isDarkMode()
+                                                              ? ThemeData.dark()
+                                                                  .copyWith(
+                                                                  primaryColor:
+                                                                      primaryColor,
+                                                                  backgroundColor:
+                                                                      white,
+                                                                  buttonTheme:
+                                                                      ButtonThemeData(
+                                                                    textTheme:
+                                                                        ButtonTextTheme
+                                                                            .primary,
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50), // Set your border radius
+                                                                    ),
+                                                                  ),
+                                                                  useMaterial3:
+                                                                      true,
+                                                                  colorScheme:
+                                                                      const ColorScheme
+                                                                          .dark(
+                                                                    primary: Colors
+                                                                        .teal, // Set your primary color
+                                                                  ).copyWith(
+                                                                          secondary:
+                                                                              secondaryColor),
+                                                                )
+                                                              : ThemeData
+                                                                      .light()
+                                                                  .copyWith(
+                                                                  primaryColor:
+                                                                      primaryColor,
+                                                                  backgroundColor:
+                                                                      white,
+                                                                  buttonTheme:
+                                                                      ButtonThemeData(
+                                                                    textTheme:
+                                                                        ButtonTextTheme
+                                                                            .primary,
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50), // Set your border radius
+                                                                    ),
+                                                                  ),
+                                                                  useMaterial3:
+                                                                      true,
+                                                                  colorScheme: const ColorScheme
+                                                                      .light(
+                                                                    primary: Colors
+                                                                        .teal, // Set your primary color
+                                                                  ).copyWith(
+                                                                      secondary:
+                                                                          secondaryColor),
+                                                                ),
+                                                          child: child!,
+                                                        );
+                                                      },
                                                       firstDate: DateTime(1950),
                                                       lastDate: DateTime.now()
                                                           .add(const Duration(

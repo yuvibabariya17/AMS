@@ -49,6 +49,8 @@ class ExpertList {
   String name;
   int amount;
   int createdAt;
+  DateTime startTime;
+  DateTime endTime;
   VendorInfo vendorInfo;
   UploadInfo upload_info;
   ServiceInfo? serviceInfo;
@@ -58,6 +60,8 @@ class ExpertList {
     required this.name,
     required this.amount,
     required this.createdAt,
+    required this.startTime,
+    required this.endTime,
     required this.vendorInfo,
     required this.upload_info,
     this.serviceInfo,
@@ -68,6 +72,12 @@ class ExpertList {
         name: json["name"] ?? '',
         amount: json["amount"],
         createdAt: json["created_at"],
+        startTime: json["startTime"] != null
+            ? DateTime.parse(json["startTime"])
+            : DateTime.now(),
+        endTime: json["endTime"] != null
+            ? DateTime.parse(json["endTime"])
+            : DateTime.now(),
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
         upload_info: UploadInfo.fromJson(json["upload_info"] ?? {}),
         serviceInfo: json["service_info"] == null
@@ -80,6 +90,8 @@ class ExpertList {
         "name": name,
         "amount": amount,
         "created_at": createdAt,
+        "startTime": startTime.toIso8601String(),
+        "endTime": endTime.toIso8601String(),
         "upload_info": upload_info.toJson(),
         "vendor_info": vendorInfo.toJson(),
         "service_info": serviceInfo?.toJson(),

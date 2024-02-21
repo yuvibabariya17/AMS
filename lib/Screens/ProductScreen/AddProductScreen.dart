@@ -31,7 +31,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       controller.descriptionCtr.text =
           widget.editProduct!.description.toString();
       controller.categroryCtr.text =
-          widget.editProduct!.name.toString();
+          widget.editProduct!.productCategoryInfo.name.toString();
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
 

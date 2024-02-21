@@ -2,7 +2,6 @@ import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/controllers/Service_controller.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -279,7 +278,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 1.5.w, right: 1.5.w, top: 1.h, bottom: 1.h),
+                          left: 5.w, right: 3.w, top: 1.h, bottom: 1.h),
                       margin: EdgeInsets.only(bottom: 1.h),
                       decoration: BoxDecoration(
                         color: isDarkMode() ? black : white,
@@ -355,7 +354,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: black,
+                                  color: isDarkMode() ? white : black,
                                   fontFamily: opensansMedium,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w700,

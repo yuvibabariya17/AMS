@@ -222,100 +222,120 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
-                            getTitle("Duration"),
-                            FadeInUp(
-                                from: 30,
-                                child: AnimatedSize(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: Obx(() {
-                                      return getReactiveFormField(
-                                        node: controller.durationNode,
-                                        controller: controller.durationctr,
-                                        wantSuffix: true,
-                                        time: true,
-                                        hintLabel: "Enter Duration",
-                                        isReadOnly: true,
-                                        onChanged: (val) {
-                                          controller.validateDuration(val);
-                                          setState(() {});
-                                        },
-                                        onTap: () async {
-                                          final TimeOfDay? pickedDuration =
-                                              await showTimePicker(
-                                            context: context,
-                                            initialTime: TimeOfDay.now(),
-                                          );
 
-                                          if (pickedDuration != null) {
-                                            final DateTime currentDate =
-                                                DateTime.now();
-                                            final DateTime combinedDateTime =
-                                                DateTime(
-                                              currentDate.year,
-                                              currentDate.month,
-                                              currentDate.day,
-                                              pickedDuration.hour,
-                                              pickedDuration.minute,
-                                              0,
-                                              704,
-                                            );
+                            getTitle(AddCourseConstant.duration),
+                            FadeInDown(
+                              child: AnimatedSize(
+                                duration: const Duration(milliseconds: 300),
+                                child: Obx(() {
+                                  return getReactiveFormField(
+                                      node: controller.durationNode,
+                                      controller: controller.durationctr,
+                                      hintLabel: AddCourseConstant.durationHint,
+                                      onChanged: (val) {
+                                        controller.validateDuration(val);
+                                      },
+                                      inputType: TextInputType.number,
+                                      errorText:
+                                          controller.durationModel.value.error);
+                                }),
+                              ),
+                            ),
 
-                                            final SittingDurationTime =
-                                                "${pickedDuration.format(context)}";
-                                            //For All Format
-                                            controller.sitingTime =
-                                                "${DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(combinedDateTime)}Z";
+                            // getTitle("Duration"),
+                            // FadeInUp(
+                            //     from: 30,
+                            //     child: AnimatedSize(
+                            //         duration: const Duration(milliseconds: 300),
+                            //         child: Obx(() {
+                            //           return getReactiveFormField(
+                            //             node: controller.durationNode,
+                            //             controller: controller.durationctr,
+                            //             wantSuffix: true,
+                            //             time: true,
+                            //             hintLabel: "Enter Duration",
+                            //             isReadOnly: true,
+                            //             onChanged: (val) {
+                            //               controller.validateDuration(val);
+                            //               setState(() {});
+                            //             },
+                            //             onTap: () async {
+                            //               final TimeOfDay? pickedDuration =
+                            //                   await showTimePicker(
+                            //                 context: context,
+                            //                 initialTime: TimeOfDay.now(),
+                            //               );
 
-                                            controller.updateSittingDuration(
-                                                SittingDurationTime);
-                                            controller.validateDuration(
-                                                SittingDurationTime);
-                                            setState(() {
-                                              selectedTime = pickedDuration;
-                                              print(
-                                                  "Selected Time: $SittingDurationTime");
-                                            });
-                                          }
+                            //               if (pickedDuration != null) {
+                            //                 final DateTime currentDate =
+                            //                     DateTime.now();
+                            //                 final DateTime combinedDateTime =
+                            //                     DateTime(
+                            //                   currentDate.year,
+                            //                   currentDate.month,
+                            //                   currentDate.day,
+                            //                   pickedDuration.hour,
+                            //                   pickedDuration.minute,
+                            //                   0,
+                            //                   704,
+                            //                 );
 
-                                          // DateTime? pickedDate =
-                                          //     await showDatePicker(
-                                          //   context: context,
-                                          //   initialDate: controller.durationDate,
-                                          //   firstDate: DateTime(1950),
-                                          //   lastDate: DateTime(2050),
-                                          //   // lastDate: DateTime.now().add(
-                                          //   //     const Duration(days: 0))
-                                          // );
-                                          // if (pickedDate != null &&
-                                          //     pickedDate !=
-                                          //         controller.durationDate) {
-                                          //   setState(() {
-                                          //     controller.durationDate = pickedDate;
-                                          //     controller.durationDate = DateTime(
-                                          //       pickedDate.year,
-                                          //       pickedDate.month,
-                                          //       pickedDate.day,
-                                          //       controller.durationDate.hour,
-                                          //       controller.durationDate.minute,
-                                          //       controller.durationDate.second,
-                                          //     );
-                                          //   });
-                                          // }
-                                          // if (pickedDate != null) {
-                                          //   String formattedDate =
-                                          //       DateFormat(Strings.oldDateFormat)
-                                          //           .format(pickedDate);
-                                          //   controller.updateSittingDuration(
-                                          //       formattedDate);
-                                          //   controller
-                                          //       .validateDuration(formattedDate);
-                                          // }
-                                        },
-                                        errorText: controller
-                                            .durationModel.value.error,
-                                        inputType: TextInputType.none,
-                                      );
-                                    }))),
+                            //                 final SittingDurationTime =
+                            //                     "${pickedDuration.format(context)}";
+                            //                 //For All Format
+                            //                 controller.sitingTime =
+                            //                     "${DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(combinedDateTime)}Z";
+
+                            //                 controller.updateSittingDuration(
+                            //                     SittingDurationTime);
+                            //                 controller.validateDuration(
+                            //                     SittingDurationTime);
+                            //                 setState(() {
+                            //                   selectedTime = pickedDuration;
+                            //                   print(
+                            //                       "Selected Time: $SittingDurationTime");
+                            //                 });
+                            //               }
+
+                            //               // DateTime? pickedDate =
+                            //               //     await showDatePicker(
+                            //               //   context: context,
+                            //               //   initialDate: controller.durationDate,
+                            //               //   firstDate: DateTime(1950),
+                            //               //   lastDate: DateTime(2050),
+                            //               //   // lastDate: DateTime.now().add(
+                            //               //   //     const Duration(days: 0))
+                            //               // );
+                            //               // if (pickedDate != null &&
+                            //               //     pickedDate !=
+                            //               //         controller.durationDate) {
+                            //               //   setState(() {
+                            //               //     controller.durationDate = pickedDate;
+                            //               //     controller.durationDate = DateTime(
+                            //               //       pickedDate.year,
+                            //               //       pickedDate.month,
+                            //               //       pickedDate.day,
+                            //               //       controller.durationDate.hour,
+                            //               //       controller.durationDate.minute,
+                            //               //       controller.durationDate.second,
+                            //               //     );
+                            //               //   });
+                            //               // }
+                            //               // if (pickedDate != null) {
+                            //               //   String formattedDate =
+                            //               //       DateFormat(Strings.oldDateFormat)
+                            //               //           .format(pickedDate);
+                            //               //   controller.updateSittingDuration(
+                            //               //       formattedDate);
+                            //               //   controller
+                            //               //       .validateDuration(formattedDate);
+                            //               // }
+                            //             },
+                            //             errorText: controller
+                            //                 .durationModel.value.error,
+                            //             inputType: TextInputType.none,
+                            //           );
+                            //         }))),
 
                             getTitle(
                                 AppointmentBookingConstant.Appointment_slot),

@@ -31,6 +31,8 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
 
   @override
   void dispose() {
+    controller.categoryctr.text = "";
+    controller.subCategoryctr.text = "";
     controller.Servicectr.text = "";
     controller.Expertctr.text = "";
     controller.Pricectr.text = "";
@@ -38,12 +40,15 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     controller.sittingctr.text = "";
     controller.durationctr.text = "";
     controller.daysctr.text = "";
+    controller.intervalctr.text = "";
 
     super.dispose();
   }
 
   void validateFields() {
     // Validate all fields here
+    controller.validateCategory(controller.categoryctr.text);
+    controller.validateSubCategory(controller.subCategoryctr.text);
     controller.validateServicename(controller.Servicectr.text);
     controller.validateApproxtime(controller.approxtimectr.text);
     controller.validateSitting(controller.sittingctr.text);
@@ -60,23 +65,28 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     // FOR EDIT SERVICE
 
     if (widget.isEdit == true && widget.editService != null) {
+      controller.categoryctr.text = widget.editService!.fees.toString();
+      controller.subCategoryctr.text = widget.editService!.fees.toString();
       controller.Servicectr.text = widget.editService!.fees.toString();
       controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
       controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
-      //  controller.intervalctr.text = widget.editService.i
+      controller.intervalctr.text =
+          widget.editService!.oppox_setting_days_inverval.toString();
       controller.durationctr.text =
           widget.editService!.oppoxSettingDuration.toString();
       controller.Pricectr.text = widget.editService!.fees.toString();
-      controller.daysctr.text = widget.editService!.serviceInfo.name.toString();
+      controller.daysctr.text = widget.editService!.Total_days.toString();
       // Set other fields as well
     }
     if (widget.isEdit == true) {
       validateFields();
     }
 
-    controller.getServiceList(context);
     controller.getServiceCategoryList(context);
-    controller.getSubCategoryList(context);
+     controller.getSubCategoryList(context);
+    controller.getServiceList(context);
+
+   
     super.initState();
   }
 
@@ -260,8 +270,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                               return Theme(
                                                 data: isDarkMode()
                                                     ? ThemeData.dark().copyWith(
-                                                        primaryColor:
-                                                            primaryColor,
+                                                        primaryColor: black,
                                                         backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
@@ -279,7 +288,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                         useMaterial3: true,
                                                         colorScheme:
                                                             const ColorScheme
-                                                                .light(
+                                                                .dark(
                                                           primary: Colors
                                                               .teal, // Set your primary color
                                                         ).copyWith(
@@ -288,8 +297,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                       )
                                                     : ThemeData.light()
                                                         .copyWith(
-                                                        primaryColor:
-                                                            primaryColor,
+                                                        primaryColor: white,
                                                         backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
@@ -474,6 +482,67 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                               await showTimePicker(
                                             context: context,
                                             initialTime: TimeOfDay.now(),
+                                            builder: (context, child) {
+                                              return Theme(
+                                                data: isDarkMode()
+                                                    ? ThemeData.dark().copyWith(
+                                                        primaryColor:
+                                                            primaryColor,
+                                                        backgroundColor: white,
+                                                        buttonTheme:
+                                                            ButtonThemeData(
+                                                          textTheme:
+                                                              ButtonTextTheme
+                                                                  .primary,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50), // Set your border radius
+                                                          ),
+                                                        ),
+                                                        useMaterial3: true,
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .dark(
+                                                          primary: Colors
+                                                              .teal, // Set your primary color
+                                                        ).copyWith(
+                                                                secondary:
+                                                                    secondaryColor),
+                                                      )
+                                                    : ThemeData.light()
+                                                        .copyWith(
+                                                        primaryColor:
+                                                            primaryColor,
+                                                        backgroundColor: white,
+                                                        buttonTheme:
+                                                            ButtonThemeData(
+                                                          textTheme:
+                                                              ButtonTextTheme
+                                                                  .primary,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50), // Set your border radius
+                                                          ),
+                                                        ),
+                                                        useMaterial3: true,
+                                                        colorScheme:
+                                                            const ColorScheme
+                                                                .light(
+                                                          primary: Colors
+                                                              .teal, // Set your primary color
+                                                        ).copyWith(
+                                                                secondary:
+                                                                    secondaryColor),
+                                                      ),
+                                                child: child!,
+                                              );
+                                            },
                                           );
 
                                           if (pickedDuration != null) {

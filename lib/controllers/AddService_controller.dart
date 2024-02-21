@@ -297,18 +297,8 @@ class AddserviceController extends GetxController {
         });
         return;
       }
-      var response = await Repository.post({
-        "search": {
-          "startAt": "2023-06-06T00:00:00.704Z",
-          "endAt": "2023-06-06T23:55:00.704Z"
-        },
-        "pagination": {
-          "pageNo": 1,
-          "recordPerPage": 10,
-          "sortBy": "name",
-          "sortDirection": 1
-        }
-      }, ApiUrl.serviceCategoryList, allowHeader: true);
+      var response = await Repository.post({}, ApiUrl.serviceCategoryList,
+          allowHeader: true);
       isServiceCategoryList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("CATEGORY LIST", jsonEncode(responseData));
@@ -357,7 +347,8 @@ class AddserviceController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("CATEGORY List", "CATEGORY");
+                logcat("CATEGORY List",
+                    serviceCategoryList[index].name.toString());
                 categoryId.value = serviceCategoryList[index].id.toString();
                 categoryctr.text = serviceCategoryList[index].name.toString();
                 //   getSubCategoryList(context, categoryId.value.toString());

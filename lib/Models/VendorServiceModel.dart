@@ -51,6 +51,8 @@ class VendorServiceList {
   int oppoxSetting;
   DateTime oppoxSettingDuration;
   int createdAt;
+  int oppox_setting_days_inverval;
+  int Total_days;
   VendorInfo vendorInfo;
   ServiceInfo serviceInfo;
   CategoryInfo categoryInfo;
@@ -63,6 +65,8 @@ class VendorServiceList {
     required this.oppoxSetting,
     required this.oppoxSettingDuration,
     required this.createdAt,
+    required this.oppox_setting_days_inverval,
+    required this.Total_days,
     required this.vendorInfo,
     required this.serviceInfo,
     required this.categoryInfo,
@@ -81,6 +85,8 @@ class VendorServiceList {
             ? DateTime.parse(json["oppox_setting_duration"])
             : DateTime.now(),
         createdAt: json["created_at"] ?? 0,
+        oppox_setting_days_inverval: json["oppox_setting_days_inverval"] ?? 0,
+        Total_days: json["Total_days"] ?? 0,
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
         serviceInfo: ServiceInfo.fromJson(json["service_info"] ?? {}),
         categoryInfo: CategoryInfo.fromJson(json["category_info"] ?? {}),
@@ -94,6 +100,8 @@ class VendorServiceList {
         "oppox_setting": oppoxSetting,
         "oppox_setting_duration": oppoxSettingDuration.toIso8601String(),
         "created_at": createdAt,
+        "oppox_setting_days_inverval": oppox_setting_days_inverval,
+        "Total_days": Total_days,
         "vendor_info": vendorInfo.toJson(),
         "service_info": serviceInfo.toJson(),
         "category_info": categoryInfo.toJson(),

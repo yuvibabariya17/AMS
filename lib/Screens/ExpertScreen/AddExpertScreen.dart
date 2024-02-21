@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/controllers/AddExpert_controller.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +32,9 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
     if (widget.isEdit == true && widget.editExpert != null) {
       controller.Servicectr.text = widget.editExpert!.name;
       controller.Expertctr.text = widget.editExpert!.name;
-      controller.Profilectr.text = widget.editExpert!.name;
-      controller.Startctr.text = widget.editExpert!.name;
-      controller.Endctr.text = widget.editExpert!.name;
+      controller.Profilectr.text = widget.editExpert!.upload_info.image;
+      controller.Startctr.text = widget.editExpert!.startTime.toString();
+      controller.Endctr.text = widget.editExpert!.endTime.toString();
       controller.Pricectr.text = widget.editExpert!.amount.toString();
 
       if (widget.isEdit == true) {
@@ -208,6 +210,65 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                             await showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now(),
+                                          builder: (BuildContext context,
+                                              Widget? child) {
+                                            return Theme(
+                                              data: isDarkMode()
+                                                  ? ThemeData.dark().copyWith(
+                                                      primaryColor:
+                                                          primaryColor,
+                                                      backgroundColor: white,
+                                                      buttonTheme:
+                                                          ButtonThemeData(
+                                                        textTheme:
+                                                            ButtonTextTheme
+                                                                .primary,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  50), // Set your border radius
+                                                        ),
+                                                      ),
+                                                      useMaterial3: true,
+                                                      colorScheme:
+                                                          const ColorScheme
+                                                              .dark(
+                                                        primary: Colors
+                                                            .teal, // Set your primary color
+                                                      ).copyWith(
+                                                              secondary:
+                                                                  secondaryColor),
+                                                    )
+                                                  : ThemeData.light().copyWith(
+                                                      primaryColor:
+                                                          primaryColor,
+                                                      backgroundColor: white,
+                                                      buttonTheme:
+                                                          ButtonThemeData(
+                                                        textTheme:
+                                                            ButtonTextTheme
+                                                                .primary,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  50), // Set your border radius
+                                                        ),
+                                                      ),
+                                                      useMaterial3: true,
+                                                      colorScheme:
+                                                          const ColorScheme
+                                                              .light(
+                                                        primary: Colors
+                                                            .teal, // Set your primary color
+                                                      ).copyWith(
+                                                              secondary:
+                                                                  secondaryColor),
+                                                    ),
+                                              child: child!,
+                                            );
+                                          },
                                         );
 
                                         if (pickedTime != null) {
@@ -325,6 +386,65 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                             await showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now(),
+                                          builder: (BuildContext context,
+                                              Widget? child) {
+                                            return Theme(
+                                              data: isDarkMode()
+                                                  ? ThemeData.dark().copyWith(
+                                                      primaryColor:
+                                                          primaryColor,
+                                                      backgroundColor: white,
+                                                      buttonTheme:
+                                                          ButtonThemeData(
+                                                        textTheme:
+                                                            ButtonTextTheme
+                                                                .primary,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  50), // Set your border radius
+                                                        ),
+                                                      ),
+                                                      useMaterial3: true,
+                                                      colorScheme:
+                                                          const ColorScheme
+                                                              .dark(
+                                                        primary: Colors
+                                                            .teal, // Set your primary color
+                                                      ).copyWith(
+                                                              secondary:
+                                                                  secondaryColor),
+                                                    )
+                                                  : ThemeData.light().copyWith(
+                                                      primaryColor:
+                                                          primaryColor,
+                                                      backgroundColor: white,
+                                                      buttonTheme:
+                                                          ButtonThemeData(
+                                                        textTheme:
+                                                            ButtonTextTheme
+                                                                .primary,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  50), // Set your border radius
+                                                        ),
+                                                      ),
+                                                      useMaterial3: true,
+                                                      colorScheme:
+                                                          const ColorScheme
+                                                              .light(
+                                                        primary: Colors
+                                                            .teal, // Set your primary color
+                                                      ).copyWith(
+                                                              secondary:
+                                                                  secondaryColor),
+                                                    ),
+                                              child: child!,
+                                            );
+                                          },
                                         );
 
                                         if (pickedDuration != null) {

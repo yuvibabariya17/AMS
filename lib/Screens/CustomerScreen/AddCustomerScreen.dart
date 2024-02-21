@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/controllers/AddCustomer_controller.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/customeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -193,6 +195,72 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                             DateTime? pickedDate =
                                                 await showDatePicker(
                                                     context: context,
+                                                    builder:
+                                                        (BuildContext context,
+                                                            Widget? child) {
+                                                      return Theme(
+                                                        data: isDarkMode()
+                                                            ? ThemeData.dark()
+                                                                .copyWith(
+                                                                primaryColor:
+                                                                    primaryColor,
+                                                                backgroundColor:
+                                                                    white,
+                                                                buttonTheme:
+                                                                    ButtonThemeData(
+                                                                  textTheme:
+                                                                      ButtonTextTheme
+                                                                          .primary,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50), // Set your border radius
+                                                                  ),
+                                                                ),
+                                                                useMaterial3:
+                                                                    true,
+                                                                colorScheme:
+                                                                    const ColorScheme
+                                                                        .dark(
+                                                                  primary: Colors
+                                                                      .teal, // Set your primary color
+                                                                ).copyWith(
+                                                                        secondary:
+                                                                            secondaryColor),
+                                                              )
+                                                            : ThemeData.light()
+                                                                .copyWith(
+                                                                primaryColor:
+                                                                    primaryColor,
+                                                                backgroundColor:
+                                                                    white,
+                                                                buttonTheme:
+                                                                    ButtonThemeData(
+                                                                  textTheme:
+                                                                      ButtonTextTheme
+                                                                          .primary,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50), // Set your border radius
+                                                                  ),
+                                                                ),
+                                                                useMaterial3:
+                                                                    true,
+                                                                colorScheme:
+                                                                    const ColorScheme
+                                                                        .light(
+                                                                  primary: Colors
+                                                                      .teal, // Set your primary color
+                                                                ).copyWith(
+                                                                        secondary:
+                                                                            secondaryColor),
+                                                              ),
+                                                        child: child!,
+                                                      );
+                                                    },
                                                     initialDate:
                                                         controller.selectedDate,
                                                     firstDate: DateTime(1950),
@@ -243,6 +311,72 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                             DateTime? pickedDate =
                                                 await showDatePicker(
                                                     context: context,
+                                                    builder:
+                                                        (BuildContext context,
+                                                            Widget? child) {
+                                                      return Theme(
+                                                        data: isDarkMode()
+                                                            ? ThemeData.dark()
+                                                                .copyWith(
+                                                                primaryColor:
+                                                                    primaryColor,
+                                                                backgroundColor:
+                                                                    white,
+                                                                buttonTheme:
+                                                                    ButtonThemeData(
+                                                                  textTheme:
+                                                                      ButtonTextTheme
+                                                                          .primary,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50), // Set your border radius
+                                                                  ),
+                                                                ),
+                                                                useMaterial3:
+                                                                    true,
+                                                                colorScheme:
+                                                                    const ColorScheme
+                                                                        .dark(
+                                                                  primary: Colors
+                                                                      .teal, // Set your primary color
+                                                                ).copyWith(
+                                                                        secondary:
+                                                                            secondaryColor),
+                                                              )
+                                                            : ThemeData.light()
+                                                                .copyWith(
+                                                                primaryColor:
+                                                                    primaryColor,
+                                                                backgroundColor:
+                                                                    white,
+                                                                buttonTheme:
+                                                                    ButtonThemeData(
+                                                                  textTheme:
+                                                                      ButtonTextTheme
+                                                                          .primary,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50), // Set your border radius
+                                                                  ),
+                                                                ),
+                                                                useMaterial3:
+                                                                    true,
+                                                                colorScheme:
+                                                                    const ColorScheme
+                                                                        .light(
+                                                                  primary: Colors
+                                                                      .teal, // Set your primary color
+                                                                ).copyWith(
+                                                                        secondary:
+                                                                            secondaryColor),
+                                                              ),
+                                                        child: child!,
+                                                      );
+                                                    },
                                                     initialDate: controller
                                                         .selectedAnniversaryDate,
                                                     firstDate: DateTime(1950),
