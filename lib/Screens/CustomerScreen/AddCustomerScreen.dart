@@ -30,7 +30,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   void initState() {
     if (widget.isEdit == true && widget.editCustomer != null) {
       controller.Customerctr.text = widget.editCustomer!.name;
-      controller.Profilectr.text = widget.editCustomer!.pic.toString();
+      controller.Profilectr.text =
+          widget.editCustomer!.picInfo!.image.toString();
       controller.Dobctr.text = widget.editCustomer!.dateOfBirth.toString();
       controller.Doactr.text =
           widget.editCustomer!.dateOfAnniversary.toString();
@@ -40,6 +41,25 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       controller.Whatsappctr.text = widget.editCustomer!.whatsappNo.toString();
       controller.Emailctr.text = widget.editCustomer!.email.toString();
       controller.descctr.text = widget.editCustomer!.description.toString();
+      controller.uploadImageId.value = widget.editCustomer!.pic.toString();
+
+// Parse the date string to a DateTime object
+      DateTime dateTime = DateTime.parse(
+          widget.editCustomer!.dateOfBirth.toIso8601String().toString());
+
+// Format the DateTime object to the desired format
+      String formattedDate =
+          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+
+      DateTime dateOfAnniversary = DateTime.parse(
+          widget.editCustomer!.dateOfAnniversary.toIso8601String().toString());
+
+// Format the DateTime object to the desired format
+      String formattedAnniversaryDate =
+          "${dateOfAnniversary.year}-${dateOfAnniversary.month.toString().padLeft(2, '0')}-${dateOfAnniversary.day.toString().padLeft(2, '0')}";
+
+      controller.Dobctr.text = formattedDate;
+      controller.Doactr.text = formattedAnniversaryDate;
     }
     if (widget.isEdit == true) {
       validateFields();

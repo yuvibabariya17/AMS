@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/OnboardingScreen/IntroScreen%20.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,17 +35,21 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
-      color: Colors.white,
       height: double.infinity,
       width: double.infinity,
       child: Center(
-        child: SvgPicture.asset(Asset.splash_bg,
-            fit: BoxFit.cover,
-            width: SizerUtil.deviceType == DeviceType.mobile
-                ? SizerUtil.width
-                : 500),
+        child: isDarkMode()
+            ? SvgPicture.asset(Asset.amsblack,
+                fit: BoxFit.cover,
+                width: SizerUtil.deviceType == DeviceType.mobile
+                    ? SizerUtil.width
+                    : 500)
+            : SvgPicture.asset(Asset.splash_bg,
+                fit: BoxFit.cover,
+                width: SizerUtil.deviceType == DeviceType.mobile
+                    ? SizerUtil.width
+                    : 500),
       ),
     );
     // return MaterialApp(

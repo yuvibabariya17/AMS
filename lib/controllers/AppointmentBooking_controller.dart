@@ -48,7 +48,7 @@ class AppointmentBookingController extends GetxController {
   final formKey = GlobalKey<FormState>();
   RxBool isClickd = false.obs;
   RxInt selectedIndex = 0.obs;
-  RxBool value_1 = false.obs;
+  RxBool isRemind = false.obs;
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
   @override
@@ -126,6 +126,14 @@ class AppointmentBookingController extends GetxController {
     update();
   }
 
+  updateSelectedTimeSlote(bool isSelected) {
+    isItemSelected.value = isSelected;
+    enableSignUpButton();
+    update();
+  }
+
+  RxBool isItemSelected = false.obs;
+
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
@@ -139,31 +147,38 @@ class AppointmentBookingController extends GetxController {
   var slotModel = ValidationModel(null, null, isValidate: false).obs;
   var appointmentTypeModel = ValidationModel(null, null, isValidate: false).obs;
   var durationModel = ValidationModel(null, null, isValidate: false).obs;
+  var SlotSelectionModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
     if (CustomerModel.value.isValidate == false) {
+      logcat("STEP", '1');
       isFormInvalidate.value = false;
     } else if (ServicesModel.value.isValidate == false) {
+      logcat("STEP", '2');
       isFormInvalidate.value = false;
     } else if (expertsModel.value.isValidate == false) {
+      logcat("STEP", '3');
       isFormInvalidate.value = false;
     } else if (dateModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (SlotModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (AmountModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (NoteModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (RemindModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (slotModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (appointmentTypeModel.value.isValidate == false) {
+      logcat("STEP", '4');
       isFormInvalidate.value = false;
     } else if (durationModel.value.isValidate == false) {
+      logcat("STEP", '5');
+      isFormInvalidate.value = false;
+    } else if (isItemSelected.value == false) {
+      logcat("STEP", '6');
+      isFormInvalidate.value = false;
+    } else if (AmountModel.value.isValidate == false) {
+      logcat("STEP", '7');
+      isFormInvalidate.value = false;
+    } else if (appointmentTypeModel.value.isValidate == false) {
+      logcat("STEP", '8');
+      isFormInvalidate.value = false;
+    } else if (NoteModel.value.isValidate == false) {
+      logcat("STEP", '9');
       isFormInvalidate.value = false;
     } else {
+      logcat("STEP", '11');
       isFormInvalidate.value = true;
     }
   }
@@ -235,6 +250,25 @@ class AppointmentBookingController extends GetxController {
       }
     });
 
+    enableSignUpButton();
+  }
+
+  void validateSlots() {
+    if (selectedIndex.value == -1) {
+      // No slot selected
+      SlotSelectionModel.update((model) {
+        model!.error = "Please select a slot";
+        model.isValidate = false;
+      });
+    } else {
+      // Slot selected
+      SlotSelectionModel.update((model) {
+        model!.error = null;
+        model.isValidate = true;
+      });
+    }
+
+    // Call a method to enable/disable the button based on validation
     enableSignUpButton();
   }
 
@@ -317,6 +351,9 @@ class AppointmentBookingController extends GetxController {
     }
   }
 
+  RxString selectedAppointmentSlotId = "".obs;
+  RxString apiFormattedDate = "".obs;
+
 //Main API CALLING
 
   void AddBookingAppointmentAPI(context) async {
@@ -331,15 +368,34 @@ class AppointmentBookingController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-      var response = await Repository.post({
+
+      logcat("ADDAPPOINTMENT", {
         "vendor_id": retrievedObject!.id.toString().trim(),
         "customer_id": customerId.value.toString().trim(),
         "vendor_service_id": ServiceId.value.toString().trim(),
-        "appointment_slot_id": "6500476bf3b6019b811a1e22",
+        "appointment_slot_id":
+            selectedAppointmentSlotId.value.toString().trim(),
         "amount": Amountctr.text.toString().trim(),
         "appointment_type": appointmentTypectr.text.toString().trim(),
         "duration": durationctr.text.toString().trim(),
-        "date_of_appointment": datectr.text.toString().trim(),
+        "date_of_appointment": apiFormattedDate.value,
+        "make_reminder": 1,
+        "is_confirmed": 1,
+        "is_finished": 0,
+        "is_cancelled": 0,
+        "is_reschedule": 0,
+        "notes": Notectr.text.toString().trim()
+      });
+      var response = await Repository.post({
+        "vendor_id": retrievedObject.id.toString().trim(),
+        "customer_id": customerId.value.toString().trim(),
+        "vendor_service_id": ServiceId.value.toString().trim(),
+        "appointment_slot_id":
+            selectedAppointmentSlotId.value.toString().trim(),
+        "amount": Amountctr.text.toString().trim(),
+        "appointment_type": appointmentTypectr.text.toString().trim(),
+        "duration": durationctr.text.toString().trim(),
+        "date_of_appointment": apiFormattedDate.value,
         "make_reminder": 1,
         "is_confirmed": 1,
         "is_finished": 0,
@@ -352,17 +408,20 @@ class AppointmentBookingController extends GetxController {
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
-      var responseDetail = CommonModel.fromJson(data);
+      // var responseDetail = CommonModel.fromJson(data);
       if (response.statusCode == 200) {
-        if (responseDetail.status == 1) {
-          Get.back();
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, data['message'].toString(),
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseDetail.message.toString(),
+        showDialogForScreen(context, data['message'].toString(),
             callback: () {});
       }
     } catch (e) {
@@ -374,38 +433,133 @@ class AppointmentBookingController extends GetxController {
 
 // APPOITNTMENT SLOT LIST
 
+  RxBool isSlotApiList = false.obs;
+  RxList<SlotList> slotObjectList = <SlotList>[].obs;
+  RxString slotId = "".obs;
+
   void getAppointmentSlot(context) async {
     isSlotApiList.value = true;
-    try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response =
-          await Repository.post({}, ApiUrl.slotList, allowHeader: true);
-      isSlotApiList.value = false;
-      var responseData = jsonDecode(response.body);
-      logcat("SLOT LIST", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = AppointmentSlotModel.fromJson(responseData);
-        if (data.status == 1) {
-          slotObjectList.clear();
-          slotObjectList.addAll(data.data);
-          logcat("SLOT LIST", jsonEncode(expertObjectList));
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
-    } catch (e) {
-      logcat('Exception', e);
-      isSlotApiList.value = false;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
+      });
+      return;
     }
+    var response = await Repository.post({
+      "pagination": {
+        "pageNo": 1,
+        "recordPerPage": 20,
+        "sortBy": "name",
+        "sortDirection": "asc"
+      },
+    }, ApiUrl.slotList, allowHeader: true);
+    isSlotApiList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("SLOT_LIST", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = AppointmentSlotModel.fromJson(responseData);
+      if (data.status == 1) {
+        slotObjectList.clear();
+        slotObjectList.addAll(data.data);
+
+        if (slotObjectList.isNotEmpty) {
+          selectedAppointmentSlotId.value = slotObjectList[0].id.toString();
+
+          for (var i = 0; i < slotObjectList.length; i++) {}
+        }
+
+        logcat("SLOT_LIST", jsonEncode(slotObjectList));
+        logcat("SLOT_LIST_LENGTH", (slotObjectList.length));
+        logcat("RECORD", (data.totalRecord.toString()));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isSlotApiList.value = false;
+    // }
+  }
+
+  Widget setAppointmentList() {
+    return Obx(() {
+      if (isSlotApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isSlotApiList.value);
+
+      return GridView.count(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          childAspectRatio: 2.0,
+          crossAxisCount: 3,
+          crossAxisSpacing: 17,
+          mainAxisSpacing: 4,
+          children: List.generate(choices.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                selectedIndex.value = index;
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: 25.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color:
+                      selectedIndex.value == index ? Colors.black : Colors.grey,
+                ),
+                child: Center(
+                  child: Text(
+                    choices[index].title,
+                    style: TextStyle(
+                        fontFamily: opensans_Bold,
+                        color: Colors.white,
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 13.sp,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+            );
+          }));
+
+      // setDropDownTestContent(
+      //   slotObjectList,
+
+      //   ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: slotObjectList.length,
+      //     itemBuilder: (BuildContext context, int index) {
+      //       return ListTile(
+      //         dense: true,
+      //         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+      //         contentPadding:
+      //             const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+      //         horizontalTitleGap: null,
+      //         minLeadingWidth: 5,
+      //         onTap: () {
+      //           Get.back();
+      //           logcat("SLOT_LIST", "SLOT");
+      //           slotId.value = slotObjectList[index].id.toString();
+      //           expertctr.text =
+      //               slotObjectList[index].timeOfAppointment.toString();
+
+      //           validateExpert(expertctr.text);
+      //           getAppointmentSlot(context);
+      //         },
+      //         title: Text(
+      //           slotObjectList[index].timeOfAppointment.toString(),
+      //           style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // );
+    });
   }
 
   // EXPERT LISTTTT
@@ -413,10 +567,6 @@ class AppointmentBookingController extends GetxController {
   RxBool isExpertTypeApiList = false.obs;
   RxList<ExpertList> expertObjectList = <ExpertList>[].obs;
   RxString expertId = "".obs;
-
-  RxBool isSlotApiList = false.obs;
-  RxList<SlotList> slotObjectList = <SlotList>[].obs;
-  RxString slotId = "".obs;
 
   void getExpertList(context) async {
     isExpertTypeApiList.value = true;
@@ -474,7 +624,7 @@ class AppointmentBookingController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("SETEXPERTLIST", "EXPERT");
-                expertId.value = expertObjectList[index].serviceInfo.toString();
+                expertId.value = expertObjectList[index].id.toString();
                 expertctr.text =
                     expertObjectList[index].name.capitalize.toString();
 
@@ -514,12 +664,13 @@ class AppointmentBookingController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index].fees.toString();
+                Servicectr.text =
+                    serviceObjectList[index].serviceInfo.name.toString();
 
                 validateService(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].fees.toString(),
+                serviceObjectList[index].serviceInfo.name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -634,7 +785,7 @@ class AppointmentBookingController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("SETCUSTOMERLIST", "CUSTOMER");
-                customerId.value = customerObjectList[index].name.toString();
+                customerId.value = customerObjectList[index].id.toString();
                 Customerctr.text =
                     customerObjectList[index].name.capitalize.toString();
 

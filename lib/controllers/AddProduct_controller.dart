@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/ProductCatListModel.dart';
-import 'package:booking_app/Models/ProductCategoryModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import '../Config/apicall_constant.dart';
@@ -233,7 +230,7 @@ class addProductController extends GetxController {
     }
   }
 
-  void UpdateProduct(context) async {
+  void UpdateProduct(context, String productId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -247,7 +244,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": productCategoryId.value.toString(),
+        "product_category_id": productId.toString().trim(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -256,7 +253,7 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": productCategoryId.value.toString(),
+        "product_category_id": productId.toString().trim(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       }, ApiUrl.editProduct, allowHeader: true);

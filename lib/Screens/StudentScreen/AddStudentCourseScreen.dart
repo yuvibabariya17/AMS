@@ -42,12 +42,13 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
   @override
   void initState() {
     if (widget.isEdit == true && widget.editStudentCourse != null) {
-      controller.studentctr.text = widget.editStudentCourse!.id.toString();
+      controller.studentctr.text = widget.editStudentCourse!.toString();
       controller.coursectr.text = widget.editStudentCourse!.id.toString();
       controller.startDatectr.text =
           widget.editStudentCourse!.startingFrom.toString();
       controller.Feesctr.text = widget.editStudentCourse!.fees.toString();
-      controller.imgctr.text = widget.editStudentCourse!.idProofUrl.toString();
+      controller.imgctr.text =
+          widget.editStudentCourse!.idProofUrlInfo.image.toString();
       controller.notesctr.text =
           widget.editStudentCourse!.otherNotes.toString();
       // Set other fields as well

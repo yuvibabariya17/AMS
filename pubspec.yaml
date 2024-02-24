@@ -66,6 +66,7 @@ dependencies:
   scroll_snap_list: ^0.9.1
   dashed_line: ^0.1.0+3
   shimmer: ^3.0.0
+  marquee: ^2.2.3
   
 
 dev_dependencies:

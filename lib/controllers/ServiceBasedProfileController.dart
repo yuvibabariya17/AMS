@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:booking_app/Config/apicall_constant.dart';
-import 'package:booking_app/Models/ServiceModel.dart';
+import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
@@ -14,7 +14,7 @@ class ServiceBasedProfileController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
   RxBool isServiceTypeApiList = false.obs;
-  RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
+  RxList<VendorServiceList> serviceObjectList = <VendorServiceList>[].obs;
   RxString expertId = "".obs;
   RxBool isLoading = false.obs;
 
@@ -24,7 +24,6 @@ class ServiceBasedProfileController extends GetxController {
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxList memberList = [].obs;
 
-  List<ServiceList> filteredServiceObjectList = [];
 
   void getServiceList(context) async {
     state.value = ScreenState.apiLoading;
@@ -37,13 +36,13 @@ class ServiceBasedProfileController extends GetxController {
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.serviceList, allowHeader: true);
+          await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("SERVICERESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = ServiceModel.fromJson(responseData);
+        var data = VendorServiceModel.fromJson(responseData);
         if (data.status == 1) {
           state.value = ScreenState.apiSuccess;
           serviceObjectList.clear();

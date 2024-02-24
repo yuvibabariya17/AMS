@@ -124,11 +124,15 @@ class AddserviceController extends GetxController {
       isFormInvalidate.value = false;
     } else if (intervalModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (categoryModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (subCategoryModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else {
+    }
+
+    // else if (categoryModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // } else if (subCategoryModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // }
+
+    else {
       isFormInvalidate.value = true;
     }
   }
@@ -351,8 +355,9 @@ class AddserviceController extends GetxController {
                     serviceCategoryList[index].name.toString());
                 categoryId.value = serviceCategoryList[index].id.toString();
                 categoryctr.text = serviceCategoryList[index].name.toString();
-                //   getSubCategoryList(context, categoryId.value.toString());
+
                 validateCategory(categoryctr.text);
+                getSubCategoryList(context, categoryId.value.toString());
               },
               title: Text(
                 serviceCategoryList[index].name.toString(),
@@ -365,9 +370,6 @@ class AddserviceController extends GetxController {
     });
   }
 
-  String? serviceCatId;
-  String? subCatId;
-
 // SERVICE SUB CATEGORY LIST
 
   RxBool isSubCategoryList = false.obs;
@@ -375,9 +377,7 @@ class AddserviceController extends GetxController {
       <ServiceSubCategoryList>[].obs;
   RxString subCategoryId = "".obs;
 
-  void getSubCategoryList(
-    context,
-  ) async {
+  void getSubCategoryList(context, String categoryId) async {
     isSubCategoryList.value = true;
     logcat("CATEGORY ID", categoryId);
     try {
@@ -388,17 +388,11 @@ class AddserviceController extends GetxController {
         return;
       }
       var response = await Repository.post({
-        // // "pagination": {
-        // //   "pageNo": 1,
-        // //   "recordPerPage": 10,
-        // //   "sortBy": "name",
-        // //   "sortDirection": "asc"
-        // // },
-        // "search": {
-        //   // "startAt": "2023-06-06T00:00:00.704Z",
-        //   // "endAt": "2023-06-06T00:00:00.704Z",
-        //   "category_id": categoryId,
-        // }
+        "search": {
+          // "startAt": "2023-06-06T00:00:00.704Z",
+          // "endAt": "2023-06-06T00:00:00.704Z",
+          "category_id": categoryId,
+        }
       }, ApiUrl.servicesubCategoryList, allowHeader: true);
       isSubCategoryList.value = false;
       var responseData = jsonDecode(response.body);
@@ -424,57 +418,6 @@ class AddserviceController extends GetxController {
     }
   }
 
-//WITH ID
-
-  // void getSubCategoryList(context, String categoryId) async {
-  //   isSubCategoryList.value = true;
-  //   logcat("CATEGORY ID", categoryId);
-  //   try {
-  //     if (networkManager.connectionType == 0) {
-  //       showDialogForScreen(context, Connection.noConnection, callback: () {
-  //         Get.back();
-  //       });
-  //       return;
-  //     }
-  //     var response = await Repository.post({
-  //       // "pagination": {
-  //       //   "pageNo": 1,
-  //       //   "recordPerPage": 10,
-  //       //   "sortBy": "name",
-  //       //   "sortDirection": "asc"
-  //       // },
-  //       "search": {
-  //         // "startAt": "2023-06-06T00:00:00.704Z",
-  //         // "endAt": "2023-06-06T00:00:00.704Z",
-  //         "category_id": categoryId,
-  //       }
-  //     }, ApiUrl.servicesubCategoryList, allowHeader: true);
-  //     isSubCategoryList.value = false;
-  //     var responseData = jsonDecode(response.body);
-  //     logcat("SUBCATEGORY LIST", jsonEncode(responseData));
-
-  //     if (response.statusCode == 200) {
-  //       var data = SubCategoryModel.fromJson(responseData);
-  //       if (data.status == 1) {
-  //         subcategoryList.clear();
-  //         subcategoryList.addAll(data.data);
-
-  //         logcat("SUBCATEGORY LIST", jsonEncode(subcategoryList));
-  //       } else {
-  //         showDialogForScreen(context, responseData['message'],
-  //             callback: () {});
-  //       }
-  //     } else {
-  //       showDialogForScreen(context, Connection.servererror, callback: () {});
-  //     }
-  //   } catch (e) {
-  //     logcat('Exception', e);
-  //     isSubCategoryList.value = false;
-  //   }
-  // }
-
-  // WITH ID
-
   Widget setSubCategoryList() {
     return Obx(() {
       if (isSubCategoryList.value == true)
@@ -499,9 +442,10 @@ class AddserviceController extends GetxController {
                 logcat("SUBCATEGORY List", "SUBCATEGORY");
                 subCategoryId.value = subcategoryList[index].id.toString();
                 subCategoryctr.text = subcategoryList[index].name.toString();
-                getServiceList(context);
 
                 validateSubCategory(subCategoryctr.text);
+                getServiceList(context, false, categoryId.value.toString(),
+                    subCategoryId.value.toString());
               },
               title: Text(
                 subcategoryList[index].name.toString(),
@@ -514,74 +458,42 @@ class AddserviceController extends GetxController {
     });
   }
 
-  //  Widget setSubCategoryList() {
-  //   return Obx(() {
-  //     if (isSubCategoryList.value == true)
-  //       return setDropDownContent([].obs, Text("Loading"),
-  //           isApiIsLoading: isSubCategoryList.value);
-
-  //     return setDropDownTestContent(
-  //       subcategoryList,
-  //       ListView.builder(
-  //         shrinkWrap: true,
-  //         itemCount: subcategoryList.length,
-  //         itemBuilder: (BuildContext context, int index) {
-  //           return ListTile(
-  //             dense: true,
-  //             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-  //             contentPadding:
-  //                 const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-  //             horizontalTitleGap: null,
-  //             minLeadingWidth: 5,
-  //             onTap: () {
-  //               Get.back();
-  //               logcat("SUBCATEGORY List", "SUBCATEGORY");
-  //               subCategoryId.value = subcategoryList[index].id.toString();
-  //               subCategoryctr.text = subcategoryList[index].name.toString();
-  //               getServiceList(context);
-
-  //               validateSubCategory(subCategoryctr.text);
-  //             },
-  //             title: Text(
-  //               subcategoryList[index].name.toString(),
-  //               style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //   });
-  // }
-
-  // SERVICE LIST
-
   RxBool isServiceTypeApiList = false.obs;
   RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
   RxString ServiceId = "".obs;
 
-  void getServiceList(context) async {
+  void getServiceList(
+      context, bool isFirst, String categoryId, String subCategoryId) async {
+    var loadingIndicator = LoadingProgressDialogs();
     isServiceTypeApiList.value = true;
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
+    } else {
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
+    }
     try {
       if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
         showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
       }
       var response = await Repository.post({
-        // "pagination": {
-        //   "pageNo": 1,
-        //   "recordPerPage": 20,
-        //   "sortBy": "name",
-        //   "sortDirection": "asc"
-        // },
         // "search": {
-        //   "startAt": "2023-06-06T00:00:00.704Z",
-        //   "endAt": "2023-06-06T00:00:00.704Z",
-        //   "category_id": categoryId.value.toString(),
-        //   "sub_category_id": subCategoryId.value.toString(),
+        //   // "startAt": "2023-06-06T00:00:00.704Z",
+        //   // "endAt": "2023-06-06T00:00:00.704Z",
+        //   "category_id": categoryId,
+        //   "sub_category_id": subCategoryId
         // }
       }, ApiUrl.serviceList, allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
       isServiceTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("SERVICE LIST", jsonEncode(responseData));
@@ -591,6 +503,7 @@ class AddserviceController extends GetxController {
         if (data.status == 1) {
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
+          update();
 
           logcat("SERVICE LIST", jsonEncode(serviceObjectList));
         } else {
@@ -661,64 +574,65 @@ class AddserviceController extends GetxController {
 
   // UPDATE VENDOR API
 
-  // void UpdateVendorServiceApi(context, String serviceId) async {
-  //   var loadingIndicator = LoadingProgressDialog();
-  //   try {
-  //     if (networkManager.connectionType == 0) {
-  //       loadingIndicator.hide(context);
-  //       showDialogForScreen(context, Connection.noConnection, callback: () {
-  //         Get.back();
-  //       });
-  //       return;
-  //     }
-  //     loadingIndicator.show(context, '');
-  //     var retrievedObject = await UserPreferences().getSignInInfo();
+  void UpdateVendorServiceApi(context, String serviceId) async {
+    logcat("IDD:::::", serviceId.toString());
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
 
-  //     logcat("ADDDDD SERVICE", {
-  //       "vendor_id": retrievedObject!.id.toString().trim(),
-  //       "service_id": ServiceId.toString().trim(),
-  //       "fees": int.parse(Pricectr.text),
-  //       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-  //       "oppox_setting": sittingctr.text.toString().trim(),
-  //       "oppox_setting_duration":
-  //           sitingTime.replaceAll(' ', '').toString().trim(),
-  //       "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-  //     });
-  //     var response = await Repository.put({
-  //       "vendor_id": retrievedObject!.id.toString().trim(),
-  //       "service_id": ServiceId.toString().trim(),
-  //       "fees": int.parse(Pricectr.text),
-  //       "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-  //       "oppox_setting": sittingctr.text.toString().trim(),
-  //       "oppox_setting_duration":
-  //           sitingTime.replaceAll(' ', '').toString().trim(),
-  //       "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-  //     }, '${ApiUrl.editCourse}/$serviceId', allowHeader: true);
-  //     loadingIndicator.hide(context);
-  //     var data = jsonDecode(response.body);
-  //     logcat("RESPOSNE", data);
-  //     if (response.statusCode == 200) {
-  //       var responseDetail = CommonModel.fromJson(data);
-  //       if (responseDetail.status == 1) {
-  //         showDialogForScreen(context, responseDetail.message.toString(),
-  //             callback: () {
-  //           Get.back(result: true);
-  //         });
-  //       } else {
-  //         showDialogForScreen(context, responseDetail.message.toString(),
-  //             callback: () {});
-  //       }
-  //     } else {
-  //       state.value = ScreenState.apiError;
-  //       showDialogForScreen(context, data['message'].toString(),
-  //           callback: () {});
-  //     }
-  //   } catch (e) {
-  //     logcat("Exception", e);
-  //     showDialogForScreen(context, Connection.servererror, callback: () {});
-  //     loadingIndicator.hide(context);
-  //   }
-  // }
+      logcat("UpdateParam:", {
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": serviceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      });
+      var response = await Repository.put({
+        "vendor_id": retrievedObject.id.toString().trim(),
+        "service_id": serviceId.toString().trim(),
+        "fees": int.parse(Pricectr.text),
+        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting": sittingctr.text.toString().trim(),
+        "oppox_setting_duration":
+            sitingTime.replaceAll(' ', '').toString().trim(),
+        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+      }, '${ApiUrl.editVendorService}/$serviceId', allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
 
   void addVendorService(context) async {
     var loadingIndicator = LoadingProgressDialog();

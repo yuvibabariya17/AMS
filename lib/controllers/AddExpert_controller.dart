@@ -254,7 +254,7 @@ class AddexpertController extends GetxController {
     }
   }
 
-  void UpdateExpert(context, String expertId) async {
+  void UpdateExpert(context, String serviceId) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -270,9 +270,12 @@ class AddexpertController extends GetxController {
       var response = await Repository.put({
         "name": Expertctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.value.toString(),
+        "service_id": serviceId.toString().trim(),
         "amount": int.parse(Pricectr.text),
-      }, '${ApiUrl.editCourse}/$expertId', allowHeader: true);
+        "image_id": uploadImageId.value.toString(),
+        "startTime": startTime.replaceAll(' ', '').toString().trim(),
+        "endTime": endTime.replaceAll(' ', '').toString().trim(),
+      }, '${ApiUrl.editExpert}/$serviceId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -321,12 +324,13 @@ class AddexpertController extends GetxController {
               onTap: () {
                 Get.back();
                 ServiceId.value = serviceObjectList[index].id.toString();
-                Servicectr.text = serviceObjectList[index].fees.toString();
+                Servicectr.text =
+                    serviceObjectList[index].serviceInfo.name.toString();
 
                 validateServicename(Servicectr.text);
               },
               title: Text(
-                serviceObjectList[index].fees.toString(),
+                serviceObjectList[index].serviceInfo.name.toString(),
                 style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
               ),
             );
@@ -517,8 +521,4 @@ class AddexpertController extends GetxController {
 
     update();
   }
-
-
-
-
 }

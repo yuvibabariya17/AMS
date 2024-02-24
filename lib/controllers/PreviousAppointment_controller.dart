@@ -1,78 +1,74 @@
 import 'dart:convert';
-import 'package:booking_app/Models/CustomerListModel.dart';
+import 'package:booking_app/Config/apicall_constant.dart';
+import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
-import 'package:booking_app/dialogs/loading_indicator.dart';
+import 'package:booking_app/api_handle/Repository.dart';
+import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/utils/log.dart';
+import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Config/apicall_constant.dart';
-import '../api_handle/Repository.dart';
-import '../core/constants/strings.dart';
-import '../core/utils/log.dart';
-import '../dialogs/dialogs.dart';
+import '../Models/notification_model.dart';
+import '../Models/product.dart';
 import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
-class CustomerController extends GetxController {
+class PreviousAppointmentController extends GetxController {
+  List<ProductItem> staticData = notificationItems;
+  late TabController tabController;
+  RxInt currentPage = 0.obs;
+  bool isOnline = true;
+
+  changeIndex(int index) async {
+    currentPage.value = index;
+    update();
+  }
+
   final InternetController networkManager = Get.find<InternetController>();
 
-  late FocusNode searchNode;
-  late TextEditingController searchCtr;
-
-  RxBool isCustomerTypeApiList = false.obs;
-  RxList<ListofCustomer> customerObjectList = <ListofCustomer>[].obs;
-  RxString customerId = "".obs;
+  RxBool isAppointmentApiList = false.obs;
+  RxList<ListofAppointment> appointmentObjectList = <ListofAppointment>[].obs;
+  RxString appointmentId = "".obs;
+  RxBool isLoading = false.obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxString message = "".obs;
   RxList memberList = [].obs;
 
-  // List<ServiceList> serviceObjectList = []; // Your data source
-  TextEditingController searchController = TextEditingController();
-  List<ListofCustomer> filteredCustomerObjectList = [];
-  @override
-  void onInit() {
-    searchNode = FocusNode();
-    searchCtr = TextEditingController();
-    super.onInit();
-  }
-
-  void getCustomerList(context, bool isFirst) async {
-    var loadingIndicator = LoadingProgressDialogs();
-    if (isFirst == true) {
-      logcat("STEP_1", "STEP");
-      state.value = ScreenState.apiLoading;
-    } else {
-      logcat("STEP_2", "STEP");
-      loadingIndicator.show(context, "message");
-    }
-    isCustomerTypeApiList.value = true;
+  void getAppointmentList(context) async {
+    state.value = ScreenState.apiLoading;
+    // isExpertTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
-        if (isFirst == false) {
-          loadingIndicator.hide(context);
-        }
         showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
         return;
       }
-      var response =
-          await Repository.post({}, ApiUrl.customerList, allowHeader: true);
-      if (isFirst == false) {
-        loadingIndicator.hide(context);
-      }
-      isCustomerTypeApiList.value = false;
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+      }, ApiUrl.appointmentList, allowHeader: true);
+      isAppointmentApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" CUSTOMER RESPONSE", jsonEncode(responseData));
+      logcat("APPOINTMENT LIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
-        var data = CustomerListModel.fromJson(responseData);
-        if (data.status == 1) {
+        if (responseData['status'] == 1) {
+          var data = AppointmentModel.fromJson(responseData);
+          var today = DateTime.now();
+          data.data.retainWhere((appointment) => appointment.dateOfAppointment
+              .isBefore(DateTime(today.year, today.month, today.day)));
+
           state.value = ScreenState.apiSuccess;
-          customerObjectList.clear();
-          customerObjectList.addAll(data.data);
-          logcat("CUSTOMER RESPONSE", jsonEncode(customerObjectList));
+          appointmentObjectList.clear();
+          appointmentObjectList.addAll(data.data);
+          logcat("APPOINTMENT LIST", jsonEncode(appointmentObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -82,13 +78,13 @@ class CustomerController extends GetxController {
       }
     } catch (e) {
       logcat('Exception', e);
-      isCustomerTypeApiList.value = false;
+      isAppointmentApiList.value = false;
     }
   }
 
-  void deleteCustomerList(context, String itemId) async {
+  void deleteAppointment(context, String itemId) async {
     state.value = ScreenState.apiLoading;
-    isCustomerTypeApiList.value = true;
+    isAppointmentApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -97,11 +93,11 @@ class CustomerController extends GetxController {
         return;
       }
       var response = await Repository.delete(
-          {}, '${ApiUrl.deleteCustomer}/$itemId',
+          {}, '${ApiUrl.appointmentDelete}/$itemId',
           allowHeader: true);
-      isCustomerTypeApiList.value = false;
+      isAppointmentApiList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+      logcat(" APPOINTMENT RESPONSE", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         var data = DeleteSuccessModel.fromJson(responseData);
@@ -111,7 +107,7 @@ class CustomerController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(customerObjectList));
+          logcat("APPOINTMENT RESPONSE", jsonEncode(appointmentObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -121,17 +117,17 @@ class CustomerController extends GetxController {
       }
     } catch (e) {
       logcat('Exception', e);
-      isCustomerTypeApiList.value = false;
+      isAppointmentApiList.value = false;
     }
   }
 
   void updateLocalList(String deletedItemId) {
     int deletedItemIndex =
-        customerObjectList.indexWhere((item) => item.id == deletedItemId);
+        appointmentObjectList.indexWhere((item) => item.id == deletedItemId);
 
     if (deletedItemIndex != -1) {
       // Remove the deleted item from the list
-      customerObjectList.removeAt(deletedItemIndex);
+      appointmentObjectList.removeAt(deletedItemIndex);
     }
   }
 
@@ -145,7 +141,7 @@ class CustomerController extends GetxController {
           return true;
         },
         message: message,
-        title: "Customer",
+        title: "Previous Appointment",
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

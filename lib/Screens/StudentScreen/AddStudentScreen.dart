@@ -44,8 +44,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       controller.namectr.text = widget.editStudent!.name;
       controller.emailctr.text = widget.editStudent!.email.toString();
       controller.addressctr.text = widget.editStudent!.address.toString();
-      controller.imgctr.text = widget.editStudent!.photoUrl.toString();
-      controller.idctr.text = widget.editStudent!.idProofUrl.toString();
+      controller.imgctr.text =
+          widget.editStudent!.photoUrlInfo.image.toString();
+      controller.idctr.text =
+          widget.editStudent!.idProofUrlInfo.image.toString();
       controller.contactctr.text = widget.editStudent!.contact.toString();
       // Set other fields as well
     }

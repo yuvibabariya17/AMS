@@ -48,29 +48,32 @@ class ExpertList {
   String id;
   String name;
   int amount;
+  String upload_id;
   int createdAt;
   DateTime startTime;
   DateTime endTime;
   VendorInfo vendorInfo;
   UploadInfo upload_info;
-  ServiceInfo? serviceInfo;
+  //ServiceInfo? serviceInfo;
 
   ExpertList({
     required this.id,
     required this.name,
     required this.amount,
+    required this.upload_id,
     required this.createdAt,
     required this.startTime,
     required this.endTime,
     required this.vendorInfo,
     required this.upload_info,
-    this.serviceInfo,
+    //this.serviceInfo,
   });
 
   factory ExpertList.fromJson(Map<String, dynamic> json) => ExpertList(
         id: json["_id"] ?? '',
         name: json["name"] ?? '',
-        amount: json["amount"],
+        amount: json["amount"] ?? 0,
+        upload_id: json["upload_id"] ?? "",
         createdAt: json["created_at"],
         startTime: json["startTime"] != null
             ? DateTime.parse(json["startTime"])
@@ -80,21 +83,22 @@ class ExpertList {
             : DateTime.now(),
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
         upload_info: UploadInfo.fromJson(json["upload_info"] ?? {}),
-        serviceInfo: json["service_info"] == null
-            ? null
-            : ServiceInfo.fromJson(json["service_info"] ?? {}),
+        // serviceInfo: json["service_info"] == null
+        //     ? null
+        //     : ServiceInfo.fromJson(json["service_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
         "amount": amount,
+        "upload_id": upload_id,
         "created_at": createdAt,
         "startTime": startTime.toIso8601String(),
         "endTime": endTime.toIso8601String(),
         "upload_info": upload_info.toJson(),
         "vendor_info": vendorInfo.toJson(),
-        "service_info": serviceInfo?.toJson(),
+        //"service_info": serviceInfo?.toJson(),
       };
 }
 
@@ -128,7 +132,7 @@ class ServiceInfo {
   factory ServiceInfo.fromJson(Map<String, dynamic> json) => ServiceInfo(
         id: json["_id"] ?? '',
         name: json["name"] ?? '',
-        description: json["description"] ?? '',
+        description: json["description"],
       );
 
   Map<String, dynamic> toJson() => {

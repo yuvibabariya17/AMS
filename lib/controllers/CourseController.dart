@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:booking_app/Models/CourseModel.dart';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -85,40 +86,54 @@ class CourseController extends GetxController {
     }
   }
 
-  void getCourseList(context) async {
-    state.value = ScreenState.apiLoading;
-    isCourseTypeApiList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.courselist, allowHeader: true);
-    isCourseTypeApiList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" COURSE LIST", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      var data = CourseListModel.fromJson(responseData);
-      if (data.status == 1) {
-        state.value = ScreenState.apiSuccess;
-        courseObjectList.clear();
-        courseObjectList.addAll(data.data);
-        
-        logcat("COURSE LIST", jsonEncode(courseObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
+  void getCourseList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isCourseTypeApiList.value = false;
-    // }
+    isCourseTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.courselist, allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isCourseTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" COURSE LIST", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = CourseListModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          courseObjectList.clear();
+          courseObjectList.addAll(data.data);
+
+          logcat("COURSE LIST", jsonEncode(courseObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isCourseTypeApiList.value = false;
+    }
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {

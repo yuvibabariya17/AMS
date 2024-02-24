@@ -39,6 +39,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       controller.Notesctr.text = widget.editCourse!.other_notes.toString();
       controller.Idctr.text =
           widget.editCourse!.thumbnailUrlInfo.image.toString();
+      controller.uploadImageId.value =
+          widget.editCourse!.thumbnailUrl.toString().trim();
       // Set other fields as well
     }
     if (widget.isEdit == true) {

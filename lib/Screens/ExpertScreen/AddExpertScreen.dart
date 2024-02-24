@@ -7,6 +7,7 @@ import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
@@ -30,12 +31,18 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
   @override
   void initState() {
     if (widget.isEdit == true && widget.editExpert != null) {
-      controller.Servicectr.text = widget.editExpert!.name;
+      controller.Servicectr.text = widget.editExpert!.name.toString();
       controller.Expertctr.text = widget.editExpert!.name;
       controller.Profilectr.text = widget.editExpert!.upload_info.image;
       controller.Startctr.text = widget.editExpert!.startTime.toString();
       controller.Endctr.text = widget.editExpert!.endTime.toString();
       controller.Pricectr.text = widget.editExpert!.amount.toString();
+      controller.startTime =
+          widget.editExpert!.startTime.toIso8601String().toString().trim();
+      controller.endTime =
+          widget.editExpert!.endTime.toIso8601String().toString().trim();
+      controller.uploadImageId.value =
+          widget.editExpert!.upload_id.toString().trim();
 
       if (widget.isEdit == true) {
         validateFields();
@@ -544,22 +551,52 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                               from: 50,
                               child: Obx(() {
                                 return getFormButton(() {
-                                  if (controller.isFormInvalidate.value ==
-                                      true) {
+                                  if (widget.isEdit == true) {
+                                    // Call updateCourse API
+                                    controller.UpdateExpert(
+                                        context, widget.editExpert!.id);
+                                  } else {
+                                    // Call AddCourseApi API
                                     controller.addExpertApi(context);
                                   }
-
-                                  // if (widget.isEdit == true) {
-                                  //   // Call updateCourse API
-                                  //   controller.UpdateExpert(context, widget.editExpert!.id );
-                                  // } else {
-                                  //   // Call AddCourseApi API
-                                  //   controller.addExpertApi(context);
-                                  // }
                                 }, CommonConstant.submit,
                                     validate:
                                         controller.isFormInvalidate.value);
                               }))
+
+                          // FadeInUp(
+                          //     from: 50,
+                          //     child: Obx(() {
+                          //       return getFormButton(() {
+                          //         if (controller.isFormInvalidate.value ==
+                          //             true) {
+                          //           controller.addExpertApi(context);
+                          //         }
+                          //       }, CommonConstant.submit,
+                          //           validate:
+                          //               controller.isFormInvalidate.value);
+                          //     }))
+
+                          // FadeInUp(
+                          //     from: 50,
+                          //     child: Obx(() {
+                          //       return getFormButton(() {
+                          //         if (controller.isFormInvalidate.value ==
+                          //             true) {
+                          //           controller.addExpertApi(context);
+                          //         }
+
+                          //         // if (widget.isEdit == true) {
+                          //         //   // Call updateCourse API
+                          //         //   controller.UpdateExpert(context, widget.editExpert!.id );
+                          //         // } else {
+                          //         //   // Call AddCourseApi API
+                          //         //   controller.addExpertApi(context);
+                          //         // }
+                          //       }, CommonConstant.submit,
+                          //           validate:
+                          //               controller.isFormInvalidate.value);
+                          //     }))
                           // FadeInUp(
                           //     from: 50,
                           //     child: Obx(() {

@@ -154,8 +154,12 @@ class AppointmentSlotInfo {
 
   factory AppointmentSlotInfo.fromJson(Map<String, dynamic> json) =>
       AppointmentSlotInfo(
-        dateOfAppointment: DateTime.parse(json["date_of_appointment"]),
-        timeOfAppointment: DateTime.parse(json["time_of_appointment"]),
+        dateOfAppointment: json["date_of_appointment"] != null
+            ? DateTime.parse(json["date_of_appointment"])
+            : DateTime.now(),
+        timeOfAppointment: json["time_of_appointment"] != null
+            ? DateTime.parse(json["time_of_appointment"])
+            : DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -169,8 +173,8 @@ class CustomerInfo {
   String contactNo;
   String whatsappNo;
   String email;
-  DateTime dateOfBirth;
-  DateTime dateOfAnniversary;
+  //DateTime dateOfBirth;
+  // DateTime dateOfAnniversary;
   String address;
 
   CustomerInfo({
@@ -178,8 +182,8 @@ class CustomerInfo {
     required this.contactNo,
     required this.whatsappNo,
     required this.email,
-    required this.dateOfBirth,
-    required this.dateOfAnniversary,
+    //required this.dateOfBirth,
+    //required this.dateOfAnniversary,
     required this.address,
   });
 
@@ -188,8 +192,8 @@ class CustomerInfo {
         contactNo: json["contact_no"] ?? '',
         whatsappNo: json["whatsapp_no"] ?? '',
         email: json["email"] ?? '',
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
-        dateOfAnniversary: DateTime.parse(json["date_of_anniversary"]),
+        // dateOfBirth: DateTime.parse(json["date_of_birth"]??''),
+        //dateOfAnniversary: DateTime.parse(json["date_of_anniversary"]),
         address: json["address"] ?? '',
       );
 
@@ -198,8 +202,8 @@ class CustomerInfo {
         "contact_no": contactNo,
         "whatsapp_no": whatsappNo,
         "email": email,
-        "date_of_birth": dateOfBirth.toIso8601String(),
-        "date_of_anniversary": dateOfAnniversary.toIso8601String(),
+        //"date_of_birth": dateOfBirth.toIso8601String(),
+        //"date_of_anniversary": dateOfAnniversary.toIso8601String(),
         "address": address,
       };
 }
@@ -271,11 +275,17 @@ class VendorServiceInfo {
       VendorServiceInfo(
         serviceId: json["service_id"] ?? '',
         fees: json["fees"] ?? 0,
-        oppoxTime: DateTime.parse(json["oppox_time"]),
+        oppoxTime: json["oppox_time"] != null
+            ? DateTime.parse(json["oppox_time"])
+            : DateTime.now(),
         oppoxSetting: json["oppox_setting"] ?? 0,
-        oppoxSettingDuration: DateTime.parse(json["oppox_setting_duration"]),
+        oppoxSettingDuration: json["oppox_setting_duration"] != null
+            ? DateTime.parse(json["oppox_setting_duration"])
+            : DateTime.now(),
         oppoxSettingDaysInverval: json["oppox_setting_days_inverval"] ?? 0,
-        serviceInfo: ServiceInfo.fromJson(json["service_info"]),
+        serviceInfo: json["service_info"] != null
+            ? ServiceInfo.fromJson(json["service_info"])
+            : ServiceInfo(name: ''),
       );
 
   Map<String, dynamic> toJson() => {

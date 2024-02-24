@@ -27,6 +27,7 @@ class Strings {
 
   static const dateFormat = 'dd-MM-yyyy';
   static const oldDateFormat = 'yyyy-MM-dd';
+  static const apiDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   static const String welcome_back = 'Welcome Back !';
   static const String send_code = 'We’ll send You Verification Code';

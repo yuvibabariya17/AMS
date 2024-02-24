@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
 import 'package:booking_app/Models/ProductListModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -36,39 +37,53 @@ class ProductController extends GetxController {
     super.onInit();
   }
 
-  void getProductList(context) async {
-    state.value = ScreenState.apiLoading;
-    isProductTypeApiList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.productList, allowHeader: true);
-    isProductTypeApiList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" PRODUCT RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      var data = ProductListModel.fromJson(responseData);
-      if (data.status == 1) {
-        state.value = ScreenState.apiSuccess;
-        productObjectList.clear();
-        productObjectList.addAll(data.data);
-        logcat("PRODUCT RESPONSE", jsonEncode(productObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
+  void getProductList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isCourseTypeApiList.value = false;
-    // }
+    isProductTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.productList, allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isProductTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" PRODUCT RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ProductListModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          productObjectList.clear();
+          productObjectList.addAll(data.data);
+          logcat("PRODUCT RESPONSE", jsonEncode(productObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isProductTypeApiList.value = false;
+    }
   }
 
   void deleteProductList(context, String itemId) async {

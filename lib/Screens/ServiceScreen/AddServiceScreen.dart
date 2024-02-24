@@ -4,6 +4,7 @@ import 'package:booking_app/controllers/AddService_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,11 +64,13 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   @override
   void initState() {
     // FOR EDIT SERVICE
-
     if (widget.isEdit == true && widget.editService != null) {
-      controller.categoryctr.text = widget.editService!.fees.toString();
-      controller.subCategoryctr.text = widget.editService!.fees.toString();
-      controller.Servicectr.text = widget.editService!.fees.toString();
+      controller.categoryctr.text =
+          widget.editService!.categoryInfo.name.toString();
+      controller.subCategoryctr.text =
+          widget.editService!.subCategoryInfo.name.toString();
+      controller.Servicectr.text =
+          widget.editService!.serviceInfo.name.toString();
       controller.approxtimectr.text = widget.editService!.oppoxTime.toString();
       controller.sittingctr.text = widget.editService!.oppoxSetting.toString();
       controller.intervalctr.text =
@@ -76,17 +79,18 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
           widget.editService!.oppoxSettingDuration.toString();
       controller.Pricectr.text = widget.editService!.fees.toString();
       controller.daysctr.text = widget.editService!.Total_days.toString();
-      // Set other fields as well
+      controller.sitingTime = widget.editService!.oppoxSettingDuration
+          .toIso8601String()
+          .toString()
+          .trim();
+      controller.approxTime =
+          widget.editService!.oppoxTime.toIso8601String().toString().trim();
     }
     if (widget.isEdit == true) {
       validateFields();
     }
-
     controller.getServiceCategoryList(context);
-     controller.getSubCategoryList(context);
-    controller.getServiceList(context);
-
-   
+    controller.getServiceList(context, true, "", "");
     super.initState();
   }
 
@@ -122,86 +126,88 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getTitle("Service Category"),
-                            FadeInUp(
-                                from: 30,
-                                child: AnimatedSize(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: Obx(() {
-                                      return getReactiveFormField(
-                                        node: controller.categoryNode,
-                                        controller: controller.categoryctr,
-                                        hintLabel: "Select Category",
-                                        // wantSuffix: true,
-                                        // isdown: true,
-                                        isReadOnly: true,
+                            //  CATEGORY AND SUBCATEGORYYY
 
-                                        wantSuffix: true,
-                                        isdown: true,
-                                        // onAddBtn: () {
-                                        //   //Get.to(AddExpertScreen());
-                                        // },
+                            // getTitle("Service Category"),
+                            // FadeInUp(
+                            //     from: 30,
+                            //     child: AnimatedSize(
+                            //         duration: const Duration(milliseconds: 300),
+                            //         child: Obx(() {
+                            //           return getReactiveFormField(
+                            //             node: controller.categoryNode,
+                            //             controller: controller.categoryctr,
+                            //             hintLabel: "Select Category",
+                            //             // wantSuffix: true,
+                            //             // isdown: true,
+                            //             isReadOnly: true,
 
-                                        onTap: () {
-                                          // controller.categoryctr.text = "";
-                                          showDropDownDialog(
-                                              context,
-                                              controller
-                                                  .setServiceCategoryList(),
-                                              "Service Category");
-                                        },
+                            //             wantSuffix: true,
+                            //             isdown: true,
+                            //             // onAddBtn: () {
+                            //             //   //Get.to(AddExpertScreen());
+                            //             // },
 
-                                        onChanged: (val) {
-                                          controller.validateCategory(val);
-                                        },
-                                        errorText: controller
-                                            .categoryModel.value.error,
-                                        inputType: TextInputType.name,
-                                      );
-                                    }))),
-                            getTitle("Service Sub Category"),
-                            FadeInUp(
-                                from: 30,
-                                child: AnimatedSize(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: Obx(() {
-                                      return getReactiveFormField(
-                                        node: controller.subCategoryNode,
-                                        controller: controller.subCategoryctr,
-                                        hintLabel: "Select Sub Category",
-                                        isReadOnly: true,
-                                        wantSuffix: true,
-                                        isdown: true,
-                                        // onAddBtn: () {
-                                        //   //Get.to(AddExpertScreen());
-                                        // },
+                            //             onTap: () {
+                            //               // controller.categoryctr.text = "";
+                            //               showDropDownDialog(
+                            //                   context,
+                            //                   controller
+                            //                       .setServiceCategoryList(),
+                            //                   "Service Category");
+                            //             },
 
-                                        onTap: () {
-                                          controller.subCategoryctr.text = "";
+                            //             onChanged: (val) {
+                            //               controller.validateCategory(val);
+                            //             },
+                            //             errorText: controller
+                            //                 .categoryModel.value.error,
+                            //             inputType: TextInputType.name,
+                            //           );
+                            //         }))),
+                            // getTitle("Service Sub Category"),
+                            // FadeInUp(
+                            //     from: 30,
+                            //     child: AnimatedSize(
+                            //         duration: const Duration(milliseconds: 300),
+                            //         child: Obx(() {
+                            //           return getReactiveFormField(
+                            //             node: controller.subCategoryNode,
+                            //             controller: controller.subCategoryctr,
+                            //             hintLabel: "Select Sub Category",
+                            //             isReadOnly: true,
+                            //             wantSuffix: true,
+                            //             isdown: true,
+                            //             // onAddBtn: () {
+                            //             //   //Get.to(AddExpertScreen());
+                            //             // },
 
-                                          if (controller
-                                              .categoryctr.text.isEmpty) {
-                                            return PopupDialogs(
-                                              context,
-                                              "Service",
-                                              "Category Field is Required",
-                                            );
-                                          }
+                            //             onTap: () {
+                            //               controller.subCategoryctr.text = "";
 
-                                          showDropDownDialog(
-                                              context,
-                                              controller.setSubCategoryList(),
-                                              "Service Sub Category");
-                                        },
+                            //               if (controller
+                            //                   .categoryctr.text.isEmpty) {
+                            //                 return PopupDialogs(
+                            //                   context,
+                            //                   "Service",
+                            //                   "Category Field is Required",
+                            //                 );
+                            //               }
 
-                                        onChanged: (val) {
-                                          controller.validateSubCategory(val);
-                                        },
-                                        errorText: controller
-                                            .subCategoryModel.value.error,
-                                        inputType: TextInputType.name,
-                                      );
-                                    }))),
+                            //               showDropDownDialog(
+                            //                   context,
+                            //                   controller.setSubCategoryList(),
+                            //                   "Service Sub Category");
+                            //             },
+
+                            //             onChanged: (val) {
+                            //               controller.validateSubCategory(val);
+                            //             },
+                            //             errorText: controller
+                            //                 .subCategoryModel.value.error,
+                            //             inputType: TextInputType.name,
+                            //           );
+                            //         }))),
                             getTitle("Service"),
                             FadeInUp(
                                 from: 30,
@@ -214,21 +220,22 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         hintLabel: "Select Service",
                                         isReadOnly: true,
                                         wantSuffix: true,
-                                        isDropdown: true,
+                                        isdown: true,
+                                        //     isDropdown: true,
                                         // onAddBtn: () {
                                         //   //Get.to(AddExpertScreen());
                                         // },
-                                        isAdd: true,
+                                        //  isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
-                                          if (controller
-                                              .subCategoryctr.text.isEmpty) {
-                                            return PopupDialogs(
-                                              context,
-                                              "Service",
-                                              "Category Field and Sub Category Field is Required",
-                                            );
-                                          }
+                                          // if (controller
+                                          //     .subCategoryctr.text.isEmpty) {
+                                          //   return PopupDialogs(
+                                          //     context,
+                                          //     "Service",
+                                          //     "Category Field and Sub Category Field is Required",
+                                          //   );
+                                          // }
 
                                           showDropDownDialog(
                                               context,
@@ -684,36 +691,37 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                               height: 4.h,
                             ),
 
-                            // FadeInUp(
-                            //     from: 50,
-                            //     child: Obx(() {
-                            //       return getFormButton(() {
-
-                            //           if (widget.isEdit == true) {
-                            //             // Call updateCourse API
-                            //             controller.UpdateVendorServiceApi(context, widget.editService!.id );
-                            //           } else {
-                            //             // Call AddCourseApi API
-                            //             controller.addServiceApi(context);
-                            //           }
-
-                            //       }, CommonConstant.submit,
-                            //           validate:
-                            //               controller.isFormInvalidate.value);
-                            //     }))
-
                             FadeInUp(
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-                                    if (controller.isFormInvalidate.value ==
-                                        true) {
+                                    if (widget.isEdit == true) {
+                                      // Call updateCourse API
+                                      logcat("IDD",
+                                          widget.editService!.id.toString());
+                                      controller.UpdateVendorServiceApi(
+                                          context, widget.editService!.id);
+                                    } else {
+                                      // Call AddCourseApi API
                                       controller.addVendorService(context);
                                     }
                                   }, CommonConstant.submit,
                                       validate:
                                           controller.isFormInvalidate.value);
                                 }))
+
+                            // FadeInUp(
+                            //     from: 50,
+                            //     child: Obx(() {
+                            //       return getFormButton(() {
+                            //         if (controller.isFormInvalidate.value ==
+                            //             true) {
+                            //           controller.addVendorService(context);
+                            //         }
+                            //       }, CommonConstant.submit,
+                            //           validate:
+                            //               controller.isFormInvalidate.value);
+                            //     }))
                           ],
                         )),
                   ),

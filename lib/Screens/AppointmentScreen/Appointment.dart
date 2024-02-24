@@ -3,7 +3,7 @@ import 'package:booking_app/Models/product.dart';
 import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
-import 'package:booking_app/controllers/Appointment_screen_controller.dart';
+import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
@@ -36,21 +36,25 @@ class AppointmentScreen extends StatefulWidget {
 
 class _AppointmentScreenState extends State<AppointmentScreen>
     with TickerProviderStateMixin {
-  var controller = Get.put(AppointmentScreenController());
-  var upcomingappointment = UpcomingAppointment();
+  // var controller = Get.put(AppointmentScreenController());
+
   List<ProductItem> staticData = notificationItems;
   late TabController tabController;
   var currentPage = 0;
-  var icon;
-  var leading;
-  var isfilter;
-  var title;
+
   bool state = false;
 
   @override
   void initState() {
+    //   controller.getAppointmentList(context);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.find<UpcomingAppointmentController>().appointmentObjectList.clear();
+    super.dispose();
   }
 
   @override
@@ -67,11 +71,15 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                 borderRadius: BorderRadius.circular(8.0)),
             onPressed: () {
               Get.to(AppointmentBookingScreen())?.then((value) {
+                logcat("VALUE", value.toString());
                 if (value == true) {
-                  logcat("ISDONE", "DONE");
-                  // controller.getServiceList(
-                  //   context,
-                  // );
+                  currentPage = 0;
+                  Get.find<UpcomingAppointmentController>()
+                      .appointmentObjectList
+                      .clear();
+                  Get.find<UpcomingAppointmentController>()
+                      .getAppointmentList(context, 1, true);
+                  setState(() {});
                 }
               });
             },
@@ -148,9 +156,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         decoration: BoxDecoration(
             color: currentPage == index ? Colors.black : Colors.white,
             border: Border.all(
-                color: isDarkMode()
-                    ? Colors.white
-                    : Colors.transparent),
+                color: isDarkMode() ? Colors.white : Colors.transparent),
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,
@@ -175,33 +181,33 @@ class _AppointmentScreenState extends State<AppointmentScreen>
             SizedBox(
               width: currentPage == index ? 4.w : 0,
             ),
-            currentPage == index
-                ? Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color:
-                          currentPage == index || isDarkMode() ? white : black,
-                      boxShadow: [
-                        BoxShadow(
-                            color: isDarkMode()
-                                ? Colors.white.withOpacity(0.2)
-                                : Colors.black.withOpacity(0.2),
-                            spreadRadius: 0.1,
-                            blurRadius: 10,
-                            offset: Offset(0.5, 0.5)),
-                      ],
-                    ),
-                    padding:
-                        EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
-                    child: currentPage == index
-                        ? Text("6",
-                            style: TextStyle(
-                              fontSize: 12.5.sp,
-                              color: isDarkMode() ? black : null,
-                            ))
-                        : null,
-                  )
-                : Container()
+            // currentPage == index
+            //     ? Container(
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(10),
+            //           color:
+            //               currentPage == index || isDarkMode() ? white : black,
+            //           boxShadow: [
+            //             BoxShadow(
+            //                 color: isDarkMode()
+            //                     ? Colors.white.withOpacity(0.2)
+            //                     : Colors.black.withOpacity(0.2),
+            //                 spreadRadius: 0.1,
+            //                 blurRadius: 10,
+            //                 offset: Offset(0.5, 0.5)),
+            //           ],
+            //         ),
+            //         padding:
+            //             EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
+            //         child: currentPage == index
+            //             ? Text("6",
+            //                 style: TextStyle(
+            //                   fontSize: 12.5.sp,
+            //                   color: isDarkMode() ? black : null,
+            //                 ))
+            //             : null,
+            //       )
+            //     : Container()
           ],
         ),
       ),

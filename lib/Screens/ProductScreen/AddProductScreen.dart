@@ -35,6 +35,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
 
+      controller.uploadImageId.value = widget.editProduct!.uploadId.toString();
+
       // Set other fields as well
     }
     if (widget.isEdit == true) {
@@ -261,19 +263,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               height: 4.h,
                             ),
                             FadeInUp(
-                              from: 50,
-                              child: Obx(() {
-                                return getFormButton(() {
-                                  // controller.addProductApi(context);
-                                  if (controller.isFormInvalidate.value ==
-                                      true) {
-                                    controller.addProductApi(context);
-                                  }
-                                }, CommonConstant.done,
-                                    validate:
-                                        controller.isFormInvalidate.value);
-                              }),
-                            ),
+                                from: 50,
+                                child: Obx(() {
+                                  return getFormButton(() {
+                                    if (widget.isEdit == true) {
+                                      // Call updateCourse API
+                                      controller.UpdateProduct(
+                                          context, widget.editProduct!.id);
+                                    } else {
+                                      // Call AddCourseApi API
+                                      controller.addProductApi(context);
+                                    }
+                                  }, CommonConstant.submit,
+                                      validate:
+                                          controller.isFormInvalidate.value);
+                                }))
                           ],
                         )),
                   ),

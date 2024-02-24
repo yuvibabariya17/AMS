@@ -92,4 +92,5 @@ class Asset {
   static const time = '$assets${svgFolder}time.svg';
   static const dropdown = '$assets${svgFolder}dropdown.svg';
   static const arrowBack = '$assets${svgFolder}arrowback.svg';
+  static const amsblack = '$assets${svgFolder}black_background.svg';
 }

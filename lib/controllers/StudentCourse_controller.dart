@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
 import 'package:booking_app/Models/StudentCourseListModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -36,39 +37,53 @@ class StudentCourseController extends GetxController {
     super.onInit();
   }
 
-  void getStudentCourseList(context) async {
-    state.value = ScreenState.apiLoading;
-    isStudentList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.studentCourseList, allowHeader: true);
-    isStudentList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" COURSELIST RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      var data = StudentCourseListModel.fromJson(responseData);
-      if (data.status == 1) {
-        state.value = ScreenState.apiSuccess;
-        studentObjectList.clear();
-        studentObjectList.addAll(data.data);
-        logcat("COURSELIST RESPONSE", jsonEncode(studentObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
+  void getStudentCourseList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isServiceTypeApiList.value = false;
-    // }
+    isStudentList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.studentCourseList,
+          allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isStudentList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" COURSELIST RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = StudentCourseListModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          studentObjectList.clear();
+          studentObjectList.addAll(data.data);
+          logcat("COURSELIST RESPONSE", jsonEncode(studentObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isStudentList.value = false;
+    }
   }
 
   void deleteStudentCourseList(context, String studentcourseList) async {

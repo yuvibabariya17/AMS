@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -36,40 +37,53 @@ class BrandCategoryController extends GetxController {
     super.onInit();
   }
 
-  void getBrandCategoryList(context) async {
-    state.value = ScreenState.apiLoading;
-    isBrandCategoryList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.brandCategoryList, allowHeader: true);
-    isBrandCategoryList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" SERVICE RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      if (responseData['status'] == 1) {
-        var data = BrandCategoryModel.fromJson(responseData);
-
-        state.value = ScreenState.apiSuccess;
-        BrnadCategoryObjectList.clear();
-        BrnadCategoryObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
+  void getBrandCategoryList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      state.value = ScreenState.apiLoading;
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.show(context, '');
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isServiceTypeApiList.value = false;
-    // }
+
+    isBrandCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.brandCategoryList,
+          allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isBrandCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = BrandCategoryModel.fromJson(responseData);
+
+          state.value = ScreenState.apiSuccess;
+          BrnadCategoryObjectList.clear();
+          BrnadCategoryObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isBrandCategoryList.value = false;
+    }
   }
 
   void deleteProductCategoryList(context, String itemId) async {

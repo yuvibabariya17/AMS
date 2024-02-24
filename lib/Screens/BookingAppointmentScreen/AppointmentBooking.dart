@@ -1,4 +1,6 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
     controller.getServiceList(context);
     controller.getExpertList(context);
     controller.getCustomerList(context);
+    controller.getAppointmentSlot(context);
     super.initState();
   }
 
@@ -46,6 +49,14 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
   //     logcat("ERROR", e);
   //   }
   // }
+
+  String formatTime(String timeString) {
+    // Parse the time string into a DateTime object
+    DateTime dateTime = DateTime.parse(timeString);
+    // Format the time into the desired format
+    String formattedTime = DateFormat('hh:mm a').format(dateTime);
+    return formattedTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +214,16 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                               selectedDate = pickedDate;
                                             });
                                           }
+
+                                          logcat("SELECTED_DATE", pickedDate);
+
                                           if (pickedDate != null) {
+                                            //2024-02-22T00:00:00.704Z
+                                            controller.apiFormattedDate
+                                                .value = DateFormat(
+                                                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                                                .format(pickedDate);
+
                                             String formattedDate =
                                                 DateFormat(Strings.dateFormat)
                                                     .format(pickedDate);
@@ -235,7 +255,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       onChanged: (val) {
                                         controller.validateDuration(val);
                                       },
-                                      inputType: TextInputType.number,
+                                      inputType: TextInputType.text,
                                       errorText:
                                           controller.durationModel.value.error);
                                 }),
@@ -344,6 +364,10 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             ),
                             Obx(
                               () {
+                                logcat(
+                                  "EXPERTSLOT_LIST",
+                                  controller.slotObjectList.length,
+                                );
                                 return GridView.count(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
@@ -352,12 +376,40 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                     crossAxisSpacing: 17,
                                     mainAxisSpacing: 4,
                                     children: List.generate(
-                                        controller.choices.length, (index) {
+                                        controller.slotObjectList.length,
+                                        (index) {
                                       return GestureDetector(
                                         onTap: () {
+                                          controller.selectedIndex.value =
+                                              index;
+
+                                          controller.selectedAppointmentSlotId
+                                                  .value =
+                                              controller
+                                                  .slotObjectList[index].id;
+
+                                          logcat(
+                                              "Appointment Slot ID",
+                                              controller
+                                                  .selectedAppointmentSlotId
+                                                  .value);
+
+                                          // print(
+                                          //     "ExpertID: ${controller.slotObjectList[index].id}");
+                                          // controller.isItemSelected.value =
+                                          //     true;
+                                          controller
+                                              .updateSelectedTimeSlote(true);
                                           setState(() {
-                                            controller.selectedIndex.value =
-                                                index;
+                                            logcat(
+                                                "SELECTED_APPOINTMENT_SLOT_ID",
+                                                controller
+                                                    .selectedAppointmentSlotId
+                                                    .value);
+                                            // logcat(
+                                            //     "SELECT_ITEM",
+                                            //     controller
+                                            //         .isItemSelected.value);
                                           });
                                         },
                                         child: AnimatedContainer(
@@ -365,25 +417,40 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                               const Duration(milliseconds: 300),
                                           width: 25.w,
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                            color: controller
-                                                        .selectedIndex.value ==
-                                                    index
-                                                ? Colors.black
-                                                : Colors.grey,
-                                          ),
+                                              border: Border.all(
+                                                  color: controller
+                                                              .selectedIndex
+                                                              .value ==
+                                                          index
+                                                      ? black
+                                                      : black),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              color: controller.selectedIndex
+                                                          .value ==
+                                                      index
+                                                  ? black
+                                                  : white),
                                           child: Center(
                                             child: Text(
-                                              controller.choices[index].title,
+                                              formatTime(
+                                                controller.slotObjectList[index]
+                                                    .timeOfAppointment
+                                                    .toString(),
+                                              ),
                                               style: TextStyle(
                                                   fontFamily: opensans_Bold,
-                                                  color: Colors.white,
+                                                  color: controller
+                                                              .selectedIndex
+                                                              .value ==
+                                                          index
+                                                      ? white
+                                                      : black,
                                                   fontSize:
                                                       SizerUtil.deviceType ==
                                                               DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 13.sp,
+                                                          ? 10.sp
+                                                          : 10.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
@@ -467,16 +534,19 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         visualDensity: const VisualDensity(
                                           horizontal: -2,
                                         ),
-                                        value: controller.value_1.value,
+                                        value: controller.isRemind.value,
                                         onChanged: (value) {
-                                          controller.value_1.value = value!;
+                                          controller.isRemind.value = value!;
                                           controller.enableSignUpButton();
+                                          setState(() {
+                                            // logcat(tag, data)
+                                          });
                                         },
                                       ),
                                       SizedBox(width: 0.5.w),
                                       GestureDetector(
                                         onTap: () async {
-                                          if (controller.value_1.value ==
+                                          if (controller.isRemind.value ==
                                               true) {
                                             if (!await launchUrl(
                                               Uri.parse('http://google.com/'),

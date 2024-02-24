@@ -30,7 +30,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   void initState() {
-    controller.getCustomerList(context);
+    controller.getCustomerList(context, true);
     controller.filteredCustomerObjectList = controller.customerObjectList;
     super.initState();
   }
@@ -73,9 +73,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   Get.to(AddCustomerScreen())?.then((value) {
                     if (value == true) {
                       logcat("ISDONE", "DONE");
-                      controller.getCustomerList(
-                        context,
-                      );
+                      controller.getCustomerList(context, false);
                     }
                   });
                 },
@@ -137,7 +135,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getCustomerList(context);
+                        controller.getCustomerList(context, true);
                       },
                     );
                   },
@@ -249,360 +247,364 @@ class _CustomerScreenState extends State<CustomerScreen> {
     // ignore: unrelated_type_quality_checks
     if (controller.state == ScreenState.apiSuccess &&
         controller.customerObjectList.isNotEmpty) {
-      return Expanded(
-        child: controller.filteredCustomerObjectList.isNotEmpty
-            ? Container(
-                margin: EdgeInsets.only(left: 7.w, right: 7.w),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  clipBehavior: Clip.antiAlias,
-                  physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Adjust the number of columns as needed
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    ListofCustomer data =
-                        controller.filteredCustomerObjectList[index];
+      return controller.filteredCustomerObjectList.isNotEmpty
+          ? Container(
+              margin: EdgeInsets.only(left: 7.w, right: 7.w),
+              child: GridView.builder(
+                shrinkWrap: true,
+                clipBehavior: Clip.antiAlias,
+                physics: BouncingScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Adjust the number of columns as needed
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                ),
+                itemBuilder: (context, index) {
+                  ListofCustomer data =
+                      controller.filteredCustomerObjectList[index];
 
-                    // final imageUrl =
-                    //    " 'http://192.168.1.7:4000/uploads/${data.picInfo!.image}';";
-                    return Container(
-                      padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
-                      decoration: BoxDecoration(
-                        color: isDarkMode() ? black : white,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: isDarkMode()
-                                ? Colors.white.withOpacity(0.2)
-                                : Colors.black.withOpacity(0.2),
-                            spreadRadius: 0.1,
-                            blurRadius: 10,
-                            offset: Offset(0.5, 0.5),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(children: [
-                            Container(
-                                height: 11.h,
-                                width: 60.w,
-                                // padding: EdgeInsets.all(
-                                //   SizerUtil.deviceType == DeviceType.mobile
-                                //       ? 1.2.w
-                                //       : 1.0.w,
-                                // ),
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  child: CachedNetworkImage(
+                  // final imageUrl =
+                  //    " 'http://192.168.1.7:4000/uploads/${data.picInfo!.image}';";
+                  return Container(
+                    padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                    decoration: BoxDecoration(
+                      color: isDarkMode() ? black : white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode()
+                              ? Colors.white.withOpacity(0.2)
+                              : Colors.black.withOpacity(0.2),
+                          spreadRadius: 0.1,
+                          blurRadius: 10,
+                          offset: Offset(0.5, 0.5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Stack(children: [
+                          Container(
+                              height: 11.h,
+                              width: 60.w,
+                              // padding: EdgeInsets.all(
+                              //   SizerUtil.deviceType == DeviceType.mobile
+                              //       ? 1.2.w
+                              //       : 1.0.w,
+                              // ),
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: data.picInfo != null
+                                      ? 'http://192.168.1.15:4001/${data.picInfo!.image}'
+                                      : "",
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                        color: primaryColor),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    Asset.placeholder,
+                                    height: 11.h,
                                     fit: BoxFit.cover,
-                                    imageUrl: data.picInfo != null
-                                        ? 'http://192.168.1.15:4000/${data.picInfo!.image}'
-                                        : "",
-                                    placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator(
-                                          color: primaryColor),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset(
-                                      Asset.placeholder,
-                                      height: 11.h,
-                                      fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ))
+                          // CachedNetworkImage(
+                          //   fit: BoxFit.cover,
+                          //   imageUrl: data.pic,
+                          //   placeholder: (context, url) => SvgPicture.asset(
+                          //     Asset.profileimg,
+                          //     color:
+                          //         isDarkMode() ? Colors.white : Colors.black,
+                          //     height: 4.5.h,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          //   errorWidget: (context, url, error) =>
+                          //       SvgPicture.asset(
+                          //     Asset.profileimg,
+                          //     color:
+                          //         isDarkMode() ? Colors.white : Colors.black,
+                          //     height: 4.5.h,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // )
+
+                          // CircleAvatar(
+                          //   radius: 3.5.h,
+                          //   backgroundColor: Colors.white,
+                          //   child: SvgPicture.asset(
+                          //     data.pic,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
+                        ]),
+                        // SizedBox(height: 10.0),
+                        Container(
+                          padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      data.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: isDarkMode() ? white : black,
+                                          fontFamily: opensansMedium,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700),
                                     ),
                                   ),
-                                ))
-                            // CachedNetworkImage(
-                            //   fit: BoxFit.cover,
-                            //   imageUrl: data.pic,
-                            //   placeholder: (context, url) => SvgPicture.asset(
-                            //     Asset.profileimg,
-                            //     color:
-                            //         isDarkMode() ? Colors.white : Colors.black,
-                            //     height: 4.5.h,
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            //   errorWidget: (context, url, error) =>
-                            //       SvgPicture.asset(
-                            //     Asset.profileimg,
-                            //     color:
-                            //         isDarkMode() ? Colors.white : Colors.black,
-                            //     height: 4.5.h,
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            // )
+                                  // SizedBox(height: 5.0),
+                                ],
+                              ),
 
-                            // CircleAvatar(
-                            //   radius: 3.5.h,
-                            //   backgroundColor: Colors.white,
-                            //   child: SvgPicture.asset(
-                            //     data.pic,
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            // ),
-                          ]),
-                          // SizedBox(height: 10.0),
-                          Container(
-                            padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        data.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w700),
+                              // SizedBox(height: 5.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      data.contactNo,
+                                      // data.fees.toString(),
+                                      // '${model.fullName.capitalize} (${model.age} Years)'
+                                      style: TextStyle(
+                                          fontFamily: opensansMedium,
+                                          fontSize: 11.sp,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(AddCustomerScreen(
+                                              isEdit: true, editCustomer: data))
+                                          ?.then((value) {
+                                        if (value == true) {
+                                          controller.getCustomerList(
+                                              context, false);
+                                        }
+                                      });
+                                    },
+                                    child: Container(
+                                      child: SvgPicture.asset(
+                                        Asset.edit,
+                                        height: 2.3.h,
+                                        color: isDarkMode()
+                                            ? Colors.grey
+                                            : Colors.grey,
                                       ),
                                     ),
-                                    // SizedBox(height: 5.0),
-                                  ],
-                                ),
-
-                                // SizedBox(height: 5.0),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        data.contactNo,
-                                        // data.fees.toString(),
-                                        // '${model.fullName.capitalize} (${model.age} Years)'
-                                        style: TextStyle(
-                                            fontFamily: opensansMedium,
-                                            fontSize: 11.sp,
-                                            fontWeight: FontWeight.w400),
+                                  ),
+                                  SizedBox(width: 3.0),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDeleteConfirmationDialog(data.id);
+                                    },
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.delete_rounded,
+                                        color: isDarkMode()
+                                            ? Colors.grey
+                                            : Colors.grey,
+                                        size: 3.h,
                                       ),
                                     ),
-                                    Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Get.to(AddCustomerScreen(
-                                            isEdit: true, editCustomer: data));
-                                      },
-                                      child: Container(
-                                        child: SvgPicture.asset(
-                                          Asset.edit,
-                                          height: 2.3.h,
-                                          color: isDarkMode()
-                                              ? Colors.grey
-                                              : Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 3.0),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDeleteConfirmationDialog(data.id);
-                                      },
-                                      child: Container(
-                                        child: Icon(
-                                          Icons.delete_rounded,
-                                          color: isDarkMode()
-                                              ? Colors.grey
-                                              : Colors.grey,
-                                          size: 3.h,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: controller.filteredCustomerObjectList.length,
-                ),
-              )
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: controller.filteredCustomerObjectList.length,
+              ),
+            )
 
-            // ListView.builder(
-            //     shrinkWrap: true,
-            //     clipBehavior: Clip.antiAlias,
-            //     physics: BouncingScrollPhysics(),
-            //     itemBuilder: (context, index) {
-            //       ListofCustomer data =
-            //           controller.filteredCustomerObjectList[index];
-            //       // hairservice data = staticData[index];
-            //       // logcat("DATAAA", controller.serviceObjectList);
-            //       return Container(
-            //         margin: EdgeInsets.only(
-            //             top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
-            //         child: Expanded(
-            //           child: Container(
-            //             padding: EdgeInsets.only(
-            //                 top: 1.h, left: 3.w, right: 4.w, bottom: 1.h),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               children: [
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.start,
-            //                   crossAxisAlignment: CrossAxisAlignment.center,
-            //                   children: [
-            //                     Stack(children: [
-            //                       CachedNetworkImage(
-            //                         fit: BoxFit.cover,
-            //                         imageUrl: data.pic,
-            //                         placeholder: (context, url) =>
-            //                             SvgPicture.asset(
-            //                           Asset.profileimg,
-            //                           color: isDarkMode()
-            //                               ? Colors.white
-            //                               : Colors.black,
-            //                           height: 4.5.h,
-            //                           fit: BoxFit.cover,
-            //                         ),
-            //                         errorWidget: (context, url, error) =>
-            //                             SvgPicture.asset(
-            //                           Asset.profileimg,
-            //                           color: isDarkMode()
-            //                               ? Colors.white
-            //                               : Colors.black,
-            //                           height: 4.5.h,
-            //                           fit: BoxFit.cover,
-            //                         ),
-            //                       )
-            //                       // CircleAvatar(
-            //                       //   radius: 3.5.h,
-            //                       //   backgroundColor: Colors.white,
-            //                       //   child: SvgPicture.asset(
-            //                       //     data.pic,
-            //                       //     fit: BoxFit.cover,
-            //                       //   ),
-            //                       // ),
-            //                     ]),
-            //                     SizedBox(width: 5.5.w),
-            //                     Expanded(
-            //                       child: Column(
-            //                         mainAxisAlignment: MainAxisAlignment.start,
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.start,
-            //                         children: [
-            //                           Row(children: [
-            //                             Container(
-            //                               child: Text(
-            //                                 data.name,
-            //                                 style: TextStyle(
-            //                                     fontFamily: opensansMedium,
-            //                                     fontSize: 15.sp,
-            //                                     fontWeight: FontWeight.w700),
-            //                               ),
-            //                             ),
-            //                             Spacer(),
-            //                             GestureDetector(
-            //                               onTap: () {
-            //                                 // Get.to(AddServiceScreen(
-            //                                 //     isEdit: true,
-            //                                 //     editService: data));
-            //                               },
-            //                               child: Container(
-            //                                   child: SvgPicture.asset(
-            //                                       Asset.edit,
-            //                                       height: 2.3.h,
-            //                                       color: isDarkMode()
-            //                                           ? Colors.grey
-            //                                           : Colors.grey)),
-            //                             ),
-            //                             SizedBox(
-            //                               width: 2.w,
-            //                             ),
-            //                             GestureDetector(
-            //                                 onTap: () {
-            //                                   showDeleteConfirmationDialog(
-            //                                       data.id);
-            //                                 },
-            //                                 child: Container(
-            //                                     child: Icon(
-            //                                   Icons.delete_rounded,
-            //                                   color: isDarkMode()
-            //                                       ? Colors.grey
-            //                                       : Colors.grey,
-            //                                   size: 3.h,
-            //                                 )))
-            //                           ]),
-            //                           Container(
-            //                             margin: EdgeInsets.only(top: 0.5.h),
-            //                             child: Text(
-            //                               data.contactNo,
-            //                               // data.fees.toString(),
-            //                               // '${model.fullName.capitalize} (${model.age} Years)'
-            //                               style: TextStyle(
-            //                                   fontFamily: opensansMedium,
-            //                                   fontSize: 16.sp,
-            //                                   fontWeight: FontWeight.w600),
-            //                             ),
-            //                           ),
-            //                           // Row(
-            //                           //     mainAxisAlignment:
-            //                           //         MainAxisAlignment.spaceBetween,
-            //                           //     crossAxisAlignment:
-            //                           //         CrossAxisAlignment.center,
-            //                           //     children: [
-            //                           //       Container(
-            //                           //         child: Text(
-            //                           //           data.email,
-            //                           //           style: TextStyle(
-            //                           //               fontFamily: opensansMedium,
-            //                           //               fontSize: 11.sp,
-            //                           //               fontWeight:
-            //                           //                   FontWeight.w400),
-            //                           //         ),
-            //                           //       ),
-            //                           //     ]),
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //             decoration: BoxDecoration(
-            //               color: isDarkMode() ? black : white,
-            //               borderRadius: BorderRadius.all(Radius.circular(25)),
-            //               boxShadow: [
-            //                 BoxShadow(
-            //                     color: isDarkMode()
-            //                         ? Colors.white.withOpacity(0.2)
-            //                         : Colors.black.withOpacity(0.2),
-            //                     spreadRadius: 0.1,
-            //                     blurRadius: 10,
-            //                     offset: Offset(0.5, 0.5)),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     itemCount: controller.filteredCustomerObjectList.length,
-            //   )
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     clipBehavior: Clip.antiAlias,
+          //     physics: BouncingScrollPhysics(),
+          //     itemBuilder: (context, index) {
+          //       ListofCustomer data =
+          //           controller.filteredCustomerObjectList[index];
+          //       // hairservice data = staticData[index];
+          //       // logcat("DATAAA", controller.serviceObjectList);
+          //       return Container(
+          //         margin: EdgeInsets.only(
+          //             top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
+          //         child: Expanded(
+          //           child: Container(
+          //             padding: EdgeInsets.only(
+          //                 top: 1.h, left: 3.w, right: 4.w, bottom: 1.h),
+          //             child: Column(
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               mainAxisAlignment: MainAxisAlignment.start,
+          //               children: [
+          //                 Row(
+          //                   mainAxisAlignment: MainAxisAlignment.start,
+          //                   crossAxisAlignment: CrossAxisAlignment.center,
+          //                   children: [
+          //                     Stack(children: [
+          //                       CachedNetworkImage(
+          //                         fit: BoxFit.cover,
+          //                         imageUrl: data.pic,
+          //                         placeholder: (context, url) =>
+          //                             SvgPicture.asset(
+          //                           Asset.profileimg,
+          //                           color: isDarkMode()
+          //                               ? Colors.white
+          //                               : Colors.black,
+          //                           height: 4.5.h,
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                         errorWidget: (context, url, error) =>
+          //                             SvgPicture.asset(
+          //                           Asset.profileimg,
+          //                           color: isDarkMode()
+          //                               ? Colors.white
+          //                               : Colors.black,
+          //                           height: 4.5.h,
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                       )
+          //                       // CircleAvatar(
+          //                       //   radius: 3.5.h,
+          //                       //   backgroundColor: Colors.white,
+          //                       //   child: SvgPicture.asset(
+          //                       //     data.pic,
+          //                       //     fit: BoxFit.cover,
+          //                       //   ),
+          //                       // ),
+          //                     ]),
+          //                     SizedBox(width: 5.5.w),
+          //                     Expanded(
+          //                       child: Column(
+          //                         mainAxisAlignment: MainAxisAlignment.start,
+          //                         crossAxisAlignment:
+          //                             CrossAxisAlignment.start,
+          //                         children: [
+          //                           Row(children: [
+          //                             Container(
+          //                               child: Text(
+          //                                 data.name,
+          //                                 style: TextStyle(
+          //                                     fontFamily: opensansMedium,
+          //                                     fontSize: 15.sp,
+          //                                     fontWeight: FontWeight.w700),
+          //                               ),
+          //                             ),
+          //                             Spacer(),
+          //                             GestureDetector(
+          //                               onTap: () {
+          //                                 // Get.to(AddServiceScreen(
+          //                                 //     isEdit: true,
+          //                                 //     editService: data));
+          //                               },
+          //                               child: Container(
+          //                                   child: SvgPicture.asset(
+          //                                       Asset.edit,
+          //                                       height: 2.3.h,
+          //                                       color: isDarkMode()
+          //                                           ? Colors.grey
+          //                                           : Colors.grey)),
+          //                             ),
+          //                             SizedBox(
+          //                               width: 2.w,
+          //                             ),
+          //                             GestureDetector(
+          //                                 onTap: () {
+          //                                   showDeleteConfirmationDialog(
+          //                                       data.id);
+          //                                 },
+          //                                 child: Container(
+          //                                     child: Icon(
+          //                                   Icons.delete_rounded,
+          //                                   color: isDarkMode()
+          //                                       ? Colors.grey
+          //                                       : Colors.grey,
+          //                                   size: 3.h,
+          //                                 )))
+          //                           ]),
+          //                           Container(
+          //                             margin: EdgeInsets.only(top: 0.5.h),
+          //                             child: Text(
+          //                               data.contactNo,
+          //                               // data.fees.toString(),
+          //                               // '${model.fullName.capitalize} (${model.age} Years)'
+          //                               style: TextStyle(
+          //                                   fontFamily: opensansMedium,
+          //                                   fontSize: 16.sp,
+          //                                   fontWeight: FontWeight.w600),
+          //                             ),
+          //                           ),
+          //                           // Row(
+          //                           //     mainAxisAlignment:
+          //                           //         MainAxisAlignment.spaceBetween,
+          //                           //     crossAxisAlignment:
+          //                           //         CrossAxisAlignment.center,
+          //                           //     children: [
+          //                           //       Container(
+          //                           //         child: Text(
+          //                           //           data.email,
+          //                           //           style: TextStyle(
+          //                           //               fontFamily: opensansMedium,
+          //                           //               fontSize: 11.sp,
+          //                           //               fontWeight:
+          //                           //                   FontWeight.w400),
+          //                           //         ),
+          //                           //       ),
+          //                           //     ]),
+          //                         ],
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ],
+          //             ),
+          //             decoration: BoxDecoration(
+          //               color: isDarkMode() ? black : white,
+          //               borderRadius: BorderRadius.all(Radius.circular(25)),
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                     color: isDarkMode()
+          //                         ? Colors.white.withOpacity(0.2)
+          //                         : Colors.black.withOpacity(0.2),
+          //                     spreadRadius: 0.1,
+          //                     blurRadius: 10,
+          //                     offset: Offset(0.5, 0.5)),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //     itemCount: controller.filteredCustomerObjectList.length,
+          //   )
 
-            : Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 31.h),
-                  child: Text(
-                    CommonConstant.noDataFound,
-                    style: TextStyle(
-                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
-                  ),
+          : Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 31.h),
+                child: Text(
+                  CommonConstant.noDataFound,
+                  style: TextStyle(
+                      fontFamily: fontMedium, fontSize: 12.sp, color: black),
                 ),
               ),
-      );
+            );
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -653,9 +655,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     }
     if (state == ScreenState.noNetwork) {
       button = getMiniButton(() {
-        controller.getCustomerList(
-          context,
-        );
+        controller.getCustomerList(context, false);
       }, "Try Again");
     }
 

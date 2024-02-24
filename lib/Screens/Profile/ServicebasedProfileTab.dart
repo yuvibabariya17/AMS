@@ -1,3 +1,5 @@
+import 'package:booking_app/Models/VendorServiceModel.dart';
+
 import '../../Models/ServiceModel.dart';
 import 'package:booking_app/controllers/ServiceBasedProfileController.dart';
 import 'package:booking_app/core/constants/assets.dart';
@@ -7,7 +9,6 @@ import 'package:booking_app/core/utils/helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
 class ServiceProfileTabScreen extends StatefulWidget {
@@ -20,7 +21,6 @@ class ServiceProfileTabScreen extends StatefulWidget {
 
 class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
   // List<ServiceItem> staticData = SettingsItems;
-
   // List<Service_Item> staticData = ServicesItems;
   // List<ExpertItem> staticData1 = expertItems;
   // List<OfferItem> staticData2 = offersItems;
@@ -37,236 +37,188 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
   @override
   void initState() {
     controller.getServiceList(context);
-    controller.filteredServiceObjectList = controller.serviceObjectList;
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      SliverToBoxAdapter(
-        child: Obx(() {
-          return Stack(children: [
-            Obx(() {
-              switch (controller.state.value) {
-                case ScreenState.apiLoading:
-                case ScreenState.noNetwork:
-                case ScreenState.noDataFound:
-                case ScreenState.apiError:
-                  return Container(
-                    // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                    height: SizerUtil.height / 1.5,
-                    child: apiOtherStates(controller.state.value),
-                  );
-                case ScreenState.apiSuccess:
-                  return Container(
-                      // margin: EdgeInsets.only(bottom: 3.h, top: 2.h),
-                      child: apiSuccess(controller.state.value));
-                default:
-                  Container();
-              }
-              return Container();
-            }),
-            if (controller.isLoading.value == true)
-              SizedBox(
-                  height: SizerUtil.height,
-                  width: SizerUtil.width,
-                  child: Center(
-                      child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                      ),
-                      height: 60,
-                      width: 60,
-                      child: Image.asset(
-                        "assets/gif/loading.gif",
-                        width: 60,
-                        height: 60,
-                      ),
-                    ),
-                  ))),
-          ]);
-        }),
-      ),
-    ]);
+    return Obx(() {
+      switch (controller.state.value) {
+        case ScreenState.apiLoading:
+        case ScreenState.noNetwork:
+        case ScreenState.noDataFound:
+        case ScreenState.apiError:
+          return Container(
+            height: SizerUtil.height / 1.7,
+            child: apiOtherStates(controller.state.value),
+          );
+        case ScreenState.apiSuccess:
+          return apiSuccess(controller.state.value);
+        default:
+          Container();
+      }
+      return Container();
+    });
   }
 
   Widget apiSuccess(ScreenState state) {
     if (controller.state == ScreenState.apiSuccess &&
         controller.serviceObjectList.isNotEmpty) {
-      return controller.filteredServiceObjectList.isNotEmpty
-          ? Container(
-              height: SizerUtil.height,
-              width: SizerUtil.width,
-              child: Column(
+      return Container(
+          height: SizerUtil.height,
+          width: SizerUtil.width,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                          margin:
-                              EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
-                          child: Text(
-                            "View More >",
-                            style: TextStyle(
-                              color: isDarkMode() ? white : black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 13.sp,
-                            ),
-                          )),
-                    ],
+                  Container(
+                      margin: EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
+                      child: Text(
+                        "View More >",
+                        style: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13.sp,
+                        ),
+                      )),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(top: 1.h),
+                  padding: EdgeInsets.only(
+                    left: 8.w,
+                    right: 8.w,
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
-                      padding: EdgeInsets.only(
-                        left: 5.w,
-                        right: 5.w,
-                      ),
-                      child: GridView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: false,
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                2, // Set the number of columns as per your requirement
-                            crossAxisSpacing:
-                                20.0, // Set the spacing between columns
-                            mainAxisSpacing:
-                                20.0, // Set the spacing between rows
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      //   crossAxisCount:
+                      //       2, // Set the number of columns as per your requirement
+                      //   crossAxisSpacing:
+                      //       6.w, // Set the spacing between columns
+                      //   mainAxisSpacing: 3.h, // Set the spacing between rows
+                      // ),
+                      clipBehavior: Clip.antiAlias,
+                      itemCount: controller.serviceObjectList.length,
+                      itemBuilder: (context, index) {
+                        VendorServiceList data =
+                            controller.serviceObjectList[index];
+                        return Container(
+                          padding: EdgeInsets.only(
+                              left: 5.w, right: 3.w, top: 1.h, bottom: 1.h),
+                          margin: EdgeInsets.only(bottom: 1.h),
+                          decoration: BoxDecoration(
+                            color: isDarkMode() ? black : white,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isDarkMode()
+                                    ? Colors.white.withOpacity(0.2)
+                                    : Colors.black.withOpacity(0.2),
+                                spreadRadius: 0.1,
+                                blurRadius: 10,
+                                offset: Offset(0.5, 0.5),
+                              ),
+                            ],
                           ),
-                          clipBehavior: Clip.antiAlias,
-                          itemCount:
-                              controller.filteredServiceObjectList.length,
-                          itemBuilder: (context, index) {
-                            ServiceList data =
-                                controller.filteredServiceObjectList[index];
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Stack(
+                              //   children: [
+                              //     Container(
+                              //         padding: EdgeInsets.only(
+                              //             top: 0.5.h,
+                              //             left: 0.5.w,
+                              //             right: 0.5.w),
+                              //         height: 11.h,
+                              //         width: 60.w,
+                              //         // padding: EdgeInsets.all(
+                              //         //   SizerUtil.deviceType == DeviceType.mobile
+                              //         //       ? 1.2.w
+                              //         //       : 1.0.w,
+                              //         // ),
+                              //         child: ClipRRect(
+                              //           borderRadius: const BorderRadius.all(
+                              //               Radius.circular(15)),
+                              //           child: CachedNetworkImage(
+                              //             fit: BoxFit.cover,
+                              //             imageUrl: "",
+                              //             placeholder: (context, url) =>
+                              //                 const Center(
+                              //               child: CircularProgressIndicator(
+                              //                   color: primaryColor),
+                              //             ),
+                              //             errorWidget: (context, url, error) =>
+                              //                 Image.asset(
+                              //               Asset.placeholder,
+                              //               height: 11.h,
+                              //               fit: BoxFit.cover,
+                              //             ),
+                              //           ),
+                              //         ))
 
-                            return Container(
-                              padding: EdgeInsets.only(
-                                left: 1.w,
-                                right: 1.w,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isDarkMode() ? black : white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: isDarkMode()
-                                        ? Colors.white.withOpacity(0.2)
-                                        : Colors.black.withOpacity(0.2),
-                                    spreadRadius: 0.1,
-                                    blurRadius: 10,
-                                    offset: Offset(0.5, 0.5),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
+                              //     // CircleAvatar(
+                              //     //   radius: 4.h,
+                              //     //   backgroundColor: Colors.white,
+                              //     //   child: SvgPicture.asset(
+                              //     //     Asset.profileimg,
+                              //     //     fit: BoxFit.cover,
+                              //     //   ),
+                              //     // ),
+                              //   ],
+                              // ),
+                              SizedBox(height: 1.h),
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Stack(
-                                    children: [
-                                      Container(
-                                          padding: EdgeInsets.only(
-                                              top: 0.5.h,
-                                              left: 0.5.w,
-                                              right: 0.5.w),
-                                          height: 11.h,
-                                          width: 60.w,
-                                          // padding: EdgeInsets.all(
-                                          //   SizerUtil.deviceType == DeviceType.mobile
-                                          //       ? 1.2.w
-                                          //       : 1.0.w,
-                                          // ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(15)),
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              imageUrl: "",
-                                              placeholder: (context, url) =>
-                                                  const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                        color: primaryColor),
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Image.asset(
-                                                Asset.placeholder,
-                                                height: 11.h,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ))
-
-                                      // CircleAvatar(
-                                      //   radius: 4.h,
-                                      //   backgroundColor: Colors.white,
-                                      //   child: SvgPicture.asset(
-                                      //     Asset.profileimg,
-                                      //     fit: BoxFit.cover,
-                                      //   ),
-                                      // ),
-                                    ],
+                                  Text(
+                                    data.serviceInfo.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    // data.serviceInfo != null
+                                    //     ? data.serviceInfo!.name
+                                    //     : "",
+                                    style: TextStyle(
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: opensansMedium,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                  SizedBox(height: 1.h),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            data.name,
-                                            // data.serviceInfo != null
-                                            //     ? data.serviceInfo!.name
-                                            //     : "",
-                                            style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                          // SizedBox(height: 5.0),
-                                        ],
-                                      ),
-                                      // Text(
-                                      //   '₹ ${data..toString()}',
-                                      //   style: TextStyle(
-                                      //     color: isDarkMode() ? white : black,
-                                      //     fontFamily: opensansMedium,
-                                      //     fontSize: 12.sp,
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
-                                    ],
-                                  ),
-
                                   // SizedBox(height: 5.0),
                                 ],
                               ),
-                            );
-                          }),
-                    ),
-                  ),
-                ],
-              ))
-          : Center(
-              child: Text("Data not Found"),
-            );
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '₹ ${data.fees.toString()}',
+                                    style: TextStyle(
+                                      fontFamily: opensansMedium,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              // SizedBox(height: 5.0),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              ),
+            ],
+          ));
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -57,7 +57,7 @@ class AppointmentScreenController extends GetxController {
         return;
       }
       var response =
-          await Repository.post({}, ApiUrl.expertList, allowHeader: true);
+          await Repository.post({}, ApiUrl.appointmentList, allowHeader: true);
       isExpertTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("EXPERTRESPONSE", jsonEncode(responseData));

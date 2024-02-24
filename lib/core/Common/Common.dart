@@ -3,6 +3,7 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/helper.dart';
@@ -235,5 +236,17 @@ class Common {
       statusBarColor: isDarkMode() ? Colors.transparent : Colors.transparent,
       statusBarBrightness: isDarkMode() ? Brightness.light : Brightness.dark,
     ));
+  }
+
+  String getCurrentDate() {
+    // Get the current date
+    DateTime now = DateTime.now();
+    // Format th date as yyyy-mm-dd
+    return DateFormat('yyyy-MM-dd').format(now);
+  }
+
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('MMMM dd, yyyy').format(dateTime);
   }
 }

@@ -440,7 +440,7 @@ class AddCustomerController extends GetxController {
         "vendor_id": retrievedObject!.id.toString().trim()
       });
 
-      var response = await Repository.post({
+      var response = await Repository.put({
         "name": Customerctr.text.toString().trim(),
         "contact_no": Contact1ctr.text.toString().trim(),
         "whatsapp_no": Whatsappctr.text.toString().trim(),
@@ -451,7 +451,7 @@ class AddCustomerController extends GetxController {
         "address": Addressctr.text.toString().trim(),
         "description": descctr.text.toString().trim(),
         "vendor_id": retrievedObject.id.toString().trim()
-      }, '${ApiUrl.editCourse}/$customerId', allowHeader: true);
+      }, '${ApiUrl.editCustomer}/$customerId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

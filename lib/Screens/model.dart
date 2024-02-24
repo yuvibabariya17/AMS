@@ -1,4 +1,3 @@
-import 'package:booking_app/Screens/modelitem.dart';
 
 // List<hairservice> hairserviceItems = <hairservice>[
 //   hairservice(

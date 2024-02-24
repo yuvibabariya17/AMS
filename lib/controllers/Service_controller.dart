@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
-import 'package:booking_app/Models/ServiceModel.dart';
 import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,7 +39,7 @@ class serviceController extends GetxController {
   void getServiceList(context) async {
     state.value = ScreenState.apiLoading;
     // isServiceTypeApiList.value = true;
-    // try {
+     try {
     if (networkManager.connectionType == 0) {
       showDialogForScreen(context, Connection.noConnection, callback: () {
         Get.back();
@@ -51,8 +50,7 @@ class serviceController extends GetxController {
         await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
     isServiceTypeApiList.value = false;
     var responseData = jsonDecode(response.body);
-    logcat(" SERVICE RESPONSE", jsonEncode(responseData));
-
+    logcat("SERVICERESPONSE", jsonEncode(responseData));
     if (response.statusCode == 200) {
       var data = VendorServiceModel.fromJson(responseData);
       if (data.status == 1) {
@@ -66,10 +64,10 @@ class serviceController extends GetxController {
     } else {
       showDialogForScreen(context, Connection.servererror, callback: () {});
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isServiceTypeApiList.value = false;
-    // }
+    } catch (e) {
+      logcat('Exception', e);
+      isServiceTypeApiList.value = false;
+    }
   }
 
   void deleteServiceList(context, String itemId) async {

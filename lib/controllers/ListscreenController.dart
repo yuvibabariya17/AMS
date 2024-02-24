@@ -9,7 +9,6 @@ import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
-import 'package:booking_app/preference/UserPreference.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,8 +22,8 @@ import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
-class HomeScreenController extends GetxController {
-  List<hairservice> staticData = hairserviceItems;
+class ListScreenController extends GetxController {
+
   var currentPage = 0;
 
   List pageNavigation = [];
@@ -59,20 +58,7 @@ class HomeScreenController extends GetxController {
 
   final GlobalKey<ScaffoldState> drawer_key = GlobalKey();
 
-  void drawerAction() {
-    drawer_key.currentState!.openDrawer();
-    update();
-  }
-
-  void closeDrawer() {
-    drawer_key.currentState!.closeDrawer();
-  }
-
-  void updateDate(date) {
-    picDate.value = date;
-    print("PICKED_DATE${picDate.value}");
-    update();
-  }
+ 
 
   @override
   void onInit() {
@@ -94,65 +80,39 @@ class HomeScreenController extends GetxController {
   RxBool isSlotList = false.obs;
   RxList<AppointmentList> slotObjectList = <AppointmentList>[].obs;
   RxString slotId = "".obs;
-  RxBool isLoading = false.obs;
 
-  void getHomeList(context, String date) async {
+  void getHomeList(context) async {
     state.value = ScreenState.apiLoading;
-    isLoading.value = false;
     // isServiceTypeApiList.value = true;
-  //  try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var retrievedObject = await UserPreferences().getSignInInfo();
-
-      logcat("PASSING_DATA", {
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "date": date.isNotEmpty ? date.toString() : ''
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
       });
-      var response = await Repository.post({
-        "search": {
-          "vendor_id": retrievedObject.id.toString().trim(),
-          "date": date.isNotEmpty ? date.toString() : ''
-        }
-      }, ApiUrl.homeApi, allowHeader: true);
-      isSlotList.value = false;
-      var responseData = jsonDecode(response.body);
-      isLoading.value = true;
-      logcat("HOME_RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = HomeScreenModel.fromJson(responseData);
-        if (data.status == 1) {
-          state.value = ScreenState.apiSuccess;
-          slotObjectList.clear();
-          slotObjectList.addAll(data.data);
-          update();
-          logcat("HOME_RESPONSE", jsonEncode(slotObjectList));
-          logcat("LENGTH", slotObjectList.length.toString());
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-        update();
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
+      return;
     }
-    
-    //  catch (e) {
-    //   logcat('Exception', e);
-    // }
+    var response = await Repository.post({}, ApiUrl.homeApi, allowHeader: true);
+    isSlotList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("HOME RESPONSE", jsonEncode(responseData));
 
-  String formatTime(String timeString) {
-    // Parse the time string into a DateTime object
-    DateTime dateTime = DateTime.parse(timeString);
-    // Format the time into the desired format
-    String formattedTime = DateFormat('hh:mm a').format(dateTime);
-    return formattedTime;
+    if (response.statusCode == 200) {
+      var data = HomeScreenModel.fromJson(responseData);
+      if (data.status == 1) {
+        state.value = ScreenState.apiSuccess;
+        slotObjectList.clear();
+        slotObjectList.addAll(data.data);
+        logcat("HOME RESPONSE", jsonEncode(slotObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isServiceTypeApiList.value = false;
+    // }
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {
@@ -217,13 +177,5 @@ class HomeScreenController extends GetxController {
   //   update();
   // }
 
-  void manuallyFocusToItem(int index) {
-    keydata.currentState!.focusToItem(index);
-    update();
-  }
 
-  void onItemFocus(int index) {
-    focusedIndex.value = index;
-    update();
-  }
 }

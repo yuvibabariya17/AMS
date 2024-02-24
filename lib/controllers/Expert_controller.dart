@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
 import '../Models/ExpertModel.dart';
@@ -25,11 +26,21 @@ class expertcontroller extends GetxController {
 
   List<ExpertList> filteredExpertObjectList = [];
 
-  void getExpertList(context) async {
-    state.value = ScreenState.apiLoading;
+  void getExpertList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
+    } else {
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
+    }
     // isExpertTypeApiList.value = true;
     try {
       if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
         showDialogForScreen(context, Connection.noConnection, callback: () {
           Get.back();
         });
@@ -37,6 +48,9 @@ class expertcontroller extends GetxController {
       }
       var response =
           await Repository.post({}, ApiUrl.expertList, allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
       isExpertTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("EXPERTRESPONSE", jsonEncode(responseData));
@@ -48,8 +62,6 @@ class expertcontroller extends GetxController {
           expertObjectList.clear();
           expertObjectList.addAll(data.data);
           logcat("EXPERT RESPONSE", jsonEncode(expertObjectList));
-
-          
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

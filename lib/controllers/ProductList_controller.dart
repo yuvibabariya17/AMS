@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:booking_app/Models/DeleteSuccessModel.dart';
 import 'package:booking_app/Models/ProductCatListModel.dart';
+import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Config/apicall_constant.dart';
@@ -10,9 +11,7 @@ import '../core/utils/log.dart';
 import '../dialogs/dialogs.dart';
 import 'internet_controller.dart';
 
-
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
-
 
 class ProductListController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
@@ -21,7 +20,8 @@ class ProductListController extends GetxController {
   late TextEditingController searchCtr;
 
   RxBool isProductCategoryList = false.obs;
-  RxList<ListProductCategory> productCategoryObjectList = <ListProductCategory>[].obs;
+  RxList<ListProductCategory> productCategoryObjectList =
+      <ListProductCategory>[].obs;
   RxString productCategoryId = "".obs;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
@@ -38,40 +38,53 @@ class ProductListController extends GetxController {
     super.onInit();
   }
 
-  void getProductCategoryList(context) async {
-    state.value = ScreenState.apiLoading;
-    isProductCategoryList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.productCategoryList, allowHeader: true);
-    isProductCategoryList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" SERVICE RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      if (responseData['status'] == 1) {
-      var data = ProductCategoryListModel.fromJson(responseData);
-
-        state.value = ScreenState.apiSuccess;
-        productCategoryObjectList.clear();
-        productCategoryObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
-      }
+  void getProductCategoryList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      state.value = ScreenState.apiLoading;
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.show(context, "");
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isServiceTypeApiList.value = false;
-    // }
+
+    isProductCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.productCategoryList,
+          allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isProductCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = ProductCategoryListModel.fromJson(responseData);
+
+          state.value = ScreenState.apiSuccess;
+          productCategoryObjectList.clear();
+          productCategoryObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isProductCategoryList.value = false;
+    }
   }
 
   void deleteProductCategoryList(context, String itemId) async {
@@ -99,7 +112,8 @@ class ProductListController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("PRODUCTDELETE CATEGORY", jsonEncode(productCategoryObjectList));
+          logcat(
+              "PRODUCTDELETE CATEGORY", jsonEncode(productCategoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -114,8 +128,8 @@ class ProductListController extends GetxController {
   }
 
   void updateLocalList(String deletedItemId) {
-    int deletedItemIndex =
-        productCategoryObjectList.indexWhere((item) => item.id == deletedItemId);
+    int deletedItemIndex = productCategoryObjectList
+        .indexWhere((item) => item.id == deletedItemId);
 
     if (deletedItemIndex != -1) {
       // Remove the deleted item from the list

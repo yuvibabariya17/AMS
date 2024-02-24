@@ -36,7 +36,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
 
   @override
   void initState() {
-    controller.getExpertList(context);
+    controller.getExpertList(context, true);
     controller.filteredExpertObjectList = controller.expertObjectList;
     super.initState();
   }
@@ -71,9 +71,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 Get.to(AddExpertScreen())?.then((value) {
                   if (value == true) {
                     logcat("ISDONE", "DONE");
-                    controller.getExpertList(
-                      context,
-                    );
+                    controller.getExpertList(context, false);
                   }
                 });
               },
@@ -139,7 +137,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                     return Future.delayed(
                       const Duration(seconds: 1),
                       () {
-                        controller.getExpertList(context);
+                        controller.getExpertList(context, true);
                       },
                     );
                   },
@@ -284,312 +282,309 @@ class _ExpertScreenState extends State<ExpertScreen> {
     // ignore: unrelated_type_equality_checks
     if (controller.state == ScreenState.apiSuccess &&
         controller.expertObjectList.isNotEmpty) {
-      return Expanded(
-        child: controller.filteredExpertObjectList.isNotEmpty
-            ? Container(
-                margin: EdgeInsets.only(left: 8.w, right: 8.w),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  clipBehavior: Clip.antiAlias,
-                  physics: BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Adjust the number of columns as needed
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    ExpertList data =
-                        controller.filteredExpertObjectList[index];
-
-                    return Container(
-                      padding: EdgeInsets.only(
-                        left: 1.5.w,
-                        right: 1.5.w,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isDarkMode() ? black : white,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: isDarkMode()
-                                ? Colors.white.withOpacity(0.2)
-                                : Colors.black.withOpacity(0.2),
-                            spreadRadius: 0.1,
-                            blurRadius: 10,
-                            offset: Offset(0.5, 0.5),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              //Round Circle Image
-
-                              // CircleAvatar(
-                              //   radius: 3.7.h,
-                              //   backgroundColor: Colors.white,
-                              //   child: ClipRRect(
-                              //     borderRadius: BorderRadius.circular(50),
-                              //     child: CachedNetworkImage(
-                              //       imageUrl:
-                              //           "  data., ", // URL of the expert's image
-                              //       placeholder: (context, url) =>
-                              //           SvgPicture.asset(Asset.profileimg),
-                              //       errorWidget: (context, url, error) =>
-                              //           SvgPicture.asset(Asset.profileimg),
-                              //       fit: BoxFit.cover,
-                              //     ),
-                              //   ),
-                              // ),
-
-                              //CLICPRRECT
-                              Container(
-                                  height: 11.h,
-                                  width: 60.w,
-                                  // padding: EdgeInsets.all(
-                                  //   SizerUtil.deviceType == DeviceType.mobile
-                                  //       ? 1.2.w
-                                  //       : 1.0.w,
-                                  // ),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(15)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl:
-                                          'http://192.168.1.15:4000/${data.upload_info.image}',
-                                      placeholder: (context, url) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                            color: primaryColor),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        Asset.placeholder,
-                                        height: 11.h,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ))
-                            ],
-                          ),
-                          // SizedBox(height: 10.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                data.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700),
-                              )),
-                              SizedBox(height: 5.0),
-                            ],
-                          ),
-                          // SizedBox(height: 5.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '₹ ${data.amount.toString()}',
-                                // data.serviceInfo != null
-                                //     ? data.serviceInfo!.name
-                                //     : "",
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(AddExpertScreen(
-                                    isEdit: true,
-                                    editExpert: data,
-                                  ));
-                                },
-                                child: Container(
-                                  child: SvgPicture.asset(
-                                    Asset.edit,
-                                    height: 2.3.h,
-                                    color: isDarkMode()
-                                        ? Colors.grey
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 5.0),
-                              GestureDetector(
-                                onTap: () {
-                                  showDeleteConfirmationDialog(data.id);
-                                },
-                                child: Container(
-                                  child: Icon(
-                                    Icons.delete_rounded,
-                                    color: isDarkMode()
-                                        ? Colors.grey
-                                        : Colors.grey,
-                                    size: 3.h,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: controller.filteredExpertObjectList.length,
+      return controller.filteredExpertObjectList.isNotEmpty
+          ? Container(
+              margin: EdgeInsets.only(left: 8.w, right: 8.w),
+              child: GridView.builder(
+                shrinkWrap: true,
+                clipBehavior: Clip.antiAlias,
+                physics: BouncingScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Adjust the number of columns as needed
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
                 ),
-              )
+                itemBuilder: (context, index) {
+                  ExpertList data = controller.filteredExpertObjectList[index];
 
-            // ListView.builder(
-            //     shrinkWrap: true,
-            //     clipBehavior: Clip.antiAlias,
-            //     physics: BouncingScrollPhysics(),
-            //     itemBuilder: (context, index) {
-            //       ExpertList data = controller.filteredExpertObjectList[index];
-            //       return Container(
-            //         margin: EdgeInsets.only(
-            //             top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
-            //         child: Expanded(
-            //           child: Container(
-            //             padding: EdgeInsets.only(
-            //                 top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               children: [
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.start,
-            //                   crossAxisAlignment: CrossAxisAlignment.center,
-            //                   children: [
-            //                     Stack(children: [
-            //                       CircleAvatar(
-            //                         radius: 3.7.h,
-            //                         backgroundColor: Colors.white,
-            //                         child: SvgPicture.asset(
-            //                           Asset.profileimg,
-            //                           fit: BoxFit.cover,
-            //                         ),
-            //                       ),
-            //                     ]),
-            //                     SizedBox(width: 5.5.w),
-            //                     Expanded(
-            //                       child: Column(
-            //                         mainAxisAlignment: MainAxisAlignment.start,
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.start,
-            //                         children: [
-            //                           Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.start,
-            //                               crossAxisAlignment:
-            //                                   CrossAxisAlignment.center,
-            //                               children: [
-            //                                 Container(
-            //                                     child: Text(
-            //                                   data.name,
-            //                                   style: TextStyle(
-            //                                       color: isDarkMode()
-            //                                           ? white
-            //                                           : black,
-            //                                       fontFamily: opensansMedium,
-            //                                       fontSize: 15.5.sp,
-            //                                       fontWeight: FontWeight.w700),
-            //                                 )),
-            //                                 Spacer(),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     Get.to(AddExpertScreen(
-            //                                       isEdit: true,
-            //                                       editExpert: data,
-            //                                     ));
-            //                                   },
-            //                                   child: Container(
-            //                                       child: SvgPicture.asset(
-            //                                           Asset.edit,
-            //                                           height: 2.3.h,
-            //                                           color: isDarkMode()
-            //                                               ? Colors.grey
-            //                                               : Colors.grey)),
-            //                                 ),
-            //                                 SizedBox(
-            //                                   width: 2.w,
-            //                                 ),
-            //                                 GestureDetector(
-            //                                   onTap: () {
-            //                                     showDeleteConfirmationDialog(
-            //                                         data.id);
-            //                                   },
-            //                                   child: Container(
-            //                                       child: Icon(
-            //                                     Icons.delete_rounded,
-            //                                     color: isDarkMode()
-            //                                         ? Colors.grey
-            //                                         : Colors.grey,
-            //                                     size: 3.h,
-            //                                   )),
-            //                                 ),
-            //                               ]),
-            //                           SizedBox(
-            //                             height: 0.5.h,
-            //                           ),
-            //                           Text(
-            //                             data.vendorInfo.userName,
-            //                             style: TextStyle(
-            //                                 color: isDarkMode() ? white : black,
-            //                                 fontFamily: opensansMedium,
-            //                                 fontSize: 11.sp,
-            //                                 fontWeight: FontWeight.w400),
-            //                           )
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 )
-            //               ],
-            //             ),
-            //             decoration: BoxDecoration(
-            //               color: isDarkMode() ? black : white,
-            //               borderRadius: BorderRadius.all(Radius.circular(10)),
-            //               boxShadow: [
-            //                 BoxShadow(
-            //                     color: isDarkMode()
-            //                         ? Colors.white.withOpacity(0.2)
-            //                         : Colors.black.withOpacity(0.2),
-            //                     spreadRadius: 0.1,
-            //                     blurRadius: 10,
-            //                     offset: Offset(0.5, 0.5)),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     itemCount: controller.filteredExpertObjectList.length)
-            : Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 31.h),
-                  child: Text(
-                    CommonConstant.noDataFound,
-                    style: TextStyle(
-                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
-                  ),
+                  return Container(
+                    padding: EdgeInsets.only(
+                      left: 1.5.w,
+                      right: 1.5.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDarkMode() ? black : white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDarkMode()
+                              ? Colors.white.withOpacity(0.2)
+                              : Colors.black.withOpacity(0.2),
+                          spreadRadius: 0.1,
+                          blurRadius: 10,
+                          offset: Offset(0.5, 0.5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            //Round Circle Image
+
+                            // CircleAvatar(
+                            //   radius: 3.7.h,
+                            //   backgroundColor: Colors.white,
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(50),
+                            //     child: CachedNetworkImage(
+                            //       imageUrl:
+                            //           "  data., ", // URL of the expert's image
+                            //       placeholder: (context, url) =>
+                            //           SvgPicture.asset(Asset.profileimg),
+                            //       errorWidget: (context, url, error) =>
+                            //           SvgPicture.asset(Asset.profileimg),
+                            //       fit: BoxFit.cover,
+                            //     ),
+                            //   ),
+                            // ),
+
+                            //CLICPRRECT
+                            Container(
+                                height: 11.h,
+                                width: 60.w,
+                                // padding: EdgeInsets.all(
+                                //   SizerUtil.deviceType == DeviceType.mobile
+                                //       ? 1.2.w
+                                //       : 1.0.w,
+                                // ),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        'http://192.168.1.15:4001/${data.upload_info.image}',
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                          color: primaryColor),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      Asset.placeholder,
+                                      height: 11.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ))
+                          ],
+                        ),
+                        // SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              data.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontFamily: opensansMedium,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                            SizedBox(height: 5.0),
+                          ],
+                        ),
+                        // SizedBox(height: 5.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '₹ ${data.amount.toString()}',
+                              // data.serviceInfo != null
+                              //     ? data.serviceInfo!.name
+                              //     : "",
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontFamily: opensansMedium,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(AddExpertScreen(
+                                        isEdit: true, editExpert: data))
+                                    ?.then((value) {
+                                  if (value == true) {
+                                    controller.getExpertList(context, false);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                child: SvgPicture.asset(
+                                  Asset.edit,
+                                  height: 2.3.h,
+                                  color:
+                                      isDarkMode() ? Colors.grey : Colors.grey,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 5.0),
+                            GestureDetector(
+                              onTap: () {
+                                showDeleteConfirmationDialog(data.id);
+                              },
+                              child: Container(
+                                child: Icon(
+                                  Icons.delete_rounded,
+                                  color:
+                                      isDarkMode() ? Colors.grey : Colors.grey,
+                                  size: 3.h,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: controller.filteredExpertObjectList.length,
+              ),
+            )
+
+          // ListView.builder(
+          //     shrinkWrap: true,
+          //     clipBehavior: Clip.antiAlias,
+          //     physics: BouncingScrollPhysics(),
+          //     itemBuilder: (context, index) {
+          //       ExpertList data = controller.filteredExpertObjectList[index];
+          //       return Container(
+          //         margin: EdgeInsets.only(
+          //             top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
+          //         child: Expanded(
+          //           child: Container(
+          //             padding: EdgeInsets.only(
+          //                 top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
+          //             child: Column(
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               mainAxisAlignment: MainAxisAlignment.start,
+          //               children: [
+          //                 Row(
+          //                   mainAxisAlignment: MainAxisAlignment.start,
+          //                   crossAxisAlignment: CrossAxisAlignment.center,
+          //                   children: [
+          //                     Stack(children: [
+          //                       CircleAvatar(
+          //                         radius: 3.7.h,
+          //                         backgroundColor: Colors.white,
+          //                         child: SvgPicture.asset(
+          //                           Asset.profileimg,
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                       ),
+          //                     ]),
+          //                     SizedBox(width: 5.5.w),
+          //                     Expanded(
+          //                       child: Column(
+          //                         mainAxisAlignment: MainAxisAlignment.start,
+          //                         crossAxisAlignment:
+          //                             CrossAxisAlignment.start,
+          //                         children: [
+          //                           Row(
+          //                               mainAxisAlignment:
+          //                                   MainAxisAlignment.start,
+          //                               crossAxisAlignment:
+          //                                   CrossAxisAlignment.center,
+          //                               children: [
+          //                                 Container(
+          //                                     child: Text(
+          //                                   data.name,
+          //                                   style: TextStyle(
+          //                                       color: isDarkMode()
+          //                                           ? white
+          //                                           : black,
+          //                                       fontFamily: opensansMedium,
+          //                                       fontSize: 15.5.sp,
+          //                                       fontWeight: FontWeight.w700),
+          //                                 )),
+          //                                 Spacer(),
+          //                                 GestureDetector(
+          //                                   onTap: () {
+          //                                     Get.to(AddExpertScreen(
+          //                                       isEdit: true,
+          //                                       editExpert: data,
+          //                                     ));
+          //                                   },
+          //                                   child: Container(
+          //                                       child: SvgPicture.asset(
+          //                                           Asset.edit,
+          //                                           height: 2.3.h,
+          //                                           color: isDarkMode()
+          //                                               ? Colors.grey
+          //                                               : Colors.grey)),
+          //                                 ),
+          //                                 SizedBox(
+          //                                   width: 2.w,
+          //                                 ),
+          //                                 GestureDetector(
+          //                                   onTap: () {
+          //                                     showDeleteConfirmationDialog(
+          //                                         data.id);
+          //                                   },
+          //                                   child: Container(
+          //                                       child: Icon(
+          //                                     Icons.delete_rounded,
+          //                                     color: isDarkMode()
+          //                                         ? Colors.grey
+          //                                         : Colors.grey,
+          //                                     size: 3.h,
+          //                                   )),
+          //                                 ),
+          //                               ]),
+          //                           SizedBox(
+          //                             height: 0.5.h,
+          //                           ),
+          //                           Text(
+          //                             data.vendorInfo.userName,
+          //                             style: TextStyle(
+          //                                 color: isDarkMode() ? white : black,
+          //                                 fontFamily: opensansMedium,
+          //                                 fontSize: 11.sp,
+          //                                 fontWeight: FontWeight.w400),
+          //                           )
+          //                         ],
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 )
+          //               ],
+          //             ),
+          //             decoration: BoxDecoration(
+          //               color: isDarkMode() ? black : white,
+          //               borderRadius: BorderRadius.all(Radius.circular(10)),
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                     color: isDarkMode()
+          //                         ? Colors.white.withOpacity(0.2)
+          //                         : Colors.black.withOpacity(0.2),
+          //                     spreadRadius: 0.1,
+          //                     blurRadius: 10,
+          //                     offset: Offset(0.5, 0.5)),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //     itemCount: controller.filteredExpertObjectList.length)
+          : Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 31.h),
+                child: Text(
+                  CommonConstant.noDataFound,
+                  style: TextStyle(
+                      fontFamily: fontMedium, fontSize: 12.sp, color: black),
                 ),
               ),
-      );
+            );
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -655,9 +650,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
     }
     if (state == ScreenState.noNetwork) {
       button = getMiniButton(() {
-        controller.getExpertList(
-          context,
-        );
+        controller.getExpertList(context, true);
       }, "Try Again");
     }
 

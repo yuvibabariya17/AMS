@@ -42,55 +42,23 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      SliverToBoxAdapter(
-        child: Obx(() {
-          return Stack(children: [
-            Obx(() {
-              switch (controller.state.value) {
-                case ScreenState.apiLoading:
-                case ScreenState.noNetwork:
-                case ScreenState.noDataFound:
-                case ScreenState.apiError:
-                  return Container(
-                    // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                    height: SizerUtil.height / 1.5,
-                    child: apiOtherStates(controller.state.value),
-                  );
-                case ScreenState.apiSuccess:
-                  return Container(
-                      // margin: EdgeInsets.only(bottom: 3.h, top: 2.h),
-                      child: apiSuccess(controller.state.value));
-                default:
-                  Container();
-              }
-              return Container();
-            }),
-            if (controller.isLoading.value == true)
-              SizedBox(
-                  height: SizerUtil.height,
-                  width: SizerUtil.width,
-                  child: Center(
-                      child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                      ),
-                      height: 60,
-                      width: 60,
-                      child: Image.asset(
-                        "assets/gif/loading.gif",
-                        width: 60,
-                        height: 60,
-                      ),
-                    ),
-                  ))),
-          ]);
-        }),
-      ),
-    ]);
+    return Obx(() {
+      switch (controller.state.value) {
+        case ScreenState.apiLoading:
+        case ScreenState.noNetwork:
+        case ScreenState.noDataFound:
+        case ScreenState.apiError:
+          return Container(
+            height: SizerUtil.height / 1.7,
+            child: apiOtherStates(controller.state.value),
+          );
+        case ScreenState.apiSuccess:
+          return apiSuccess(controller.state.value);
+        default:
+          Container();
+      }
+      return Container();
+    });
   }
 
   Widget apiSuccess(ScreenState state) {
