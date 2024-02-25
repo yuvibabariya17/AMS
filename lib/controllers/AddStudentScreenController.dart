@@ -266,6 +266,64 @@ class AddStudentController extends GetxController {
     }
   }
 
+  void UpdateStudent(context, String studentId) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      //  var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("UPDATE_COURSE", {
+        ({
+          "name": namectr.text.toString().trim(),
+          "address": addressctr.text.toString().trim(),
+          "email": emailctr.text.toString().trim(),
+          "contact": contactctr.text.toString().trim(),
+          "photo_url": uploadImageId.value.toString(),
+          "id_proof_url": uploadIdproof.value.toString(),
+        })
+      });
+
+      var response = await Repository.put({
+        "name": namectr.text.toString().trim(),
+        "address": addressctr.text.toString().trim(),
+        "email": emailctr.text.toString().trim(),
+        "contact": contactctr.text.toString().trim(),
+        "photo_url": uploadImageId.value.toString(),
+        "id_proof_url": uploadIdproof.value.toString(),
+      }, '${ApiUrl.editStudent}/$studentId', allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("ADDCOURSE", data);
+      // var responseDetail = GetLoginModel.fromJson(data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   Rx<File?> uploadImageFile = null.obs;
   Rx<File?> uploadIdProof = null.obs;
 

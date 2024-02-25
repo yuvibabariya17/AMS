@@ -255,6 +255,67 @@ class AddPackageController extends GetxController {
     }
   }
 
+  void UpdatePackageApi(context, String packageId) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat(
+        "ADD PACKAGE",
+        {
+          "vendor_id": retrievedObject!.id.toString().trim(),
+          "name": nameCtr.text.toString().trim(),
+          "act_fees": actfeesCtr.text.toString().trim(),
+          "pack_fees": packFeesCtr.text.toString().trim(),
+          "other_notes": noteCtr.text.toString().trim(),
+          "duration_from": fromDurationCtr.text.toString().trim(),
+          "duration_to": toDurationCtr.text.toString().trim(),
+        },
+      );
+
+      var response = await Repository.put({
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "name": nameCtr.text.toString().trim(),
+        "act_fees": actfeesCtr.text.toString().trim(),
+        "pack_fees": packFeesCtr.text.toString().trim(),
+        "other_notes": noteCtr.text.toString().trim(),
+        "duration_from": fromDurationCtr.text.toString().trim(),
+        "duration_to": toDurationCtr.text.toString().trim(),
+      }, '${ApiUrl.editPackage}/$packageId', allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("ADDCOURSE", data);
+      // var responseDetail = GetLoginModel.fromJson(data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
   RxString uploadBreacherId = ''.obs;

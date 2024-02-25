@@ -402,7 +402,12 @@ class _AddPackageScreenState extends State<AddPackageScreen> {
                         from: 50,
                         child: Obx(() {
                           return getFormButton(() {
-                            if (controller.isFormInvalidate.value == true) {
+                            if (widget.isEdit == true) {
+                              // Call updateCourse API
+                              controller.UpdatePackageApi(
+                                  context, widget.editPackage!.id);
+                            } else {
+                              // Call AddCourseApi API
                               controller.AddPackageApi(context);
                             }
                           }, CommonConstant.submit,

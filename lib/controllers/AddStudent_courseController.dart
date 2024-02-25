@@ -424,6 +424,64 @@ class AddStudentCourseController extends GetxController {
     }
   }
 
+  void UpdateStudentCourseApi(context, String courseId) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      //  var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("STUDENTCOURSE", {
+        ({
+          "student_id": studentId.value.toString(),
+          "course_id": studentCourseId.value.toString(),
+          "fees": Feesctr.text.toString().trim(),
+          "starting_from": startDatectr.text.toString().trim(),
+          "other_notes": notesctr.text.toString().trim(),
+          "id_proof_url": uploadId.value.toString()
+        })
+      });
+
+      var response = await Repository.put({
+        "student_id": studentId.value.toString(),
+        "course_id": studentCourseId.value.toString(),
+        "fees": Feesctr.text.toString().trim(),
+        "starting_from": startDatectr.text.toString().trim(),
+        "other_notes": notesctr.text.toString().trim(),
+        "id_proof_url": uploadId.value.toString()
+      }, '${ApiUrl.editStudentCourse}/$courseId', allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("ADDCOURSE", data);
+      // var responseDetail = GetLoginModel.fromJson(data);
+      if (response.statusCode == 200) {
+        if (data['status'] == 1) {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
   actionClickUploadIdProof(context, {bool? isCamera}) async {
     await ImagePicker()
         .pickImage(

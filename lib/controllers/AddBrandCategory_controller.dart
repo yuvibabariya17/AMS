@@ -185,76 +185,6 @@ class AddBrandCategoryController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
-  // actionClickUploadImageForIdproof(context, {bool? isCamera}) async {
-  //   await ImagePicker()
-  //       .pickImage(
-  //           //source: ImageSource.gallery,
-  //           source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-  //           maxWidth: 1080,
-  //           maxHeight: 1080,
-  //           imageQuality: 100)
-  //       .then((file) async {
-  //     if (file != null) {
-  //       //Cropping the image
-  //       CroppedFile? croppedFile = await ImageCropper().cropImage(
-  //           sourcePath: file.path,
-  //           maxWidth: 1080,
-  //           maxHeight: 1080,
-  //           cropStyle: CropStyle.rectangle,
-  //           aspectRatioPresets: Platform.isAndroid
-  //               ? [
-  //                   CropAspectRatioPreset.square,
-  //                   CropAspectRatioPreset.ratio3x2,
-  //                   CropAspectRatioPreset.original,
-  //                   CropAspectRatioPreset.ratio4x3,
-  //                   CropAspectRatioPreset.ratio16x9
-  //                 ]
-  //               : [
-  //                   CropAspectRatioPreset.original,
-  //                   CropAspectRatioPreset.square,
-  //                   CropAspectRatioPreset.ratio3x2,
-  //                   CropAspectRatioPreset.ratio4x3,
-  //                   CropAspectRatioPreset.ratio5x3,
-  //                   CropAspectRatioPreset.ratio5x4,
-  //                   CropAspectRatioPreset.ratio7x5,
-  //                   CropAspectRatioPreset.ratio16x9
-  //                 ],
-  //           uiSettings: [
-  //             AndroidUiSettings(
-  //                 toolbarTitle: 'Crop Image',
-  //                 cropGridColor: primaryColor,
-  //                 toolbarColor: primaryColor,
-  //                 statusBarColor: primaryColor,
-  //                 toolbarWidgetColor: white,
-  //                 activeControlsWidgetColor: primaryColor,
-  //                 initAspectRatio: CropAspectRatioPreset.original,
-  //                 lockAspectRatio: false),
-  //             IOSUiSettings(
-  //               title: 'Crop Image',
-  //               cancelButtonTitle: 'Cancel',
-  //               doneButtonTitle: 'Done',
-  //               aspectRatioLockEnabled: false,
-  //             ),
-  //           ],
-  //           aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-  //       if (file != null) {
-  //         uploadProfile = File(file.path).obs;
-  //         idctr.text = file.name;
-  //         validateId(idctr.text);
-  //         getIdProof(context);
-  //       }
-
-  //       // if (croppedFile != null) {
-  //       //   uploadImageFile = File(croppedFile.path).obs;
-  //       //   profilePic.value = croppedFile.path;
-  //       //   update();
-  //       // }
-  //     }
-  //   });
-
-  //   update();
-  // }
-
   void AddBrandCategory(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
@@ -272,6 +202,49 @@ class AddBrandCategoryController extends GetxController {
         "image_id": uploadImageId.value.toString(),
         "description": descCtr.text.toLowerCase().trim(),
       }, ApiUrl.addBrandCategory, allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void UpdateBrandCategory(context, String brandCategoryId) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      logcat("PRODUCTTTTTT", {});
+      loadingIndicator.show(context, '');
+      var response = await Repository.put({
+        "name": namectr.text.toString().trim(),
+        "image_id": uploadImageId.value.toString(),
+        "description": descCtr.text.toLowerCase().trim(),
+      }, '${ApiUrl.editBrandCategory}/$brandCategoryId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

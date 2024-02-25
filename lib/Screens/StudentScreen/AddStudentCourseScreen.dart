@@ -51,6 +51,9 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
           widget.editStudentCourse!.idProofUrlInfo.image.toString();
       controller.notesctr.text =
           widget.editStudentCourse!.otherNotes.toString();
+
+      controller.uploadId.value =
+          widget.editStudentCourse!.idProofUrl.toString();
       // Set other fields as well
     }
     if (widget.isEdit == true) {
@@ -360,8 +363,13 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                     from: 50,
                                     child: Obx(() {
                                       return getFormButton(() {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateStudentCourseApi(
+                                              context,
+                                              widget.editStudentCourse!.id);
+                                        } else {
+                                          // Call AddCourseApi API
                                           controller.AddStudentCourseApi(
                                               context);
                                         }

@@ -13,9 +13,9 @@ import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
 class AddBrandCategoryScreen extends StatefulWidget {
-  AddBrandCategoryScreen({super.key, this.isEdit, this.editProductCategory});
+  AddBrandCategoryScreen({super.key, this.isEdit, this.editBrandCategory});
   bool? isEdit;
-  BrandCatList? editProductCategory;
+  BrandCatList? editBrandCategory;
 
   @override
   State<AddBrandCategoryScreen> createState() => _AddBrandCategoryScreenState();
@@ -33,12 +33,15 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
 
   @override
   void initState() {
-    if (widget.isEdit == true && widget.editProductCategory != null) {
-      controller.namectr.text = widget.editProductCategory!.name;
+    if (widget.isEdit == true && widget.editBrandCategory != null) {
+      controller.namectr.text = widget.editBrandCategory!.name;
       controller.imgctr.text =
-          widget.editProductCategory!.uploadInfo.image.toString();
+          widget.editBrandCategory!.uploadInfo.image.toString();
       controller.descCtr.text =
-          widget.editProductCategory!.description.toString();
+          widget.editBrandCategory!.description.toString();
+
+      controller.uploadImageId.value =
+          widget.editBrandCategory!.uploadId.toString();
 
       if (widget.isEdit == true) {
         validateFields();
@@ -171,8 +174,14 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
                                     from: 50,
                                     child: Obx(() {
                                       return getFormButton(() {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+
+                                          controller.UpdateBrandCategory(
+                                              context,
+                                              widget.editBrandCategory!.id);
+                                        } else {
+                                          // Call AddCourseApi API
                                           controller.AddBrandCategory(context);
                                         }
                                       }, CommonConstant.submit,

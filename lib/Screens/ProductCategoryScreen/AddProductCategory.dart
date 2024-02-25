@@ -41,6 +41,9 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
       controller.descCtr.text =
           widget.editProductCategory!.description.toString();
 
+      controller.uploadImageId.value =
+          widget.editProductCategory!.uploadId.toString();
+
       if (widget.isEdit == true) {
         validateFields();
       }
@@ -172,8 +175,13 @@ class _AddProductCategoryScreenState extends State<AddProductCategoryScreen> {
                                     from: 50,
                                     child: Obx(() {
                                       return getFormButton(() {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateProductCategory(
+                                              context,
+                                              widget.editProductCategory!.id);
+                                        } else {
+                                          // Call AddCourseApi API
                                           controller.AddProductCategory(
                                               context);
                                         }

@@ -68,4 +68,9 @@ class ApiUrl {
   static const servicesubCategoryList = "service/subCategory/list";
   static const appointmentDelete = "appointment/delete";
   static const homeApi = "appointment/timeslot";
+  static const editStudent = "student/edit";
+  static const editStudentCourse = "student/course/edit";
+  static const editPackage = "package/edit";
+  static const editProdcutCategory = "product/category/edit";
+  static const editBrandCategory = "brand/category/edit";
 }

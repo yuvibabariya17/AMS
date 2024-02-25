@@ -249,14 +249,14 @@ class addProductController extends GetxController {
         "qty": int.parse(quantityCtr.text),
       });
       loadingIndicator.show(context, '');
-      var response = await Repository.post({
+      var response = await Repository.put({
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "product_category_id": productId.toString().trim(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
-      }, ApiUrl.editProduct, allowHeader: true);
+      }, '${ApiUrl.editProduct}/$productId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);

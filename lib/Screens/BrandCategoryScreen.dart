@@ -384,7 +384,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                             GestureDetector(
                               onTap: () {
                                 Get.to(AddBrandCategoryScreen(
-                                    isEdit: true, editProductCategory: data));
+                                    isEdit: true, editBrandCategory: data));
                               },
                               child: Container(
                                 child: SvgPicture.asset(
