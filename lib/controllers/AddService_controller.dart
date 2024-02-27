@@ -296,7 +296,8 @@ class AddserviceController extends GetxController {
     isServiceCategoryList.value = true;
     try {
       if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -315,11 +316,12 @@ class AddserviceController extends GetxController {
 
           logcat("CATEGORY LIST", jsonEncode(serviceCategoryList));
         } else {
-          showDialogForScreen(context, responseData['message'],
+          showDialogForScreen(context, responseData['message'], false,
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, false,
+            callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -382,7 +384,8 @@ class AddserviceController extends GetxController {
     logcat("CATEGORY ID", categoryId);
     try {
       if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -406,11 +409,12 @@ class AddserviceController extends GetxController {
 
           logcat("SUBCATEGORY LIST", jsonEncode(subcategoryList));
         } else {
-          showDialogForScreen(context, responseData['message'],
+          showDialogForScreen(context, responseData['message'], false,
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, false,
+            callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -478,7 +482,8 @@ class AddserviceController extends GetxController {
         if (isFirst == false) {
           loadingIndicator.hide(context);
         }
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -507,11 +512,12 @@ class AddserviceController extends GetxController {
 
           logcat("SERVICE LIST", jsonEncode(serviceObjectList));
         } else {
-          showDialogForScreen(context, responseData['message'],
+          showDialogForScreen(context, responseData['message'], false,
               callback: () {});
         }
       } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
+        showDialogForScreen(context, Connection.servererror, false,
+            callback: () {});
       }
     } catch (e) {
       logcat('Exception', e);
@@ -557,7 +563,8 @@ class AddserviceController extends GetxController {
     });
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+  showDialogForScreen(context, String message, bool? isEdit,
+      {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -567,20 +574,21 @@ class AddserviceController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.addService,
+        title: isEdit == true ? "Update Service" : ScreenTitle.addService,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }
 
   // UPDATE VENDOR API
 
-  void UpdateVendorServiceApi(context, String serviceId) async {
+  void UpdateVendorServiceApi(context, String serviceId, String Id) async {
     logcat("IDD:::::", serviceId.toString());
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, true,
+            callback: () {
           Get.back();
         });
         return;
@@ -592,44 +600,45 @@ class AddserviceController extends GetxController {
         "vendor_id": retrievedObject!.id.toString().trim(),
         "service_id": serviceId.toString().trim(),
         "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
+        "oppox_time": approxTime,
+        "oppox_setting": int.parse(sittingctr.text),
+        "oppox_setting_duration": sitingTime,
+        "oppox_setting_days_inverval": int.parse(intervalctr.text),
+        "Total_days": daysctr.text.toString().trim(),
       });
       var response = await Repository.put({
         "vendor_id": retrievedObject.id.toString().trim(),
         "service_id": serviceId.toString().trim(),
         "fees": int.parse(Pricectr.text),
-        "oppox_time": approxTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting": sittingctr.text.toString().trim(),
-        "oppox_setting_duration":
-            sitingTime.replaceAll(' ', '').toString().trim(),
-        "oppox_setting_days_inverval": daysctr.text.toString().trim(),
-      }, '${ApiUrl.editVendorService}/$serviceId', allowHeader: true);
+        "oppox_time": approxTime,
+        "oppox_setting": int.parse(sittingctr.text),
+        "oppox_setting_duration": sitingTime,
+        "oppox_setting_days_inverval": int.parse(intervalctr.text),
+        "Total_days": daysctr.text.toString().trim(),
+      }, '${ApiUrl.editVendorService}/$Id', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
         var responseDetail = CommonModel.fromJson(data);
         if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), true,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), true,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), true,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, true,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -639,7 +648,8 @@ class AddserviceController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -673,22 +683,23 @@ class AddserviceController extends GetxController {
       if (response.statusCode == 200) {
         var responseDetail = CommonModel.fromJson(data);
         if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), false,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }

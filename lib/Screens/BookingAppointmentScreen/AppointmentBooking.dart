@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/Models/AppointmentListModel.dart';
+import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
@@ -18,7 +19,12 @@ import '../../custom_componannt/form_inputs.dart';
 import '../ExpertScreen/AddExpertScreen.dart';
 
 class AppointmentBookingScreen extends StatefulWidget {
-  const AppointmentBookingScreen({super.key});
+  AppointmentBookingScreen(
+      {super.key, this.selectedDate, this.isEdit, this.editAppointment});
+  bool? isEdit;
+  ListofAppointment? editAppointment;
+
+  String? selectedDate;
 
   @override
   State<AppointmentBookingScreen> createState() =>
@@ -37,7 +43,60 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
     controller.getExpertList(context);
     controller.getCustomerList(context);
     controller.getAppointmentSlot(context);
+
+    if (widget.isEdit == true && widget.editAppointment != null) {
+      controller.Customerctr.text =
+          widget.editAppointment!.customerInfo.name.toString();
+      controller.Servicectr.text =
+          widget.editAppointment!.vendorServiceInfo.serviceInfo.name.toString();
+      controller.expertctr.text =
+          widget.editAppointment!.expertInfo.name.toString();
+      controller.datectr.text =
+          widget.editAppointment!.dateOfAppointment.toString();
+      controller.durationctr.text = widget.editAppointment!.duration.toString();
+      controller.Slotctr.text =
+          widget.editAppointment!.appointmentSlotId.toString();
+      controller.Amountctr.text = widget.editAppointment!.amount.toString();
+      controller.appointmentTypectr.text =
+          widget.editAppointment!.appointmentType.toString();
+      controller.Notectr.text = widget.editAppointment!.notes.toString();
+
+      controller.apiFormattedDate.value =
+          widget.editAppointment!.dateOfAppointment.toString().trim();
+
+      controller.customerId.value =
+          widget.editAppointment!.customerId.toString();
+      controller.ServiceId.value =
+          widget.editAppointment!.vendorServiceId.toString();
+      controller.expertId.value = widget.editAppointment!.exportId.toString();
+    }
+    if (widget.selectedDate != null) {
+      controller.datectr.text =
+          Common().formatDates(widget.selectedDate.toString());
+      controller.validateDate(controller.datectr.text);
+      controller.apiFormattedDate.value = widget.selectedDate!;
+      setState(() {});
+    }
+    if (widget.isEdit == true) {
+      validateFields();
+    }
     super.initState();
+  }
+
+  void validateFields() {
+    // Validate all fields here
+    controller.validateCustomer(controller.Customerctr.text);
+    controller.validateService(controller.Servicectr.text);
+    controller.validateExpert(controller.expertctr.text);
+    controller.validateDate(controller.datectr.text);
+    controller.validateDuration(controller.durationctr.text);
+    controller.validateDuration(controller.durationctr.text);
+    // controller.validateSlots(controller.Pricectr.text);
+    controller.validateAmount(controller.Amountctr.text);
+    controller.validateAppointmentType(controller.appointmentTypectr.text);
+    controller.validateNote(controller.Notectr.text);
+
+    // Add validation for other fields as needed
   }
 
   // void getService(BuildContext context) async {
@@ -67,7 +126,10 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
       child: CustomScaffold(
           body: Column(
         children: [
-          getCommonToolbar(ScreenTitle.appointmentBooking, () {
+          getCommonToolbar(
+              widget.isEdit == true
+                  ? "Update Appointment"
+                  : ScreenTitle.appointmentBooking, () {
             Get.back();
           }),
           Expanded(
@@ -206,7 +268,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                               await showDatePicker(
                                                   context: context,
                                                   initialDate: selectedDate,
-                                                  firstDate: DateTime(1950),
+                                                  firstDate: DateTime.now(),
                                                   lastDate: DateTime(2050));
                                           if (pickedDate != null &&
                                               pickedDate != selectedDate) {
@@ -214,8 +276,12 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                               selectedDate = pickedDate;
                                             });
                                           }
-
                                           logcat("SELECTED_DATE", pickedDate);
+                                          // if (widget.selectedDate != null &&
+                                          //     widget.selectedDate!.isNotEmpty) {
+                                          //   controller.apiFormattedDate.value =
+                                          //       widget.selectedDate!;
+                                          // }
 
                                           if (pickedDate != null) {
                                             //2024-02-22T00:00:00.704Z
@@ -357,106 +423,133 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             //           );
                             //         }))),
 
-                            getTitle(
-                                AppointmentBookingConstant.Appointment_slot),
-                            SizedBox(
-                              height: 1.h,
-                            ),
                             Obx(
                               () {
                                 logcat(
                                   "EXPERTSLOT_LIST",
                                   controller.slotObjectList.length,
                                 );
-                                return GridView.count(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    childAspectRatio: 2.0,
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 17,
-                                    mainAxisSpacing: 4,
-                                    children: List.generate(
-                                        controller.slotObjectList.length,
-                                        (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          controller.selectedIndex.value =
-                                              index;
-
-                                          controller.selectedAppointmentSlotId
-                                                  .value =
-                                              controller
-                                                  .slotObjectList[index].id;
-
-                                          logcat(
-                                              "Appointment Slot ID",
-                                              controller
-                                                  .selectedAppointmentSlotId
-                                                  .value);
-
-                                          // print(
-                                          //     "ExpertID: ${controller.slotObjectList[index].id}");
-                                          // controller.isItemSelected.value =
-                                          //     true;
-                                          controller
-                                              .updateSelectedTimeSlote(true);
-                                          setState(() {
-                                            logcat(
-                                                "SELECTED_APPOINTMENT_SLOT_ID",
-                                                controller
-                                                    .selectedAppointmentSlotId
-                                                    .value);
-                                            // logcat(
-                                            //     "SELECT_ITEM",
-                                            //     controller
-                                            //         .isItemSelected.value);
-                                          });
-                                        },
-                                        child: AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          width: 25.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: controller
-                                                              .selectedIndex
-                                                              .value ==
-                                                          index
-                                                      ? black
-                                                      : black),
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              color: controller.selectedIndex
-                                                          .value ==
-                                                      index
-                                                  ? black
-                                                  : white),
-                                          child: Center(
-                                            child: Text(
-                                              formatTime(
-                                                controller.slotObjectList[index]
-                                                    .timeOfAppointment
-                                                    .toString(),
-                                              ),
-                                              style: TextStyle(
-                                                  fontFamily: opensans_Bold,
-                                                  color: controller
-                                                              .selectedIndex
-                                                              .value ==
-                                                          index
-                                                      ? white
-                                                      : black,
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 10.sp
-                                                          : 10.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
+                                return controller.slotObjectList.length != 0
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          getTitle(AppointmentBookingConstant
+                                              .Appointment_slot),
+                                          SizedBox(
+                                            height: 1.h,
                                           ),
-                                        ),
-                                      );
-                                    }));
+                                          GridView.count(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              childAspectRatio: 2.0,
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 17,
+                                              mainAxisSpacing: 4,
+                                              children: List.generate(
+                                                  controller.slotObjectList
+                                                      .length, (index) {
+                                                return Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 0.6.h),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      controller.selectedIndex
+                                                          .value = index;
+
+                                                      controller
+                                                              .selectedAppointmentSlotId
+                                                              .value =
+                                                          controller
+                                                              .slotObjectList[
+                                                                  index]
+                                                              .id;
+
+                                                      logcat(
+                                                          "Appointment Slot ID",
+                                                          controller
+                                                              .selectedAppointmentSlotId
+                                                              .value);
+
+                                                      // print(
+                                                      //     "ExpertID: ${controller.slotObjectList[index].id}");
+                                                      // controller.isItemSelected.value =
+                                                      //     true;
+                                                      controller
+                                                          .updateSelectedTimeSlote(
+                                                              true);
+                                                      setState(() {
+                                                        logcat(
+                                                            "SELECTED_APPOINTMENT_SLOT_ID",
+                                                            controller
+                                                                .selectedAppointmentSlotId
+                                                                .value);
+                                                        // logcat(
+                                                        //     "SELECT_ITEM",
+                                                        //     controller
+                                                        //         .isItemSelected.value);
+                                                      });
+                                                    },
+                                                    child: AnimatedContainer(
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                      width: 25.w,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: controller
+                                                                          .selectedIndex
+                                                                          .value ==
+                                                                      index
+                                                                  ? black
+                                                                  : black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(14),
+                                                          color: controller
+                                                                      .selectedIndex
+                                                                      .value ==
+                                                                  index
+                                                              ? black
+                                                              : white),
+                                                      child: Center(
+                                                        child: Text(
+                                                          formatTime(
+                                                            controller
+                                                                .slotObjectList[
+                                                                    index]
+                                                                .timeOfAppointment
+                                                                .toString(),
+                                                          ),
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  opensans_Bold,
+                                                              color: controller
+                                                                          .selectedIndex
+                                                                          .value ==
+                                                                      index
+                                                                  ? white
+                                                                  : black,
+                                                              fontSize: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .mobile
+                                                                  ? 10.sp
+                                                                  : 10.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              })),
+                                        ],
+                                      )
+                                    : Container();
                               },
                             ),
 
@@ -631,15 +724,36 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-                                    if (controller.isFormInvalidate.value ==
-                                        true) {
+                                    if (widget.isEdit == true) {
+                                      // Call updateCourse API
+
+                                      controller.UpdateAppointment(
+                                        context,
+                                        widget.editAppointment!.id,
+                                      );
+                                    } else {
+                                      // Call AddCourseApi API
                                       controller.AddBookingAppointmentAPI(
                                           context);
                                     }
-                                  }, "Submit",
+                                  }, CommonConstant.submit,
                                       validate:
                                           controller.isFormInvalidate.value);
                                 })),
+
+                            // FadeInUp(
+                            //     from: 50,
+                            //     child: Obx(() {
+                            //       return getFormButton(() {
+                            //         if (controller.isFormInvalidate.value ==
+                            //             true) {
+                            //           controller.AddBookingAppointmentAPI(
+                            //               context);
+                            //         }
+                            //       }, "Submit",
+                            //           validate:
+                            //               controller.isFormInvalidate.value);
+                            //     })),
                             SizedBox(
                               height: 2.h,
                             )

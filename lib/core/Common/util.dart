@@ -108,8 +108,8 @@ Widget setNavtile(
               ? SvgPicture.asset(
                   svg,
                   color: isDarkMode() ? white : white,
-                  height: 2.5.h,
-                  width: 1.5.h,
+                  height: 2.9.h,
+                  width: 1.7.h,
                 )
               : SvgPicture.asset(
                   svg,

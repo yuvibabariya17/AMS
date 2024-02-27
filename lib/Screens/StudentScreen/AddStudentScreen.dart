@@ -52,7 +52,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
       controller.uploadImageId.value = widget.editStudent!.photoUrl.toString();
       controller.uploadIdproof.value =
-          widget.editStudent!.idProofUrl.toString();
+          widget.editStudent!.idProofUrl.toString().trim();
       // Set other fields as well
     }
     if (widget.isEdit == true) {

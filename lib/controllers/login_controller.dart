@@ -21,9 +21,9 @@ class LoginController extends GetxController {
   late final GetStorage getStorage;
   final InternetController networkManager = Get.find<InternetController>();
 
-  late FocusNode Email, Pass;
+  late FocusNode Email, Pass, ipAddressNode;
 
-  late TextEditingController emailctr, passctr;
+  late TextEditingController emailctr, passctr, ipCtr;
 
   Rx<ScreenState> state = ScreenState.apiLoading.obs;
 
@@ -36,9 +36,11 @@ class LoginController extends GetxController {
 
     Email = FocusNode();
     Pass = FocusNode();
+    ipAddressNode = FocusNode();
 
     emailctr = TextEditingController();
     passctr = TextEditingController();
+    ipCtr = TextEditingController();
 
     enableSignUpButton();
     super.onInit();

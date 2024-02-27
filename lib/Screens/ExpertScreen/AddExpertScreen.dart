@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/controllers/AddExpert_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +33,12 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
 
   @override
   void initState() {
+   
+
     if (widget.isEdit == true && widget.editExpert != null) {
-      controller.Servicectr.text = widget.editExpert!.name.toString();
-      controller.Expertctr.text = widget.editExpert!.name;
+      controller.Servicectr.text =
+          widget.editExpert!.serviceInfo.name.toString();
+      controller.Expertctr.text = widget.editExpert!.name.toString().trim();
       controller.Profilectr.text = widget.editExpert!.upload_info.image;
       controller.Startctr.text = widget.editExpert!.startTime.toString();
       controller.Endctr.text = widget.editExpert!.endTime.toString();
@@ -43,6 +49,9 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
           widget.editExpert!.endTime.toIso8601String().toString().trim();
       controller.uploadImageId.value =
           widget.editExpert!.upload_id.toString().trim();
+
+      controller.ServiceId.value =
+          widget.editExpert!.serviceId.toString().trim();
 
       if (widget.isEdit == true) {
         validateFields();
@@ -554,7 +563,9 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                   if (widget.isEdit == true) {
                                     // Call updateCourse API
                                     controller.UpdateExpert(
-                                        context, widget.editExpert!.id);
+                                        context,
+                                        widget.editExpert!.serviceId,
+                                        widget.editExpert!.id);
                                   } else {
                                     // Call AddCourseApi API
                                     controller.addExpertApi(context);

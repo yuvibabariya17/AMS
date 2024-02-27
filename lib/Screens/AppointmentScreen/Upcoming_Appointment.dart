@@ -1,4 +1,5 @@
 import 'package:booking_app/Models/AppointmentListModel.dart';
+import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/helper.dart';
@@ -14,7 +15,9 @@ import '../../core/themes/color_const.dart';
 import '../../core/themes/font_constant.dart';
 
 class UpcomingAppointment extends StatefulWidget {
-  const UpcomingAppointment({super.key});
+  UpcomingAppointment({
+    super.key,
+  });
 
   @override
   State<UpcomingAppointment> createState() => _UpcomingAppointmentState();
@@ -142,17 +145,43 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "Date : " +
-                                    formatDate(
-                                        data.dateOfAppointment.toString()),
-                                style: TextStyle(
-                                  fontFamily: opensansMedium,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14.sp,
-                                  color: isDarkMode() ? white : black,
+                              Row(children: [
+                                Text(
+                                  "Date : " +
+                                      formatDate(
+                                          data.dateOfAppointment.toString()),
+                                  style: TextStyle(
+                                    fontFamily: opensansMedium,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp,
+                                    color: isDarkMode() ? white : black,
+                                  ),
                                 ),
-                              ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(AppointmentBookingScreen(
+                                            isEdit: true,
+                                            editAppointment: data))
+                                        ?.then((value) {
+                                      if (value == true) {
+                                        controller.getAppointmentList(
+                                            context, 1, false,
+                                            isClearList: true);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    child: SvgPicture.asset(
+                                      Asset.edit,
+                                      height: 2.3.h,
+                                      color: isDarkMode()
+                                          ? Colors.grey
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ]),
                               SizedBox(
                                 height: 1.h,
                               ),
@@ -244,41 +273,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                         fontFamily: opensansMedium,
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: CupertinoSwitch(
-                                      value: btn,
-                                      onChanged: (value) {
-                                        btn = value;
-                                        setState(
-                                          () {},
-                                        );
-                                      },
-                                      thumbColor: CupertinoColors.white,
-                                      activeColor: CupertinoColors.black,
-                                      trackColor: Colors.grey,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 1.w,
-                                  ),
-                                  Text(
-                                    'Remind me',
-                                    style: TextStyle(
-                                      color: isDarkMode() ? white : black,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: isDarkMode() ? white : black,
-                                    ),
                                   ),
                                   Spacer(),
                                   GestureDetector(
@@ -315,6 +309,42 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                       ),
                                     ),
                                   )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Container(
+                                  //   child: CupertinoSwitch(
+                                  //     value: btn,
+                                  //     onChanged: (value) {
+                                  //       btn = value;
+                                  //       setState(
+                                  //         () {},
+                                  //       );
+                                  //     },
+                                  //     thumbColor: CupertinoColors.white,
+                                  //     activeColor: CupertinoColors.black,
+                                  //     trackColor: Colors.grey,
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   width: 1.w,
+                                  // ),
+                                  // Text(
+                                  //   'Remind me',
+                                  //   style: TextStyle(
+                                  //     color: isDarkMode() ? white : black,
+                                  //   ),
+                                  // ),
+                                  // Container(
+                                  //   child: Icon(
+                                  //     Icons.arrow_drop_down,
+                                  //     color: isDarkMode() ? white : black,
+                                  //   ),
+                                  // ),
+                                  // Spacer(),
                                 ],
                               )
                             ],

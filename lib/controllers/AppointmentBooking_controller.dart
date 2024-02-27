@@ -372,6 +372,7 @@ class AppointmentBookingController extends GetxController {
       logcat("ADDAPPOINTMENT", {
         "vendor_id": retrievedObject!.id.toString().trim(),
         "customer_id": customerId.value.toString().trim(),
+        "export_id": expertId.value.toString().trim(),
         "vendor_service_id": ServiceId.value.toString().trim(),
         "appointment_slot_id":
             selectedAppointmentSlotId.value.toString().trim(),
@@ -389,6 +390,7 @@ class AppointmentBookingController extends GetxController {
       var response = await Repository.post({
         "vendor_id": retrievedObject.id.toString().trim(),
         "customer_id": customerId.value.toString().trim(),
+        "export_id": expertId.value.toString().trim(),
         "vendor_service_id": ServiceId.value.toString().trim(),
         "appointment_slot_id":
             selectedAppointmentSlotId.value.toString().trim(),
@@ -417,6 +419,82 @@ class AppointmentBookingController extends GetxController {
           });
         } else {
           showDialogForScreen(context, data['message'].toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void UpdateAppointment(context, String Id) async {
+    // logcat("IDD:::::", serviceId.toString());
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("UPDATE_APPOINTMENT", {
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "customer_id": customerId.value.toString().trim(),
+        "export_id": expertId.value.toString().trim(),
+        "vendor_service_id": ServiceId.value.toString().trim(),
+        "appointment_slot_id":
+            selectedAppointmentSlotId.value.toString().trim(),
+        "amount": Amountctr.text.toString().trim(),
+        "appointment_type": appointmentTypectr.text.toString().trim(),
+        "duration": durationctr.text.toString().trim(),
+        "date_of_appointment": apiFormattedDate.value,
+        "make_reminder": 1,
+        "is_confirmed": 1,
+        "is_finished": 0,
+        "is_cancelled": 0,
+        "is_reschedule": 0,
+        "notes": Notectr.text.toString().trim()
+      });
+      var response = await Repository.put({
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "customer_id": customerId.value.toString().trim(),
+        "export_id": expertId.value.toString().trim(),
+        "vendor_service_id": ServiceId.value.toString().trim(),
+        "appointment_slot_id":
+            selectedAppointmentSlotId.value.toString().trim(),
+        "amount": Amountctr.text.toString().trim(),
+        "appointment_type": appointmentTypectr.text.toString().trim(),
+        "duration": durationctr.text.toString().trim(),
+        "date_of_appointment": apiFormattedDate.value,
+        "make_reminder": 1,
+        "is_confirmed": 1,
+        "is_finished": 0,
+        "is_cancelled": 0,
+        "is_reschedule": 0,
+        "notes": Notectr.text.toString().trim()
+      }, '${ApiUrl.editAppointment}/$Id', allowHeader: true);
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {});
         }
       } else {
@@ -466,10 +544,8 @@ class AppointmentBookingController extends GetxController {
 
         if (slotObjectList.isNotEmpty) {
           selectedAppointmentSlotId.value = slotObjectList[0].id.toString();
-
-          for (var i = 0; i < slotObjectList.length; i++) {}
+          updateSelectedTimeSlote(true);
         }
-
         logcat("SLOT_LIST", jsonEncode(slotObjectList));
         logcat("SLOT_LIST_LENGTH", (slotObjectList.length));
         logcat("RECORD", (data.totalRecord.toString()));

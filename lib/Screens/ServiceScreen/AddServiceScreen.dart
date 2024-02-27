@@ -697,10 +697,12 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                   return getFormButton(() {
                                     if (widget.isEdit == true) {
                                       // Call updateCourse API
-                                      logcat("IDD",
-                                          widget.editService!.id.toString());
+
                                       controller.UpdateVendorServiceApi(
-                                          context, widget.editService!.id);
+                                        context,
+                                        widget.editService!.serviceId,
+                                        widget.editService!.id,
+                                      );
                                     } else {
                                       // Call AddCourseApi API
                                       controller.addVendorService(context);

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Config/apicall_constant.dart';
+import '../Models/UploadImageModel.dart';
 import '../Models/sign_in_form_validation.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
@@ -18,6 +18,7 @@ import '../dialogs/loading_indicator.dart';
 import 'Appointment_screen_controller.dart';
 import 'internet_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:booking_app/models/SignInModel.dart';
 
 class UpdateVendorController extends GetxController {
   late final GetStorage _getStorage;
@@ -93,7 +94,6 @@ class UpdateVendorController extends GetxController {
     profilectr = TextEditingController();
     propertyctr = TextEditingController();
 
-    enableSignUpButton();
     super.onInit();
   }
 
@@ -308,7 +308,7 @@ class UpdateVendorController extends GetxController {
     }
   }
 
-  RxBool isFormInvalidate = false.obs;
+  RxBool isFormInvalidate = true.obs;
 
   void hideKeyboard(context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -316,11 +316,6 @@ class UpdateVendorController extends GetxController {
       currentFocus.unfocus();
     }
   }
-
-  RxString uploadImageId = ''.obs;
-  RxString uploadBreacherId = ''.obs;
-  RxString uploadProfileId = ''.obs;
-  RxString uploadPropertyId = ''.obs;
 
   // void addServiceApi(context) async {
   //   var loadingIndicator = LoadingProgressDialog();
@@ -376,7 +371,12 @@ class UpdateVendorController extends GetxController {
   //   }
   // }
 
-  void getImageApi(context) async {
+  RxString uploadImageId = ''.obs;
+  RxString uploadBreacherId = ''.obs;
+  RxString uploadProfileId = ''.obs;
+  RxString uploadPropertyId = ''.obs;
+
+  void getImageApi(context, int type) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, '');
 
@@ -410,7 +410,19 @@ class UpdateVendorController extends GetxController {
         logcat("responseData", jsonEncode(responseData));
         if (responseData.status == "True") {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadImageId.value = responseData.data.id.toString();
+
+          if (type == 1) {
+            uploadImageId.value = responseData.data.id.toString();
+          }
+          if (type == 2) {
+            uploadBreacherId.value = responseData.data.id.toString();
+          }
+          if (type == 3) {
+            uploadProfileId.value = responseData.data.id.toString();
+          }
+          if (type == 4) {
+            uploadPropertyId.value = responseData.data.id.toString();
+          }
         } else {
           showDialogForScreen(context, responseData.message.toString(),
               callback: () {});
@@ -529,8 +541,9 @@ class UpdateVendorController extends GetxController {
     }
   }
 
-
-   void UpdateVendorApi(context, String customerId) async {
+  void UpdateVendorApi(
+    context,
+  ) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -540,42 +553,48 @@ class UpdateVendorController extends GetxController {
         });
         return;
       }
+
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-      // logcat("CUSTOMERADD", {
-      //   "name": Customerctr.text.toString().trim(),
-      //   "contact_no": Contact1ctr.text.toString().trim(),
-      //   "whatsapp_no": Whatsappctr.text.toString().trim(),
-      //   "pic": uploadImageId.value.toString(),
-      //   "email": Emailctr.text.toString().trim(),
-      //   "date_of_birth": Dobctr.text.toString().trim(),
-      //   "date_of_anniversary": Doactr.text.toString().trim(),
-      //   "address": Addressctr.text.toString().trim(),
-      //   "vendor_id": retrievedObject!.id.toString().trim()
-      // });
+      logcat("CUSTOMERADD", {
+        "contact_no1": contact_onectr.text.toString().trim(),
+        "email_id": emailctr.text.toString().trim(),
+        "vendor_type": "vendor",
+        "company_name": companyctr.text.toString().trim(),
+        "company_address": addressctr.text.toString().trim(),
+        "contact_no2": contact_twoctr.text.toString().trim(),
+        "whatsapp_no": whatsappctr.text.toString().trim(),
+        "address": addressctr.text.toString().trim(),
+        "contact_person_name": retrievedObject!.userName.toString().trim(),
+        "user_name": Vendornamectr.text.toString().trim(),
+        "area_id": "647858c499ee0654f9cdec0a"
+      });
 
-      var response = await Repository.post(
-       {
-    "contact_no1": contact_onectr.toString().trim(),
-    "email_id": emailctr.toString().trim(),
-    "vendor_type": "vendor",
-    "company_name": companyctr.toString().trim(),
-    "company_address": addressctr.toString().trim(),
-    "contact_no2": contact_twoctr.toString().trim(),
-    "whatsapp_no": whatsappctr.toString().trim(),
-    "address": addressctr.toString().trim(),
-    "contact_person_name": fullName.toString().trim(),
-    "area_id": "647858c499ee0654f9cdec0a"
+      var response = await Repository.put({
+        "contact_no1": contact_onectr.text.toString().trim(),
+        "email_id": emailctr.text.toString().trim(),
+        "vendor_type": "vendor",
+        "company_name": companyctr.text.toString().trim(),
+        "company_address": addressctr.text.toString().trim(),
+        "contact_no2": contact_twoctr.text.toString().trim(),
+        "whatsapp_no": whatsappctr.text.toString().trim(),
+        "address": addressctr.text.toString().trim(),
+        "contact_person_name": retrievedObject.userName.toString().trim(),
+        "area_id": "647858c499ee0654f9cdec0a",
+        "user_name": Vendornamectr.text.toString().trim(),
+      }, '${ApiUrl.updateVendor}/${retrievedObject.id}', allowHeader: true);
 
-      },  '${ApiUrl.updateVendor}/$customerId',allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
-        if (data['status'] == 1) {
+        var responseDetail = GetLoginModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          UserPreferences().saveSignInInfo(responseDetail.data);
+          UserPreferences().setToken(responseDetail.data.token.toString());
           showDialogForScreen(context, data['message'].toString(),
               callback: () {
-            Get.back();
+            Get.back(result: true);
           });
         } else {
           showDialogForScreen(context, data['message'].toString(),
@@ -592,7 +611,6 @@ class UpdateVendorController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
-
 
   void getProperty(context) async {
     var loadingIndicator = LoadingProgressDialog();
@@ -678,7 +696,7 @@ class UpdateVendorController extends GetxController {
           uploadLogo = File(file.path).obs;
           logoctr.text = file.name;
           validateLogo(logoctr.text);
-          getImageApi(context);
+          getImageApi(context, 1);
         }
       }
     });
@@ -699,7 +717,7 @@ class UpdateVendorController extends GetxController {
           uploadBreachers = File(file.path).obs;
           breacherctr.text = file.name;
           validateBreacher(breacherctr.text);
-          getBreacher(context);
+          getImageApi(context, 2);
         }
       }
     });
@@ -720,7 +738,7 @@ class UpdateVendorController extends GetxController {
           uploadProfile = File(file.path).obs;
           profilectr.text = file.name;
           validateProfile(profilectr.text);
-          getProfile(context);
+          getImageApi(context, 3);
           // UploadProperty(
           //   context,
           //   false,
@@ -746,7 +764,7 @@ class UpdateVendorController extends GetxController {
           uploadProperty = File(file.path).obs;
           propertyctr.text = file.name;
           validateProperty(propertyctr.text);
-          getProperty(context);
+          getImageApi(context, 4);
         }
       }
     });
@@ -926,9 +944,8 @@ class UpdateVendorController extends GetxController {
           uploadLogo = File(file.path).obs;
           logoctr.text = file.name;
           validateLogo(logoctr.text);
-          getImageApi(context);
+          getImageApi(context, 1);
         }
-
         // if (croppedFile != null) {
         //   uploadImageFile = File(croppedFile.path).obs;
         //   profilePic.value = croppedFile.path;
@@ -996,7 +1013,7 @@ class UpdateVendorController extends GetxController {
           uploadBreachers = File(file.path).obs;
           breacherctr.text = file.name;
           validateBreacher(breacherctr.text);
-          getBreacher(context);
+          getImageApi(context, 2);
         }
 
         // if (croppedFile != null) {
@@ -1066,7 +1083,7 @@ class UpdateVendorController extends GetxController {
           uploadProfile = File(file.path).obs;
           profilectr.text = file.name;
           validateProfile(profilectr.text);
-          getProfile(context);
+          getImageApi(context, 3);
         }
 
         // if (croppedFile != null) {

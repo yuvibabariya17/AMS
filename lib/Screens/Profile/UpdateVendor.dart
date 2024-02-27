@@ -103,7 +103,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.Vendornamectr,
                                       hintLabel: 'Enter Name',
                                       onChanged: (val) {
-                                        controller.validateVendorname(val);
+                                       // controller.validateVendorname(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -122,7 +122,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.companyctr,
                                       hintLabel: Strings.enter_company_name,
                                       onChanged: (val) {
-                                        controller.validateCompanyname(val);
+                                        //controller.validateCompanyname(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -142,7 +142,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       hintLabel: Strings.company_address_hint,
                                       isExpand: true,
                                       onChanged: (val) {
-                                        controller.validateAddressname(val);
+                                       // controller.validateAddressname(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -161,7 +161,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.emailctr,
                                       hintLabel: CommonConstant.emailId_hint,
                                       onChanged: (val) {
-                                        controller.validateEmail(val);
+                                       // controller.validateEmail(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -180,7 +180,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.passctr,
                                       hintLabel: Strings.pass_hint,
                                       onChanged: (val) {
-                                        controller.validatePass(val);
+                                        //controller.validatePass(val);
                                         setState(() {});
                                       },
                                       wantSuffix: true,
@@ -203,7 +203,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
-                                        controller.validatePhone1(val);
+                                       // controller.validatePhone1(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -223,7 +223,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
-                                        controller.validatePhone2(val);
+                                        //controller.validatePhone2(val);
                                         setState(() {});
                                       },
                                       // inputFormatters: [
@@ -251,7 +251,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       // formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
-                                        controller.validatePhone3(val);
+                                        //controller.validatePhone3(val);
                                         setState(() {});
                                       },
                                       // inputFormatters: [
@@ -279,7 +279,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       hintLabel: Strings.logo_hint,
                                       wantSuffix: true,
                                       onChanged: (val) {
-                                        controller.validateLogo(val);
+                                        //controller.validateLogo(val);
                                         setState(() {});
                                       },
                                       isReadOnly: true,
@@ -391,57 +391,60 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.none,
                                     );
                                   }))),
-                          getTitle(Strings.property),
-                          FadeInUp(
-                              from: 30,
-                              child: AnimatedSize(
-                                  duration: const Duration(milliseconds: 300),
-                                  child: Obx(() {
-                                    return getReactiveFormField(
-                                      node: controller.PropertyNode,
-                                      controller: controller.propertyctr,
-                                      hintLabel: Strings.property_hint,
-                                      wantSuffix: true,
-                                      onChanged: (val) {
-                                        controller.validateProperty(val);
-                                        setState(() {});
-                                      },
-                                      isReadOnly: true,
-                                      onTap: () async {
-                                        selectImageFromCameraOrGallery(context,
-                                            cameraClick: () {
-                                          controller
-                                              .actionClickUploadImageFromCamera(
-                                                  context, true,
-                                                  multipleImage: true,
-                                                  isCamera: true);
-                                        }, galleryClick: () {
-                                          controller
-                                              .actionClickUploadImageFromCamera(
-                                                  context, true,
-                                                  multipleImage: true,
-                                                  isCamera: false);
-                                        });
-                                        // await controller.PopupDialogs(context);
-                                        setState(() {});
-                                      },
-                                      // onTap: () async {
-                                      //   await controller
-                                      //       .actionClickUploadProperty(context);
-                                      // },
-                                      errorText:
-                                          controller.propertyModel.value.error,
-                                      inputType: TextInputType.none,
-                                    );
-                                  }))),
-                                  SizedBox(height: 3.h,),
+                          // getTitle(Strings.property),
+                          // FadeInUp(
+                          //     from: 30,
+                          //     child: AnimatedSize(
+                          //         duration: const Duration(milliseconds: 300),
+                          //         child: Obx(() {
+                          //           return getReactiveFormField(
+                          //             node: controller.PropertyNode,
+                          //             controller: controller.propertyctr,
+                          //             hintLabel: Strings.property_hint,
+                          //             wantSuffix: true,
+                          //             onChanged: (val) {
+                          //               controller.validateProperty(val);
+                          //               setState(() {});
+                          //             },
+                          //             isReadOnly: true,
+                          //             onTap: () async {
+                          //               selectImageFromCameraOrGallery(context,
+                          //                   cameraClick: () {
+                          //                 controller
+                          //                     .actionClickUploadImageFromCamera(
+                          //                         context, true,
+                          //                         multipleImage: true,
+                          //                         isCamera: true);
+                          //               }, galleryClick: () {
+                          //                 controller
+                          //                     .actionClickUploadImageFromCamera(
+                          //                         context, true,
+                          //                         multipleImage: true,
+                          //                         isCamera: false);
+                          //               });
+                          //               // await controller.PopupDialogs(context);
+                          //               setState(() {});
+                          //             },
+                          //             // onTap: () async {
+                          //             //   await controller
+                          //             //       .actionClickUploadProperty(context);
+                          //             // },
+                          //             errorText:
+                          //                 controller.propertyModel.value.error,
+                          //             inputType: TextInputType.none,
+                          //           );
+                          //         }))),
+                        
+                          SizedBox(
+                            height: 3.h,
+                          ),
                           FadeInUp(
                               from: 50,
                               child: Obx(() {
                                 return getFormButton(() {
                                   if (controller.isFormInvalidate.value ==
                                       true) {
-                                    // controller.UpdateVendorApi(context);
+                                    controller.UpdateVendorApi(context);
                                   }
                                 }, CommonConstant.submit,
                                     validate:

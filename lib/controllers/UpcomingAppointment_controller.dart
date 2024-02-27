@@ -10,13 +10,13 @@ import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/notification_model.dart';
-import '../Models/product.dart';
+import '../Models/notification_Static.dart';
 import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
 class UpcomingAppointmentController extends GetxController {
-  List<ProductItem> staticData = notificationItems;
+  List<NotificationItem> staticData = notificationItems;
   late TabController tabController;
   RxInt currentPage = 0.obs;
   bool isOnline = true;
@@ -41,7 +41,8 @@ class UpcomingAppointmentController extends GetxController {
   RxInt currentPags = 1.obs;
   RxInt totalPages = 0.obs;
 
-  void getAppointmentList(context, int currentPags, bool isFirst) async {
+  void getAppointmentList(context, int currentPags, bool isFirst,
+      {bool? isClearList}) async {
     var loadingIndicator = LoadingProgressDialogs();
     if (isFirst == true) {
       logcat("STEP_1", "STEP");
@@ -50,56 +51,60 @@ class UpcomingAppointmentController extends GetxController {
       logcat("STEP_2", "STEP");
       loadingIndicator.show(context, "message");
     }
-    //   try {
-    if (networkManager.connectionType == 0) {
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      logcat("CURRENT_PAGE::", currentPags.toString());
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": currentPags,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+      }, ApiUrl.appointmentList, allowHeader: true);
       if (isFirst == false) {
         loadingIndicator.hide(context);
       }
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    logcat("CURRENT_PAGE::", currentPags.toString());
-    var response = await Repository.post({
-      "pagination": {
-        "pageNo": currentPags,
-        "recordPerPage": 20,
-        "sortBy": "name",
-        "sortDirection": "asc"
-      },
-    }, ApiUrl.appointmentList, allowHeader: true);
-    if (isFirst == false) {
-      loadingIndicator.hide(context);
-    }
-    isAppointmentTypeList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat("APPOINTMENT LIST", jsonEncode(responseData));
+      isAppointmentTypeList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("APPOINTMENT LIST", jsonEncode(responseData));
 
-    if (response.statusCode == 200) {
-      if (responseData['status'] == 1) {
-        var data = AppointmentModel.fromJson(responseData);
-        var today = DateTime.now();
-        totalPages.value = data.totalPages;
-        data.data.retainWhere((appointment) =>
-            appointment.dateOfAppointment.isAfter(today) ||
-            appointment.dateOfAppointment.day == today.day);
-        state.value = ScreenState.apiSuccess;
-        //AppointmentObjectList.clear();
-        appointmentObjectList.addAll(data.data);
-        update();
-        logcat("APPOINTMENT_RESPONSE:", jsonEncode(appointmentObjectList));
-        logcat("API_LENGTH", appointmentObjectList.length.toString());
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = AppointmentModel.fromJson(responseData);
+          var today = DateTime.now();
+          totalPages.value = data.totalPages;
+          data.data.retainWhere((appointment) =>
+              appointment.dateOfAppointment.isAfter(today) ||
+              appointment.dateOfAppointment.day == today.day);
+          state.value = ScreenState.apiSuccess;
+          if (isClearList == true) {
+            appointmentObjectList.clear();
+          }
+
+          appointmentObjectList.addAll(data.data);
+          update();
+          logcat("APPOINTMENT_RESPONSE:", jsonEncode(appointmentObjectList));
+          logcat("API_LENGTH", appointmentObjectList.length.toString());
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
       } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
+        showDialogForScreen(context, Connection.servererror, callback: () {});
       }
-    } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+    } catch (e) {
+      logcat('Exception', e);
+      isAppointmentTypeList.value = false;
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isAppointmentTypeList.value = false;
-    // }
   }
 
   void deleteAppointment(context, String itemId) async {

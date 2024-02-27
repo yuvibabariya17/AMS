@@ -37,6 +37,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
       controller.uploadImageId.value = widget.editProduct!.uploadId.toString();
 
+      controller.productCategoryId.value =
+          widget.editProduct!.productCategoryId.toString().trim();
+
       // Set other fields as well
     }
     if (widget.isEdit == true) {
@@ -269,7 +272,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     if (widget.isEdit == true) {
                                       // Call updateCourse API
                                       controller.UpdateProduct(
-                                          context, widget.editProduct!.id);
+                                          context,
+                                          widget.editProduct!.productCategoryId,
+                                          widget.editProduct!.id);
                                     } else {
                                       // Call AddCourseApi API
                                       controller.addProductApi(context);

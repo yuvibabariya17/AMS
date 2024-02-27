@@ -59,6 +59,97 @@ getToolbar(title,
   );
 }
 
+getImageToolbar(
+  String? title, {
+  Function? callback,
+}) {
+  return Stack(
+    children: [
+      Positioned(
+        left: 0,
+        top: 0,
+        child: FadeInDown(
+          child: Container(
+            margin: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 3.w : 5.w),
+            child: GestureDetector(
+              onTap: () {
+                callback!();
+              },
+              child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: SvgPicture.asset(
+                    Asset.arrowBack,
+                    height:
+                        SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
+                    color: white,
+                  )),
+            ),
+          ),
+        ),
+      ),
+      // Positioned(
+      //   top: 0,
+      //   right: 0,
+      //   child: FadeInDown(
+      //           child: Text(
+      //             title!,
+      //             style: TextStyle(
+      //                 fontFamily: fontBold,
+      //                 color: white,
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: 18.sp),
+      //           ),
+      //         ),)
+    ],
+  );
+}
+
+getImage(title, {bool showBackButton = true, Function? callback}) {
+  return Row(
+    children: [
+     Container(
+    margin: EdgeInsets.only(
+        left: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 2.w),
+    child: GestureDetector(
+      onTap: () {
+        callback!();
+      },
+      child: Container(
+          padding: const EdgeInsets.all(10),
+          child: SvgPicture.asset(
+            Asset.arrowBack,
+            height: SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
+              color: white,
+          )),
+    ),
+  ),
+      Expanded(
+        flex: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FadeInDown(
+              child: Container(
+                margin: EdgeInsets.only(right: 15.w),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontFamily: fontBold,
+                      color: white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
 bool isSmallDevice(BuildContext context) {
   final mediaQuery = MediaQuery.of(context);
   // Retrieve the screen height

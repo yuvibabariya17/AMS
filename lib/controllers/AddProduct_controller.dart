@@ -230,7 +230,7 @@ class addProductController extends GetxController {
     }
   }
 
-  void UpdateProduct(context, String productId) async {
+  void UpdateProduct(context, String productId, String id) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -240,11 +240,11 @@ class addProductController extends GetxController {
         });
         return;
       }
-      logcat("PRODUCTTTTTT", {
+      logcat("UPDATE_PRODUCTTTTTT", {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": productId.toString().trim(),
+        "product_category_id": productCategoryId.value.toString().trim(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -253,10 +253,10 @@ class addProductController extends GetxController {
         "name": NameCtr.text.toString().trim(),
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
-        "product_category_id": productId.toString().trim(),
+        "product_category_id": productCategoryId.value.toString().trim(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
-      }, '${ApiUrl.editProduct}/$productId', allowHeader: true);
+      }, '${ApiUrl.editProduct}/$id', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -264,7 +264,7 @@ class addProductController extends GetxController {
         if (data['status'] == 1) {
           showDialogForScreen(context, data['message'].toString(),
               callback: () {
-            Get.back();
+            Get.back(result: true);
           });
         } else {
           showDialogForScreen(context, data['message'].toString(),
@@ -345,8 +345,11 @@ class addProductController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
+
                 productCategoryId.value =
                     productCategoryObjectList[index].id.toString();
+
+                logcat("ONTAP", productCategoryId.value.toString());
                 categroryCtr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
 

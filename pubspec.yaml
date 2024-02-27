@@ -67,6 +67,7 @@ dependencies:
   dashed_line: ^0.1.0+3
   shimmer: ^3.0.0
   marquee: ^2.2.3
+  photo_view: ^0.14.0
   
 
 dev_dependencies:

@@ -25,12 +25,12 @@ class StudentModel {
   });
 
   factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
-        status: json["status"],
-        message: json["message"],
+        status: json["status"] ?? 0,
+        message: json["message"] ?? '',
         data: List<StudentList>.from(
             json["data"].map((x) => StudentList.fromJson(x))),
-        totalRecord: json["totalRecord"],
-        totalPages: json["totalPages"],
+        totalRecord: json["totalRecord"] ?? 0,
+        totalPages: json["totalPages"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,14 +68,14 @@ class StudentList {
   });
 
   factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
-        id: json["_id"],
-        name: json["name"],
-        address: json["address"],
-        email: json["email"],
-        contact: json["contact"],
-        photoUrl: json["photo_url"],
-        idProofUrl: json["id_proof_url"],
-        createdAt: json["created_at"],
+        id: json["_id"] ?? 0,
+        name: json["name"] ?? '',
+        address: json["address"] ?? '',
+        email: json["email"] ?? '',
+        contact: json["contact"] ?? '',
+        photoUrl: json["photo_url"] ?? '',
+        idProofUrl: json["id_proof_url"] ?? '',
+        createdAt: json["created_at"] ?? 0,
         photoUrlInfo: UrlInfo.fromJson(
             json["photo_url_info"] ?? {"image": ""}), // Handle null case
         idProofUrlInfo:
@@ -104,7 +104,7 @@ class UrlInfo {
   });
 
   factory UrlInfo.fromJson(Map<String, dynamic> json) => UrlInfo(
-        image: json["image"],
+        image: json["image"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

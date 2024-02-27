@@ -209,10 +209,10 @@ class AddexpertController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-      logcat("EXPERT DETAILS", {
+      logcat("Passing_data::", {
         "name": Expertctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.value.toString().trim(),
+        "service_id": ServiceId.value.toString(),
         "image_id": uploadImageId.value.toString(),
         "amount": int.parse(Pricectr.text),
         "startTime": startTime,
@@ -228,6 +228,7 @@ class AddexpertController extends GetxController {
         "startTime": startTime,
         "endTime": endTime
       }, ApiUrl.addExpert, allowHeader: true);
+
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -254,7 +255,13 @@ class AddexpertController extends GetxController {
     }
   }
 
-  void UpdateExpert(context, String serviceId) async {
+  void UpdateExpert(
+    context,
+    String serviceId,
+    String id,
+  ) async {
+    logcat("SERVICE_IDDDDDD", serviceId);
+    logcat("IDDDDDD", id);
     var loadingIndicator = LoadingProgressDialog();
     try {
       if (networkManager.connectionType == 0) {
@@ -266,16 +273,25 @@ class AddexpertController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-
-      var response = await Repository.put({
+      logcat("UPDATE_EXPERT", {
         "name": Expertctr.text.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": serviceId.toString().trim(),
+        "service_id": ServiceId.value.toString().trim(),
         "amount": int.parse(Pricectr.text),
         "image_id": uploadImageId.value.toString(),
         "startTime": startTime.replaceAll(' ', '').toString().trim(),
         "endTime": endTime.replaceAll(' ', '').toString().trim(),
-      }, '${ApiUrl.editExpert}/$serviceId', allowHeader: true);
+      });
+
+      var response = await Repository.put({
+        "name": Expertctr.text.toString().trim(),
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "service_id": ServiceId.value.toString().trim(),
+        "amount": int.parse(Pricectr.text),
+        "image_id": uploadImageId.value.toString(),
+        "startTime": startTime.replaceAll(' ', '').toString().trim(),
+        "endTime": endTime.replaceAll(' ', '').toString().trim(),
+      }, '${ApiUrl.editExpert}/$id', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
       logcat("RESPOSNE", data);
@@ -323,10 +339,9 @@ class AddexpertController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                ServiceId.value = serviceObjectList[index].id.toString();
+                ServiceId.value = serviceObjectList[index].serviceId.toString();
                 Servicectr.text =
                     serviceObjectList[index].serviceInfo.name.toString();
-
                 validateServicename(Servicectr.text);
               },
               title: Text(
@@ -381,7 +396,7 @@ class AddexpertController extends GetxController {
 
   // RxBool isServiceTypeApiList = false.obs;
   // RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-  RxString serviceId = "".obs;
+  // RxString serviceId = "".obs;
   RxString uploadImageId = ''.obs;
 
   showDialogForScreen(context, String message, {Function? callback}) {

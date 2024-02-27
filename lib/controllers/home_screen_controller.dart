@@ -100,52 +100,51 @@ class HomeScreenController extends GetxController {
     state.value = ScreenState.apiLoading;
     isLoading.value = false;
     // isServiceTypeApiList.value = true;
-  //  try {
-      if (networkManager.connectionType == 0) {
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var retrievedObject = await UserPreferences().getSignInInfo();
-
-      logcat("PASSING_DATA", {
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "date": date.isNotEmpty ? date.toString() : ''
+    //  try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, callback: () {
+        Get.back();
       });
-      var response = await Repository.post({
-        "search": {
-          "vendor_id": retrievedObject.id.toString().trim(),
-          "date": date.isNotEmpty ? date.toString() : ''
-        }
-      }, ApiUrl.homeApi, allowHeader: true);
-      isSlotList.value = false;
-      var responseData = jsonDecode(response.body);
-      isLoading.value = true;
-      logcat("HOME_RESPONSE", jsonEncode(responseData));
-
-      if (response.statusCode == 200) {
-        var data = HomeScreenModel.fromJson(responseData);
-        if (data.status == 1) {
-          state.value = ScreenState.apiSuccess;
-          slotObjectList.clear();
-          slotObjectList.addAll(data.data);
-          update();
-          logcat("HOME_RESPONSE", jsonEncode(slotObjectList));
-          logcat("LENGTH", slotObjectList.length.toString());
-        } else {
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
-        }
-        update();
-      } else {
-        showDialogForScreen(context, Connection.servererror, callback: () {});
-      }
+      return;
     }
-    
-    //  catch (e) {
-    //   logcat('Exception', e);
-    // }
+    var retrievedObject = await UserPreferences().getSignInInfo();
+
+    logcat("PASSING_DATA", {
+      "vendor_id": retrievedObject!.id.toString().trim(),
+      "date": date.isNotEmpty ? date.toString() : ''
+    });
+    var response = await Repository.post({
+      "search": {
+        "vendor_id": retrievedObject.id.toString().trim(),
+        "date": date.isNotEmpty ? date.toString() : ''
+      }
+    }, ApiUrl.homeApi, allowHeader: true);
+    isSlotList.value = false;
+    var responseData = jsonDecode(response.body);
+    isLoading.value = true;
+    logcat("HOME_RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      var data = HomeScreenModel.fromJson(responseData);
+      if (data.status == 1) {
+        state.value = ScreenState.apiSuccess;
+        slotObjectList.clear();
+        slotObjectList.addAll(data.data);
+        update();
+        logcat("HOME_RESPONSE", jsonEncode(slotObjectList));
+        logcat("LENGTH", slotObjectList.length.toString());
+      } else {
+        showDialogForScreen(context, responseData['message'], callback: () {});
+      }
+      update();
+    } else {
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+    }
+  }
+
+  //  catch (e) {
+  //   logcat('Exception', e);
+  // }
 
   String formatTime(String timeString) {
     // Parse the time string into a DateTime object
@@ -154,6 +153,16 @@ class HomeScreenController extends GetxController {
     String formattedTime = DateFormat('hh:mm a').format(dateTime);
     return formattedTime;
   }
+
+  String homeFormatTime(String dateString) {
+    // Parse the time string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateString);
+    // Format the time into the desired format
+    String formattedTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(dateTime);
+    return formattedTime;
+  }
+
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(

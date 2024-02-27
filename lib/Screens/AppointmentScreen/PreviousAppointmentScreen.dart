@@ -11,7 +11,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/notification_model.dart';
-import '../../Models/product.dart';
+import '../../Models/notification_Static.dart';
 import '../../core/constants/assets.dart';
 import '../../core/themes/font_constant.dart';
 import '../../core/utils/helper.dart';
@@ -26,7 +26,7 @@ class PreviousAppointmentScreen extends StatefulWidget {
 
 class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
   var controller = Get.put(PreviousAppointmentController());
-  List<ProductItem> staticData = notificationItems;
+  List<NotificationItem> staticData = notificationItems;
   bool btn = false;
 
   @override
@@ -233,41 +233,6 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                     fontFamily: opensansMedium,
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w400),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: CupertinoSwitch(
-                                  value: btn,
-                                  onChanged: (value) {
-                                    btn = value;
-                                    setState(
-                                      () {},
-                                    );
-                                  },
-                                  thumbColor: CupertinoColors.white,
-                                  activeColor: CupertinoColors.black,
-                                  trackColor: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 1.w,
-                              ),
-                              Text(
-                                'Remind me',
-                                style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                ),
-                              ),
-                              Container(
-                                child: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: isDarkMode() ? white : black,
-                                ),
                               ),
                               Spacer(),
                               data.isFinished == true
@@ -307,6 +272,41 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                       ),
                                     )
                                   : Container()
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Container(
+                              //   child: CupertinoSwitch(
+                              //     value: btn,
+                              //     onChanged: (value) {
+                              //       btn = value;
+                              //       setState(
+                              //         () {},
+                              //       );
+                              //     },
+                              //     thumbColor: CupertinoColors.white,
+                              //     activeColor: CupertinoColors.black,
+                              //     trackColor: Colors.grey,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   width: 1.w,
+                              // ),
+                              // Text(
+                              //   'Remind me',
+                              //   style: TextStyle(
+                              //     color: isDarkMode() ? white : black,
+                              //   ),
+                              // ),
+                              // Container(
+                              //   child: Icon(
+                              //     Icons.arrow_drop_down,
+                              //     color: isDarkMode() ? white : black,
+                              //   ),
+                              // ),
                             ],
                           )
                         ],

@@ -50,6 +50,7 @@ class ListofAppointment {
   String id;
   String vendorId;
   String customerId;
+  String exportId;
   String vendorServiceId;
   String appointmentSlotId;
   int amount;
@@ -67,11 +68,13 @@ class ListofAppointment {
   CustomerInfo customerInfo;
   AppointmentSlotInfo appointmentSlotInfo;
   VendorServiceInfo vendorServiceInfo;
+  ExpertInfo expertInfo;
 
   ListofAppointment({
     required this.id,
     required this.vendorId,
     required this.customerId,
+    required this.exportId,
     required this.vendorServiceId,
     required this.appointmentSlotId,
     required this.amount,
@@ -89,6 +92,7 @@ class ListofAppointment {
     required this.customerInfo,
     required this.appointmentSlotInfo,
     required this.vendorServiceInfo,
+    required this.expertInfo,
   });
 
   factory ListofAppointment.fromJson(Map<String, dynamic> json) =>
@@ -96,6 +100,7 @@ class ListofAppointment {
         id: json["_id"] ?? '',
         vendorId: json["vendor_id"] ?? '',
         customerId: json["customer_id"] ?? '',
+        exportId: json["export_id"] ?? '',
         vendorServiceId: json["vendor_service_id"] ?? '',
         appointmentSlotId: json["appointment_slot_id"] ?? '',
         amount: json["amount"] ?? 0,
@@ -112,6 +117,7 @@ class ListofAppointment {
         notes: json["notes"] ?? '',
         createdAt: json["created_at"] ?? 0,
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
+        expertInfo: ExpertInfo.fromJson(json["expert_info"]),
         customerInfo: CustomerInfo.fromJson(json["customer_info"] ?? {}),
         appointmentSlotInfo:
             AppointmentSlotInfo.fromJson(json["appointment_slot_info"] ?? {}),
@@ -123,6 +129,7 @@ class ListofAppointment {
         "_id": id,
         "vendor_id": vendorId,
         "customer_id": customerId,
+        "export_id": exportId,
         "vendor_service_id": vendorServiceId,
         "appointment_slot_id": appointmentSlotId,
         "amount": amount,
@@ -138,6 +145,7 @@ class ListofAppointment {
         "created_at": createdAt,
         "vendor_info": vendorInfo.toJson(),
         "customer_info": customerInfo.toJson(),
+        "expert_info": expertInfo.toJson(),
         "appointment_slot_info": appointmentSlotInfo.toJson(),
         "vendor_service_info": vendorServiceInfo.toJson(),
       };
@@ -312,5 +320,25 @@ class ServiceInfo {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+      };
+}
+
+class ExpertInfo {
+  String name;
+  int amount;
+
+  ExpertInfo({
+    required this.name,
+    required this.amount,
+  });
+
+  factory ExpertInfo.fromJson(Map<String, dynamic> json) => ExpertInfo(
+        name: json["name"],
+        amount: json["amount"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "amount": amount,
       };
 }

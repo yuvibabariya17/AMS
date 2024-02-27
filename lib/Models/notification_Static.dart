@@ -1,11 +1,11 @@
-class ProductItem {
+class NotificationItem {
   final String title;
   final String time;
   final String Status;
   final icon;
   final String Name;
 
-  ProductItem({
+  NotificationItem({
     required this.title,
     required this.Name,
     required this.time,

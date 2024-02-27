@@ -58,6 +58,7 @@ class _PackageScreenState extends State<PackageScreen> {
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
     return CustomScaffold(
+      isListScreen: true,
         floatingActionBtn: Container(
           width: 7.h,
           height: 7.h,
@@ -298,309 +299,299 @@ class _PackageScreenState extends State<PackageScreen> {
     logcat("LENGTH", controller.packageObjectList.length.toString());
     // ignore: unrelated_type_equality_checks
     if (controller.state == ScreenState.apiSuccess &&
-        controller.packageObjectList.isNotEmpty) {
-      return controller.filteredPackageObjectList.isNotEmpty
-          ? Container(
-              margin: EdgeInsets.only(left: 8.w, right: 8.w),
-              child: ListView.builder(
-                shrinkWrap: true,
-                clipBehavior: Clip.antiAlias,
-                physics: BouncingScrollPhysics(),
-                // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //   crossAxisCount: 2, // Adjust the number of columns as needed
-                //   crossAxisSpacing: 10.0,
-                //   mainAxisSpacing: 10.0,
-                // ),
-                itemBuilder: (context, index) {
-                  PackageList data =
-                      controller.filteredPackageObjectList[index];
+        controller.filteredPackageObjectList.isNotEmpty) {
+      return Container(
+        margin: EdgeInsets.only(left: 8.w, right: 8.w),
+        child: ListView.builder(
+          shrinkWrap: true,
+          clipBehavior: Clip.antiAlias,
+          padding: EdgeInsets.only(bottom: 35.h),
 
-                  return Container(
-                    padding: EdgeInsets.only(
-                        left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
-                    margin: EdgeInsets.only(bottom: 1.h),
-                    decoration: BoxDecoration(
-                      color: isDarkMode() ? black : white,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: isDarkMode()
-                              ? Colors.white.withOpacity(0.2)
-                              : Colors.black.withOpacity(0.2),
-                          spreadRadius: 0.1,
-                          blurRadius: 10,
-                          offset: Offset(0.5, 0.5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Stack(
-                        //   children: [
-                        //     //CLICPRRECT
-                        //     Container(
-                        //         height: 11.h,
-                        //         width: 60.w,
-                        //         // padding: EdgeInsets.all(
-                        //         //   SizerUtil.deviceType == DeviceType.mobile
-                        //         //       ? 1.2.w
-                        //         //       : 1.0.w,
-                        //         // ),
-                        //         child: ClipRRect(
-                        //           borderRadius: const BorderRadius.all(
-                        //               Radius.circular(15)),
-                        //           child: CachedNetworkImage(
-                        //             fit: BoxFit.cover,
-                        //             imageUrl: "",
-                        //             placeholder: (context, url) =>
-                        //                 const Center(
-                        //               child: CircularProgressIndicator(
-                        //                   color: primaryColor),
-                        //             ),
-                        //             errorWidget: (context, url, error) =>
-                        //                 Image.asset(
-                        //               Asset.placeholder,
-                        //               height: 11.h,
-                        //               fit: BoxFit.cover,
-                        //             ),
-                        //           ),
-                        //         ))
-                        //   ],
-                        // ),
-                        // SizedBox(height: 10.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
-                              //  data.serviceInfo != null
-                              //     ? data.serviceInfo!.name
-                              //     : "",
-                              data.name != null ? data.name : "",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w700),
-                            )),
-                            // SizedBox(height: 5.0),
-                          ],
-                        ),
-                        // SizedBox(height: 5.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                formatDate(data.durationFrom.toString()) +
-                                    ' to ' +
-                                    formatDate(data.durationTo.toString()),
-                                // data.durationFrom.toString(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
+          physics: BouncingScrollPhysics(),
+          // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //   crossAxisCount: 2, // Adjust the number of columns as needed
+          //   crossAxisSpacing: 10.0,
+          //   mainAxisSpacing: 10.0,
+          // ),
+          itemBuilder: (context, index) {
+            PackageList data = controller.filteredPackageObjectList[index];
 
-                            // Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(AddPackageScreen(
-                                  isEdit: true,
-                                  editPackage: data,
-                                ));
-                              },
-                              child: Container(
-                                child: SvgPicture.asset(
-                                  Asset.edit,
-                                  height: 2.3.h,
-                                  color:
-                                      isDarkMode() ? Colors.grey : Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 5.0),
-                            GestureDetector(
-                              onTap: () {
-                                showDeleteConfirmationDialog(data.id);
-                              },
-                              child: Container(
-                                child: Icon(
-                                  Icons.delete_rounded,
-                                  color:
-                                      isDarkMode() ? Colors.grey : Colors.grey,
-                                  size: 3.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                itemCount: controller.filteredPackageObjectList.length,
+            return Container(
+              padding:
+                  EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+              margin: EdgeInsets.only(bottom: 1.h),
+              decoration: BoxDecoration(
+                color: isDarkMode() ? black : white,
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDarkMode()
+                        ? Colors.white.withOpacity(0.2)
+                        : Colors.black.withOpacity(0.2),
+                    spreadRadius: 0.1,
+                    blurRadius: 10,
+                    offset: Offset(0.5, 0.5),
+                  ),
+                ],
               ),
-            )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Stack(
+                  //   children: [
+                  //     //CLICPRRECT
+                  //     Container(
+                  //         height: 11.h,
+                  //         width: 60.w,
+                  //         // padding: EdgeInsets.all(
+                  //         //   SizerUtil.deviceType == DeviceType.mobile
+                  //         //       ? 1.2.w
+                  //         //       : 1.0.w,
+                  //         // ),
+                  //         child: ClipRRect(
+                  //           borderRadius: const BorderRadius.all(
+                  //               Radius.circular(15)),
+                  //           child: CachedNetworkImage(
+                  //             fit: BoxFit.cover,
+                  //             imageUrl: "",
+                  //             placeholder: (context, url) =>
+                  //                 const Center(
+                  //               child: CircularProgressIndicator(
+                  //                   color: primaryColor),
+                  //             ),
+                  //             errorWidget: (context, url, error) =>
+                  //                 Image.asset(
+                  //               Asset.placeholder,
+                  //               height: 11.h,
+                  //               fit: BoxFit.cover,
+                  //             ),
+                  //           ),
+                  //         ))
+                  //   ],
+                  // ),
+                  // SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                        //  data.serviceInfo != null
+                        //     ? data.serviceInfo!.name
+                        //     : "",
+                        data.name != null ? data.name : "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700),
+                      )),
+                      // SizedBox(height: 5.0),
+                    ],
+                  ),
+                  // SizedBox(height: 5.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          formatDate(data.durationFrom.toString()) +
+                              ' to ' +
+                              formatDate(data.durationTo.toString()),
+                          // data.durationFrom.toString(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontFamily: opensansMedium,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
 
-          // ListView.builder(
-          //     shrinkWrap: true,
-          //     clipBehavior: Clip.antiAlias,
-          //     physics: BouncingScrollPhysics(),
-          //     itemBuilder: (context, index) {
-          //       ExpertList data = controller.filteredExpertObjectList[index];
-          //       return Container(
-          //         margin: EdgeInsets.only(
-          //             top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
-          //         child: Expanded(
-          //           child: Container(
-          //             padding: EdgeInsets.only(
-          //                 top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
-          //             child: Column(
-          //               crossAxisAlignment: CrossAxisAlignment.start,
-          //               mainAxisAlignment: MainAxisAlignment.start,
-          //               children: [
-          //                 Row(
-          //                   mainAxisAlignment: MainAxisAlignment.start,
-          //                   crossAxisAlignment: CrossAxisAlignment.center,
-          //                   children: [
-          //                     Stack(children: [
-          //                       CircleAvatar(
-          //                         radius: 3.7.h,
-          //                         backgroundColor: Colors.white,
-          //                         child: SvgPicture.asset(
-          //                           Asset.profileimg,
-          //                           fit: BoxFit.cover,
-          //                         ),
-          //                       ),
-          //                     ]),
-          //                     SizedBox(width: 5.5.w),
-          //                     Expanded(
-          //                       child: Column(
-          //                         mainAxisAlignment: MainAxisAlignment.start,
-          //                         crossAxisAlignment:
-          //                             CrossAxisAlignment.start,
-          //                         children: [
-          //                           Row(
-          //                               mainAxisAlignment:
-          //                                   MainAxisAlignment.start,
-          //                               crossAxisAlignment:
-          //                                   CrossAxisAlignment.center,
-          //                               children: [
-          //                                 Container(
-          //                                     child: Text(
-          //                                   data.name,
-          //                                   style: TextStyle(
-          //                                       color: isDarkMode()
-          //                                           ? white
-          //                                           : black,
-          //                                       fontFamily: opensansMedium,
-          //                                       fontSize: 15.5.sp,
-          //                                       fontWeight: FontWeight.w700),
-          //                                 )),
-          //                                 Spacer(),
-          //                                 GestureDetector(
-          //                                   onTap: () {
-          //                                     Get.to(AddExpertScreen(
-          //                                       isEdit: true,
-          //                                       editExpert: data,
-          //                                     ));
-          //                                   },
-          //                                   child: Container(
-          //                                       child: SvgPicture.asset(
-          //                                           Asset.edit,
-          //                                           height: 2.3.h,
-          //                                           color: isDarkMode()
-          //                                               ? Colors.grey
-          //                                               : Colors.grey)),
-          //                                 ),
-          //                                 SizedBox(
-          //                                   width: 2.w,
-          //                                 ),
-          //                                 GestureDetector(
-          //                                   onTap: () {
-          //                                     showDeleteConfirmationDialog(
-          //                                         data.id);
-          //                                   },
-          //                                   child: Container(
-          //                                       child: Icon(
-          //                                     Icons.delete_rounded,
-          //                                     color: isDarkMode()
-          //                                         ? Colors.grey
-          //                                         : Colors.grey,
-          //                                     size: 3.h,
-          //                                   )),
-          //                                 ),
-          //                               ]),
-          //                           SizedBox(
-          //                             height: 0.5.h,
-          //                           ),
-          //                           Text(
-          //                             data.vendorInfo.userName,
-          //                             style: TextStyle(
-          //                                 color: isDarkMode() ? white : black,
-          //                                 fontFamily: opensansMedium,
-          //                                 fontSize: 11.sp,
-          //                                 fontWeight: FontWeight.w400),
-          //                           )
-          //                         ],
-          //                       ),
-          //                     ),
-          //                   ],
-          //                 )
-          //               ],
-          //             ),
-          //             decoration: BoxDecoration(
-          //               color: isDarkMode() ? black : white,
-          //               borderRadius: BorderRadius.all(Radius.circular(10)),
-          //               boxShadow: [
-          //                 BoxShadow(
-          //                     color: isDarkMode()
-          //                         ? Colors.white.withOpacity(0.2)
-          //                         : Colors.black.withOpacity(0.2),
-          //                     spreadRadius: 0.1,
-          //                     blurRadius: 10,
-          //                     offset: Offset(0.5, 0.5)),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //     itemCount: controller.filteredExpertObjectList.length)
-          : Center(
-              child: Container(
-                margin: EdgeInsets.only(top: 31.h),
-                child: Text(
-                  CommonConstant.noDataFound,
-                  style: TextStyle(
-                      fontFamily: fontMedium, fontSize: 12.sp, color: black),
-                ),
+                      // Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(AddPackageScreen(
+                                  isEdit: true, editPackage: data))
+                              ?.then((value) {
+                            if (value == true) {
+                              controller.getPackageList(context, false);
+                            }
+                          });
+                        },
+                        child: Container(
+                          child: SvgPicture.asset(
+                            Asset.edit,
+                            height: 2.3.h,
+                            color: isDarkMode() ? Colors.grey : Colors.grey,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5.0),
+                      GestureDetector(
+                        onTap: () {
+                          showDeleteConfirmationDialog(data.id);
+                        },
+                        child: Container(
+                          child: Icon(
+                            Icons.delete_rounded,
+                            color: isDarkMode() ? Colors.grey : Colors.grey,
+                            size: 3.h,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
+          },
+          itemCount: controller.filteredPackageObjectList.length,
+        ),
+      );
+
+      // ListView.builder(
+      //     shrinkWrap: true,
+      //     clipBehavior: Clip.antiAlias,
+      //     physics: BouncingScrollPhysics(),
+      //     itemBuilder: (context, index) {
+      //       ExpertList data = controller.filteredExpertObjectList[index];
+      //       return Container(
+      //         margin: EdgeInsets.only(
+      //             top: 1.5.h, left: 8.w, right: 8.w, bottom: 1.5.h),
+      //         child: Expanded(
+      //           child: Container(
+      //             padding: EdgeInsets.only(
+      //                 top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
+      //             child: Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               mainAxisAlignment: MainAxisAlignment.start,
+      //               children: [
+      //                 Row(
+      //                   mainAxisAlignment: MainAxisAlignment.start,
+      //                   crossAxisAlignment: CrossAxisAlignment.center,
+      //                   children: [
+      //                     Stack(children: [
+      //                       CircleAvatar(
+      //                         radius: 3.7.h,
+      //                         backgroundColor: Colors.white,
+      //                         child: SvgPicture.asset(
+      //                           Asset.profileimg,
+      //                           fit: BoxFit.cover,
+      //                         ),
+      //                       ),
+      //                     ]),
+      //                     SizedBox(width: 5.5.w),
+      //                     Expanded(
+      //                       child: Column(
+      //                         mainAxisAlignment: MainAxisAlignment.start,
+      //                         crossAxisAlignment:
+      //                             CrossAxisAlignment.start,
+      //                         children: [
+      //                           Row(
+      //                               mainAxisAlignment:
+      //                                   MainAxisAlignment.start,
+      //                               crossAxisAlignment:
+      //                                   CrossAxisAlignment.center,
+      //                               children: [
+      //                                 Container(
+      //                                     child: Text(
+      //                                   data.name,
+      //                                   style: TextStyle(
+      //                                       color: isDarkMode()
+      //                                           ? white
+      //                                           : black,
+      //                                       fontFamily: opensansMedium,
+      //                                       fontSize: 15.5.sp,
+      //                                       fontWeight: FontWeight.w700),
+      //                                 )),
+      //                                 Spacer(),
+      //                                 GestureDetector(
+      //                                   onTap: () {
+      //                                     Get.to(AddExpertScreen(
+      //                                       isEdit: true,
+      //                                       editExpert: data,
+      //                                     ));
+      //                                   },
+      //                                   child: Container(
+      //                                       child: SvgPicture.asset(
+      //                                           Asset.edit,
+      //                                           height: 2.3.h,
+      //                                           color: isDarkMode()
+      //                                               ? Colors.grey
+      //                                               : Colors.grey)),
+      //                                 ),
+      //                                 SizedBox(
+      //                                   width: 2.w,
+      //                                 ),
+      //                                 GestureDetector(
+      //                                   onTap: () {
+      //                                     showDeleteConfirmationDialog(
+      //                                         data.id);
+      //                                   },
+      //                                   child: Container(
+      //                                       child: Icon(
+      //                                     Icons.delete_rounded,
+      //                                     color: isDarkMode()
+      //                                         ? Colors.grey
+      //                                         : Colors.grey,
+      //                                     size: 3.h,
+      //                                   )),
+      //                                 ),
+      //                               ]),
+      //                           SizedBox(
+      //                             height: 0.5.h,
+      //                           ),
+      //                           Text(
+      //                             data.vendorInfo.userName,
+      //                             style: TextStyle(
+      //                                 color: isDarkMode() ? white : black,
+      //                                 fontFamily: opensansMedium,
+      //                                 fontSize: 11.sp,
+      //                                 fontWeight: FontWeight.w400),
+      //                           )
+      //                         ],
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 )
+      //               ],
+      //             ),
+      //             decoration: BoxDecoration(
+      //               color: isDarkMode() ? black : white,
+      //               borderRadius: BorderRadius.all(Radius.circular(10)),
+      //               boxShadow: [
+      //                 BoxShadow(
+      //                     color: isDarkMode()
+      //                         ? Colors.white.withOpacity(0.2)
+      //                         : Colors.black.withOpacity(0.2),
+      //                     spreadRadius: 0.1,
+      //                     blurRadius: 10,
+      //                     offset: Offset(0.5, 0.5)),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       );
+      //     },
+      //     itemCount: controller.filteredExpertObjectList.length)
     } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
+      return Container(
+        height: SizerUtil.height / 1.3,
+        child: Center(
+          child: Container(
             child: Text(
-              "Data not Found",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
+              CommonConstant.noDataFound,
+              style: TextStyle(
+                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
             ),
           ),
-        ],
+        ),
       );
     }
   }

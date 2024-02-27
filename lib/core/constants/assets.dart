@@ -93,4 +93,10 @@ class Asset {
   static const dropdown = '$assets${svgFolder}dropdown.svg';
   static const arrowBack = '$assets${svgFolder}arrowback.svg';
   static const amsblack = '$assets${svgFolder}black_background.svg';
+  static const student = '$assets${svgFolder}student.svg';
+  static const studentCourse = '$assets${svgFolder}studentCourse.svg';
+  static const productSelling = '$assets${svgFolder}productSelling.svg';
+  static const productCategory = '$assets${svgFolder}productCategory.svg';
+  static const package = '$assets${svgFolder}packageScreen.svg';
+  static const brandCategory = '$assets${svgFolder}brandCategory.svg';
 }

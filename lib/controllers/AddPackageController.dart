@@ -269,7 +269,7 @@ class AddPackageController extends GetxController {
       var retrievedObject = await UserPreferences().getSignInInfo();
 
       logcat(
-        "ADD PACKAGE",
+        "UPDATE_PACKAGE",
         {
           "vendor_id": retrievedObject!.id.toString().trim(),
           "name": nameCtr.text.toString().trim(),

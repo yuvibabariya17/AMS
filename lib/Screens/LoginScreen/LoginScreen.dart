@@ -4,7 +4,9 @@ import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -28,8 +30,18 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isHidden = true;
 
   @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // Show the dialog after the frame has been rendered
+    //   _showInitialDialog();
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
+
     return GestureDetector(
         onTap: () {
           hideKeyboard(context);
@@ -297,5 +309,70 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ]),
         ));
+  }
+
+  void _showInitialDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: white,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              getTitle("IP Address"),
+              FadeInUp(
+                  from: 30,
+                  child: AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      child: Obx(() {
+                        return getReactiveFormField(
+                          node: controller.ipAddressNode,
+                          controller: controller.ipCtr,
+                          hintLabel: "Enter IP Address",
+                          onChanged: (val) {},
+                          errorText: controller.passModel.value.error,
+                          inputType: TextInputType.emailAddress,
+                        );
+                      }))),
+              SizedBox(
+                height: 1.h,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  String url = "http://";
+                  String api = "/api/";
+                  String finalUrl =
+                      url + controller.ipCtr.text.toString().trim() + api;
+                  String appendedString =
+                      url + controller.ipCtr.text.toString().trim() + "/";
+                  UserPreferences().setIP(finalUrl);
+                  UserPreferences().setBuildIP(appendedString);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  height: 5.h,
+                  width: 40.w,
+                  child: Center(
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(color: white),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        SizerUtil.deviceType == DeviceType.mobile
+                            ? 5.h
+                            : 1.4.h),
+                    color: black,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }

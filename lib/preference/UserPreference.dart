@@ -15,6 +15,27 @@ class UserPreferences {
     pref = SharedPreferences.getInstance();
   }
 
+  Future<void> setIP(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("IP", value);
+  }
+
+  getIP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    return prefs.getString('IP')?? "";
+  }
+  Future<void> setBuildIP(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("build_ip", value);
+  }
+
+  getBuildIP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    return prefs.getString('build_ip')?? "";
+  }
+
   void saveSignInInfo(SignInData? data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('signIn', json.encode(data));

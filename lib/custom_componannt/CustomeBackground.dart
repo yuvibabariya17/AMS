@@ -7,10 +7,12 @@ import 'package:flutter_svg/svg.dart';
 class CustomScaffold extends StatelessWidget {
   final Widget body;
   final Widget? floatingActionBtn;
+  bool? isListScreen;
 
   CustomScaffold({
     required this.body,
     this.floatingActionBtn,
+    this.isListScreen,
   });
 
   @override
@@ -35,13 +37,11 @@ class CustomScaffold extends StatelessWidget {
                   ),
           ),
           Scaffold(
-            resizeToAvoidBottomInset: true,
+            resizeToAvoidBottomInset: isListScreen == true ? false : true,
             backgroundColor:
                 transparent, // Make the Scaffold's background transparent
             body: SafeArea(child: body),
             floatingActionButton: floatingActionBtn,
-            
-            
           ),
         ],
       ),

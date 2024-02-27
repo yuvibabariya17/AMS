@@ -1,12 +1,9 @@
 import 'package:booking_app/Models/VendorServiceModel.dart';
-
-import '../../Models/ServiceModel.dart';
+import 'package:booking_app/Screens/ServiceScreen/ServiceScreen.dart';
 import 'package:booking_app/controllers/ServiceBasedProfileController.dart';
-import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -69,20 +66,26 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
           width: SizerUtil.width,
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
-                      child: Text(
-                        "View More >",
-                        style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13.sp,
-                        ),
-                      )),
-                ],
+              GestureDetector(
+                onTap: (() {
+                  Get.to(ServiceScreen());
+                }),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                        margin:
+                            EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
+                        child: Text(
+                          "View More >",
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 13.sp,
+                          ),
+                        )),
+                  ],
+                ),
               ),
               Expanded(
                 child: Container(
@@ -129,50 +132,6 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Stack(
-                              //   children: [
-                              //     Container(
-                              //         padding: EdgeInsets.only(
-                              //             top: 0.5.h,
-                              //             left: 0.5.w,
-                              //             right: 0.5.w),
-                              //         height: 11.h,
-                              //         width: 60.w,
-                              //         // padding: EdgeInsets.all(
-                              //         //   SizerUtil.deviceType == DeviceType.mobile
-                              //         //       ? 1.2.w
-                              //         //       : 1.0.w,
-                              //         // ),
-                              //         child: ClipRRect(
-                              //           borderRadius: const BorderRadius.all(
-                              //               Radius.circular(15)),
-                              //           child: CachedNetworkImage(
-                              //             fit: BoxFit.cover,
-                              //             imageUrl: "",
-                              //             placeholder: (context, url) =>
-                              //                 const Center(
-                              //               child: CircularProgressIndicator(
-                              //                   color: primaryColor),
-                              //             ),
-                              //             errorWidget: (context, url, error) =>
-                              //                 Image.asset(
-                              //               Asset.placeholder,
-                              //               height: 11.h,
-                              //               fit: BoxFit.cover,
-                              //             ),
-                              //           ),
-                              //         ))
-
-                              //     // CircleAvatar(
-                              //     //   radius: 4.h,
-                              //     //   backgroundColor: Colors.white,
-                              //     //   child: SvgPicture.asset(
-                              //     //     Asset.profileimg,
-                              //     //     fit: BoxFit.cover,
-                              //     //   ),
-                              //     // ),
-                              //   ],
-                              // ),
                               SizedBox(height: 1.h),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,

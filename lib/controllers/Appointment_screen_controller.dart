@@ -8,13 +8,13 @@ import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/notification_model.dart';
-import '../Models/product.dart';
+import '../Models/notification_Static.dart';
 import 'internet_controller.dart';
 
 enum ScreenState { apiLoading, apiError, apiSuccess, noNetwork, noDataFound }
 
 class AppointmentScreenController extends GetxController {
-  List<ProductItem> staticData = notificationItems;
+  List<NotificationItem> staticData = notificationItems;
   late TabController tabController;
   RxInt currentPage = 0.obs;
   bool isOnline = true;

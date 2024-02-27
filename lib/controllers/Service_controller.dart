@@ -39,31 +39,38 @@ class serviceController extends GetxController {
   void getServiceList(context) async {
     state.value = ScreenState.apiLoading;
     // isServiceTypeApiList.value = true;
-     try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.vendorServiceList, allowHeader: true);
-    isServiceTypeApiList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat("SERVICERESPONSE", jsonEncode(responseData));
-    if (response.statusCode == 200) {
-      var data = VendorServiceModel.fromJson(responseData);
-      if (data.status == 1) {
-        state.value = ScreenState.apiSuccess;
-        serviceObjectList.clear();
-        serviceObjectList.addAll(data.data);
-        logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
       }
-    } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-    }
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        }
+      }, ApiUrl.vendorServiceList, allowHeader: true);
+      isServiceTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat("SERVICERESPONSE", jsonEncode(responseData));
+      if (response.statusCode == 200) {
+        var data = VendorServiceModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          serviceObjectList.clear();
+          serviceObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
     } catch (e) {
       logcat('Exception', e);
       isServiceTypeApiList.value = false;

@@ -46,6 +46,8 @@ class VendorServiceModel {
 
 class VendorServiceList {
   String id;
+  String vendorId;
+  String serviceId;
   int fees;
   DateTime oppoxTime;
   int oppoxSetting;
@@ -60,6 +62,8 @@ class VendorServiceList {
 
   VendorServiceList({
     required this.id,
+    required this.vendorId,
+    required this.serviceId,
     required this.fees,
     required this.oppoxTime,
     required this.oppoxSetting,
@@ -77,6 +81,8 @@ class VendorServiceList {
       VendorServiceList(
         id: json["_id"] ?? '',
         fees: json["fees"] ?? 0,
+        vendorId: json["vendor_id"] ?? '',
+        serviceId: json["service_id"] ?? '',
         oppoxTime: json["oppox_time"] != null
             ? DateTime.parse(json["oppox_time"])
             : DateTime.now(),
@@ -95,6 +101,8 @@ class VendorServiceList {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "vendor_id": vendorId,
+        "service_id": serviceId,
         "fees": fees,
         "oppox_time": oppoxTime.toIso8601String(),
         "oppox_setting": oppoxSetting,

@@ -15,7 +15,6 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../controllers/internet_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,10 +39,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var controller = Get.put(HomeScreenController());
 //  late _DataSource events;
+  String? formattedDate;
 
   @override
   void initState() {
     super.initState();
+    formattedDate = Common().getCurrentDateFormate();
     controller.getHomeList(context, Common().getCurrentDate());
   }
 
@@ -173,13 +173,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     inactiveDates: [],
                     onDateChange: (date) {
                       setState(() {
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(date);
-                        DateTime parsedDate = DateTime.parse(formattedDate);
+                        formattedDate = DateFormat('yyyy-MM-dd').format(date);
+                        DateTime parsedDate = DateTime.parse(formattedDate!);
                         controller.selectedValue = parsedDate;
                         controller.picDate.value =
-                            Common().formatDate(date.toString());
-                        controller.getHomeList(context, formattedDate);
+                            Common().formatDates(date.toString());
+                        controller.getHomeList(context, formattedDate!);
                       });
                     },
                   ),
@@ -225,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   case ScreenState.apiSuccess:
                     return Container(
-                        margin: EdgeInsets.only(bottom: 3.h, top: 2.h),
+                        // margin: EdgeInsets.only(bottom: 3.h, top: 2.h),
                         child: apiSuccess(controller.state.value));
                   default:
                     Container();
@@ -286,6 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             // final data = hairserviceItems[index];
             AppointmentList selectedData = controller.slotObjectList[index];
+            logcat("selectedData", selectedData.toString());
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -346,11 +346,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             itemCount: selectedData.appointmentInfo.length,
                             itemBuilder: (BuildContext context, int index) {
                               AppointmentInfo item =
                                   selectedData.appointmentInfo[index];
+                              logcat("selectedData", selectedData.toString());
                               logcat("SELECTED_DATA", item);
                               return Container(
                                 child: GestureDetector(
@@ -360,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           insetPadding: EdgeInsets.symmetric(
-                                              vertical: 30.h, horizontal: 4.h),
+                                              vertical: 25.h, horizontal: 4.h),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
                                                 20.0), // Adjust the radius as needed
@@ -377,65 +378,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 height: 3.h,
                                                 child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       item.service.length > 10
                                                           ? Container(
-                                                             width: 55.w,
-                                                            child: Marquee(
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    fontRegular,
-                                                                color:
-                                                                    isDarkMode()
-                                                                        ? white
-                                                                        : black,
-                                                                fontSize: SizerUtil
-                                                                            .deviceType ==
-                                                                        DeviceType
-                                                                            .mobile
-                                                                    ? 16.sp
-                                                                    : 10.sp,
+                                                              width: 55.w,
+                                                              child: Marquee(
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      fontRegular,
+                                                                  color: isDarkMode()
+                                                                      ? white
+                                                                      : black,
+                                                                  fontSize: SizerUtil
+                                                                              .deviceType ==
+                                                                          DeviceType
+                                                                              .mobile
+                                                                      ? 16.sp
+                                                                      : 10.sp,
+                                                                ),
+                                                                text: item
+                                                                    .service,
+                                                                scrollAxis: Axis
+                                                                    .horizontal, // Use Axis.vertical for vertical scrolling
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start, // Adjust as needed
+                                                                blankSpace:
+                                                                    20.0, // Adjust the space between text repetitions
+                                                                velocity:
+                                                                    50.0, // Adjust the scrolling speed
+                                                                pauseAfterRound:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            1), // Time to pause after each scroll
+                                                                startPadding: 2
+                                                                    .w, // Adjust the initial padding
+                                                                accelerationDuration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            1), // Duration for acceleration
+                                                                accelerationCurve:
+                                                                    Curves
+                                                                        .linear, // Acceleration curve
+                                                                decelerationDuration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            500), // Duration for deceleration
+                                                                decelerationCurve:
+                                                                    Curves
+                                                                        .easeOut, // Deceleration curve
                                                               ),
-                                                              text:
-                                                                  item.service,
-                                                              scrollAxis: Axis
-                                                                  .horizontal, // Use Axis.vertical for vertical scrolling
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start, // Adjust as needed
-                                                              blankSpace:
-                                                                  20.0, // Adjust the space between text repetitions
-                                                              velocity:
-                                                                  50.0, // Adjust the scrolling speed
-                                                              pauseAfterRound:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          1), // Time to pause after each scroll
-                                                              startPadding:
-                                                                  2.w, // Adjust the initial padding
-                                                              accelerationDuration:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          1), // Duration for acceleration
-                                                              accelerationCurve:
-                                                                  Curves
-                                                                      .linear, // Acceleration curve
-                                                              decelerationDuration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          500), // Duration for deceleration
-                                                              decelerationCurve:
-                                                                  Curves
-                                                                      .easeOut, // Deceleration curve
-                                                            ),
-                                                          )
+                                                            )
                                                           : Text(
                                                               item.service,
-                                                              textAlign: TextAlign
-                                                                  .center,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     fontRegular,
@@ -451,13 +455,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     : 10.sp,
                                                               ),
                                                             ),
-                                                            Spacer(),
+                                                      Spacer(),
                                                       Align(
                                                         alignment:
                                                             Alignment.topRight,
                                                         child: GestureDetector(
                                                           onTap: () {
-                                                            Navigator.of(context)
+                                                            Navigator.of(
+                                                                    context)
                                                                 .pop();
                                                           },
                                                           child: Icon(
@@ -497,23 +502,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               : black,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        item.customerInfo.name,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            fontSize: SizerUtil
-                                                                        .deviceType ==
-                                                                    DeviceType
-                                                                        .mobile
-                                                                ? 12.sp
-                                                                : 10.sp,
-                                                            color: isDarkMode()
-                                                                ? white
-                                                                : black,
-                                                            fontFamily:
-                                                                fontRegular),
+                                                      Expanded(
+                                                        child: Text(
+                                                          item.customerInfo
+                                                              .name,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontSize: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .mobile
+                                                                  ? 12.sp
+                                                                  : 10.sp,
+                                                              color:
+                                                                  isDarkMode()
+                                                                      ? white
+                                                                      : black,
+                                                              fontFamily:
+                                                                  fontRegular),
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -750,7 +758,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(top: 1.5.h),
+                                          margin: EdgeInsets.only(top: 1.4.h),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -787,7 +795,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 EdgeInsets.only(bottom: 2.h),
                                             padding:
                                                 EdgeInsets.only(bottom: 2.h),
-                                            width: 70.w,
+                                            width: 52.w,
                                             child: DottedBorder(
                                               borderType: BorderType.RRect,
                                               color:
@@ -800,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       : 2.5.w),
                                               child: Container(
                                                 // height: 10.h,
-                                                width: 70.w,
+                                                width: 52.w,
                                                 padding: EdgeInsets.only(
                                                     right: 2.w,
                                                     left: 2.w,
@@ -1036,10 +1044,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(AppointmentBookingScreen())?.then((value) {
+              Get.to(AppointmentBookingScreen(
+                      selectedDate:
+                          controller.homeFormatTime(formattedDate.toString())))
+                  ?.then((value) {
                 if (value == true) {
-                  logcat("ISDONE", "DONE");
-                  controller.getHomeList(context, "");
+                  logcat("HOMEEE", "DONE");
+                  controller.getHomeList(
+                      context,
+                      formattedDate != null
+                          ? formattedDate.toString()
+                          : Common().getCurrentDate());
                 }
               });
             },

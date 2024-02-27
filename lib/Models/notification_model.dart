@@ -1,49 +1,49 @@
-import 'package:booking_app/Models/product.dart';
+import 'package:booking_app/Models/notification_Static.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../core/constants/assets.dart';
 
-List<ProductItem> notificationItems = <ProductItem>[
-  ProductItem(
+List<NotificationItem> notificationItems = <NotificationItem>[
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Justin',
     Status: 'Completed',
-    time: '11:48 PM',
+    time: '09:00 AM',
     title: 'Hair Treatment',
   ),
-  ProductItem(
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Maulik',
     Status: 'Pending',
-    time: '11:48 PM',
+    time: '10:00 AM',
     title: 'Hair Cutting / Hair Smoothing',
   ),
-  ProductItem(
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Sachin',
     Status: 'Canceled',
-    time: '11:48 PM',
+    time: '11:00 AM',
     title: 'Hair Spa / Hair Treatment',
   ),
-  ProductItem(
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Hiral',
     Status: 'Completed',
-    time: '11:48 PM',
+    time: '01:00 PM',
     title: 'Hair Treatment',
   ),
-  ProductItem(
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Riya',
     Status: 'Pending',
-    time: '11:48 PM',
+    time: '02:00 PM',
     title: 'Nail Extensions',
   ),
-  ProductItem(
+  NotificationItem(
     icon: SvgPicture.asset(Asset.profileimg),
-    Name: 'Kim Se Jeong',
+    Name: 'Ashwini',
     Status: 'Canceled',
-    time: '11:48 PM',
+    time: '04:00 PM',
     title: 'Bridal Makeup',
   ),
 ];

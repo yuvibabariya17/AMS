@@ -13,7 +13,9 @@ import '../../core/utils/helper.dart';
 import 'UpdateVendor.dart';
 
 class BasicprofileTabScreen extends StatefulWidget {
-  const BasicprofileTabScreen({super.key});
+  BasicprofileTabScreen({super.key, this.callBack});
+
+  Function? callBack;
 
   @override
   State<BasicprofileTabScreen> createState() => _BasicprofileTabScreenState();
@@ -41,7 +43,6 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
     Whatsapp.value = retrievedObject.whatsappNo.toString().trim();
     setState(() {});
   }
-
   // void getuserdata() async {
   //   SignInData? retrievedObject = await UserPreferences().getSignInInfo();
   // }
@@ -69,11 +70,15 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                       color: isDarkMode() ? Colors.grey : black,
                       fontSize: 13.5.sp),
                 ),
-                MouseRegion( cursor: SystemMouseCursors.click, 
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
                   child: IconButton(
                       alignment: Alignment.topRight,
                       onPressed: () {
-                        Get.to(UpdateVendor());
+                        Get.to(UpdateVendor())!.then((value) {
+                          initDataSet();
+                          widget.callBack!();
+                        });
                       },
                       icon: SvgPicture.asset(Asset.edit,
                           height: 2.3.h,

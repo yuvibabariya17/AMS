@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../Models/product.dart';
+import '../../Models/notification_Static.dart';
 import '../../../core/constants/assets.dart';
 import '../../../core/themes/font_constant.dart';
 
@@ -32,6 +32,7 @@ class _UpcomingNotificationScreenState
     return ListView.builder(
       shrinkWrap: false,
       clipBehavior: Clip.antiAlias,
+      padding: EdgeInsets.only(bottom: 10.h),
       itemBuilder: (context, index) {
         return getListItem(context, index);
       },
@@ -40,7 +41,7 @@ class _UpcomingNotificationScreenState
   }
 
   getListItem(BuildContext context, int index) {
-    ProductItem data = controller.staticData[index];
+    NotificationItem data = controller.staticData[index];
     return Container(
       margin: EdgeInsets.only(top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
       decoration: BoxDecoration(

@@ -42,8 +42,10 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
   @override
   void initState() {
     if (widget.isEdit == true && widget.editStudentCourse != null) {
-      controller.studentctr.text = widget.editStudentCourse!.toString();
-      controller.coursectr.text = widget.editStudentCourse!.id.toString();
+      controller.studentctr.text =
+          widget.editStudentCourse!.studentInfo.name.toString();
+      controller.coursectr.text =
+          widget.editStudentCourse!.courseInfo.name.toString();
       controller.startDatectr.text =
           widget.editStudentCourse!.startingFrom.toString();
       controller.Feesctr.text = widget.editStudentCourse!.fees.toString();
@@ -54,6 +56,12 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
 
       controller.uploadId.value =
           widget.editStudentCourse!.idProofUrl.toString();
+
+      controller.studentId.value =
+          widget.editStudentCourse!.studentId.toString();
+
+      controller.studentCourseId.value =
+          widget.editStudentCourse!.courseId.toString();
       // Set other fields as well
     }
     if (widget.isEdit == true) {
@@ -245,9 +253,8 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                                         );
                                                       },
                                                       firstDate: DateTime(1950),
-                                                      lastDate: DateTime.now()
-                                                          .add(const Duration(
-                                                              days: 0)));
+                                                      lastDate:  DateTime(8000)
+                                                          );
                                               if (pickedDate != null &&
                                                   pickedDate !=
                                                       controller

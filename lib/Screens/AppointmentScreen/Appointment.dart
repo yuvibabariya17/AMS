@@ -1,5 +1,5 @@
 import 'package:booking_app/Models/notification_model.dart';
-import 'package:booking_app/Models/product.dart';
+import 'package:booking_app/Models/notification_Static.dart';
 import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
@@ -38,7 +38,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     with TickerProviderStateMixin {
   // var controller = Get.put(AppointmentScreenController());
 
-  List<ProductItem> staticData = notificationItems;
+  List<NotificationItem> staticData = notificationItems;
   late TabController tabController;
   var currentPage = 0;
 

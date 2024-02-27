@@ -47,23 +47,28 @@ class ExpertModel {
 class ExpertList {
   String id;
   String name;
+  String serviceId;
   int amount;
   String upload_id;
   int createdAt;
   DateTime startTime;
   DateTime endTime;
+  ServiceInfo serviceInfo;
   VendorInfo vendorInfo;
   UploadInfo upload_info;
+
   //ServiceInfo? serviceInfo;
 
   ExpertList({
     required this.id,
     required this.name,
+    required this.serviceId,
     required this.amount,
     required this.upload_id,
     required this.createdAt,
     required this.startTime,
     required this.endTime,
+    required this.serviceInfo,
     required this.vendorInfo,
     required this.upload_info,
     //this.serviceInfo,
@@ -72,6 +77,7 @@ class ExpertList {
   factory ExpertList.fromJson(Map<String, dynamic> json) => ExpertList(
         id: json["_id"] ?? '',
         name: json["name"] ?? '',
+        serviceId: json["service_id"] ?? '',
         amount: json["amount"] ?? 0,
         upload_id: json["upload_id"] ?? "",
         createdAt: json["created_at"],
@@ -81,6 +87,7 @@ class ExpertList {
         endTime: json["endTime"] != null
             ? DateTime.parse(json["endTime"])
             : DateTime.now(),
+        serviceInfo: ServiceInfo.fromJson(json["service_info"] ?? {}),
         vendorInfo: VendorInfo.fromJson(json["vendor_info"] ?? {}),
         upload_info: UploadInfo.fromJson(json["upload_info"] ?? {}),
         // serviceInfo: json["service_info"] == null
@@ -91,12 +98,14 @@ class ExpertList {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+        "service_id": serviceId,
         "amount": amount,
         "upload_id": upload_id,
         "created_at": createdAt,
         "startTime": startTime.toIso8601String(),
         "endTime": endTime.toIso8601String(),
         "upload_info": upload_info.toJson(),
+        "service_info": serviceInfo.toJson(),
         "vendor_info": vendorInfo.toJson(),
         //"service_info": serviceInfo?.toJson(),
       };

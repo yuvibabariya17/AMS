@@ -185,7 +185,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
                 }),
-                setNavtile(Asset.adduser, "Expert", () {
+                setNavtile(Asset.adduser, " Expert", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ExpertScreen());
                 }),
@@ -194,11 +194,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CourseScreen());
                 }),
-                setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
-                    () {
-                  Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(OfferFormScreen());
-                }),
+                // setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
+                //     () {
+                //   Get.find<HomeScreenController>().closeDrawer();
+                //   Get.to(OfferFormScreen());
+                // }),
                 setNavtile(Asset.passwordlock, ScreenTitle.changePassTitle, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ChangePasswordScreen(
@@ -221,27 +221,31 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductScreen());
                 }),
-                setNavtile(Asset.product, "Student", isBig: true, () {
+                setNavtile(Asset.student, "Student", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentScreen());
                 }),
-                setNavtile(Asset.product, "Student Course", isBig: true, () {
+                setNavtile(Asset.studentCourse, "Student Course", isBig: true,
+                    () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentCourseScreen());
                 }),
-                setNavtile(Asset.product, "Product Selling", isBig: true, () {
-                  Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(ProductSellingScreen());
-                }),
-                setNavtile(Asset.product, "Package Screen", isBig: true, () {
+                // setNavtile(Asset.productSelling, "Product Selling", isBig: true,
+                //     () {
+                //   Get.find<HomeScreenController>().closeDrawer();
+                //   Get.to(ProductSellingScreen());
+                // }),
+                setNavtile(Asset.package, "Package Screen", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(PackageScreen());
                 }),
-                setNavtile(Asset.product, "Product Category", isBig: true, () {
+                setNavtile(Asset.productCategory, "Product Category",
+                    isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductCategoryListScreen());
                 }),
-                setNavtile(Asset.product, "Brand Category", isBig: true, () {
+                setNavtile(Asset.brandCategory, "Brand Category", isBig: true,
+                    () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(BrandCategoryScreen());
                 }),

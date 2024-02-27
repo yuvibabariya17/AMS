@@ -160,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   physics: NeverScrollableScrollPhysics(),
                   controller: controller.tabController,
                   children: [
-                    BasicprofileTabScreen(),
+                    BasicprofileTabScreen(callBack: callback),
                     StaffprofileTabScreen(),
                     ServiceProfileTabScreen()
                   ],
@@ -169,6 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen>
             ])),
       ),
     );
+  }
+
+  callback() {
+    initDataSet(context);
   }
 
   getTab(str, pad, index) {
@@ -229,9 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   void initDataSet(BuildContext context) async {
     SignInData? retrievedObject = await UserPreferences().getSignInInfo();
-
     name = retrievedObject!.userName.toString();
-
     setState(() {});
   }
 }

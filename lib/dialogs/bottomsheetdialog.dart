@@ -151,7 +151,9 @@ Future showbottomsheetdialog(BuildContext context) {
                       width: 150.h,
                       height: 5.5.h,
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               shape: RoundedRectangleBorder(

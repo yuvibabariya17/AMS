@@ -245,8 +245,20 @@ class Common {
     return DateFormat('yyyy-MM-dd').format(now);
   }
 
+  String getCurrentDateFormate() {
+    // Get the current date
+    DateTime now = DateTime.now();
+    // Format th date as yyyy-mm-dd
+    return DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(now);
+  }
+
   String formatDate(String dateString) {
     DateTime dateTime = DateTime.parse(dateString);
     return DateFormat('MMMM dd, yyyy').format(dateTime);
+  }
+
+  String formatDates(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('yyyy-MM-dd').format(dateTime);
   }
 }

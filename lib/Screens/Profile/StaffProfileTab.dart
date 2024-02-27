@@ -1,4 +1,5 @@
 import 'package:booking_app/Models/ExpertModel.dart';
+import 'package:booking_app/Screens/ExpertScreen/ExpertScreen.dart';
 import 'package:booking_app/controllers/StaffController.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -68,26 +69,30 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Handle View More tap
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 1.h, right: 7.w),
-                        child: Text(
-                          "View More >",
-                          style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 13.sp,
+                Container(
+                  margin: EdgeInsets.only(top: 0.5.h),
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(ExpertScreen());
+                      // Handle View More tap
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 1.h, right: 7.w),
+                          child: Text(
+                            "View More >",
+                            style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13.sp,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
                 ListView.builder(
                     shrinkWrap: true,

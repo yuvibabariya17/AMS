@@ -14,6 +14,7 @@ import '../../core/constants/strings.dart';
 import '../../custom_componannt/common_views.dart';
 import '../../custom_componannt/form_inputs.dart';
 
+// ignore: must_be_immutable
 class AddCustomerScreen extends StatefulWidget {
   AddCustomerScreen({super.key, this.isEdit, this.editCustomer});
   bool? isEdit;
@@ -43,18 +44,13 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       controller.descctr.text = widget.editCustomer!.description.toString();
       controller.uploadImageId.value = widget.editCustomer!.pic.toString();
 
-// Parse the date string to a DateTime object
       DateTime dateTime = DateTime.parse(
           widget.editCustomer!.dateOfBirth.toIso8601String().toString());
-
-// Format the DateTime object to the desired format
       String formattedDate =
           "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
 
       DateTime dateOfAnniversary = DateTime.parse(
           widget.editCustomer!.dateOfAnniversary.toIso8601String().toString());
-
-// Format the DateTime object to the desired format
       String formattedAnniversaryDate =
           "${dateOfAnniversary.year}-${dateOfAnniversary.month.toString().padLeft(2, '0')}-${dateOfAnniversary.day.toString().padLeft(2, '0')}";
 
@@ -64,7 +60,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     if (widget.isEdit == true) {
       validateFields();
     }
-    controller.addcustomerApi(context);
     super.initState();
   }
 

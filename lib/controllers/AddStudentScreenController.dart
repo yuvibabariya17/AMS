@@ -221,7 +221,7 @@ class AddStudentController extends GetxController {
       loadingIndicator.show(context, '');
       //  var retrievedObject = await UserPreferences().getSignInInfo();
 
-      logcat("ADDCOURSE", {
+      logcat("ADD_STUDENT", {
         ({
           "name": namectr.text.toString().trim(),
           "address": addressctr.text.toString().trim(),
@@ -242,7 +242,7 @@ class AddStudentController extends GetxController {
       }, ApiUrl.addStudent, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
-      logcat("ADDCOURSE", data);
+      logcat("ADD_STUDENT", data);
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
@@ -277,9 +277,8 @@ class AddStudentController extends GetxController {
         return;
       }
       loadingIndicator.show(context, '');
-      //  var retrievedObject = await UserPreferences().getSignInInfo();
 
-      logcat("UPDATE_COURSE", {
+      logcat("UPDATE_STUDENT", {
         ({
           "name": namectr.text.toString().trim(),
           "address": addressctr.text.toString().trim(),
