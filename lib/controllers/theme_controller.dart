@@ -7,19 +7,23 @@ import 'package:hive/hive.dart';
 import '../../core/constants/get_storage_key.dart';
 
 class ThemeController extends GetxController {
+  ThemeController({this.storageBox}) {}
+
+  final Box<int>? storageBox;
   RxBool isDark = true.obs;
   RxInt? isDarkMode = 0.obs;
+
   @override
   void onInit() {
-     initHive();
+    //initHive();
     super.onInit();
     fetchCurrent();
   }
 
   Future<void> initHive() async {
-    final settingsBox = await Hive.openBox<int>(Strings.storeDarkMode);
-    isDarkMode!.value = settingsBox.get(Strings.selectedMode) ?? 0;
-    settingsBox.put(Strings.selectedMode, isDarkMode!.value);
+    //final settingsBox = await Hive.openBox<int>(Strings.storeDarkMode);
+    isDarkMode!.value = storageBox!.get(Strings.selectedMode) ?? 0;
+    storageBox!.put(Strings.selectedMode, isDarkMode!.value);
     logcat('initHive', isDarkMode!.value.toString());
     update();
     update();

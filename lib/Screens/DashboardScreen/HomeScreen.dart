@@ -133,7 +133,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Container(
                             child: Text("Today",
                                 style: TextStyle(
-                                    fontSize: 17.5.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 17.5.sp
+                                        : 15.sp,
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
                                     fontWeight: FontWeight.w700)),
@@ -145,7 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Text(
                                   (controller.picDate.value.toString()),
                                   style: TextStyle(
-                                      fontSize: 16.5.sp,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 17.5.sp
+                                          : 15.sp,
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
                                       fontWeight: FontWeight.w700),
@@ -261,7 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Time Slot",
                           style: TextStyle(
                               color: isDarkMode() ? white : black,
-                              fontSize: 16.sp,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 17.5.sp
+                                      : 15.sp,
                               fontWeight: FontWeight.w700),
                         )
                       ]),
@@ -1149,7 +1158,8 @@ class _HomeScreenState extends State<HomeScreen> {
             "No any appointment for this date",
             style: TextStyle(
                 fontFamily: fontMedium,
-                fontSize: 12.sp,
+                fontSize:
+                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 10.sp,
                 fontWeight: FontWeight.w700,
                 color: isDarkMode() ? white : black),
           ),
@@ -1181,7 +1191,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                 "Add Appointment",
                 style: TextStyle(
-                    color: isDarkMode() ? white : white, fontSize: 10.sp),
+                  color: isDarkMode() ? white : white,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                ),
               )),
               decoration: BoxDecoration(
                 color: isDarkMode() ? black : black,

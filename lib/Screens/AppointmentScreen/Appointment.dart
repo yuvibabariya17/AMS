@@ -64,7 +64,9 @@ class _AppointmentScreenState extends State<AppointmentScreen>
       floatingActionBtn: Container(
         width: 7.h,
         height: 7.h,
-        margin: EdgeInsets.only(bottom: 10.h, right: 3.5.w),
+        margin: EdgeInsets.only(
+            bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 8.h,
+            right: 3.5.w),
         child: FloatingActionButton(
             backgroundColor: isDarkMode() ? white : black,
             shape: RoundedRectangleBorder(

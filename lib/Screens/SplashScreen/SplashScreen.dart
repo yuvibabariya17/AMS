@@ -41,28 +41,10 @@ class _SplashscreenState extends State<Splashscreen> {
       child: Center(
         child: isDarkMode()
             ? SvgPicture.asset(Asset.amsblack,
-                fit: BoxFit.cover,
-                width: SizerUtil.deviceType == DeviceType.mobile
-                    ? SizerUtil.width
-                    : 500)
+                fit: BoxFit.cover, width: SizerUtil.width)
             : SvgPicture.asset(Asset.splash_bg,
-                fit: BoxFit.cover,
-                width: SizerUtil.deviceType == DeviceType.mobile
-                    ? SizerUtil.width
-                    : 500),
+                fit: BoxFit.cover, width: SizerUtil.width),
       ),
     );
-    // return MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   home: SizedBox(
-    //       child: AnimatedSplashScreen(
-    //           splash: SvgPicture.asset(Asset.splash_bg,
-    //               width: SizerUtil.width, fit: BoxFit.cover),
-    //           duration: 2000,
-    //           splashIconSize: double.infinity,
-    //           splashTransition: SplashTransition.fadeTransition,
-    //           animationDuration: Duration(seconds: 3),
-    //           nextScreen: IntroScreen())),
-    // );
   }
 }
