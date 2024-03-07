@@ -38,6 +38,7 @@ class HomeScreenController extends GetxController {
   bool switch_state = false;
   bool switch_state1 = false;
   GlobalKey<ScrollSnapListState> keydata = GlobalKey();
+  DateTime? selectedDate =DateTime.now(); 
 
   var icon;
   var leading;

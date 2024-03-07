@@ -252,9 +252,12 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
+          title: Text('Confirm Delete',
+              style: TextStyle(
+                  fontSize: 17.sp, color: isDarkMode() ? white : white)),
           content: Text('Are you sure you want to delete this Expert?',
-              style: TextStyle(fontSize: 12.sp)),
+              style: TextStyle(
+                  fontSize: 12.sp, color: isDarkMode() ? white : white)),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -262,7 +265,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
               },
               child: Text('Cancel',
                   style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+                      fontSize: 11.sp, color: isDarkMode() ? white : white)),
             ),
             TextButton(
               onPressed: () {
@@ -272,7 +275,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
               child: Text(
                 'Yes',
                 style: TextStyle(
-                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+                    color: isDarkMode() ? white : white, fontSize: 11.sp),
               ),
             ),
           ],
@@ -592,7 +595,9 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  fontFamily: fontMedium,
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
         ],

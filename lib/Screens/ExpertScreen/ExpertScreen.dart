@@ -35,7 +35,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
   List<ExpertItems> staticData = Expert_Items;
   final InternetController networkManager = Get.find<InternetController>();
 
-  TextEditingController _search = TextEditingController();
+  TextEditingController search = TextEditingController();
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
     return CustomScaffold(
-      isListScreen: true,
+        isListScreen: true,
         floatingActionBtn: Container(
           width: 7.h,
           height: 7.h,
@@ -105,25 +105,22 @@ class _ExpertScreenState extends State<ExpertScreen> {
               Get.back();
             }),
             Container(
-              margin: EdgeInsets.only(
-                top: 3.h,
-                left: 1.0.w,
-                right: 1.0.w,
-              ),
-              padding: EdgeInsets.only(
-                left: 7.0.w,
-                right: 7.0.w,
-              ),
+              margin: EdgeInsets.only(top: 3.h, left: 1.0.w, right: 1.0.w),
+              padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w),
               child: Container(
                 height: 5.5.h,
                 child: TextField(
-                  onChanged: (value) {
+                  onChanged: ((value) {
                     filterExpertList(value);
-                  },
+                  }),
+                  style: TextStyle(color: isDarkMode() ? white : black),
                   decoration: InputDecoration(
-                      hintText: 'Search',
                       contentPadding:
                           EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                      hintText: CommonConstant.search,
+                      hintStyle: TextStyle(
+                        color: isDarkMode() ? white : black,
+                      ),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
@@ -138,7 +135,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             Icons.search_sharp,
                             color: isDarkMode() ? white : black,
                           ))),
-                  controller: _search,
+                  controller: search,
+                  cursorColor: isDarkMode() ? white : black,
                   keyboardType: TextInputType.name,
                 ),
               ),
@@ -259,33 +257,49 @@ class _ExpertScreenState extends State<ExpertScreen> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
-          content: Text('Are you sure you want to delete this Expert?',
-              style: TextStyle(fontSize: 12.sp)),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel',
-                  style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: isDarkMode()
+                ? Brightness.dark
+                : Brightness.light, // Set the brightness to light
+            scaffoldBackgroundColor:
+                Colors.white, // Set the background color to white
+            textTheme: CupertinoTextThemeData(
+              textStyle:
+                  TextStyle(color: Colors.black), // Set text color to black
             ),
-            TextButton(
-              onPressed: () {
-                controller.deleteExpertList(context, expertId);
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text(
-                'Yes',
+          ),
+          child: CupertinoAlertDialog(
+            title: Text('Confirm Delete',
                 style: TextStyle(
-                  color: isDarkMode() ? white : black,
-                  fontSize: 11.sp,
+                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
+            content: Text('Are you sure you want to delete this Expert?',
+                style: TextStyle(
+                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel',
+                    style: TextStyle(
+                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
+              ),
+              TextButton(
+                onPressed: () {
+                  controller.deleteExpertList(context, expertId);
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                    color: isDarkMode() ? white : black,
+                    fontSize: 11.sp,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -602,13 +616,15 @@ class _ExpertScreenState extends State<ExpertScreen> {
       //     itemCount: controller.filteredExpertObjectList.length)
     } else {
       return Container(
-        height: SizerUtil.height/1.3,
+        height: SizerUtil.height / 1.3,
         child: Center(
           child: Container(
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  fontFamily: fontMedium,
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
         ),

@@ -269,15 +269,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-                                    if (widget.isEdit == true) {
-                                      // Call updateCourse API
-                                      controller.UpdateProduct(
-                                          context,
-                                          widget.editProduct!.productCategoryId,
-                                          widget.editProduct!.id);
-                                    } else {
-                                      // Call AddCourseApi API
-                                      controller.addProductApi(context);
+                                    if (controller.isFormInvalidate.value ==
+                                        true) {
+                                      if (widget.isEdit == true) {
+                                        // Call updateCourse API
+                                        controller.UpdateProduct(
+                                            context,
+                                            widget
+                                                .editProduct!.productCategoryId,
+                                            widget.editProduct!.id);
+                                      } else {
+                                        // Call AddCourseApi API
+                                        controller.addProductApi(context);
+                                      }
                                     }
                                   }, CommonConstant.submit,
                                       validate:

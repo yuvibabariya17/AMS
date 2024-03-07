@@ -132,8 +132,7 @@ Widget setNavtile(
   );
 }
 
-
-Row switchRow(String svg,  String title, bool switchValue, Function onChanged) {
+Row switchRow(String svg, String title, bool switchValue, Function onChanged) {
   return Row(
     children: [
       SvgPicture.asset(
@@ -155,20 +154,22 @@ Row switchRow(String svg,  String title, bool switchValue, Function onChanged) {
         onChanged: (value) {
           onChanged();
         },
-        thumbColor: isDarkMode() ? CupertinoColors.black : CupertinoColors.white,
-        activeColor: isDarkMode() ? CupertinoColors.white : CupertinoColors.black,
+        thumbColor:
+            isDarkMode() ? CupertinoColors.black : CupertinoColors.white,
+        activeColor:
+            isDarkMode() ? CupertinoColors.white : CupertinoColors.black,
         trackColor: Colors.grey,
       ),
     ],
   );
 }
+
 Widget settingRow(String svg, String title, Function callback, String arrow) {
   return GestureDetector(
     onTap: () {
-        callback();
+      callback();
     },
     child: Container(
-    
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,11 +185,14 @@ Widget settingRow(String svg, String title, Function callback, String arrow) {
                   svg,
                   color: isDarkMode() ? white : black,
                 ),
-                SizedBox(width: title == "Invite Friends" ? 5.w : 5.5.w,),
+          SizedBox(
+            width: title == "Invite Friends" ? 5.w : 5.5.w,
+          ),
           Text(
             title,
             style: TextStyle(
                 fontSize: 14.sp,
+                color: isDarkMode() ? white : black,
                 fontFamily: opensansMedium,
                 fontWeight: FontWeight.w400),
           ),
@@ -234,14 +238,16 @@ Widget settingRow(String svg, String title, Function callback, String arrow) {
   // );
 }
 
-
-Widget darkSwitch(String svg, String title, ) {
+Widget darkSwitch(
+  String svg,
+  String title,
+) {
   // return GestureDetector(
   //   onTap: () {
   //       callback();
   //   },
   //   child: Container(
-    
+
   //     child: Row(
   //       mainAxisAlignment: MainAxisAlignment.start,
   //       crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,7 +281,6 @@ Widget darkSwitch(String svg, String title, ) {
   //   ),
   // );
   return ListTile(
-
     leading: title == "Report Bug"
         ? SvgPicture.asset(
             svg,

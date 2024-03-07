@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/core/Common/Common.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
@@ -623,7 +624,10 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Checkbox(
-                                        activeColor: black,
+                                        activeColor:
+                                            isDarkMode() ? white : black,
+                                        checkColor:
+                                            isDarkMode() ? black : white,
                                         visualDensity: const VisualDensity(
                                           horizontal: -2,
                                         ),
@@ -655,7 +659,9 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           "Remind Customer ?",
                                           style: TextStyle(
                                               fontFamily: opensansMedium,
-                                              fontWeight: FontWeight.w400),
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  isDarkMode() ? white : black),
                                         ),
                                         // RichText(
                                         //   overflow: TextOverflow.clip,
@@ -724,17 +730,19 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-                                    if (widget.isEdit == true) {
-                                      // Call updateCourse API
-
-                                      controller.UpdateAppointment(
-                                        context,
-                                        widget.editAppointment!.id,
-                                      );
-                                    } else {
-                                      // Call AddCourseApi API
-                                      controller.AddBookingAppointmentAPI(
-                                          context);
+                                    if (controller.isFormInvalidate.value ==
+                                        true) {
+                                      if (widget.isEdit == true) {
+                                        // Call updateCourse API
+                                        controller.UpdateAppointment(
+                                          context,
+                                          widget.editAppointment!.id,
+                                        );
+                                      } else {
+                                        // Call AddCourseApi API
+                                        controller.AddBookingAppointmentAPI(
+                                            context);
+                                      }
                                     }
                                   }, CommonConstant.submit,
                                       validate:

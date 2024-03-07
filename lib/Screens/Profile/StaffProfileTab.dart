@@ -1,3 +1,4 @@
+import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/Screens/ExpertScreen/ExpertScreen.dart';
 import 'package:booking_app/controllers/StaffController.dart';
@@ -66,139 +67,167 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.expertObjectList.isNotEmpty) {
       return controller.filteredExpertObjectList.isNotEmpty
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 0.5.h),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(ExpertScreen());
-                      // Handle View More tap
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 1.h, right: 7.w),
-                          child: Text(
-                            "View More >",
-                            style: TextStyle(
-                              color: isDarkMode() ? white : black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 13.sp,
+          ? Container(
+              height: SizerUtil.height,
+              width: SizerUtil.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    // margin: EdgeInsets.only(top: 0.5.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(ExpertScreen());
+                        // Handle View More tap
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 1.h, right: 7.w),
+                            child: Text(
+                              "View More >",
+                              style: TextStyle(
+                                color: isDarkMode() ? white : black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 13.sp,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    clipBehavior: Clip.antiAlias,
-                    itemBuilder: (context, index) {
-                      ExpertList data =
-                          controller.filteredExpertObjectList[index];
-                      return Container(
-                        margin: EdgeInsets.only(
-                            top: 1.h, left: 8.w, right: 8.w, bottom: 1.h),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 1.h, left: 4.w, right: 4.w, bottom: 1.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Stack(children: [
-                                    CircleAvatar(
-                                      radius: 3.h,
-                                      backgroundColor: Colors.white,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              "  data., ", // URL of the expert's image
-                                          placeholder: (context, url) =>
-                                              SvgPicture.asset(
-                                                  Asset.profileimg),
-                                          errorWidget: (context, url, error) =>
-                                              SvgPicture.asset(
-                                                  Asset.profileimg),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-
-                                    // CircleAvatar(
-                                    //   radius: 3.7.h,
-                                    //   backgroundColor: Colors.white,
-                                    //   child: SvgPicture.asset(
-                                    //     Asset.profileimg,
-                                    //     fit: BoxFit.cover,
-                                    //   ),
-                                    // ),
-                                  ]),
-                                  SizedBox(width: 3.w),
-                                  Expanded(
-                                    child: Column(
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 1.h),
+                      padding: EdgeInsets.only(
+                        left: 7.w,
+                        right: 7.w,
+                      ),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          clipBehavior: Clip.antiAlias,
+                          itemBuilder: (context, index) {
+                            ExpertList data =
+                                controller.filteredExpertObjectList[index];
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 1.h,
+                                    left: 3.w,
+                                    right: 1.w,
+                                    bottom: 1.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Container(
-                                            child: Text(
-                                          data.name,
-                                          style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: 15.5.sp,
-                                              fontWeight: FontWeight.w700),
-                                        )),
-                                        SizedBox(
-                                          height: 0.5.h,
+                                        Stack(children: [
+                                          CircleAvatar(
+                                            radius: 3.h,
+                                            backgroundColor: Colors.white,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                              '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                                            ),
+                                            // child: ClipRRect(
+                                            //   borderRadius: BorderRadius.circular(50),
+                                            //   child: CachedNetworkImage(
+                                            //     imageUrl:
+                                            //         '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                                            //     placeholder: (context, url) =>
+                                            //         SvgPicture.asset(
+                                            //             Asset.profileimg),
+                                            //     errorWidget: (context, url, error) =>
+                                            //         SvgPicture.asset(
+                                            //             Asset.profileimg),
+                                            //     fit: BoxFit.cover,
+                                            //   ),
+                                            // ),
+                                          ),
+
+                                          // CircleAvatar(
+                                          //   radius: 3.7.h,
+                                          //   backgroundColor: Colors.white,
+                                          //   child: SvgPicture.asset(
+                                          //     Asset.profileimg,
+                                          //     fit: BoxFit.cover,
+                                          //   ),
+                                          // ),
+                                        ]),
+                                        SizedBox(width: 3.w),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                  child: Text(
+                                                data.name,
+                                                style: TextStyle(
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: opensansMedium,
+                                                    fontSize: 15.5.sp,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              )),
+                                              SizedBox(
+                                                height: 0.5.h,
+                                              ),
+                                              Text(
+                                                '₹ ${data.amount.toString()}',
+                                                style: TextStyle(
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: opensansMedium,
+                                                    fontSize: 11.sp,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        Text(
-                                          '₹ ${data.amount.toString()}',
-                                          style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: 11.sp,
-                                              fontWeight: FontWeight.w400),
-                                        )
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            color: isDarkMode() ? black : white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: isDarkMode()
-                                      ? Colors.white.withOpacity(0.2)
-                                      : Colors.black.withOpacity(0.2),
-                                  spreadRadius: 0.1,
-                                  blurRadius: 10,
-                                  offset: Offset(0.5, 0.5)),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: controller.filteredExpertObjectList.length),
-              ],
+                                    )
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDarkMode() ? black : white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: isDarkMode()
+                                            ? Colors.white.withOpacity(0.2)
+                                            : Colors.black.withOpacity(0.2),
+                                        spreadRadius: 0.1,
+                                        blurRadius: 3,
+                                        offset: Offset(0.5, 0.5)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount:
+                              controller.filteredExpertObjectList.length),
+                    ),
+                  ),
+                ],
+              ),
             )
           : Center(
               child: Text("Data not Found"),

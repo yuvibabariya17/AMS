@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -357,7 +359,7 @@ class addProductController extends GetxController {
               },
               title: Text(
                 productCategoryObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
               ),
             );
           },

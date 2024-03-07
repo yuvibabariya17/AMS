@@ -169,7 +169,8 @@ class _IntroScreenState extends State<IntroScreen> {
                                     Get.to(LoginScreen());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
+                                    backgroundColor:
+                                        isDarkMode() ? white : black,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -211,7 +212,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black,
+                                        backgroundColor: Colors.black, 
                                         shape: const CircleBorder(
                                             side: BorderSide(width: 11)),
                                         elevation: 0,
@@ -222,7 +223,6 @@ class _IntroScreenState extends State<IntroScreen> {
                                                 : 15.sp),
                                       ),
                                       child: Icon(
-                                      
                                           Icons.arrow_forward_ios_rounded,
                                           color: isDarkMode() ? white : white,
                                           size: 6.5.h),

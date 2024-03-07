@@ -33,8 +33,6 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
 
   @override
   void initState() {
-   
-
     if (widget.isEdit == true && widget.editExpert != null) {
       controller.Servicectr.text =
           widget.editExpert!.serviceInfo.name.toString();
@@ -560,15 +558,17 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                               from: 50,
                               child: Obx(() {
                                 return getFormButton(() {
-                                  if (widget.isEdit == true) {
-                                    // Call updateCourse API
-                                    controller.UpdateExpert(
-                                        context,
-                                        widget.editExpert!.serviceId,
-                                        widget.editExpert!.id);
-                                  } else {
-                                    // Call AddCourseApi API
-                                    controller.addExpertApi(context);
+                                  if (controller.isFormInvalidate.value ==
+                                      true) {
+                                    if (widget.isEdit == true) {
+                                      // Call updateCourse API
+                                      controller.UpdateExpert(
+                                          context,
+                                          widget.editExpert!.serviceId,
+                                          widget.editExpert!.id);
+                                    } else {
+                                      controller.addExpertApi(context);
+                                    }
                                   }
                                 }, CommonConstant.submit,
                                     validate:

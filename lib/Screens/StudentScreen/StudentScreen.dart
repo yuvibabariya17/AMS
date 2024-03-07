@@ -92,7 +92,7 @@ class _StudentScreenState extends State<StudentScreen> {
         controller.hideKeyboard(context);
       }),
       child: CustomScaffold(
-        isListScreen: true,
+          isListScreen: true,
           floatingActionBtn: Container(
             width: 7.h,
             height: 7.h,
@@ -132,6 +132,7 @@ class _StudentScreenState extends State<StudentScreen> {
                   onChanged: ((value) {
                     filterServiceList(value);
                   }),
+                  style: TextStyle(color: isDarkMode() ? white : black),
                   decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
@@ -154,6 +155,7 @@ class _StudentScreenState extends State<StudentScreen> {
                             color: isDarkMode() ? white : black,
                           ))),
                   controller: search,
+                  cursorColor: isDarkMode() ? white : black,
                   keyboardType: TextInputType.name,
                 ),
               ),
@@ -243,31 +245,47 @@ class _StudentScreenState extends State<StudentScreen> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
-          content: Text('Are you sure you want to delete this Student?',
-              style: TextStyle(fontSize: 12.sp)),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel',
-                  style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: isDarkMode()
+                ? Brightness.dark
+                : Brightness.light, // Set the brightness to light
+            scaffoldBackgroundColor:
+                Colors.white, // Set the background color to white
+            textTheme: CupertinoTextThemeData(
+              textStyle:
+                  TextStyle(color: Colors.black), // Set text color to black
             ),
-            TextButton(
-              onPressed: () {
-                controller.deleteServiceList(context, serviceId);
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text(
-                'Yes',
+          ),
+          child: CupertinoAlertDialog(
+            title: Text('Confirm Delete',
                 style: TextStyle(
-                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
+            content: Text('Are you sure you want to delete this Student?',
+                style: TextStyle(
+                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel',
+                    style: TextStyle(
+                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () {
+                  controller.deleteServiceList(context, serviceId);
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: isDarkMode() ? white : black, fontSize: 11.sp),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -380,6 +398,7 @@ class _StudentScreenState extends State<StudentScreen> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            color: isDarkMode() ? white : black,
                             fontFamily: opensansMedium,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
@@ -397,6 +416,7 @@ class _StudentScreenState extends State<StudentScreen> {
                       Text(
                         data.contact,
                         style: TextStyle(
+                          color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w400,
@@ -451,7 +471,9 @@ class _StudentScreenState extends State<StudentScreen> {
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  fontFamily: fontMedium,
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
         ),

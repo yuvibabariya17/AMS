@@ -22,53 +22,68 @@ void showMessage(
             duration: const Duration(milliseconds: 300),
             animate: true,
             from: 30,
-            child: CupertinoAlertDialog(
-              title: Text(
-                title!,
-                style: TextStyle(
-                  fontFamily: fontBold,
-                  fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 15.sp : 8.sp,
+            child: CupertinoTheme(
+              data: CupertinoThemeData(
+                brightness: isDarkMode()
+                    ? Brightness.dark
+                    : Brightness.light, // Set the brightness to light
+                scaffoldBackgroundColor:
+                    Colors.white, // Set the background color to white
+                textTheme: CupertinoTextThemeData(
+                  textStyle:
+                      TextStyle(color: Colors.black), // Set text color to black
                 ),
               ),
-              content: Text(
-                message!,
-                style: const TextStyle(
-                  fontFamily: fontRegular,
+              child: CupertinoAlertDialog(
+                title: Text(
+                  title!,
+                  style: TextStyle(
+                    fontFamily: fontBold,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 15.sp
+                        : 8.sp,
+                  ),
                 ),
-              ),
-              actions: [
-                if (negativeButton!.isNotEmpty)
-                  CupertinoDialogAction(
-                      child: Text(
-                        negativeButton,
-                        style: TextStyle(
+                content: Text(
+                  message!,
+                  style: const TextStyle(
+                    fontFamily: fontRegular,
+                  ),
+                ),
+                actions: [
+                  if (negativeButton!.isNotEmpty)
+                    CupertinoDialogAction(
+                        child: Text(
+                          negativeButton,
+                          style: TextStyle(
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 12.sp
                                 : 6.sp,
                             fontFamily: fontMedium,
-                            color: black),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                if (positiveButton!.isNotEmpty)
-                  CupertinoDialogAction(
-                      child: Text(
-                        positiveButton,
-                        style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 6.sp,
-                          fontFamily: fontMedium,
-                          color: isDarkMode() ? white : black,
+                            color: isDarkMode() ? white : black,
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        callback!();
-                      })
-              ],
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                  if (positiveButton!.isNotEmpty)
+                    CupertinoDialogAction(
+                        child: Text(
+                          positiveButton,
+                          style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 6.sp,
+                            fontFamily: fontMedium,
+                            color: isDarkMode() ? white : black,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          callback!();
+                        })
+                ],
+              ),
             ),
           ));
 }
@@ -161,7 +176,10 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
               child: Center(
                   child: Text(
                 "Empty List",
-                style: TextStyle(fontSize: 4.5.w, fontFamily: fontMedium),
+                style: TextStyle(
+                    fontSize: 4.5.w,
+                    fontFamily: fontMedium,
+                    color: isDarkMode() ? white : black),
               )),
             ),
           list.isNotEmpty ? Expanded(child: content) : Container(),
@@ -185,7 +203,10 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
                 left: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 2.9.w),
             child: Text(
               title,
-              style: TextStyle(fontFamily: fontMedium, fontSize: 20.sp),
+              style: TextStyle(
+                  fontFamily: fontMedium,
+                  fontSize: 20.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
           contentPadding:
@@ -198,95 +219,108 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
 Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
     {Function? cameraClick, Function? galleryClick, bool? isVideo}) {
   return showGeneralDialog(
-      barrierColor: black.withOpacity(0.6),
+      // barrierColor: black.withOpacity(0.6),
       transitionBuilder: (context, a1, a2, widget) {
         return Transform.scale(
           scale: a1.value,
           child: Opacity(
               opacity: a1.value,
-              child: CupertinoAlertDialog(
-                title: Text(
-                  isVideo == true ? "Video" : "Photo",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isDarkMode() ? white : black,
-                    fontFamily: fontBold,
-                    fontWeight: FontWeight.bold,
+              child: CupertinoTheme(
+                data: CupertinoThemeData(
+                  brightness: isDarkMode()
+                      ? Brightness.dark
+                      : Brightness.light, // Set the brightness to light
+                  scaffoldBackgroundColor:
+                      Colors.white, // Set the background color to white
+                  textTheme: CupertinoTextThemeData(
+                    textStyle: TextStyle(
+                        color: Colors.black), // Set text color to black
                   ),
                 ),
-                content: Text(
-                  isVideo == true ? "Upload Video From" : "Upload Photo From",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: isDarkMode() ? white : black,
-                    fontFamily: fontMedium,
+                child: CupertinoAlertDialog(
+                  title: Text(
+                    isVideo == true ? "Video" : "Photo",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontBold,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  content: Text(
+                    isVideo == true ? "Upload Video From" : "Upload Photo From",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontMedium,
+                    ),
+                  ),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        cameraClick!();
+                        Navigator.pop(context);
+                      },
+                      isDefaultAction: true,
+                      isDestructiveAction: true,
+                      child: Text(
+                        "Camera",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 13.sp
+                                : 11.sp),
+                      ),
+                      // Icon(
+                      //   Icons.camera_alt,
+                      //   size: SizerUtil.deviceType == DeviceType.mobile
+                      //       ? 20.sp
+                      //       : 15.sp,
+                      // ),
+                      //  Text(LocalizationKeys.no.tr,
+                      //     style: const TextStyle(
+                      //       fontSize: 15,
+                      //       color: black,
+                      //       fontFamily: fontBold,
+                      //       fontWeight: FontWeight.bold,
+                      //     )),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        galleryClick!();
+                        Navigator.pop(context);
+                      },
+                      isDefaultAction: true,
+                      isDestructiveAction: true,
+                      child: Text(
+                        "Gallery",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 13.sp
+                                : 11.sp),
+                      ),
+                      // Icon(
+                      //   Icons.photo_size_select_actual_outlined,
+                      //   size: SizerUtil.deviceType == DeviceType.mobile
+                      //       ? 20.sp
+                      //       : 15.sp,
+                      // )
+                      // Text(LocalizationKeys.yes.tr,
+                      //     style: const TextStyle(
+                      //       fontSize: 15,
+                      //       color: black,
+                      //       fontFamily: fontBold,
+                      //       fontWeight: FontWeight.bold,
+                      //     )),
+                    ),
+                    // The "No" button
+                  ],
                 ),
-                actions: [
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      cameraClick!();
-                      Navigator.pop(context);
-                    },
-                    isDefaultAction: true,
-                    isDestructiveAction: true,
-                    child: Text(
-                      "Camera",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular,
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 13.sp
-                              : 11.sp),
-                    ),
-                    // Icon(
-                    //   Icons.camera_alt,
-                    //   size: SizerUtil.deviceType == DeviceType.mobile
-                    //       ? 20.sp
-                    //       : 15.sp,
-                    // ),
-                    //  Text(LocalizationKeys.no.tr,
-                    //     style: const TextStyle(
-                    //       fontSize: 15,
-                    //       color: black,
-                    //       fontFamily: fontBold,
-                    //       fontWeight: FontWeight.bold,
-                    //     )),
-                  ),
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      galleryClick!();
-                      Navigator.pop(context);
-                    },
-                    isDefaultAction: true,
-                    isDestructiveAction: true,
-                    child: Text(
-                      "Gallery",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular,
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 13.sp
-                              : 11.sp),
-                    ),
-                    // Icon(
-                    //   Icons.photo_size_select_actual_outlined,
-                    //   size: SizerUtil.deviceType == DeviceType.mobile
-                    //       ? 20.sp
-                    //       : 15.sp,
-                    // )
-                    // Text(LocalizationKeys.yes.tr,
-                    //     style: const TextStyle(
-                    //       fontSize: 15,
-                    //       color: black,
-                    //       fontFamily: fontBold,
-                    //       fontWeight: FontWeight.bold,
-                    //     )),
-                  ),
-                  // The "No" button
-                ],
               )),
         );
       },

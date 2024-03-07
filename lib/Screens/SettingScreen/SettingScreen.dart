@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/setting.dart';
 import '../../Models/settings_model.dart';
@@ -23,6 +24,7 @@ import '../../core/constants/strings.dart';
 import '../../core/utils/helper.dart';
 
 class Settings extends StatefulWidget {
+  
   const Settings({super.key});
 
   @override
@@ -33,9 +35,24 @@ class _SettingsState extends State<Settings> {
   List<SettingItem> staticData = SettingsItems;
   get index => null;
   int _isDarkMode = 1;
+  late final Box<int> storageBox;
   final getStorage = GetStorage();
 
   bool state = false;
+  var lastSelectedLanguage;
+
+  @override
+  void initState() {
+    getDarkMode();
+    super.initState();
+  }
+
+  getDarkMode() async {
+    storageBox = await Hive.openBox<int>(Strings.storeDarkMode);
+    lastSelectedLanguage = storageBox.get(Strings.selectedMode) ?? 1;
+    logcat('lastSelectedMode', lastSelectedLanguage.toString());
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +86,8 @@ class _SettingsState extends State<Settings> {
                   children: [
                     //PROFILE INFORMATION SCREEN
 
-                    // settingRow(Asset.user, SettingConstant.profile_info, () {
+                    // settingRow(Asset.user, SettingConstant.profile_info, () {6+7
+
                     //   Get.to(ProfileInformationScreen());
                     // }, Asset.rightbackbutton),
                     // dividerforSetting(),
@@ -95,6 +113,7 @@ class _SettingsState extends State<Settings> {
                                 Text(
                                   SettingConstant.change_theme,
                                   style: TextStyle(
+                                    color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
                                     fontSize: 13.5.sp,
                                     fontWeight: FontWeight.w400,
@@ -105,29 +124,32 @@ class _SettingsState extends State<Settings> {
                           ),
                           Spacer(),
                           Container(
-                            // width: 20.w,
-                            // height: 1.h,
-                            // margin: const EdgeInsets.only(
-                            //     right: 16.0), // Adjust right margin as needed
                             child: CupertinoSwitch(
                               value: isDarkMode() ? true : false,
                               onChanged: (value) async {
-                                print("Switch Click");
-                                logcat("_isDarkMode", _isDarkMode.toString());
-
                                 //state = value;
                                 _isDarkMode = getStorage
                                             .read(GetStorageKey.IS_DARK_MODE) ==
                                         0
                                     ? 1
                                     : 0;
-                                setState(() {});
                                 await Future.delayed(
-                                    const Duration(milliseconds: 30));
+                                    const Duration(milliseconds: 50));
+
+                                storageBox.put(
+                                    Strings.selectedMode, _isDarkMode);
+
+                                setState(() {});
+
                                 await getStorage.write(
                                     GetStorageKey.IS_DARK_MODE, _isDarkMode);
-                                Get.find<ThemeController>()
-                                    .updateState(_isDarkMode);
+
+                                int isDarkMode =
+                                    getStorage.read(GetStorageKey.IS_DARK_MODE);
+                                logcat(
+                                    "DARK_MODE_SETTING", isDarkMode.toString());
+                                // Get.find<ThemeController>()
+                                //     .updateState(_isDarkMode);
                                 Get.find<ThemeController>().update();
                                 logcat("_isDarkMode", _isDarkMode.toString());
 
@@ -145,52 +167,6 @@ class _SettingsState extends State<Settings> {
                         ],
                       ),
                     ),
-                    // ListTile(
-                    //     leading: SvgPicture.asset(
-                    //       Asset.moon,
-                    //       color: isDarkMode() ? white : black,
-                    //     ),
-                    //     horizontalTitleGap: 0.1,
-                    //     visualDensity:
-                    //         VisualDensity(horizontal: 0, vertical: -1),
-                    //     title: Text(
-                    //       SettingConstant.change_theme,
-                    //       style: TextStyle(
-                    //           fontFamily: opensansMedium,
-                    //           fontSize: 14.sp,
-                    //           fontWeight: FontWeight.w400),
-                    //     ),
-                    //     trailing: Container(
-                    //       //padding: EdgeInsets.only(right: 2.h),
-                    //       child: CupertinoSwitch(
-                    //         value: isDarkMode() ? true : false,
-                    //         onChanged: (value) async {
-                    //           state = value;
-                    //           setState(() {
-                    //             _isDarkMode = _isDarkMode == 0 ? 1 : 0;
-                    //           });
-                    //           await getStorage.write(
-                    //               GetStorageKey.IS_DARK_MODE, _isDarkMode);
-                    //           //setState(() {});
-                    //           Get.find<ThemeController>()
-                    //               .updateState(_isDarkMode);
-                    //           Get.find<ThemeController>().update();
-                    //           print(
-                    //               getStorage.read(GetStorageKey.IS_DARK_MODE));
-                    //           setState(
-                    //             () {},
-                    //           );
-                    //         },
-                    //         thumbColor: isDarkMode()
-                    //             ? CupertinoColors.black
-                    //             : CupertinoColors.white,
-                    //         activeColor: isDarkMode()
-                    //             ? CupertinoColors.white
-                    //             : CupertinoColors.black,
-                    //         trackColor: Colors.grey,
-                    //       ),
-
-                    //     )),
 
                     dividerforSetting(),
                     settingRow(Asset.bug, "Report Bug", () {

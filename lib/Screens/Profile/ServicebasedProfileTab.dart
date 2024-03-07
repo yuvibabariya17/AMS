@@ -91,8 +91,8 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                 child: Container(
                   margin: EdgeInsets.only(top: 1.h),
                   padding: EdgeInsets.only(
-                    left: 8.w,
-                    right: 8.w,
+                    left: 7.w,
+                    right: 7.w,
                   ),
                   child: ListView.builder(
                       physics: BouncingScrollPhysics(),
@@ -112,8 +112,8 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             controller.serviceObjectList[index];
                         return Container(
                           padding: EdgeInsets.only(
-                              left: 5.w, right: 3.w, top: 1.h, bottom: 1.h),
-                          margin: EdgeInsets.only(bottom: 1.h),
+                              left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+                          margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
                           decoration: BoxDecoration(
                             color: isDarkMode() ? black : white,
                             borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -123,7 +123,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                     ? Colors.white.withOpacity(0.2)
                                     : Colors.black.withOpacity(0.2),
                                 spreadRadius: 0.1,
-                                blurRadius: 10,
+                                blurRadius: 3,
                                 offset: Offset(0.5, 0.5),
                               ),
                             ],
@@ -161,6 +161,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                   Text(
                                     '₹ ${data.fees.toString()}',
                                     style: TextStyle(
+                                      color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.w400,

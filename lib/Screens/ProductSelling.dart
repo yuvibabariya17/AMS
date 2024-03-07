@@ -40,7 +40,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
           body: Container(
         child: Column(
           children: [
-            getCommonToolbar("Product Selling", () {
+            getCommonToolbar("Product Sale", () {
               Get.back();
             }),
             Expanded(
@@ -58,7 +58,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                getTitle("Order Date"),
+                                getTitle("Sale Date"),
                                 FadeInUp(
                                     from: 30,
                                     child: AnimatedSize(
@@ -68,7 +68,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                           return getReactiveFormField(
                                             node: controller.orderNode,
                                             controller: controller.orderDatectr,
-                                            hintLabel: "Select Order Date",
+                                            hintLabel: "Select Sale Date",
                                             wantSuffix: true,
                                             isCalender: true,
                                             onChanged: (val) {
@@ -158,7 +158,8 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                         child: Obx(() {
                                           return getReactiveFormField(
                                             node: controller.productCatNode,
-                                            controller: controller.productCatctr,
+                                            controller:
+                                                controller.productCatctr,
                                             hintLabel: "Select Product",
                                             wantSuffix: true,
                                             isReadOnly: true,

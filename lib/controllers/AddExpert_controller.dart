@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/Models/VendorServiceModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -346,7 +347,7 @@ class AddexpertController extends GetxController {
               },
               title: Text(
                 serviceObjectList[index].serviceInfo.name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
               ),
             );
           },

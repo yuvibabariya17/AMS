@@ -11,6 +11,11 @@ class Strings {
   //     "Internet connection is not active. Please enable it and try again";
   static const dashboard = 'Dashbaord';
 
+  //darkMode
+  static const String storeDarkMode = 'storeDarkMode';
+  static const String selectedMode = 'selectedMode';
+  static const String isLanguageScreen = 'languageSelected';
+
   //Empty Text
   // static const dataEmpty = "Data Not Found";
   // static const listEmpty = "List Is Empty";

@@ -148,6 +148,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         //EdgeInsets.symmetric(vertical: 1.8.h, horizontal: 5.w),
         hintText: widget.hintText,
         errorText: widget.errorText,
+        errorStyle: styleTextForErrorFieldHint(),
         hintStyle: styleTextForFieldHint(),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
@@ -157,7 +158,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: inputBorderColor, width: 1.2),
+          borderSide: BorderSide(color: Colors.redAccent, width: 1.2),
           borderRadius: BorderRadius.circular(30),
         ),
         counterText: '',
@@ -167,7 +168,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
             color: inputBorderColor,
           ),
         ),
-
         // prefixStyle: styleTextFormFieldText(),
         prefixIcon: widget.formType != null &&
                 widget.formType == FieldType.Mobile

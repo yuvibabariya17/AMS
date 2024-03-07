@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:booking_app/Models/ServiceCategoryModel.dart';
 import 'package:booking_app/Models/ServiceModel.dart';
 import 'package:booking_app/Models/SubCategoryModel.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -363,7 +365,10 @@ class AddserviceController extends GetxController {
               },
               title: Text(
                 serviceCategoryList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -453,7 +458,10 @@ class AddserviceController extends GetxController {
               },
               title: Text(
                 subcategoryList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -554,7 +562,10 @@ class AddserviceController extends GetxController {
               },
               title: Text(
                 serviceObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },

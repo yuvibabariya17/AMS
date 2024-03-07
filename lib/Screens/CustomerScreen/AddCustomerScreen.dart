@@ -557,30 +557,21 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   from: 50,
                                   child: Obx(() {
                                     return getFormButton(() {
-                                      if (widget.isEdit == true) {
-                                        // Call updateCourse API
-                                        controller.UpdateCustomer(
-                                            context, widget.editCustomer!.id);
-                                      } else {
-                                        // Call AddCourseApi API
-                                        controller.addcustomerApi(context);
+                                      if (controller.isFormInvalidate.value ==
+                                          true) {
+                                        if (widget.isEdit == true) {
+                                          // Call updateCourse API
+                                          controller.UpdateCustomer(
+                                              context, widget.editCustomer!.id);
+                                        } else {
+                                          // Call AddCourseApi API
+                                          controller.addcustomerApi(context);
+                                        }
                                       }
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);
                                   }))
-                              // FadeInUp(
-                              //     from: 50,
-                              //     child: Obx(() {
-                              //       return getFormButton(() {
-                              //         if (controller.isFormInvalidate.value ==
-                              //             true) {
-                              //           controller.addcustomerApi(context);
-                              //         }
-                              //       }, CommonConstant.submit,
-                              //           validate:
-                              //               controller.isFormInvalidate.value);
-                              //     }))
                             ],
                           )),
                     ),

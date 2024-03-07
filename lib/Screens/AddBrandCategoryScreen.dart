@@ -174,15 +174,19 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
                                     from: 50,
                                     child: Obx(() {
                                       return getFormButton(() {
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
+                                        if (controller.isFormInvalidate.value ==
+                                            true) {
+                                          if (widget.isEdit == true) {
+                                            // Call updateCourse API
 
-                                          controller.UpdateBrandCategory(
-                                              context,
-                                              widget.editBrandCategory!.id);
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.AddBrandCategory(context);
+                                            controller.UpdateBrandCategory(
+                                                context,
+                                                widget.editBrandCategory!.id);
+                                          } else {
+                                            // Call AddCourseApi API
+                                            controller.AddBrandCategory(
+                                                context);
+                                          }
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

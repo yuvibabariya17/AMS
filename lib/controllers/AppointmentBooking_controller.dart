@@ -3,6 +3,8 @@ import 'package:booking_app/Models/AppointmentSlotModel.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
 import 'package:booking_app/Models/VendorServiceModel.dart';
+import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -709,7 +711,10 @@ class AppointmentBookingController extends GetxController {
               },
               title: Text(
                 expertObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -747,7 +752,10 @@ class AppointmentBookingController extends GetxController {
               },
               title: Text(
                 serviceObjectList[index].serviceInfo.name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -869,7 +877,10 @@ class AppointmentBookingController extends GetxController {
               },
               title: Text(
                 customerObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },

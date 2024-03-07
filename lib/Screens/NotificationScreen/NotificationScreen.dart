@@ -146,10 +146,8 @@ class _NotificationScreenState extends State<NotificationScreen>
                 color: controller.currentPage.value == index
                     ? Colors.black
                     : Colors.white,
-                      border: Border.all(
-                color: isDarkMode()
-                    ? Colors.white
-                    : Colors.transparent),
+                border: Border.all(
+                    color: isDarkMode() ? Colors.white : Colors.transparent),
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 10,
@@ -192,7 +190,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                             ? Text("6",
                                 style: TextStyle(
                                   fontSize: 12.5.sp,
-                                  color: isDarkMode() ? black : null,
+                                  color: isDarkMode() ? white : black,
                                 ))
                             : null,
                       )

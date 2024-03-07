@@ -253,8 +253,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                                         );
                                                       },
                                                       firstDate: DateTime(1950),
-                                                      lastDate:  DateTime(8000)
-                                                          );
+                                                      lastDate: DateTime(8000));
                                               if (pickedDate != null &&
                                                   pickedDate !=
                                                       controller
@@ -370,15 +369,18 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                     from: 50,
                                     child: Obx(() {
                                       return getFormButton(() {
-                                        if (widget.isEdit == true) {
-                                          // Call updateCourse API
-                                          controller.UpdateStudentCourseApi(
-                                              context,
-                                              widget.editStudentCourse!.id);
-                                        } else {
-                                          // Call AddCourseApi API
-                                          controller.AddStudentCourseApi(
-                                              context);
+                                        if (controller.isFormInvalidate.value ==
+                                            true) {
+                                          if (widget.isEdit == true) {
+                                            // Call updateCourse API
+                                            controller.UpdateStudentCourseApi(
+                                                context,
+                                                widget.editStudentCourse!.id);
+                                          } else {
+                                            // Call AddCourseApi API
+                                            controller.AddStudentCourseApi(
+                                                context);
+                                        }
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

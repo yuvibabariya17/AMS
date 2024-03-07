@@ -18,6 +18,12 @@ styleTextForFieldHint() {
       fontFamily: fontRegular,
       color: isDarkMode() ? white : black);
 }
+styleTextForErrorFieldHint() {
+  return TextStyle(
+      fontSize: 11.sp,
+      fontFamily: fontRegular,
+      color: isDarkMode() ? white : red);
+}
 
 styleTextFormFieldText() {
   return TextStyle(

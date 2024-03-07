@@ -56,6 +56,15 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     return formattedDate;
   }
 
+  String formatTime(String dateTimeString) {
+    // Parse the date string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Format the DateTime object into the desired format
+    String formattedDate = DateFormat('h:mm a').format(dateTime);
+    return formattedDate;
+  }
+
   void main() {
     String backendFromDate = '2023-07-01T00:00:00.704Z';
     String backendToDate = '2023-08-15T00:00:00.704Z';
@@ -146,15 +155,37 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(children: [
+                                // Text(
+                                //   "Date : " +
+                                //       formatDate(
+                                //           data.dateOfAppointment.toString()),
+                                //   style: TextStyle(
+                                //     fontFamily: opensansMedium,
+                                //     fontWeight: FontWeight.w700,
+                                //     fontSize: 14.sp,
+                                //     color: isDarkMode() ? white : black,
+                                //   ),
+                                // ),
                                 Text(
-                                  "Date : " +
-                                      formatDate(
-                                          data.dateOfAppointment.toString()),
+                                  //  data.title,
+                                  "Date : ",
                                   style: TextStyle(
-                                    fontFamily: opensansMedium,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp,
-                                    color: isDarkMode() ? white : black,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: opensansMedium,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Container(
+                                  child: Text(
+                                    //  data.title,
+                                    formatDate(
+                                        data.dateOfAppointment.toString()),
+
+                                    style: TextStyle(
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                                 Spacer(),
@@ -182,26 +213,14 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   ),
                                 ),
                               ]),
-                              SizedBox(
-                                height: 1.h,
-                              ),
+                              // SizedBox(
+                              //   height: 1.h,
+                              // ),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Stack(children: [
-                                    CircleAvatar(
-                                      radius: 3.7.h,
-                                      backgroundColor:
-                                          isDarkMode() ? black : white,
-                                      child: SvgPicture.asset(
-                                        Asset.profileimg,
-                                        fit: BoxFit.cover,
-                                        color: isDarkMode() ? white : black,
-                                      ),
-                                    ),
-                                  ]),
-                                  SizedBox(width: 5.w),
                                   Expanded(
                                     child: Column(
                                       mainAxisAlignment:
@@ -215,6 +234,54 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
+                                            Text(
+                                              //  data.title,
+                                              "Time : ",
+                                              style: TextStyle(
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontFamily: opensansMedium,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                //  data.title,
+                                                formatTime(data
+                                                    .appointmentSlotInfo
+                                                    .timeOfAppointment
+                                                    .toString()),
+
+                                                style: TextStyle(
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: opensansMedium,
+                                                    fontSize: 10.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              //  data.title,
+                                              "Customer Name : ",
+                                              style: TextStyle(
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontFamily: opensansMedium,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                             Container(
                                               child: Text(
                                                 //  data.title,
@@ -225,35 +292,49 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                         ? white
                                                         : black,
                                                     fontFamily: opensansMedium,
-                                                    fontSize: 12.sp,
+                                                    fontSize: 10.sp,
                                                     fontWeight:
-                                                        FontWeight.w700),
+                                                        FontWeight.w500),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                            child: Text(
-                                          //  data.title,
-                                          data.appointmentType,
-                                          // data.vendorInfo != null
-                                          //     ? data.vendorInfo.emailId.toString()
-                                          //     : "",
-                                          style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: 11.sp,
-                                              fontWeight: FontWeight.w400),
-                                        )),
+                                        Row(children: [
+                                          Text(
+                                            //  data.title,
+                                            "Appointment Type : ",
+                                            style: TextStyle(
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: opensansMedium,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          Container(
+                                              child: Text(
+                                            //  data.title,
+                                            data.appointmentType,
+                                            // data.vendorInfo != null
+                                            //     ? data.vendorInfo.emailId.toString()
+                                            //     : "",
+                                            style: TextStyle(
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: opensansMedium,
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500),
+                                          )),
+                                        ]),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
+                              // SizedBox(
+                              //   height: 1.h,
+                              // ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -261,7 +342,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   SvgPicture.asset(
                                     color: isDarkMode() ? white : black,
                                     Asset.user,
-                                    height: 2.h,
+                                    height: 1.8.h,
                                   ),
                                   SizedBox(
                                     width: 2.w,
@@ -272,7 +353,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                         color: isDarkMode() ? white : black,
                                         fontFamily: opensansMedium,
                                         fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400),
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   Spacer(),
                                   GestureDetector(
@@ -390,7 +471,9 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                   child: Text(
                     CommonConstant.noDataFound,
                     style: TextStyle(
-                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                        fontFamily: fontMedium,
+                        fontSize: 12.sp,
+                        color: isDarkMode() ? white : black),
                   ),
                 ),
               ],
@@ -405,7 +488,9 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  fontFamily: fontMedium,
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
         ],
@@ -413,229 +498,9 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   Common().trasparent_statusbar();
-  //   return Obx(() {
-  //     return
-
-  // ListView.builder(
-  //         physics: const ClampingScrollPhysics(),
-  //         shrinkWrap: false,
-  //         clipBehavior: Clip.antiAlias,
-  //         itemBuilder: (context, index) {
-  //           //ProductItem data = controller.staticData[index];
-  //           ListofAppointment data = controller.AppointmentObjectList[index];
-  //           return Container(
-  //             margin:
-  //                 EdgeInsets.only(left: 7.w, right: 7.w, bottom: 1.h, top: 3.h),
-  //             padding:
-  //                 EdgeInsets.only(top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   "Date : " + formatDate(data.dateOfAppointment.toString()),
-  //                   style: TextStyle(
-  //                     fontFamily: opensansMedium,
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 14.sp,
-  //                     color: isDarkMode() ? white : black,
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 1.h,
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.start,
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                   children: [
-  //                     Stack(children: [
-  //                       CircleAvatar(
-  //                         radius: 3.7.h,
-  //                         backgroundColor: isDarkMode() ? black : white,
-  //                         child: SvgPicture.asset(
-  //                           Asset.profileimg,
-  //                           fit: BoxFit.cover,
-  //                           color: isDarkMode() ? white : black,
-  //                         ),
-  //                       ),
-  //                     ]),
-  //                     SizedBox(width: 5.w),
-  //                     Expanded(
-  //                       child: Column(
-  //                         mainAxisAlignment: MainAxisAlignment.start,
-  //                         crossAxisAlignment: CrossAxisAlignment.start,
-  //                         children: [
-  //                           Row(
-  //                             mainAxisAlignment: MainAxisAlignment.start,
-  //                             crossAxisAlignment: CrossAxisAlignment.center,
-  //                             children: [
-  //                               Container(
-  //                                 child: Text(
-  //                                   //  data.title,
-  //                                   data.customerInfo.name,
-
-  //                                   style: TextStyle(
-  //                                       color: isDarkMode() ? white : black,
-  //                                       fontFamily: opensansMedium,
-  //                                       fontSize: 12.sp,
-  //                                       fontWeight: FontWeight.w700),
-  //                                 ),
-  //                               ),
-  //                             ],
-  //                           ),
-  //                           Container(
-  //                               child: Text(
-  //                             //  data.title,
-  //                             data.appointmentType,
-  //                             // data.vendorInfo != null
-  //                             //     ? data.vendorInfo.emailId.toString()
-  //                             //     : "",
-  //                             style: TextStyle(
-  //                                 color: isDarkMode() ? white : black,
-  //                                 fontFamily: opensansMedium,
-  //                                 fontSize: 11.sp,
-  //                                 fontWeight: FontWeight.w400),
-  //                           )),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 SizedBox(
-  //                   height: 1.h,
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.start,
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                   children: [
-  //                     SvgPicture.asset(
-  //                       color: isDarkMode() ? white : black,
-  //                       Asset.user,
-  //                       height: 2.h,
-  //                     ),
-  //                     SizedBox(
-  //                       width: 2.w,
-  //                     ),
-  //                     Text(
-  //                       data.vendorInfo.userName,
-  //                       style: TextStyle(
-  //                           color: isDarkMode() ? white : black,
-  //                           fontFamily: opensansMedium,
-  //                           fontSize: 12.sp,
-  //                           fontWeight: FontWeight.w400),
-  //                     )
-  //                   ],
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.start,
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                   children: [
-  //                     Container(
-  //                       // padding: EdgeInsets.only(left: 3.h),
-  //                       child: CupertinoSwitch(
-  //                         value: state,
-  //                         onChanged: (value) {
-  //                           state = value;
-  //                           setState(
-  //                             () {},
-  //                           );
-  //                         },
-  //                         thumbColor: CupertinoColors.white,
-  //                         activeColor: CupertinoColors.black,
-  //                         trackColor: Colors.grey,
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       width: 1.w,
-  //                     ),
-  //                     Text(
-  //                       'Remind me',
-  //                       style: TextStyle(
-  //                         color: isDarkMode() ? white : black,
-  //                       ),
-  //                     ),
-  //                     Container(
-  //                       child: Icon(
-  //                         Icons.arrow_drop_down,
-  //                         color: isDarkMode() ? white : black,
-  //                       ),
-  //                     ),
-  //                     Spacer(),
-  //                     GestureDetector(
-  //                       onTap: () {
-  //                         showDeleteConfirmationDialog(data.id);
-  //                       },
-  //                       child: Container(
-  //                         height: 4.h,
-  //                         width: 20.w,
-  //                         child: Center(
-  //                           child: Text(
-  //                             "Cancel",
-  //                             style: TextStyle(
-  //                               color: isDarkMode() ? black : white,
-  //                             ),
-  //                             textAlign: TextAlign.center,
-  //                           ),
-  //                         ),
-  //                         decoration: BoxDecoration(
-  //                           color: isDarkMode() ? white : black,
-  //                           borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                           boxShadow: [
-  //                             BoxShadow(
-  //                                 color: isDarkMode()
-  //                                     ? Colors.white.withOpacity(0.2)
-  //                                     : Colors.black.withOpacity(0.2),
-  //                                 spreadRadius: 0.1,
-  //                                 blurRadius: 10,
-  //                                 offset: Offset(0.5, 0.5)),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     )
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //             decoration: BoxDecoration(
-  //               color: isDarkMode() ? black : white,
-  //               borderRadius: BorderRadius.all(Radius.circular(10)),
-  //               boxShadow: [
-  //                 BoxShadow(
-  //                     color: isDarkMode()
-  //                         ? Colors.white.withOpacity(0.2)
-  //                         : Colors.black.withOpacity(0.2),
-  //                     spreadRadius: 0.1,
-  //                     blurRadius: 10,
-  //                     offset: Offset(0.5, 0.5)),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //         itemCount: controller.AppointmentObjectList.length);
-  //   });
-  //   // itemCount: controller.expertObjectList.length,
-  // }
-
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {
       // SHIMMER EFFECT
-
-      // return Shimmer.fromColors(
-      //   baseColor: Colors.grey[300]!,
-      //   highlightColor: Colors.grey[100]!,
-      //   child: Column(
-      //     children: [
-      //       Container(
-      //         // margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-      //         height: SizerUtil.height / 1.5, // Adjust the height as needed
-      //         color: Colors.white, // Placeholder color
-      //       ),
-      //     ],
-      //   ),
-      // );
 
       return Center(
         child: ClipOval(
@@ -733,41 +598,57 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
-          content: Text('Are you sure you want to cancel this Appointment?',
-              style: TextStyle(fontSize: 12.sp)),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('No',
-                  style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: isDarkMode()
+                ? Brightness.dark
+                : Brightness.light, // Set the brightness to light
+            scaffoldBackgroundColor:
+                Colors.white, // Set the background color to white
+            textTheme: CupertinoTextThemeData(
+              textStyle:
+                  TextStyle(color: Colors.black), // Set text color to black
             ),
-            TextButton(
-              onPressed: () async {
-                try {
-                  if (mounted) {
-                    await Future.delayed(const Duration(seconds: 0))
-                        .then((value) {
-                      controller.deleteAppointment(context, serviceId);
-                    });
-                  }
-                } catch (e) {
-                  logcat("ERROR", e);
-                }
-
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text(
-                'Yes',
+          ),
+          child: CupertinoAlertDialog(
+            title: Text('Confirm Delete',
                 style: TextStyle(
-                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
+            content: Text('Are you sure you want to cancel this Appointment?',
+                style: TextStyle(
+                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('No',
+                    style: TextStyle(
+                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () async {
+                  try {
+                    if (mounted) {
+                      await Future.delayed(const Duration(seconds: 0))
+                          .then((value) {
+                        controller.deleteAppointment(context, serviceId);
+                      });
+                    }
+                  } catch (e) {
+                    logcat("ERROR", e);
+                  }
+
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: isDarkMode() ? white : black, fontSize: 11.sp),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

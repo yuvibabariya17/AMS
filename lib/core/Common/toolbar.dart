@@ -108,22 +108,22 @@ getImageToolbar(
 getImage(title, {bool showBackButton = true, Function? callback}) {
   return Row(
     children: [
-     Container(
-    margin: EdgeInsets.only(
-        left: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 2.w),
-    child: GestureDetector(
-      onTap: () {
-        callback!();
-      },
-      child: Container(
-          padding: const EdgeInsets.all(10),
-          child: SvgPicture.asset(
-            Asset.arrowBack,
-            height: SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
-              color: white,
-          )),
-    ),
-  ),
+      Container(
+        margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 2.w),
+        child: GestureDetector(
+          onTap: () {
+            callback!();
+          },
+          child: Container(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                Asset.arrowBack,
+                height: SizerUtil.deviceType == DeviceType.mobile ? 4.h : 5.h,
+                color: white,
+              )),
+        ),
+      ),
       Expanded(
         flex: 2,
         child: Row(
@@ -772,7 +772,7 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
                   "Sign Out",
                   style: TextStyle(
                     fontSize: 18,
-                    color: isDarkMode() ? white : black,
+                    color: isDarkMode() ? white : white,
                     fontFamily: fontBold,
                     fontWeight: FontWeight.bold,
                   ),
@@ -781,7 +781,7 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
                   "Are you sure to SignOut?",
                   style: TextStyle(
                     fontSize: 13,
-                    color: isDarkMode() ? white : black,
+                    color: isDarkMode() ? white : white,
                     fontFamily: fontMedium,
                   ),
                 ),
@@ -795,7 +795,7 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
                     child: Text("No",
                         style: TextStyle(
                           fontSize: 15,
-                          color: isDarkMode() ? white : black,
+                          color: isDarkMode() ? white : white,
                           fontFamily: fontBold,
                           fontWeight: FontWeight.bold,
                         )),
@@ -811,7 +811,7 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
                     child: Text("Yes",
                         style: TextStyle(
                           fontSize: 15,
-                          color: isDarkMode() ? white : black,
+                          color: isDarkMode() ? white : white,
                           fontFamily: fontBold,
                           fontWeight: FontWeight.bold,
                         )),

@@ -194,11 +194,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CourseScreen());
                 }),
-                // setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
-                //     () {
-                //   Get.find<HomeScreenController>().closeDrawer();
-                //   Get.to(OfferFormScreen());
-                // }),
+                setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
+                    () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(OfferFormScreen());
+                }),
                 setNavtile(Asset.passwordlock, ScreenTitle.changePassTitle, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ChangePasswordScreen(
@@ -230,11 +230,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentCourseScreen());
                 }),
-                // setNavtile(Asset.productSelling, "Product Selling", isBig: true,
-                //     () {
-                //   Get.find<HomeScreenController>().closeDrawer();
-                //   Get.to(ProductSellingScreen());
-                // }),
+                setNavtile(Asset.productSelling, "Product Selling", isBig: true,
+                    () {
+                  Get.find<HomeScreenController>().closeDrawer();
+                  Get.to(ProductSellingScreen());
+                }),
                 setNavtile(Asset.package, "Package Screen", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(PackageScreen());

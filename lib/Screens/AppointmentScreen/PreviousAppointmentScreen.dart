@@ -45,6 +45,15 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
     return formattedDate;
   }
 
+  String formatTime(String dateTimeString) {
+    // Parse the date string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Format the DateTime object into the desired format
+    String formattedDate = DateFormat('h:mm a').format(dateTime);
+    return formattedDate;
+  }
+
   void main() {
     String backendFromDate = '2023-07-01T00:00:00.704Z';
     String backendToDate = '2023-08-15T00:00:00.704Z';
@@ -137,35 +146,44 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            "Date : " +
-                                formatDate(data.dateOfAppointment.toString()),
-                            style: TextStyle(
-                              fontFamily: opensansMedium,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14.sp,
-                              color: isDarkMode() ? white : black,
+                          Row(children: [
+                            Text(
+                              //  data.title,
+                              "Date : ",
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontFamily: opensansMedium,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700),
                             ),
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
+                            Container(
+                              child: Text(
+                                //  data.title,
+                                formatDate(data.dateOfAppointment.toString()),
+
+                                style: TextStyle(
+                                    color: isDarkMode() ? white : black,
+                                    fontFamily: opensansMedium,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ]),
+
+                          // Text(
+                          //   "Date : " +
+                          //       formatDate(data.dateOfAppointment.toString()),
+                          //   style: TextStyle(
+                          //     fontFamily: opensansMedium,
+                          //     fontWeight: FontWeight.w700,
+                          //     fontSize: 14.sp,
+                          //     color: isDarkMode() ? white : black,
+                          //   ),
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Stack(children: [
-                                CircleAvatar(
-                                  radius: 3.7.h,
-                                  backgroundColor: isDarkMode() ? black : white,
-                                  child: SvgPicture.asset(
-                                    Asset.profileimg,
-                                    fit: BoxFit.cover,
-                                    color: isDarkMode() ? white : black,
-                                  ),
-                                ),
-                              ]),
-                              SizedBox(width: 5.w),
                               Expanded(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -177,6 +195,50 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
+                                        Text(
+                                          //  data.title,
+                                          "Time : ",
+                                          style: TextStyle(
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: opensansMedium,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            //  data.title,
+                                            formatTime(data.appointmentSlotInfo
+                                                .timeOfAppointment
+                                                .toString()),
+
+                                            style: TextStyle(
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: opensansMedium,
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          //  data.title,
+                                          "Customer Name : ",
+                                          style: TextStyle(
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: opensansMedium,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                         Container(
                                           child: Text(
                                             //  data.title,
@@ -187,25 +249,36 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                     ? white
                                                     : black,
                                                 fontFamily: opensansMedium,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w700),
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                        child: Text(
-                                      //  data.title,
-                                      data.appointmentType,
-                                      // data.vendorInfo != null
-                                      //     ? data.vendorInfo.emailId.toString()
-                                      //     : "",
-                                      style: TextStyle(
-                                          color: isDarkMode() ? white : black,
-                                          fontFamily: opensansMedium,
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.w400),
-                                    )),
+                                    Row(children: [
+                                      Text(
+                                        //  data.title,
+                                        "Appointment Type : ",
+                                        style: TextStyle(
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: opensansMedium,
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                          child: Text(
+                                        //  data.title,
+                                        data.appointmentType,
+                                        // data.vendorInfo != null
+                                        //     ? data.vendorInfo.emailId.toString()
+                                        //     : "",
+                                        style: TextStyle(
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: opensansMedium,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                    ]),
                                   ],
                                 ),
                               ),
@@ -221,7 +294,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               SvgPicture.asset(
                                 color: isDarkMode() ? white : black,
                                 Asset.user,
-                                height: 2.h,
+                                height: 1.8.h,
                               ),
                               SizedBox(
                                 width: 2.w,
@@ -232,7 +305,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
                                     fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Spacer(),
                               data.isFinished == true
@@ -337,7 +410,9 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                   child: Text(
                     CommonConstant.noDataFound,
                     style: TextStyle(
-                        fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                        fontFamily: fontMedium,
+                        fontSize: 12.sp,
+                        color: isDarkMode() ? white : black),
                   ),
                 ),
               ],
@@ -352,7 +427,9 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium, fontSize: 12.sp, color: black),
+                  fontFamily: fontMedium,
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? white : black),
             ),
           ),
         ],
@@ -667,7 +744,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
         return CupertinoAlertDialog(
           title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
           content: Text('Are you sure you want to cancel this Appointment?',
-              style: TextStyle(fontSize: 12.sp)),
+              style: TextStyle(fontSize: 12.sp, color: isDarkMode() ? white : white)),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -675,7 +752,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
               },
               child: Text('No',
                   style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+                      fontSize: 11.sp, color: isDarkMode() ? white : white)),
             ),
             TextButton(
               onPressed: () {
@@ -685,7 +762,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
               child: Text(
                 'Yes',
                 style: TextStyle(
-                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+                    color: isDarkMode() ? white : white, fontSize: 11.sp),
               ),
             ),
           ],

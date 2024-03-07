@@ -695,35 +695,24 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                 from: 50,
                                 child: Obx(() {
                                   return getFormButton(() {
-                                    if (widget.isEdit == true) {
-                                      // Call updateCourse API
+                                    if (controller.isFormInvalidate.value ==
+                                        true) {
+                                      if (widget.isEdit == true) {
+                                        // Call updateCourse API
 
-                                      controller.UpdateVendorServiceApi(
-                                        context,
-                                        widget.editService!.serviceId,
-                                        widget.editService!.id,
-                                      );
-                                    } else {
-                                      // Call AddCourseApi API
-                                      controller.addVendorService(context);
+                                        controller.UpdateVendorServiceApi(
+                                          context,
+                                          widget.editService!.serviceId,
+                                          widget.editService!.id,
+                                        );
+                                      } else {
+                                        controller.addVendorService(context);
+                                      }
                                     }
                                   }, CommonConstant.submit,
                                       validate:
                                           controller.isFormInvalidate.value);
                                 }))
-
-                            // FadeInUp(
-                            //     from: 50,
-                            //     child: Obx(() {
-                            //       return getFormButton(() {
-                            //         if (controller.isFormInvalidate.value ==
-                            //             true) {
-                            //           controller.addVendorService(context);
-                            //         }
-                            //       }, CommonConstant.submit,
-                            //           validate:
-                            //               controller.isFormInvalidate.value);
-                            //     }))
                           ],
                         )),
                   ),

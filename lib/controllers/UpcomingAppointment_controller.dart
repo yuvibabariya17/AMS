@@ -79,17 +79,20 @@ class UpcomingAppointmentController extends GetxController {
 
       if (response.statusCode == 200) {
         if (responseData['status'] == 1) {
+          state.value = ScreenState.apiSuccess;
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
           totalPages.value = data.totalPages;
           data.data.retainWhere((appointment) =>
               appointment.dateOfAppointment.isAfter(today) ||
               appointment.dateOfAppointment.day == today.day);
-          state.value = ScreenState.apiSuccess;
+          // Sort the filtered appointments in ascending order by dateOfAppointment
+          data.data.sort(
+              (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
+
           if (isClearList == true) {
             appointmentObjectList.clear();
           }
-
           appointmentObjectList.addAll(data.data);
           update();
           logcat("APPOINTMENT_RESPONSE:", jsonEncode(appointmentObjectList));
