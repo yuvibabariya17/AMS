@@ -106,7 +106,7 @@ class AddProductCategoryController extends GetxController {
   void validateDescription(String? val) {
     DescriptionModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Address";
+        model!.error = "Enter Description";
         model.isValidate = false;
       } else {
         model!.error = null;

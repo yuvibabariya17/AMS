@@ -178,18 +178,17 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
         from: 50,
         child: Container(
             color: isDarkMode() ? black : Colors.grey[900],
-            padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
                 setNavtile(Asset.serviceNav, "Service", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
                 }),
-                setNavtile(Asset.adduser, " Expert", () {
+                setNavtile(Asset.adduser, "Expert", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ExpertScreen());
                 }),
-                setNavtile(Asset.course, "Course", isBig: true, () {
+                setNavtile(Asset.course, "Course", () {
                   // controller.closeDrawer();
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CourseScreen());
@@ -209,7 +208,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(Settings());
                 }),
-                setNavtile(Asset.multipleUser, "Customer", isBig: true, () {
+                setNavtile(Asset.multipleUser, "Customer", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CustomerScreen());
                 }),
@@ -217,35 +216,31 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 //   Get.find<HomeScreenController>().closeDrawer();
                 //   Get.to(AppointmentBookingScreen());
                 // }),
-                setNavtile(Asset.product, "Product", isBig: true, () {
+                setNavtile(Asset.product, "Product", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductScreen());
                 }),
-                setNavtile(Asset.student, "Student", isBig: true, () {
+                setNavtile(Asset.student, "Student", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentScreen());
                 }),
-                setNavtile(Asset.studentCourse, "Student Course", isBig: true,
-                    () {
+                setNavtile(Asset.studentCourse, "Student Course", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(StudentCourseScreen());
                 }),
-                setNavtile(Asset.productSelling, "Product Selling", isBig: true,
-                    () {
+                setNavtile(Asset.productSelling, "Product Selling", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductSellingScreen());
                 }),
-                setNavtile(Asset.package, "Package Screen", isBig: true, () {
+                setNavtile(Asset.package, "Package Screen", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(PackageScreen());
                 }),
-                setNavtile(Asset.productCategory, "Product Category",
-                    isBig: true, () {
+                setNavtile(Asset.productCategory, "Product Category", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ProductCategoryListScreen());
                 }),
-                setNavtile(Asset.brandCategory, "Brand Category", isBig: true,
-                    () {
+                setNavtile(Asset.brandCategory, "Brand Category", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(BrandCategoryScreen());
                 }),
@@ -253,6 +248,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 setNavtile(Asset.share, ScreenTitle.signOut, () {
                   PopupDialogsforSignOut(context);
                 }),
+                SizedBox(height: 5.5.h),
               ],
             )),
       );

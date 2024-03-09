@@ -319,7 +319,7 @@ class AppointmentBookingController extends GetxController {
   void validateDuration(String? val) {
     durationModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Name";
+        model!.error = "Enter Duration";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -747,8 +747,10 @@ class AppointmentBookingController extends GetxController {
                 ServiceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text =
                     serviceObjectList[index].serviceInfo.name.toString();
+                Amountctr.text = serviceObjectList[index].fees.toString();
 
                 validateService(Servicectr.text);
+                validateAmount(Amountctr.text);
               },
               title: Text(
                 serviceObjectList[index].serviceInfo.name.toString(),

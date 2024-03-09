@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/AppointmentListModel.dart';
+import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
+import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
@@ -160,10 +162,15 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         hintLabel: AppointmentBookingConstant
                                             .customer_hint,
                                         wantSuffix: true,
-                                        isdown: true,
+                                        isDropdown: true,
+                                        // isdown: true,
                                         onChanged: (val) {
                                           controller.validateCustomer(val);
                                         },
+                                        onAddBtn: () {
+                                          Get.to(AddCustomerScreen());
+                                        },
+                                        isAdd: true,
                                         isReadOnly: true,
                                         onTap: () {
                                           controller.Customerctr.text = "";
@@ -193,12 +200,17 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         hintLabel:
                                             AppointmentBookingConstant.Services,
                                         wantSuffix: true,
-                                        isdown: true,
+                                        isDropdown: true,
+                                        // isdown: true,
                                         onChanged: (val) {
                                           controller.validateService(val);
                                           setState(() {});
                                         },
                                         isReadOnly: true,
+                                        onAddBtn: () {
+                                          Get.to(AddServiceScreen());
+                                        },
+                                        isAdd: true,
                                         onTap: () {
                                           controller.Servicectr.text = "";
                                           showDropDownDialog(
@@ -322,7 +334,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       onChanged: (val) {
                                         controller.validateDuration(val);
                                       },
-                                      inputType: TextInputType.text,
+                                      inputType: TextInputType.number,
                                       errorText:
                                           controller.durationModel.value.error);
                                 }),

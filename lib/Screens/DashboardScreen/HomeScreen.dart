@@ -605,23 +605,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           : black,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    item.customerInfo.contactNo,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: SizerUtil
-                                                                    .deviceType ==
-                                                                DeviceType
-                                                                    .mobile
-                                                            ? 12.sp
-                                                            : 12.sp,
-                                                        color: isDarkMode()
-                                                            ? white
-                                                            : black,
-                                                        fontFamily:
-                                                            fontRegular),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller
+                                                          .launchPhoneCall(item
+                                                              .customerInfo
+                                                              .contactNo);
+                                                    },
+                                                    child: Text(
+                                                      item.customerInfo
+                                                          .contactNo,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontSize: SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType
+                                                                      .mobile
+                                                              ? 12.sp
+                                                              : 12.sp,
+                                                          color: isDarkMode()
+                                                              ? white
+                                                              : black,
+                                                          fontFamily:
+                                                              fontRegular),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

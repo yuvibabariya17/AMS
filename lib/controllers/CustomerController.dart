@@ -4,6 +4,7 @@ import 'package:booking_app/Models/DeleteSuccessModel.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Config/apicall_constant.dart';
 import '../api_handle/Repository.dart';
 import '../core/constants/strings.dart';
@@ -35,6 +36,33 @@ class CustomerController extends GetxController {
     searchNode = FocusNode();
     searchCtr = TextEditingController();
     super.onInit();
+  }
+
+  launchPhoneCall(String phoneNumber) async {
+    try {
+      String url = 'tel:$phoneNumber'; // Add "+91" to the phone number
+      if (await canLaunch(url)) {
+        await launch(url, forceSafariVC: false);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching phone call: $e');
+    }
+  }
+
+  
+  launchWhatsappCall(String phoneNumber) async {
+    try {
+      String url = 'tel:$phoneNumber'; // Add "+91" to the phone number
+      if (await canLaunch(url)) {
+        await launch(url, forceSafariVC: false);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching phone call: $e');
+    }
   }
 
   void getCustomerList(context, bool isFirst) async {

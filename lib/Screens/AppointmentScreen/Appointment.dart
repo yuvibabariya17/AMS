@@ -3,16 +3,21 @@ import 'package:booking_app/Models/notification_Static.dart';
 import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
+import 'package:booking_app/controllers/Appointment_screen_controller.dart';
+import 'package:booking_app/controllers/PreviousAppointment_controller.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
-import 'package:booking_app/core/Common/toolbar.dart';
+import 'package:booking_app/core/Common/appbar.dart';
+import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
+import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/Common.dart';
 import '../../core/themes/color_const.dart';
@@ -36,7 +41,7 @@ class AppointmentScreen extends StatefulWidget {
 
 class _AppointmentScreenState extends State<AppointmentScreen>
     with TickerProviderStateMixin {
-  // var controller = Get.put(AppointmentScreenController());
+  var controller = Get.put(AppointmentScreenController());
 
   List<NotificationItem> staticData = notificationItems;
   late TabController tabController;
@@ -44,10 +49,16 @@ class _AppointmentScreenState extends State<AppointmentScreen>
 
   bool state = false;
 
+  DateTime? selectedDate = DateTime.now();
+  DatePickerController datePickerController = DatePickerController();
+  DateTime selectedValue = DateTime.now();
+  RxString picDate = "".obs;
+
   @override
   void initState() {
     //   controller.getAppointmentList(context);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
+
     super.initState();
   }
 
@@ -77,8 +88,11 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                   Get.find<UpcomingAppointmentController>()
                       .appointmentObjectList
                       .clear();
-                  Get.find<UpcomingAppointmentController>()
-                      .getAppointmentList(context, 1, true);
+                  Get.find<UpcomingAppointmentController>().getAppointmentList(
+                    context,
+                    1,
+                    true,
+                  );
                   setState(() {});
                 }
               });
@@ -97,9 +111,41 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
         child: Column(
           children: [
-            getAppbar(
-              ScreenTitle.appointment,
+            HomeAppBar(
+              title: "Appointment",
+              isfilter: false,
+              icon: Asset.filter,
+              onClick: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: controller.isFromPrevious == true
+                        ? selectedDate ?? DateTime.now()
+                        : DateTime.now(),
+                    firstDate: controller.isFromPrevious == true
+                        ? DateTime(1900)
+                        : DateTime.now(),
+                    lastDate: DateTime(2100));
+                if (pickedDate != null) {
+                  String apiPassingDate =
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
+                  picDate.value =
+                      Common().formatDate(apiPassingDate.toString());
+
+                  controller.isFromPrevious == true
+                      ? Get.find<PreviousAppointmentController>()
+                          .getAppointmentList(context,
+                              selectedDateString: apiPassingDate)
+                      : Get.find<UpcomingAppointmentController>()
+                          .getAppointmentList(context, 1, true,
+                              isClearList: true,
+                              selectedDateString: apiPassingDate);
+                }
+              },
             ),
+
+            // getAppbar(
+            //   ScreenTitle.appointment,
+            // ),
             Expanded(
               child: getListViewItem(),
             ),
@@ -211,6 +257,90 @@ class _AppointmentScreenState extends State<AppointmentScreen>
           ],
         ),
       ),
+    );
+  }
+
+  Future showbottomsheetdialog(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+        top: Radius.circular(30.0),
+      )),
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(30.0),
+          ),
+          child: Container(
+            height: 40.h,
+            color: isDarkMode() ? black : white,
+            padding: EdgeInsets.only(
+                left: 3.5.h, right: 3.5.h, top: 2.h, bottom: 2.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                    child: Text(
+                  'Filter',
+                  style: TextStyle(
+                    fontFamily: opensans_Bold,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
+                    color: isDarkMode() ? white : black,
+                  ),
+                )),
+                SizedBox(
+                  height: 0.5.h,
+                ),
+                Divider(
+                  height: 3.h,
+                  thickness: 1,
+                  indent: 0,
+                  endIndent: 0,
+                ),
+                Wrap(
+                  children: [
+                    StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                        return Column(
+                          children: [],
+                        );
+                      },
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 3.5.h),
+                      child: SizedBox(
+                        width: 150.h,
+                        height: 5.5.h,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            child: Center(
+                              child: Text(
+                                'Apply',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.5.sp,
+                                    fontFamily: opensans_Bold,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

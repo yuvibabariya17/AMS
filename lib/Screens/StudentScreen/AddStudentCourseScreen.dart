@@ -299,48 +299,51 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                             inputType: TextInputType.number,
                                           );
                                         }))),
-                                getTitle("Id Proof"),
-                                FadeInUp(
-                                    from: 30,
-                                    child: AnimatedSize(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: Obx(() {
-                                          return getReactiveFormField(
-                                            node: controller.imageNode,
-                                            controller: controller.imgctr,
-                                            hintLabel: "Select Id Proof",
-                                            wantSuffix: true,
-                                            onChanged: (val) {
-                                              controller.validateImage(val);
-                                              setState(() {});
-                                            },
-                                            isReadOnly: true,
-                                            onTap: () async {
-                                              selectImageFromCameraOrGallery(
-                                                  context, cameraClick: () {
-                                                controller
-                                                    .actionClickUploadIdProof(
-                                                        context,
-                                                        isCamera: true);
-                                              }, galleryClick: () {
-                                                controller
-                                                    .actionClickUploadIdProof(
-                                                        context,
-                                                        isCamera: false);
-                                              });
-                                              // await controller.PopupDialogs(context);
-                                              setState(() {});
-                                            },
-                                            // onTap: () async {
-                                            //   await controller
-                                            //       .actionClickUploadImage(context);
-                                            // },
-                                            errorText: controller
-                                                .ImageModel.value.error,
-                                            inputType: TextInputType.number,
-                                          );
-                                        }))),
+
+                                // ID PROOF FIELD
+
+                                // getTitle("Id Proof"),
+                                // FadeInUp(
+                                //     from: 30,
+                                //     child: AnimatedSize(
+                                //         duration:
+                                //             const Duration(milliseconds: 300),
+                                //         child: Obx(() {
+                                //           return getReactiveFormField(
+                                //             node: controller.imageNode,
+                                //             controller: controller.imgctr,
+                                //             hintLabel: "Select Id Proof",
+                                //             wantSuffix: true,
+                                //             onChanged: (val) {
+                                //               controller.validateImage(val);
+                                //               setState(() {});
+                                //             },
+                                //             isReadOnly: true,
+                                //             onTap: () async {
+                                //               selectImageFromCameraOrGallery(
+                                //                   context, cameraClick: () {
+                                //                 controller
+                                //                     .actionClickUploadIdProof(
+                                //                         context,
+                                //                         isCamera: true);
+                                //               }, galleryClick: () {
+                                //                 controller
+                                //                     .actionClickUploadIdProof(
+                                //                         context,
+                                //                         isCamera: false);
+                                //               });
+                                //               // await controller.PopupDialogs(context);
+                                //               setState(() {});
+                                //             },
+                                //             // onTap: () async {
+                                //             //   await controller
+                                //             //       .actionClickUploadImage(context);
+                                //             // },
+                                //             errorText: controller
+                                //                 .ImageModel.value.error,
+                                //             inputType: TextInputType.number,
+                                //           );
+                                //         }))),
                                 getTitle("Other Notes"),
                                 FadeInUp(
                                     from: 30,
@@ -380,7 +383,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                             // Call AddCourseApi API
                                             controller.AddStudentCourseApi(
                                                 context);
-                                        }
+                                          }
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller

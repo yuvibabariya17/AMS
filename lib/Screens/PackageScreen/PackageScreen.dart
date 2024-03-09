@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/Listofexpert.dart';
 import '../../Models/Listofexpert_model.dart';
@@ -396,20 +397,350 @@ class _PackageScreenState extends State<PackageScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                          child: Text(
-                        //  data.serviceInfo != null
-                        //     ? data.serviceInfo!.name
-                        //     : "",
-                        data.name != null ? data.name : "",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700),
-                      )),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                insetPadding: EdgeInsets.symmetric(
+                                    vertical: 20.h, horizontal: 4.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Adjust the radius as needed
+                                ),
+                                elevation: 0.0, // No shadow
+                                //clipBehavior: Clip.antiAlias,
+                                backgroundColor: isDarkMode() ? black : white,
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 3.h,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 55.w,
+                                              child: Marquee(
+                                                style: TextStyle(
+                                                  fontFamily: fontRegular,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 16.sp
+                                                          : 10.sp,
+                                                ),
+                                                text: "PACKAGE DETAILS",
+                                                scrollAxis: Axis
+                                                    .horizontal, // Use Axis.vertical for vertical scrolling
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start, // Adjust as needed
+                                                blankSpace:
+                                                    20.0, // Adjust the space between text repetitions
+                                                velocity:
+                                                    50.0, // Adjust the scrolling speed
+                                                pauseAfterRound: const Duration(
+                                                    seconds:
+                                                        1), // Time to pause after each scroll
+                                                startPadding: 2
+                                                    .w, // Adjust the initial padding
+                                                accelerationDuration:
+                                                    const Duration(
+                                                        seconds:
+                                                            1), // Duration for acceleration
+                                                accelerationCurve: Curves
+                                                    .linear, // Acceleration curve
+                                                decelerationDuration:
+                                                    const Duration(
+                                                        milliseconds:
+                                                            500), // Duration for deceleration
+                                                decelerationCurve: Curves
+                                                    .easeOut, // Deceleration curve
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Icon(
+                                                  Icons.cancel,
+                                                  size: 24.0,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Column(
+                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 1.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Package Name : ",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w800,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                data.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Actual Fees : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // controller.launchPhoneCall(
+                                            //     data.customerInfo.contactNo);
+                                          },
+                                          child: Text(
+                                            data.actFees.toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(
+                                                fontSize: 8.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontBold,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Package Fees : ',
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            data.packFees.toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          )
+                                        ]),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Start From : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          formatDate(
+                                              data.durationFrom.toString()),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "End to : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          formatDate(
+                                              data.durationTo.toString()),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Other Notes: ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          data.otherNotes.toString(),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Expanded(
+                            child: Text(
+                          //  data.serviceInfo != null
+                          //     ? data.serviceInfo!.name
+                          //     : "",
+                          data.name != null ? data.name : "",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontFamily: opensansMedium,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700),
+                        )),
+                      ),
                       // SizedBox(height: 5.0),
                     ],
                   ),

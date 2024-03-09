@@ -11,7 +11,7 @@ class ThemeController extends GetxController {
   RxInt? isDarkMode = 0.obs;
   @override
   void onInit() {
-     initHive();
+    // initHive();
     super.onInit();
     fetchCurrent();
   }

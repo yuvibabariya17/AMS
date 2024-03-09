@@ -31,7 +31,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   void initState() {
     logcat("CLEARLIST", "data");
     controller.appointmentObjectList.clear();
-    controller.getAppointmentList(context, 1, true);
+    controller.getAppointmentList(
+      context,
+      1,
+      true,
+    );
     logcat("APPOINTMENT_LENGTH",
         controller.appointmentObjectList.length.toString());
     setState(() {});
@@ -47,20 +51,13 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   }
 
   String formatDate(String dateTimeString) {
-    // Parse the date string into a DateTime object
     DateTime dateTime = DateTime.parse(dateTimeString);
-
-    // Format the DateTime object into the desired format
     String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-
     return formattedDate;
   }
 
   String formatTime(String dateTimeString) {
-    // Parse the date string into a DateTime object
     DateTime dateTime = DateTime.parse(dateTimeString);
-
-    // Format the DateTime object into the desired format
     String formattedDate = DateFormat('h:mm a').format(dateTime);
     return formattedDate;
   }

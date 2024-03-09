@@ -103,7 +103,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.Vendornamectr,
                                       hintLabel: 'Enter Name',
                                       onChanged: (val) {
-                                       // controller.validateVendorname(val);
+                                        // controller.validateVendorname(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -142,7 +142,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       hintLabel: Strings.company_address_hint,
                                       isExpand: true,
                                       onChanged: (val) {
-                                       // controller.validateAddressname(val);
+                                        // controller.validateAddressname(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -161,7 +161,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.emailctr,
                                       hintLabel: CommonConstant.emailId_hint,
                                       onChanged: (val) {
-                                       // controller.validateEmail(val);
+                                        // controller.validateEmail(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -169,28 +169,31 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       inputType: TextInputType.text,
                                     );
                                   }))),
-                          getTitle(CommonConstant.password),
-                          FadeInUp(
-                              from: 30,
-                              child: AnimatedSize(
-                                  duration: const Duration(milliseconds: 300),
-                                  child: Obx(() {
-                                    return getReactiveFormField(
-                                      node: controller.PassNode,
-                                      controller: controller.passctr,
-                                      hintLabel: Strings.pass_hint,
-                                      onChanged: (val) {
-                                        //controller.validatePass(val);
-                                        setState(() {});
-                                      },
-                                      wantSuffix: true,
-                                      isPassword: true,
-                                      fromObsecureText: "UPDATE VENDOR",
-                                      errorText:
-                                          controller.passModel.value.error,
-                                      inputType: TextInputType.text,
-                                    );
-                                  }))),
+
+                          //PASSWORD FIELD
+
+                          // getTitle(CommonConstant.password),
+                          // FadeInUp(
+                          //     from: 30,
+                          //     child: AnimatedSize(
+                          //         duration: const Duration(milliseconds: 300),
+                          //         child: Obx(() {
+                          //           return getReactiveFormField(
+                          //             node: controller.PassNode,
+                          //             controller: controller.passctr,
+                          //             hintLabel: Strings.pass_hint,
+                          //             onChanged: (val) {
+                          //               //controller.validatePass(val);
+                          //               setState(() {});
+                          //             },
+                          //             wantSuffix: true,
+                          //             isPassword: true,
+                          //             fromObsecureText: "UPDATE VENDOR",
+                          //             errorText:
+                          //                 controller.passModel.value.error,
+                          //             inputType: TextInputType.text,
+                          //           );
+                          //         }))),
                           getTitle(Strings.contact_no_one),
                           FadeInUp(
                               from: 30,
@@ -203,7 +206,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
-                                       // controller.validatePhone1(val);
+                                        // controller.validatePhone1(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -434,7 +437,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                           //             inputType: TextInputType.none,
                           //           );
                           //         }))),
-                        
+
                           SizedBox(
                             height: 3.h,
                           ),

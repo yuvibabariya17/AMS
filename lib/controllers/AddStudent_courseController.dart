@@ -90,9 +90,13 @@ class AddStudentCourseController extends GetxController {
   void enableSignUpButton() {
     if (StudentNameModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    } else if (ImageModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (FeesModel.value.isValidate == false) {
+    }
+
+    // else if (ImageModel.value.isValidate == false) {
+    //   isFormInvalidate.value = false;
+    // }
+
+    else if (FeesModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (CourseModel.value.isValidate == false) {
       isFormInvalidate.value = false;
@@ -257,7 +261,10 @@ class AddStudentCourseController extends GetxController {
               },
               title: Text(
                 studentObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -337,7 +344,10 @@ class AddStudentCourseController extends GetxController {
               },
               title: Text(
                 studentCourseObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },

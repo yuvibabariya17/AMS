@@ -1,3 +1,4 @@
+import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -94,31 +95,24 @@ Widget setNavtile(
   return GestureDetector(
     onTap: () {
       callback();
+      logcat("onCLICK", "DONE");
     },
     child: Container(
-      padding: EdgeInsets.only(
-        top: 1.5.h,
-        bottom: 1.5.h,
-      ),
+      // color: title == "Service" ? white : null,
+      padding:
+          EdgeInsets.only(top: 1.5.h, bottom: 1.5.h, left: 7.w, right: 5.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          isBig == true
-              ? SvgPicture.asset(
-                  svg,
-                  color: isDarkMode() ? white : white,
-                  height: 2.9.h,
-                  width: 1.7.h,
-                )
-              : SvgPicture.asset(
-                  svg,
-                  color: isDarkMode() ? white : white,
-                  height: 2.1.h,
-                  width: 1.5.h,
-                ),
+          SvgPicture.asset(
+            svg,
+            color: isDarkMode() ? white : white,
+            height: isBig == true ? 2.5.h : 2.1.h,
+            width: 1.5.h,
+          ),
           SizedBox(
-            width: isBig == true ? 3.w : 3.5.w,
+            width: isBig == true ? 3.0.w : 3.5.w,
           ),
           Text(title,
               style: TextStyle(

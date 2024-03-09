@@ -2,15 +2,15 @@ import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
 import 'package:booking_app/controllers/CustomerController.dart';
-import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -64,6 +64,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
             .toList();
       }
     });
+  }
+
+  String formatDate(String dateTimeString) {
+    // Parse the date string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Format the DateTime object into the desired format
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+
+    return formattedDate;
   }
 
   @override
@@ -318,11 +328,433 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   Stack(children: [
                     GestureDetector(
                       onTap: () {
-                        Get.to(FullScreenImage(
-                          imageUrl: '${ApiUrl.ImgUrl}${data.picInfo!.image}',
-                          title: "Customer",
-                        ))!
-                            .then((value) => {Common().trasparent_statusbar()});
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              insetPadding: EdgeInsets.symmetric(
+                                  vertical: 15.h, horizontal: 4.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    20.0), // Adjust the radius as needed
+                              ),
+                              elevation: 0.0, // No shadow
+                              //clipBehavior: Clip.antiAlias,
+                              backgroundColor: isDarkMode() ? black : white,
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 3.h,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 55.w,
+                                            child: Marquee(
+                                              style: TextStyle(
+                                                fontFamily: fontRegular,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 16.sp
+                                                        : 10.sp,
+                                              ),
+                                              text: "CUSTOMER DETAILS",
+                                              scrollAxis: Axis
+                                                  .horizontal, // Use Axis.vertical for vertical scrolling
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .start, // Adjust as needed
+                                              blankSpace:
+                                                  20.0, // Adjust the space between text repetitions
+                                              velocity:
+                                                  50.0, // Adjust the scrolling speed
+                                              pauseAfterRound: const Duration(
+                                                  seconds:
+                                                      1), // Time to pause after each scroll
+                                              startPadding: 2
+                                                  .w, // Adjust the initial padding
+                                              accelerationDuration: const Duration(
+                                                  seconds:
+                                                      1), // Duration for acceleration
+                                              accelerationCurve: Curves
+                                                  .linear, // Acceleration curve
+                                              decelerationDuration: const Duration(
+                                                  milliseconds:
+                                                      500), // Duration for deceleration
+                                              decelerationCurve: Curves
+                                                  .easeOut, // Deceleration curve
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Icon(
+                                                Icons.cancel,
+                                                size: 24.0,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                              ),
+                                            ),
+                                          ),
+                                        ]),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                            height: 20.h,
+                                            width: 60.w,
+                                            // padding: EdgeInsets.all(
+                                            //   SizerUtil.deviceType == DeviceType.mobile
+                                            //       ? 1.2.w
+                                            //       : 1.0.w,
+                                            // ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(15)),
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl: data.picInfo!.image !=
+                                                        null
+                                                    ? '${ApiUrl.ImgUrl}${data.picInfo!.image}'
+                                                    // '${ip}${data.photoUrlInfo.image}'
+                                                    : "",
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: primaryColor),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Image.asset(
+                                                  Asset.placeholder,
+                                                  height: 11.h,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Customer Name : ",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w800,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                              ),
+                                            ),
+                                            Text(
+                                              data.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 12.sp
+                                                          : 10.sp,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontFamily: fontRegular),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Date of Birth : ",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDarkMode() ? white : black,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          // controller.launchPhoneCall(
+                                          //     data.customerInfo.contactNo);
+                                        },
+                                        child: Text(
+                                          formatDate(
+                                            data.dateOfBirth.toString(),
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                              fontSize: 8.sp,
+                                              fontWeight: FontWeight.w700,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontBold,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: 'Date of Anniversary : ',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          formatDate(
+                                            data.dateOfAnniversary.toString(),
+                                          ),
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        )
+                                      ]),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Address : ",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDarkMode() ? white : black,
+                                        ),
+                                      ),
+                                      Text(
+                                        data.address,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 12.sp,
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: fontRegular),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.launchPhoneCall(
+                                          data.contactNo.toString());
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Contact No : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          data.contactNo.toString(),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.launchWhatsappCall(
+                                          data.whatsappNo.toString());
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Whatsapp No : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          data.whatsappNo.toString(),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Email ID : ",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDarkMode() ? white : black,
+                                        ),
+                                      ),
+                                      Text(
+                                        data.email,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 12.sp,
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: fontRegular),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Description : ",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDarkMode() ? white : black,
+                                        ),
+                                      ),
+                                      Text(
+                                        data.description,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 12.sp,
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: fontRegular),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+
+                        // Get.to(FullScreenImage(
+                        //   imageUrl: '${ApiUrl.ImgUrl}${data.picInfo!.image}',
+                        //   title: "Customer",
+                        // ))!
+                        //     .then((value) => {Common().trasparent_statusbar()});
                       },
                       child: Container(
                           height: 11.h,
@@ -471,167 +903,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
           itemCount: controller.filteredCustomerObjectList.length,
         ),
       );
-
-      // ListView.builder(
-      //     shrinkWrap: true,
-      //     clipBehavior: Clip.antiAlias,
-      //     physics: BouncingScrollPhysics(),
-      //     itemBuilder: (context, index) {
-      //       ListofCustomer data =
-      //           controller.filteredCustomerObjectList[index];
-      //       // hairservice data = staticData[index];
-      //       // logcat("DATAAA", controller.serviceObjectList);
-      //       return Container(
-      //         margin: EdgeInsets.only(
-      //             top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
-      //         child: Expanded(
-      //           child: Container(
-      //             padding: EdgeInsets.only(
-      //                 top: 1.h, left: 3.w, right: 4.w, bottom: 1.h),
-      //             child: Column(
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               mainAxisAlignment: MainAxisAlignment.start,
-      //               children: [
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.start,
-      //                   crossAxisAlignment: CrossAxisAlignment.center,
-      //                   children: [
-      //                     Stack(children: [
-      //                       CachedNetworkImage(
-      //                         fit: BoxFit.cover,
-      //                         imageUrl: data.pic,
-      //                         placeholder: (context, url) =>
-      //                             SvgPicture.asset(
-      //                           Asset.profileimg,
-      //                           color: isDarkMode()
-      //                               ? Colors.white
-      //                               : Colors.black,
-      //                           height: 4.5.h,
-      //                           fit: BoxFit.cover,
-      //                         ),
-      //                         errorWidget: (context, url, error) =>
-      //                             SvgPicture.asset(
-      //                           Asset.profileimg,
-      //                           color: isDarkMode()
-      //                               ? Colors.white
-      //                               : Colors.black,
-      //                           height: 4.5.h,
-      //                           fit: BoxFit.cover,
-      //                         ),
-      //                       )
-      //                       // CircleAvatar(
-      //                       //   radius: 3.5.h,
-      //                       //   backgroundColor: Colors.white,
-      //                       //   child: SvgPicture.asset(
-      //                       //     data.pic,
-      //                       //     fit: BoxFit.cover,
-      //                       //   ),
-      //                       // ),
-      //                     ]),
-      //                     SizedBox(width: 5.5.w),
-      //                     Expanded(
-      //                       child: Column(
-      //                         mainAxisAlignment: MainAxisAlignment.start,
-      //                         crossAxisAlignment:
-      //                             CrossAxisAlignment.start,
-      //                         children: [
-      //                           Row(children: [
-      //                             Container(
-      //                               child: Text(
-      //                                 data.name,
-      //                                 style: TextStyle(
-      //                                     fontFamily: opensansMedium,
-      //                                     fontSize: 15.sp,
-      //                                     fontWeight: FontWeight.w700),
-      //                               ),
-      //                             ),
-      //                             Spacer(),
-      //                             GestureDetector(
-      //                               onTap: () {
-      //                                 // Get.to(AddServiceScreen(
-      //                                 //     isEdit: true,
-      //                                 //     editService: data));
-      //                               },
-      //                               child: Container(
-      //                                   child: SvgPicture.asset(
-      //                                       Asset.edit,
-      //                                       height: 2.3.h,
-      //                                       color: isDarkMode()
-      //                                           ? Colors.grey
-      //                                           : Colors.grey)),
-      //                             ),
-      //                             SizedBox(
-      //                               width: 2.w,
-      //                             ),
-      //                             GestureDetector(
-      //                                 onTap: () {
-      //                                   showDeleteConfirmationDialog(
-      //                                       data.id);
-      //                                 },
-      //                                 child: Container(
-      //                                     child: Icon(
-      //                                   Icons.delete_rounded,
-      //                                   color: isDarkMode()
-      //                                       ? Colors.grey
-      //                                       : Colors.grey,
-      //                                   size: 3.h,
-      //                                 )))
-      //                           ]),
-      //                           Container(
-      //                             margin: EdgeInsets.only(top: 0.5.h),
-      //                             child: Text(
-      //                               data.contactNo,
-      //                               // data.fees.toString(),
-      //                               // '${model.fullName.capitalize} (${model.age} Years)'
-      //                               style: TextStyle(
-      //                                   fontFamily: opensansMedium,
-      //                                   fontSize: 16.sp,
-      //                                   fontWeight: FontWeight.w600),
-      //                             ),
-      //                           ),
-      //                           // Row(
-      //                           //     mainAxisAlignment:
-      //                           //         MainAxisAlignment.spaceBetween,
-      //                           //     crossAxisAlignment:
-      //                           //         CrossAxisAlignment.center,
-      //                           //     children: [
-      //                           //       Container(
-      //                           //         child: Text(
-      //                           //           data.email,
-      //                           //           style: TextStyle(
-      //                           //               fontFamily: opensansMedium,
-      //                           //               fontSize: 11.sp,
-      //                           //               fontWeight:
-      //                           //                   FontWeight.w400),
-      //                           //         ),
-      //                           //       ),
-      //                           //     ]),
-      //                         ],
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ],
-      //             ),
-      //             decoration: BoxDecoration(
-      //               color: isDarkMode() ? black : white,
-      //               borderRadius: BorderRadius.all(Radius.circular(25)),
-      //               boxShadow: [
-      //                 BoxShadow(
-      //                     color: isDarkMode()
-      //                         ? Colors.white.withOpacity(0.2)
-      //                         : Colors.black.withOpacity(0.2),
-      //                     spreadRadius: 0.1,
-      //                     blurRadius: 10,
-      //                     offset: Offset(0.5, 0.5)),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //     itemCount: controller.filteredCustomerObjectList.length,
-      //   )
     } else {
       return Container(
         height: SizerUtil.height / 1.3,

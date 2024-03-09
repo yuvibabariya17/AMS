@@ -16,7 +16,7 @@ class HomeAppBar extends StatelessWidget {
       required this.title,
       required this.onClick,
       required this.isfilter,
-      required this.leading,
+      this.leading,
       required this.icon,
       this.isBack});
   GlobalKey<ScaffoldState>? openDrawer;
@@ -33,7 +33,7 @@ class HomeAppBar extends StatelessWidget {
       padding: EdgeInsets.only(left: 22, right: 5.w, top: 10),
       child: Row(
         children: [
-          title == 'Settings'
+          title == 'Settings' || title == 'Appointment'
               ? Container()
               : InkWell(
                   onTap: () {
@@ -54,10 +54,7 @@ class HomeAppBar extends StatelessWidget {
                               Asset.menu,
                               color: isDarkMode() ? white : black,
                             )
-                      : SvgPicture.asset(
-                          Asset.cart,
-                          color: isDarkMode() ? white : black,
-                        )),
+                      : Container()),
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(top: 1, left: 9, right: 6),

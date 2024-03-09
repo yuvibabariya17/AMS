@@ -2,15 +2,14 @@ import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/StudentModel.dart';
 import 'package:booking_app/Screens/StudentScreen/AddStudentScreen.dart';
 import 'package:booking_app/controllers/StudentController.dart';
-import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -338,13 +337,310 @@ class _StudentScreenState extends State<StudentScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.to(FullScreenImage(
-                            imageUrl:
-                                '${ApiUrl.ImgUrl}${data.photoUrlInfo.image}',
-                            title: ScreenTitle.expert,
-                          ))!
-                              .then(
-                                  (value) => {Common().trasparent_statusbar()});
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                insetPadding: EdgeInsets.symmetric(
+                                    vertical: 20.h, horizontal: 4.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Adjust the radius as needed
+                                ),
+                                elevation: 0.0, // No shadow
+                                //clipBehavior: Clip.antiAlias,
+                                backgroundColor: isDarkMode() ? black : white,
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 3.h,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 55.w,
+                                              child: Marquee(
+                                                style: TextStyle(
+                                                  fontFamily: fontRegular,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 16.sp
+                                                          : 10.sp,
+                                                ),
+                                                text: "STUDENT DETAILS",
+                                                scrollAxis: Axis
+                                                    .horizontal, // Use Axis.vertical for vertical scrolling
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start, // Adjust as needed
+                                                blankSpace:
+                                                    20.0, // Adjust the space between text repetitions
+                                                velocity:
+                                                    50.0, // Adjust the scrolling speed
+                                                pauseAfterRound: const Duration(
+                                                    seconds:
+                                                        1), // Time to pause after each scroll
+                                                startPadding: 2
+                                                    .w, // Adjust the initial padding
+                                                accelerationDuration:
+                                                    const Duration(
+                                                        seconds:
+                                                            1), // Duration for acceleration
+                                                accelerationCurve: Curves
+                                                    .linear, // Acceleration curve
+                                                decelerationDuration:
+                                                    const Duration(
+                                                        milliseconds:
+                                                            500), // Duration for deceleration
+                                                decelerationCurve: Curves
+                                                    .easeOut, // Deceleration curve
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Icon(
+                                                  Icons.cancel,
+                                                  size: 24.0,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Column(
+                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                            height: 20.h,
+                                            width: 60.w,
+                                            // padding: EdgeInsets.all(
+                                            //   SizerUtil.deviceType == DeviceType.mobile
+                                            //       ? 1.2.w
+                                            //       : 1.0.w,
+                                            // ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(15)),
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl: data.photoUrlInfo
+                                                            .image !=
+                                                        null
+                                                    ? '${ApiUrl.ImgUrl}${data.photoUrlInfo.image}'
+                                                    // '${ip}${data.photoUrlInfo.image}'
+                                                    : "",
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: primaryColor),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Image.asset(
+                                                  Asset.placeholder,
+                                                  height: 11.h,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Student Name : ",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w800,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                              ),
+                                            ),
+                                            Text(
+                                              data.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 12.sp
+                                                          : 10.sp,
+                                                  color: isDarkMode()
+                                                      ? white
+                                                      : black,
+                                                  fontFamily: fontRegular),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Contact No : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // controller.launchPhoneCall(
+                                            //     data.customerInfo.contactNo);
+                                          },
+                                          child: Text(
+                                            data.contact,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(
+                                                fontSize: 8.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontBold,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Email : ',
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            data.email.toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          )
+                                        ]),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Address : ",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: isDarkMode() ? white : black,
+                                          ),
+                                        ),
+                                        Text(
+                                          data.address,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+
+                          // Get.to(FullScreenImage(
+                          //   imageUrl:
+                          //       '${ApiUrl.ImgUrl}${data.photoUrlInfo.image}',
+                          //   title: ScreenTitle.expert,
+                          // ))!
+                          //     .then(
+                          //         (value) => {Common().trasparent_statusbar()});
                         },
                         child: Container(
                             height: 11.h,

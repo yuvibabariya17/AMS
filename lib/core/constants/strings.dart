@@ -314,10 +314,10 @@ class ScreenTitle {
   static const String productBasedOffer = 'Product Based';
   static const String serviceBasedOffer = 'Service Based';
   static const String packageBasedOffer = 'Package Based';
-  static const String changePassTitle = ' Change Password';
+  static const String changePassTitle = 'Change Password';
   static const String inviteFriends = 'Invite Friends';
-  static const String serviceOffer = ' Add Service Offer';
-  static const String settings = ' Settings';
+  static const String serviceOffer = 'Add Service Offer';
+  static const String settings = 'Settings';
   static const String signOut = 'Sign Out';
   static const String profile = 'Profile';
   static const String basic = 'Basic';

@@ -139,8 +139,11 @@ class AddStudentController extends GetxController {
 
   void validateEmail(String? val) {
     EmailModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Email";
+      if (val != null && val.toString().trim().isEmpty) {
+        model!.error = "Enter Email Id";
+        model.isValidate = false;
+      } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(emailctr.text.trim())) {
+        model!.error = "Enter Valid Email Id";
         model.isValidate = false;
       } else {
         model!.error = null;

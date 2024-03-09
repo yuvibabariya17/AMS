@@ -40,9 +40,10 @@ class UpcomingAppointmentController extends GetxController {
   // List<ListofAppointment> filteredExpertObjectList = [];
   RxInt currentPags = 1.obs;
   RxInt totalPages = 0.obs;
+  String? selectedDateString;
 
   void getAppointmentList(context, int currentPags, bool isFirst,
-      {bool? isClearList}) async {
+      {bool? isClearList, String? selectedDateString}) async {
     var loadingIndicator = LoadingProgressDialogs();
     if (isFirst == true) {
       logcat("STEP_1", "STEP");
@@ -62,6 +63,23 @@ class UpcomingAppointmentController extends GetxController {
         return;
       }
       logcat("CURRENT_PAGE::", currentPags.toString());
+      logcat("PARAMETER", {
+        "pagination": {
+          "pageNo": currentPags,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          "startAt": selectedDateString != null ? selectedDateString : ''
+          // "endAt": selectedDateString.toString()
+          // "vendor_id": "65964339a438e9a2e56bb859",
+          // "customer_id": "65002e988f256c43ccea2fcb",
+          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
+      });
+
       var response = await Repository.post({
         "pagination": {
           "pageNo": currentPags,
@@ -69,24 +87,34 @@ class UpcomingAppointmentController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
+        "search": {
+          "startAt": selectedDateString != null ? selectedDateString : ''
+          // "endAt": selectedDateString.toString()
+          // "vendor_id": "65964339a438e9a2e56bb859",
+          // "customer_id": "65002e988f256c43ccea2fcb",
+          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
       }, ApiUrl.appointmentList, allowHeader: true);
       if (isFirst == false) {
         loadingIndicator.hide(context);
       }
       isAppointmentTypeList.value = false;
       var responseData = jsonDecode(response.body);
-      logcat("APPOINTMENT LIST", jsonEncode(responseData));
+      logcat("APPOINTMENTLIST", jsonEncode(responseData));
 
       if (response.statusCode == 200) {
         if (responseData['status'] == 1) {
           state.value = ScreenState.apiSuccess;
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
-          totalPages.value = data.totalPages;
+          var endOfSecondDay = today.add(Duration(days: 2));
+
           data.data.retainWhere((appointment) =>
-              appointment.dateOfAppointment.isAfter(today) ||
-              appointment.dateOfAppointment.day == today.day);
-          // Sort the filtered appointments in ascending order by dateOfAppointment
+              appointment.dateOfAppointment.isAtSameMomentAs(today) ||
+              appointment.dateOfAppointment.isAfter(today) &&
+                  appointment.dateOfAppointment.isBefore(endOfSecondDay));
+
           data.data.sort(
               (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
 

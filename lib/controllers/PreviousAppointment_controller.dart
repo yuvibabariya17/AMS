@@ -36,7 +36,7 @@ class PreviousAppointmentController extends GetxController {
   RxString message = "".obs;
   RxList memberList = [].obs;
 
-  void getAppointmentList(context) async {
+  void getAppointmentList(context, {String? selectedDateString}) async {
     state.value = ScreenState.apiLoading;
     // isExpertTypeApiList.value = true;
     try {
@@ -53,6 +53,14 @@ class PreviousAppointmentController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
+        "search": {
+          "startAt": selectedDateString != null ? selectedDateString : ''
+          // "endAt": selectedDateString.toString()
+          // "vendor_id": "65964339a438e9a2e56bb859",
+          // "customer_id": "65002e988f256c43ccea2fcb",
+          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
       }, ApiUrl.appointmentList, allowHeader: true);
       isAppointmentApiList.value = false;
       var responseData = jsonDecode(response.body);
@@ -62,8 +70,12 @@ class PreviousAppointmentController extends GetxController {
         if (responseData['status'] == 1) {
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
+          //var twoDaysAgo = today.subtract(Duration(days: 2));
           data.data.retainWhere((appointment) => appointment.dateOfAppointment
               .isBefore(DateTime(today.year, today.month, today.day)));
+
+          data.data.sort(
+              (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
 
           state.value = ScreenState.apiSuccess;
           appointmentObjectList.clear();

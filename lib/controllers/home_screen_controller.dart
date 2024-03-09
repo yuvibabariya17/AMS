@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Models/expert.dart';
 import '../Models/expert_model.dart';
 import '../Models/offers.dart';
@@ -38,7 +39,7 @@ class HomeScreenController extends GetxController {
   bool switch_state = false;
   bool switch_state1 = false;
   GlobalKey<ScrollSnapListState> keydata = GlobalKey();
-  DateTime? selectedDate =DateTime.now(); 
+  DateTime? selectedDate = DateTime.now();
 
   var icon;
   var leading;
@@ -73,6 +74,19 @@ class HomeScreenController extends GetxController {
     picDate.value = date;
     print("PICKED_DATE${picDate.value}");
     update();
+  }
+
+  launchPhoneCall(String phoneNumber) async {
+    try {
+      String url = 'tel:$phoneNumber'; // Add "+91" to the phone number
+      if (await canLaunch(url)) {
+        await launch(url, forceSafariVC: false);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching phone call: $e');
+    }
   }
 
   @override
@@ -163,7 +177,6 @@ class HomeScreenController extends GetxController {
         DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(dateTime);
     return formattedTime;
   }
-
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
