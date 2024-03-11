@@ -534,7 +534,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                             //     data.customerInfo.contactNo);
                                           },
                                           child: Text(
-                                            data.courseInfo.fees.toString(),
+                                            '₹ ${data.courseInfo.fees.toString()}',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

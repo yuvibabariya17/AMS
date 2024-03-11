@@ -563,7 +563,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             ),
                                           ),
                                           Text(
-                                            data.amount.toString(),
+                                            '₹ ${data.amount.toString()}',
                                             style: TextStyle(
                                                 fontSize:
                                                     SizerUtil.deviceType ==

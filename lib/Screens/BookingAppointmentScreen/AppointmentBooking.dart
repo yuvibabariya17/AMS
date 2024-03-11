@@ -581,6 +581,9 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           controller.validateAmount(val);
                                           setState(() {});
                                         },
+                                        isReadOnly: widget.isEdit == true
+                                            ? true
+                                            : true,
                                         errorText:
                                             controller.AmountModel.value.error,
                                         inputType: TextInputType.number,

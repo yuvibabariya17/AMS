@@ -44,12 +44,12 @@ class _SplashscreenState extends State<Splashscreen> {
                 fit: BoxFit.cover,
                 width: SizerUtil.deviceType == DeviceType.mobile
                     ? SizerUtil.width
-                    : 500)
+                    : SizerUtil.width)
             : SvgPicture.asset(Asset.splash_bg,
                 fit: BoxFit.cover,
                 width: SizerUtil.deviceType == DeviceType.mobile
                     ? SizerUtil.width
-                    : 500),
+                    : SizerUtil.width),
       ),
     );
     // return MaterialApp(

@@ -497,7 +497,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                             ),
                                           ),
                                           Text(
-                                            data.fees.toString(),
+                                            '₹ ${data.fees.toString()}',
                                             style: TextStyle(
                                                 fontSize:
                                                     SizerUtil.deviceType ==

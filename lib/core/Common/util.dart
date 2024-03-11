@@ -40,52 +40,6 @@ void log(tag, data) {
   print("$tag : ${data}");
 }
 
-Widget setListTile(String svg, String title, Function callback) {
-  return ListTile(
-    leading: title == "Customer"
-        ? SvgPicture.asset(
-            svg,
-            color: isDarkMode() ? white : white,
-            height: 3.2.h,
-            width: 1.h,
-          )
-        : title == "Product"
-            ? Container(
-                margin: EdgeInsets.only(right: 4.w),
-                child: SvgPicture.asset(
-                  svg,
-                  color: isDarkMode() ? white : white,
-                  height: 3.5.h,
-                  width: 1.5.w,
-                ),
-              )
-            : title == "Service"
-                ? Container(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: SvgPicture.asset(
-                      svg,
-                      color: isDarkMode() ? white : white,
-                      height: 3.5.h,
-                      width: 3.5.w,
-                      alignment: Alignment.topLeft,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : SvgPicture.asset(
-                    svg,
-                    color: isDarkMode() ? white : white,
-                  ),
-    horizontalTitleGap: 0.1,
-    visualDensity: VisualDensity(horizontal: -2, vertical: -2),
-    title: Text(title,
-        style: TextStyle(
-            color: Colors.grey, fontFamily: opensansMedium, fontSize: 11.5.sp)),
-    onTap: () {
-      callback();
-    },
-  );
-}
-
 Widget setNavtile(
   String svg,
   String title,
@@ -98,9 +52,12 @@ Widget setNavtile(
       logcat("onCLICK", "DONE");
     },
     child: Container(
-      // color: title == "Service" ? white : null,
-      padding:
-          EdgeInsets.only(top: 1.5.h, bottom: 1.5.h, left: 7.w, right: 5.w),
+      color: Colors.grey[900],
+      padding: EdgeInsets.only(
+        top: 1.5.h,
+        bottom: 1.5.h,
+        left: 7.w,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

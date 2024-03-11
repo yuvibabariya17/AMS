@@ -550,7 +550,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
-                                                            .center,
+                                                            .start,
                                                     children: [
                                                       Text(
                                                         "Customer Name : ",
@@ -592,7 +592,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Contact No : ",
@@ -641,7 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     RichText(
                                                       text: TextSpan(
@@ -690,7 +690,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Appointment Type : ",
@@ -730,7 +730,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Amount : ",
@@ -744,7 +744,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    item.amount.toString(),
+                                                    '₹ ${item.amount.toString()}',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

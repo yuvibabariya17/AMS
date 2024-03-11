@@ -224,9 +224,9 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                   color:
                       currentPage == index ? Colors.white : Colors.grey[850]),
             ),
-            SizedBox(
-              width: currentPage == index ? 4.w : 0,
-            ),
+            // SizedBox(
+            //   width: currentPage == index ? 4.w : 0,
+            // ),
             // currentPage == index
             //     ? Container(
             //         decoration: BoxDecoration(

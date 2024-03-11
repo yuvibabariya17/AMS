@@ -108,12 +108,12 @@ class UpcomingAppointmentController extends GetxController {
           state.value = ScreenState.apiSuccess;
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
-          var endOfSecondDay = today.add(Duration(days: 2));
+          var startOfToday = DateTime(today.year, today.month, today.day);
+          var endOfToday = startOfToday.add(Duration(days: 3));
 
           data.data.retainWhere((appointment) =>
-              appointment.dateOfAppointment.isAtSameMomentAs(today) ||
-              appointment.dateOfAppointment.isAfter(today) &&
-                  appointment.dateOfAppointment.isBefore(endOfSecondDay));
+              appointment.dateOfAppointment.isAfter(startOfToday) &&
+              appointment.dateOfAppointment.isBefore(endOfToday));
 
           data.data.sort(
               (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));

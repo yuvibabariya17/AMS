@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             LoginScreenConstant.signInAccount,
                             style: TextStyle(
+                                color: isDarkMode() ? white : black,
                                 fontSize: 18.sp,
                                 fontFamily: opensans_Bold,
                                 fontWeight: FontWeight.w700),

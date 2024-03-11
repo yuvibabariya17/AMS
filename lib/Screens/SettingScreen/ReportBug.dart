@@ -112,6 +112,7 @@ class _ReportBugScreenState extends State<ReportBugScreen> {
                   onChanged: (value) {
                     filterExpertList(value);
                   },
+                  style: TextStyle(color: isDarkMode() ? white : black),
                   decoration: InputDecoration(
                       hintText: 'Search',
                       contentPadding:

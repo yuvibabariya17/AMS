@@ -63,6 +63,18 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 
   @override
+  void dispose() {
+    controller.namectr.text = "";
+    controller.emailctr.text = "";
+    controller.addressctr.text = "";
+    controller.imgctr.text = "";
+    controller.idctr.text = "";
+    controller.contactctr.text = "";
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

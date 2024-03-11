@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -50,6 +52,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
             .toList();
       }
     });
+  }
+
+  String formatDate(String dateTimeString) {
+    // Parse the date string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Format the DateTime object into the desired format
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+
+    return formattedDate;
   }
 
   // void filterServiceList(String query) {
@@ -290,122 +302,440 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Stack(
-                  //   children: [
-                  //     //IMAGE SHOW
-
-                  //     // Container(
-                  //     //     height: 11.h,
-                  //     //     width: 60.w,
-                  //     //     // padding: EdgeInsets.all(
-                  //     //     //   SizerUtil.deviceType == DeviceType.mobile
-                  //     //     //       ? 1.2.w
-                  //     //     //       : 1.0.w,
-                  //     //     // ),
-                  //     //     child: ClipRRect(
-                  //     //       borderRadius: const BorderRadius.all(
-                  //     //           Radius.circular(15)),
-                  //     //       child: CachedNetworkImage(
-                  //     //         fit: BoxFit.cover,
-                  //     //         imageUrl: "",
-                  //     //         placeholder: (context, url) =>
-                  //     //             const Center(
-                  //     //           child: CircularProgressIndicator(
-                  //     //               color: primaryColor),
-                  //     //         ),
-                  //     //         errorWidget: (context, url, error) =>
-                  //     //             Image.asset(
-                  //     //           Asset.placeholder,
-                  //     //           height: 11.h,
-                  //     //           fit: BoxFit.cover,
-                  //     //         ),
-                  //     //       ),
-                  //     //     ))
-
-                  //     // CircleAvatar(
-                  //     //   radius: 4.h,
-                  //     //   backgroundColor: Colors.white,
-                  //     //   child: SvgPicture.asset(
-                  //     //     Asset.profileimg,
-                  //     //     fit: BoxFit.cover,
-                  //     //   ),
-                  //     // ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data.serviceInfo.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: opensansMedium,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        insetPadding: EdgeInsets.symmetric(
+                            vertical: 20.h, horizontal: 4.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              20.0), // Adjust the radius as needed
                         ),
-                        // textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '₹ ${data.fees.toString()}',
-                        style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: opensansMedium,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w400,
+                        elevation: 0.0, // No shadow
+                        //clipBehavior: Clip.antiAlias,
+                        backgroundColor: isDarkMode() ? black : white,
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 3.h,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 55.w,
+                                      child: Marquee(
+                                        style: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: isDarkMode() ? white : black,
+                                          fontSize: SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 16.sp
+                                              : 10.sp,
+                                        ),
+                                        text: "SERVICE DETAILS",
+                                        scrollAxis: Axis
+                                            .horizontal, // Use Axis.vertical for vertical scrolling
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start, // Adjust as needed
+                                        blankSpace:
+                                            20.0, // Adjust the space between text repetitions
+                                        velocity:
+                                            50.0, // Adjust the scrolling speed
+                                        pauseAfterRound: const Duration(
+                                            seconds:
+                                                1), // Time to pause after each scroll
+                                        startPadding:
+                                            2.w, // Adjust the initial padding
+                                        accelerationDuration: const Duration(
+                                            seconds:
+                                                1), // Duration for acceleration
+                                        accelerationCurve:
+                                            Curves.linear, // Acceleration curve
+                                        decelerationDuration: const Duration(
+                                            milliseconds:
+                                                500), // Duration for deceleration
+                                        decelerationCurve: Curves
+                                            .easeOut, // Deceleration curve
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 24.0,
+                                          color: isDarkMode() ? white : black,
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            Divider(
+                              color: Colors.grey,
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Service Name : ",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w800,
+                                        color: isDarkMode() ? white : black,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      // flex: 2,
+                                      child: Text(
+                                        data.serviceInfo.name,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 10.sp,
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: fontRegular),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Approx time : ",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDarkMode() ? white : black,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    // controller.launchPhoneCall(
+                                    //     data.customerInfo.contactNo);
+                                  },
+                                  child: Text(
+                                    formatDate(data.oppoxTime.toString()),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 12.sp
+                                            : 12.sp,
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: fontRegular),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        fontSize: 8.sp,
+                                        fontWeight: FontWeight.w700,
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: fontBold,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Sitting : ',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    data.oppoxSetting.toString(),
+                                    style: TextStyle(
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 12.sp
+                                            : 12.sp,
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: fontRegular),
+                                  )
+                                ]),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Sitting Duration : ",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDarkMode() ? white : black,
+                                  ),
+                                ),
+                                Text(
+                                  formatDate(
+                                      data.oppoxSettingDuration.toString()),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 12.sp
+                                          : 12.sp,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: fontRegular),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Sitting Days Interval : ",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDarkMode() ? white : black,
+                                  ),
+                                ),
+                                Text(
+                                  data.oppox_setting_days_inverval.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 12.sp
+                                          : 12.sp,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: fontRegular),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Days : ",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDarkMode() ? white : black,
+                                  ),
+                                ),
+                                Text(
+                                  data.Total_days.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 12.sp
+                                          : 12.sp,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: fontRegular),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Price : ",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDarkMode() ? white : black,
+                                  ),
+                                ),
+                                Text(
+                                  '₹ ${data.fees.toString()}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 12.sp
+                                          : 12.sp,
+                                      color: isDarkMode() ? white : black,
+                                      fontFamily: fontRegular),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(AddServiceScreen(
-                                  isEdit: true, editService: data))
-                              ?.then((value) {
-                            if (value == true) {
-                              controller.getServiceList(
-                                context,
-                              );
-                            }
-                          });
-                        },
-                        child: Container(
-                          child: SvgPicture.asset(
-                            Asset.edit,
-                            height: 2.3.h,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
+                      );
+                    },
+                  );
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Stack(
+                    //   children: [
+                    //     //IMAGE SHOW
+
+                    //     // Container(
+                    //     //     height: 11.h,
+                    //     //     width: 60.w,
+                    //     //     // padding: EdgeInsets.all(
+                    //     //     //   SizerUtil.deviceType == DeviceType.mobile
+                    //     //     //       ? 1.2.w
+                    //     //     //       : 1.0.w,
+                    //     //     // ),
+                    //     //     child: ClipRRect(
+                    //     //       borderRadius: const BorderRadius.all(
+                    //     //           Radius.circular(15)),
+                    //     //       child: CachedNetworkImage(
+                    //     //         fit: BoxFit.cover,
+                    //     //         imageUrl: "",
+                    //     //         placeholder: (context, url) =>
+                    //     //             const Center(
+                    //     //           child: CircularProgressIndicator(
+                    //     //               color: primaryColor),
+                    //     //         ),
+                    //     //         errorWidget: (context, url, error) =>
+                    //     //             Image.asset(
+                    //     //           Asset.placeholder,
+                    //     //           height: 11.h,
+                    //     //           fit: BoxFit.cover,
+                    //     //         ),
+                    //     //       ),
+                    //     //     ))
+
+                    //     // CircleAvatar(
+                    //     //   radius: 4.h,
+                    //     //   backgroundColor: Colors.white,
+                    //     //   child: SvgPicture.asset(
+                    //     //     Asset.profileimg,
+                    //     //     fit: BoxFit.cover,
+                    //     //   ),
+                    //     // ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.serviceInfo.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          // textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '₹ ${data.fees.toString()}',
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                      ),
-                      SizedBox(width: 5.0),
-                      GestureDetector(
-                        onTap: () {
-                          showDeleteConfirmationDialog(data.id);
-                        },
-                        child: Container(
-                          child: Icon(
-                            Icons.delete_rounded,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
-                            size: 3.h,
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(AddServiceScreen(
+                                    isEdit: true, editService: data))
+                                ?.then((value) {
+                              if (value == true) {
+                                controller.getServiceList(
+                                  context,
+                                );
+                              }
+                            });
+                          },
+                          child: Container(
+                            child: SvgPicture.asset(
+                              Asset.edit,
+                              height: 2.3.h,
+                              color: isDarkMode() ? Colors.grey : Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 5.0),
+                        GestureDetector(
+                          onTap: () {
+                            showDeleteConfirmationDialog(data.id);
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.delete_rounded,
+                              color: isDarkMode() ? Colors.grey : Colors.grey,
+                              size: 3.h,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },

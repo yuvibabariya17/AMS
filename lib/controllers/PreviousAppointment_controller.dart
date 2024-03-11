@@ -70,9 +70,12 @@ class PreviousAppointmentController extends GetxController {
         if (responseData['status'] == 1) {
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
-          //var twoDaysAgo = today.subtract(Duration(days: 2));
-          data.data.retainWhere((appointment) => appointment.dateOfAppointment
-              .isBefore(DateTime(today.year, today.month, today.day)));
+          var twoDaysAgo = today.subtract(Duration(days: 3));
+
+          data.data.retainWhere((appointment) =>
+              appointment.dateOfAppointment.isAfter(twoDaysAgo) &&
+              appointment.dateOfAppointment
+                  .isBefore(DateTime(today.year, today.month, today.day)));
 
           data.data.sort(
               (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));

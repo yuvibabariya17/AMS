@@ -39,7 +39,7 @@ class Repository {
       Map<String, dynamic> body, String endPoint,
       {bool? allowHeader, int? itemId}) async {
     String ip = await UserPreferences().getIP();
-  //  logcat("APIURL:::", buildUrl(endPoint, ip));
+    //  logcat("APIURL:::", buildUrl(endPoint, ip));
     String token = await UserPreferences().getToken();
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json",
@@ -55,8 +55,12 @@ class Repository {
 
   static Future<http.Response> put(Map<String, dynamic> body, String endPoint,
       {bool? allowHeader}) async {
-          String ip = await UserPreferences().getIP();
-    logcat("APIURL:::", buildUrl(endPoint,));
+    String ip = await UserPreferences().getIP();
+    logcat(
+        "APIURL:::",
+        buildUrl(
+          endPoint,
+        ));
     String token = await UserPreferences().getToken();
     logcat("TOKEN", token.toString());
     Map<String, String> headers = {
@@ -67,7 +71,10 @@ class Repository {
       'Content-Type': "application/json",
       'Authorization': "Bearer $token",
     });
-    var response = await client.put(buildUrl(endPoint,),
+    var response = await client.put(
+        buildUrl(
+          endPoint,
+        ),
         body: jsonEncode(body),
         headers: allowHeader == true ? headers : await buildHeader);
     return response;
@@ -75,8 +82,12 @@ class Repository {
 
   static Future<http.Response> post(Map<String, dynamic> body, String endPoint,
       {bool? allowHeader}) async {
-      String ip = await UserPreferences().getIP();
-    logcat("APIURL:::", buildUrl(endPoint, ));
+    String ip = await UserPreferences().getIP();
+    logcat(
+        "APIURL:::",
+        buildUrl(
+          endPoint,
+        ));
     String token = await UserPreferences().getToken();
     logcat("TOKEN", token.toString());
     Map<String, String> headers = {
@@ -87,7 +98,10 @@ class Repository {
       'Content-Type': "application/json",
       'Authorization': "Bearer $token",
     });
-    var response = await client.post(buildUrl(endPoint,),
+    var response = await client.post(
+        buildUrl(
+          endPoint,
+        ),
         body: jsonEncode(body),
         headers: allowHeader == true ? headers : await buildHeader);
     return response;
@@ -95,12 +109,20 @@ class Repository {
 
   static Future<http.Response> get(Map<String, String> body, String endPoint,
       {bool? allowHeader, bool? list}) async {
-             String ip = await UserPreferences().getIP();
-    logcat("APIURL:::", buildUrl(endPoint, ));
+    String ip = await UserPreferences().getIP();
+    logcat(
+        "APIURL:::",
+        buildUrl(
+          endPoint,
+        ));
 
-    var response = await client.get(buildUrl(endPoint,), headers: {
-      HttpHeaders.contentTypeHeader: "application/json",
-    });
+    var response = await client.get(
+        buildUrl(
+          endPoint,
+        ),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        });
     return response;
   }
 
@@ -113,11 +135,13 @@ class Repository {
       'Content-Type': "multipart/form-data",
       'x-access-token': token,
     };
-    
+
     String ip = await UserPreferences().getIP();
     var request = http.MultipartRequest(
       "POST",
-      buildUrl(endPoint,),
+      buildUrl(
+        endPoint,
+      ),
     );
     if (allowHeader) request.headers.addAll(headers);
     logcat("multiPart", multiPart.toString());

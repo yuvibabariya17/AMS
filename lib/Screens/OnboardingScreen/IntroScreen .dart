@@ -145,6 +145,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                   child: Text(
                                       'Lorem ipsum dolor sit amet consectetur.\nId sed purus malesuada euismod.',
                                       style: TextStyle(
+                                          color: isDarkMode() ? white : black,
                                           fontSize: SizerUtil.deviceType ==
                                                   DeviceType.mobile
                                               ? 13.sp
@@ -212,7 +213,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black, 
+                                        backgroundColor: Colors.black,
                                         shape: const CircleBorder(
                                             side: BorderSide(width: 11)),
                                         elevation: 0,

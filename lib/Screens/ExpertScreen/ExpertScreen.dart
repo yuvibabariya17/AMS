@@ -689,7 +689,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                           ),
                                         ),
                                         Text(
-                                          data.amount.toString(),
+                                          '₹ ${data.amount.toString()}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

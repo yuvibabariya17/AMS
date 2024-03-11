@@ -29,6 +29,8 @@ class PackageScreen extends StatefulWidget {
 }
 
 class _PackageScreenState extends State<PackageScreen> {
+  bool _isExpanded = false;
+
   var controller = Get.put(PackageController());
   List<ExpertItems> staticData = Expert_Items;
   final InternetController networkManager = Get.find<InternetController>();
@@ -502,7 +504,7 @@ class _PackageScreenState extends State<PackageScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Package Name : ",
@@ -515,10 +517,12 @@ class _PackageScreenState extends State<PackageScreen> {
                                               ),
                                             ),
                                             Expanded(
+                                              // flex: 2,
                                               child: Text(
                                                 data.name,
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
+                                                maxLines: 2,
+                                                textAlign: TextAlign.start,
                                                 style: TextStyle(
                                                     fontSize: SizerUtil
                                                                 .deviceType ==
@@ -692,47 +696,95 @@ class _PackageScreenState extends State<PackageScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Other Notes: ",
+                                          "Other Notes : ",
                                           style: TextStyle(
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w800,
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        Text(
-                                          data.otherNotes.toString(),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 12.sp,
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: fontRegular),
+                                        Expanded(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  child: AnimatedSize(
+                                                    duration: const Duration(
+                                                        milliseconds: 500),
+                                                    curve: Curves.easeInOut,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          _isExpanded =
+                                                              !_isExpanded;
+                                                        });
+                                                      },
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: data
+                                                                  .otherNotes
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: SizerUtil
+                                                                            .deviceType ==
+                                                                        DeviceType
+                                                                            .mobile
+                                                                    ? 12.sp
+                                                                    : 12.sp,
+                                                                color:
+                                                                    isDarkMode()
+                                                                        ? white
+                                                                        : black,
+                                                                fontFamily:
+                                                                    fontRegular,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        maxLines: _isExpanded
+                                                            ? null
+                                                            : 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                if (!_isExpanded)
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _isExpanded = true;
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      'Show more',
+                                                      style: TextStyle(
+                                                          color: Colors.blue),
+                                                    ),
+                                                  ),
+                                              ]),
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
                                     ),
                                   ],
                                 ),
                               );
                             },
                           );
+                       
+                       
                         },
                         child: Expanded(
                             child: Text(
-                          //  data.serviceInfo != null
-                          //     ? data.serviceInfo!.name
-                          //     : "",
-                          data.name != null ? data.name : "",
-                          maxLines: 1,
+                          data.name,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: isDarkMode() ? white : black,
@@ -751,7 +803,8 @@ class _PackageScreenState extends State<PackageScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          formatDate(data.durationFrom.toString()) +
+                          'Valid From : ' +
+                              formatDate(data.durationFrom.toString()) +
                               ' to ' +
                               formatDate(data.durationTo.toString()),
                           // data.durationFrom.toString(),
@@ -760,8 +813,8 @@ class _PackageScreenState extends State<PackageScreen> {
                           style: TextStyle(
                               color: isDarkMode() ? white : black,
                               fontFamily: opensansMedium,
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w400),
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
 
