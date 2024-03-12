@@ -333,7 +333,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               insetPadding: EdgeInsets.symmetric(
-                                  vertical: 15.h, horizontal: 4.h),
+                                  vertical: 10.h, horizontal: 4.h),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
                                     20.0), // Adjust the radius as needed
@@ -464,7 +464,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Customer Name : ",
@@ -476,20 +476,23 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.visible,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 3,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -584,7 +587,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Address : ",
@@ -594,17 +597,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                           color: isDarkMode() ? white : black,
                                         ),
                                       ),
-                                      Text(
-                                        data.address,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 12.sp
-                                                : 12.sp,
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: fontRegular),
+                                      Expanded(
+                                        child: Text(
+                                          data.address,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -690,7 +697,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Email ID : ",
@@ -700,17 +707,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                           color: isDarkMode() ? white : black,
                                         ),
                                       ),
-                                      Text(
-                                        data.email,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 12.sp
-                                                : 12.sp,
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: fontRegular),
+                                      Expanded(
+                                        child: Text(
+                                          data.email,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.visible,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -720,7 +731,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Description : ",
@@ -730,17 +741,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                           color: isDarkMode() ? white : black,
                                         ),
                                       ),
-                                      Text(
-                                        data.description,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 12.sp
-                                                : 12.sp,
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: fontRegular),
+                                      Expanded(
+                                        child: Text(
+                                          data.description,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 12.sp,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              fontFamily: fontRegular),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -826,7 +841,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                data.name,
+                                data.name.capitalize.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

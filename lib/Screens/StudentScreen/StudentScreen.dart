@@ -475,7 +475,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Student Name : ",
@@ -487,20 +487,23 @@ class _StudentScreenState extends State<StudentScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -553,7 +556,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           RichText(
                                             text: TextSpan(
@@ -578,6 +581,8 @@ class _StudentScreenState extends State<StudentScreen> {
                                           ),
                                           Text(
                                             data.email.toString(),
+                                            textAlign: TextAlign.start,
+                                            maxLines: 2,
                                             style: TextStyle(
                                                 fontSize:
                                                     SizerUtil.deviceType ==
@@ -597,7 +602,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Address : ",
@@ -607,23 +612,25 @@ class _StudentScreenState extends State<StudentScreen> {
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        Text(
-                                          data.address,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 12.sp,
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: fontRegular),
+                                        Expanded(
+                                          child: Text(
+                                            data.address,
+                                            maxLines: 3,
+                                            textAlign: TextAlign.start,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          ),
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
                                     ),
                                     SizedBox(
                                       height: 1.h,
@@ -690,7 +697,7 @@ class _StudentScreenState extends State<StudentScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          data.name,
+                          data.name.capitalize.toString(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

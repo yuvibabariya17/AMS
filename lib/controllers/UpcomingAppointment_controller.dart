@@ -111,6 +111,10 @@ class UpcomingAppointmentController extends GetxController {
           var startOfToday = DateTime(today.year, today.month, today.day);
           var endOfToday = startOfToday.add(Duration(days: 3));
 
+          logcat("STARTOFDAY", startOfToday);
+
+          logcat("ENDOFDAY", endOfToday);
+
           data.data.retainWhere((appointment) =>
               appointment.dateOfAppointment.isAfter(startOfToday) &&
               appointment.dateOfAppointment.isBefore(endOfToday));

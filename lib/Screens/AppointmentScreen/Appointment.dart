@@ -118,26 +118,34 @@ class _AppointmentScreenState extends State<AppointmentScreen>
               onClick: () async {
                 DateTime? pickedDate = await showDatePicker(
                     context: context,
-                    initialDate: controller.isFromPrevious == true
-                        ? selectedDate ?? DateTime.now()
-                        : DateTime.now(),
-                    firstDate: controller.isFromPrevious == true
-                        ? DateTime(1900)
-                        : DateTime.now(),
+                    initialDate: DateTime.now(),
+                    firstDate: controller.isFromUpcoming == true
+                        ? DateTime.now()
+                        : DateTime(2000),
+                    selectableDayPredicate: (DateTime date) {
+                      if (controller.isFromUpcoming == true) {
+                        // Enable today's date and future dates
+                        return date.isAfter(
+                            DateTime.now().subtract(Duration(days: 1)));
+                      } else {
+                        // Disable future dates compared to the current date
+                        return date
+                            .isBefore(DateTime.now().add(Duration(days: 0)));
+                      }
+                    },
                     lastDate: DateTime(2100));
                 if (pickedDate != null) {
                   String apiPassingDate =
                       DateFormat('yyyy-MM-dd').format(pickedDate);
                   picDate.value =
                       Common().formatDate(apiPassingDate.toString());
-
-                  controller.isFromPrevious == true
-                      ? Get.find<PreviousAppointmentController>()
-                          .getAppointmentList(context,
-                              selectedDateString: apiPassingDate)
-                      : Get.find<UpcomingAppointmentController>()
+                  controller.isFromUpcoming == true
+                      ? Get.find<UpcomingAppointmentController>()
                           .getAppointmentList(context, 1, true,
                               isClearList: true,
+                              selectedDateString: apiPassingDate)
+                      : Get.find<PreviousAppointmentController>()
+                          .getAppointmentList(context,
                               selectedDateString: apiPassingDate);
                 }
               },
@@ -187,6 +195,13 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         currentPage = index;
         if (tabController.indexIsChanging == false) {
           tabController.index = index;
+        }
+        if (index == 0) {
+          controller.isFromUpcoming.value = true;
+          setState(() {});
+        } else {
+          controller.isFromUpcoming.value = false;
+          setState(() {});
         }
         setState(() {});
       }),

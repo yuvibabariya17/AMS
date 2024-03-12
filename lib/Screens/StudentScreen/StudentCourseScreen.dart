@@ -347,7 +347,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 insetPadding: EdgeInsets.symmetric(
-                                    vertical: 20.h, horizontal: 4.h),
+                                    vertical: 15.h, horizontal: 4.h),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20.0), // Adjust the radius as needed
@@ -480,7 +480,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Course Name : ",
@@ -492,20 +492,24 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.courseInfo.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.courseInfo.name.capitalize
+                                                    .toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -602,7 +606,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Other Notes : ",
@@ -612,26 +616,25 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        Text(
-                                          data.otherNotes.toString(),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 12.sp,
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: fontRegular),
+                                        Expanded(
+                                          child: Text(
+                                            data.otherNotes.toString(),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          ),
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
                                     ),
                                   ],
                                 ),
@@ -689,14 +692,17 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                       // ),
                     ],
                   ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
                   // SizedBox(height: 10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Text(
-                          data.courseInfo.name,
+                          data.courseInfo.name.capitalize.toString(),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

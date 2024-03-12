@@ -328,7 +328,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 insetPadding: EdgeInsets.symmetric(
-                                    vertical: 20.h, horizontal: 4.h),
+                                    vertical: 10.h, horizontal: 4.h),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20.0), // Adjust the radius as needed
@@ -461,7 +461,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Product Name : ",
@@ -473,20 +473,23 @@ class _ProductScreenState extends State<ProductScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.visible,
+                                                maxLines: 3,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -499,7 +502,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Prodcut Category : ",
@@ -509,15 +512,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // controller.launchPhoneCall(
-                                            //     data.customerInfo.contactNo);
-                                          },
+                                        Expanded(
                                           child: Text(
                                             data.productCategoryInfo.name,
-                                            maxLines: 1,
+                                            maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
                                             style: TextStyle(
                                                 fontSize:
                                                     SizerUtil.deviceType ==
@@ -553,7 +553,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                               ),
                                               children: [
                                                 TextSpan(
-                                                  text: 'Product Amount : ',
+                                                  text: 'Amount : ',
                                                   style: TextStyle(
                                                     fontSize: 12.sp,
                                                     fontWeight: FontWeight.w800,
@@ -615,7 +615,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Description : ",
@@ -625,18 +625,23 @@ class _ProductScreenState extends State<ProductScreen> {
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        Text(
-                                          data.description.toString(),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 12.sp,
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: fontRegular),
+                                        Expanded(
+                                          child: Text(
+                                            data.description.toString(),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -691,27 +696,6 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             )),
                       )
-                      // CachedNetworkImage(
-                      //   fit: BoxFit.cover,
-                      //   imageUrl: "data.pic,",
-                      //   placeholder: (context, url) => SvgPicture.asset(
-                      //     Asset.profileimg,
-                      //     color: isDarkMode()
-                      //         ? Colors.white
-                      //         : Colors.black,
-                      //     height: 4.5.h,
-                      //     fit: BoxFit.cover,
-                      //   ),
-                      //   errorWidget: (context, url, error) =>
-                      //       SvgPicture.asset(
-                      //     Asset.profileimg,
-                      //     color: isDarkMode()
-                      //         ? Colors.white
-                      //         : Colors.black,
-                      //     height: 4.5.h,
-                      //     fit: BoxFit.cover,
-                      //   ),
-                      // )
                     ],
                   ),
                   // SizedBox(height: 10.0),
@@ -721,7 +705,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          data.name,
+                          data.name.capitalize.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: isDarkMode() ? white : black,

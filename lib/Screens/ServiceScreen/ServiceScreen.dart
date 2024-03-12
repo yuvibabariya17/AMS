@@ -670,17 +670,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          data.serviceInfo.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700,
+                        Expanded(
+                          child: Text(
+                            data.serviceInfo.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontFamily: opensansMedium,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            // textAlign: TextAlign.center,
                           ),
-                          // textAlign: TextAlign.center,
                         ),
                       ],
                     ),

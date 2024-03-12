@@ -3,7 +3,6 @@ import 'package:booking_app/controllers/Expert_controller.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -520,7 +519,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Expert Name : ",
@@ -532,20 +531,23 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.visible,
+                                                maxLines: 3,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -703,12 +705,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
                                   ],
                                 ),
                               );
@@ -762,7 +758,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                     children: [
                       Expanded(
                           child: Text(
-                        data.name,
+                        data.name.capitalize.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

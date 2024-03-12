@@ -14,7 +14,7 @@ class AppointmentScreenController extends GetxController {
   late TabController tabController;
   RxInt currentPage = 0.obs;
   bool isOnline = true;
-  RxBool isFromPrevious = false.obs;
+  RxBool isFromUpcoming = true.obs;
 
   changeIndex(int index) async {
     currentPage.value = index;

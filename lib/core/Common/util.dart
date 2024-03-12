@@ -52,7 +52,7 @@ Widget setNavtile(
       logcat("onCLICK", "DONE");
     },
     child: Container(
-      color: Colors.grey[900],
+      color: isDarkMode() ? black : Colors.grey[900],
       padding: EdgeInsets.only(
         top: 1.5.h,
         bottom: 1.5.h,

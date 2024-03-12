@@ -563,23 +563,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               : black,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        item.customerInfo.name,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                            fontSize: SizerUtil
-                                                                        .deviceType ==
-                                                                    DeviceType
-                                                                        .mobile
-                                                                ? 12.sp
-                                                                : 10.sp,
-                                                            color: isDarkMode()
-                                                                ? white
-                                                                : black,
-                                                            fontFamily:
-                                                                fontRegular),
+                                                      Expanded(
+                                                        child: Text(
+                                                          item.customerInfo.name
+                                                              .capitalize
+                                                              .toString(),
+                                                          overflow: TextOverflow
+                                                              .visible,
+                                                          maxLines: 3,
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style: TextStyle(
+                                                              fontSize: SizerUtil
+                                                                          .deviceType ==
+                                                                      DeviceType
+                                                                          .mobile
+                                                                  ? 12.sp
+                                                                  : 10.sp,
+                                                              color:
+                                                                  isDarkMode()
+                                                                      ? white
+                                                                      : black,
+                                                              fontFamily:
+                                                                  fontRegular),
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -1024,7 +1031,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .start,
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
-                                                                      .center,
+                                                                      .start,
                                                               children: [
                                                                 Text(
                                                                   "Customer : ",
@@ -1040,25 +1047,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         : black,
                                                                   ),
                                                                 ),
-                                                                Text(
-                                                                  item.customerInfo
-                                                                      .name,
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: TextStyle(
-                                                                      fontSize: SizerUtil.deviceType ==
-                                                                              DeviceType
-                                                                                  .mobile
-                                                                          ? 9.sp
-                                                                          : 7
-                                                                              .sp,
-                                                                      color: isDarkMode()
-                                                                          ? white
-                                                                          : black,
-                                                                      fontFamily:
-                                                                          fontRegular),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    item
+                                                                        .customerInfo
+                                                                        .name
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    maxLines: 1,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: TextStyle(
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                                                            ? 9
+                                                                                .sp
+                                                                            : 7
+                                                                                .sp,
+                                                                        color: isDarkMode()
+                                                                            ? white
+                                                                            : black,
+                                                                        fontFamily:
+                                                                            fontRegular),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),

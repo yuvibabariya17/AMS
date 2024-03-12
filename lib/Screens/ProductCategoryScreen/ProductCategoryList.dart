@@ -483,7 +483,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Category Name : ",
@@ -495,20 +495,23 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -521,7 +524,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Description : ",
@@ -531,33 +534,25 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                             color: isDarkMode() ? white : black,
                                           ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // controller.launchPhoneCall(
-                                            //     data.customerInfo.contactNo);
-                                          },
-                                          child: Expanded(
-                                            child: Text(
-                                              data.description.toString(),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 12.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
-                                            ),
+                                        Expanded(
+                                          child: Text(
+                                            data.description.toString(),
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 12.sp,
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: fontRegular),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
                                     ),
                                   ],
                                 ),

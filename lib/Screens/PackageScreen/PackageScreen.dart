@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
+import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/Listofexpert.dart';
 import '../../Models/Listofexpert_model.dart';
@@ -29,7 +30,7 @@ class PackageScreen extends StatefulWidget {
 }
 
 class _PackageScreenState extends State<PackageScreen> {
-  bool _isExpanded = false;
+  bool isReadMore = false;
 
   var controller = Get.put(PackageController());
   List<ExpertItems> staticData = Expert_Items;
@@ -406,7 +407,7 @@ class _PackageScreenState extends State<PackageScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 insetPadding: EdgeInsets.symmetric(
-                                    vertical: 20.h, horizontal: 4.h),
+                                    vertical: 20.h, horizontal: 3.h),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20.0), // Adjust the radius as needed
@@ -519,7 +520,7 @@ class _PackageScreenState extends State<PackageScreen> {
                                             Expanded(
                                               // flex: 2,
                                               child: Text(
-                                                data.name,
+                                                data.name.capitalize.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 textAlign: TextAlign.start,
@@ -692,98 +693,50 @@ class _PackageScreenState extends State<PackageScreen> {
                                     SizedBox(
                                       height: 1.h,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Other Notes : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Other Notes : ",
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w800,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SingleChildScrollView(
-                                                  child: AnimatedSize(
-                                                    duration: const Duration(
-                                                        milliseconds: 500),
-                                                    curve: Curves.easeInOut,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _isExpanded =
-                                                              !_isExpanded;
-                                                        });
-                                                      },
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: data
-                                                                  .otherNotes
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                fontSize: SizerUtil
-                                                                            .deviceType ==
-                                                                        DeviceType
-                                                                            .mobile
-                                                                    ? 12.sp
-                                                                    : 12.sp,
-                                                                color:
-                                                                    isDarkMode()
-                                                                        ? white
-                                                                        : black,
-                                                                fontFamily:
-                                                                    fontRegular,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        maxLines: _isExpanded
-                                                            ? null
-                                                            : 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                if (!_isExpanded)
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        _isExpanded = true;
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      'Show more',
-                                                      style: TextStyle(
-                                                          color: Colors.blue),
-                                                    ),
-                                                  ),
-                                              ]),
-                                        ),
-                                      ],
+                                          Container(
+                                            width: 44.w,
+                                            child: ReadMoreText(
+                                              data.otherNotes.toString(),
+                                              preDataTextStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              colorClickableText: Colors.red,
+                                              trimMode: TrimMode.Line,
+                                              trimLines: 4,
+                                              textAlign: TextAlign.start,
+                                              trimCollapsedText: '...Show more',
+                                              trimExpandedText: ' show less',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               );
                             },
                           );
-                       
-                       
                         },
                         child: Expanded(
                             child: Text(
-                          data.name,
+                          data.name.capitalize.toString(),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

@@ -174,7 +174,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                             children: [
                                               Container(
                                                   child: Text(
-                                                data.name,
+                                                data.name.capitalize.toString(),
                                                 style: TextStyle(
                                                     color: isDarkMode()
                                                         ? white

@@ -90,6 +90,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.isExpand! ? 4 : 1,
       enabled: widget.isEnable,
       cursorColor: primaryColor,
       readOnly:
@@ -137,11 +138,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
       decoration: InputDecoration(
         labelStyle: styleTextForFieldLabel(widget.node),
         contentPadding: EdgeInsets.only(
-            left: 5.w,
-            right: 5.w,
+            left: widget.isExpand! ? 5.w : 5.w,
+            right: widget.isExpand! ? 2.w : 5.w,
             top: SizerUtil.deviceType == DeviceType.mobile
                 ? widget.isExpand!
-                    ? 10.h
+                    ? 5.h
                     : 0.w
                 : 3.w,
             bottom: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 3.w),

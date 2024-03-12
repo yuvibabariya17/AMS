@@ -341,7 +341,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 insetPadding: EdgeInsets.symmetric(
-                                    vertical: 20.h, horizontal: 4.h),
+                                    vertical: 25.h, horizontal: 4.h),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20.0), // Adjust the radius as needed
@@ -439,7 +439,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Brand Category Name : ",
@@ -451,20 +451,23 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                                     : black,
                                               ),
                                             ),
-                                            Text(
-                                              data.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 12.sp
-                                                          : 10.sp,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontFamily: fontRegular),
+                                            Expanded(
+                                              child: Text(
+                                                data.name.capitalize.toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: fontRegular),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -477,7 +480,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Description : ",
@@ -491,7 +494,8 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                                           child: Text(
                                             data.description.toString(),
                                             maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
+                                            overflow: TextOverflow.visible,
+                                            textAlign: TextAlign.start,
                                             style: TextStyle(
                                                 fontSize:
                                                     SizerUtil.deviceType ==

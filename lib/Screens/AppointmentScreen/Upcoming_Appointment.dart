@@ -266,11 +266,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              //  data.title,
-                                              "Customer Name : ",
+                                              "Customer : ",
                                               style: TextStyle(
                                                   color: isDarkMode()
                                                       ? white
@@ -279,11 +278,14 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
-                                            Container(
+                                            Expanded(
                                               child: Text(
-                                                //  data.title,
-                                                data.customerInfo.name,
-
+                                                data.customerInfo.name
+                                                    .capitalize
+                                                    .toString(),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
                                                 style: TextStyle(
                                                     color: isDarkMode()
                                                         ? white
@@ -298,7 +300,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                         ),
                                         Row(children: [
                                           Text(
-                                            //  data.title,
                                             "Appointment Type : ",
                                             style: TextStyle(
                                                 color: isDarkMode()
@@ -310,11 +311,8 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                           ),
                                           Container(
                                               child: Text(
-                                            //  data.title,
-                                            data.appointmentType,
-                                            // data.vendorInfo != null
-                                            //     ? data.vendorInfo.emailId.toString()
-                                            //     : "",
+                                            data.appointmentType.capitalize
+                                                .toString(),
                                             style: TextStyle(
                                                 color: isDarkMode()
                                                     ? white

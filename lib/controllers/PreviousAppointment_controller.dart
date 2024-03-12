@@ -38,7 +38,7 @@ class PreviousAppointmentController extends GetxController {
 
   void getAppointmentList(context, {String? selectedDateString}) async {
     state.value = ScreenState.apiLoading;
-    // isExpertTypeApiList.value = true;
+
     try {
       if (networkManager.connectionType == 0) {
         showDialogForScreen(context, Connection.noConnection, callback: () {
@@ -46,6 +46,23 @@ class PreviousAppointmentController extends GetxController {
         });
         return;
       }
+      logcat("PARAMETER", {
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          "startAt": selectedDateString != null ? selectedDateString : ''
+          // "endAt": selectedDateString.toString()
+          // "vendor_id": "65964339a438e9a2e56bb859",
+          // "customer_id": "65002e988f256c43ccea2fcb",
+          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
+      });
+
       var response = await Repository.post({
         "pagination": {
           "pageNo": 1,
@@ -71,6 +88,8 @@ class PreviousAppointmentController extends GetxController {
           var data = AppointmentModel.fromJson(responseData);
           var today = DateTime.now();
           var twoDaysAgo = today.subtract(Duration(days: 3));
+
+          logcat("TWODAYSAGO", twoDaysAgo.toString());
 
           data.data.retainWhere((appointment) =>
               appointment.dateOfAppointment.isAfter(twoDaysAgo) &&

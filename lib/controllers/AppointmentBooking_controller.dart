@@ -710,7 +710,7 @@ class AppointmentBookingController extends GetxController {
                 getAppointmentSlot(context);
               },
               title: Text(
-                expertObjectList[index].name.toString(),
+                expertObjectList[index].name.capitalize.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
                     fontSize: 13.5.sp,
@@ -878,7 +878,7 @@ class AppointmentBookingController extends GetxController {
                 validateCustomer(Customerctr.text);
               },
               title: Text(
-                customerObjectList[index].name.toString(),
+                customerObjectList[index].name.capitalize.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
                     fontSize: 13.5.sp,
