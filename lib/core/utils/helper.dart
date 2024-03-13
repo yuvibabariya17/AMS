@@ -1,21 +1,18 @@
-import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/constants/get_storage_key.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 bool isDarkMode() {
   bool isDark;
-  var data = Get.find<ThemeController>().isDarkMode;
+  var data = GetStorage().read(GetStorageKey.IS_DARK_MODE);
+  logcat("ApplyIsDarkMode", data.toString());
   if (data == null || data.toString().isEmpty) {
     isDark = false;
-    print("IsDarkModeEMPTY${isDark}");
   } else if (GetStorage().read(GetStorageKey.IS_DARK_MODE) == 1) {
     isDark = false;
-    print("IsLIGHTModeEMPTY${isDark}");
   } else {
     isDark = true;
-    print("IsDarkMode${isDark}");
   }
   return isDark;
 }

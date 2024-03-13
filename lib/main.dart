@@ -110,7 +110,6 @@ import 'dart:io';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:booking_app/Screens/SplashScreen/SplashScreen.dart';
 import 'package:booking_app/core/Common/Common.dart';
-import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -132,7 +131,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Firebase.initializeApp();
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -147,7 +146,6 @@ class MyApp extends StatelessWidget {
     final getStorage = GetStorage();
     int isDarkMode = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
     getStorage.write(GetStorageKey.IS_DARK_MODE, isDarkMode);
-    logcat("IsDarkMode::", isDarkMode.toString());
     Common().trasparent_statusbar();
     return FutureBuilder(
       future: _init(),
@@ -165,8 +163,8 @@ class MyApp extends StatelessWidget {
                       return GetMaterialApp(
                         title: CommonConstant.ams,
                         theme: !ctr.isDark.value
-                            ? ThemeData.light(useMaterial3: true)
-                            : ThemeData.dark(useMaterial3: true),
+                            ? ThemeData.light()
+                            : ThemeData.dark(),
                         debugShowCheckedModeBanner: false,
                         home: Splashscreen(),
                         defaultTransition: Transition.rightToLeftWithFade,
@@ -178,7 +176,7 @@ class MyApp extends StatelessWidget {
             },
           );
         } else {
-          return Container();
+          return CircularProgressIndicator();
         }
       },
     );

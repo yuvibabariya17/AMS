@@ -38,7 +38,7 @@ class _SplashscreenState extends State<Splashscreen> {
     Timer(const Duration(seconds: 3), () async {
       SignInData? retrievedObject = await UserPreferences().getSignInInfo();
       if (retrievedObject != null) {
-        Get.offAll(const dashboard());
+        Get.offAll(MyHomePage());
       } else {
         Get.offAll(const IntroScreen());
       }

@@ -1,6 +1,7 @@
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/SettingScreen/InviteFriendScreen.dart';
 import 'package:booking_app/Screens/SettingScreen/AddReportBugScreen.dart';
+import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/themes/color_const.dart';
@@ -57,6 +58,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     Common().trasparent_statusbar();
     return CustomScaffold(
+        isFromSettingScreen: true,
         body: Container(
             margin: EdgeInsets.only(
               top: 1.h,
@@ -64,7 +66,9 @@ class _SettingsState extends State<Settings> {
             child: Center(
                 child: Column(children: [
               getCommonToolbar(ScreenTitle.settings, () {
-                Get.offAll(dashboard());
+                Get.offAll(MyHomePage(
+                  isFromSettingScreen: true,
+                ));
               }),
               // HomeAppBar(
               //   title: Strings.settings,
@@ -140,26 +144,24 @@ class _SettingsState extends State<Settings> {
                                         0
                                     ? 1
                                     : 0;
+                                setState(() {});
+                                // Delay for a short period to ensure the state changes are processed
                                 await Future.delayed(
                                     const Duration(milliseconds: 50));
 
-                                storageBox.put(
-                                    Strings.selectedMode, _isDarkMode);
-
                                 setState(() {});
-
                                 await getStorage.write(
                                     GetStorageKey.IS_DARK_MODE, _isDarkMode);
-
-                                int isDarkMode =
-                                    getStorage.read(GetStorageKey.IS_DARK_MODE);
-                                logcat(
-                                    "DARK_MODE_SETTING", isDarkMode.toString());
-                                // Get.find<ThemeController>()
-                                //     .updateState(_isDarkMode);
+                                Get.find<ThemeController>()
+                                    .updateState(_isDarkMode);
                                 Get.find<ThemeController>().update();
-                                logcat("_isDarkMode", _isDarkMode.toString());
-
+                                logcat(
+                                    'DarkModeStatus::',
+                                    (getStorage
+                                        .read(GetStorageKey.IS_DARK_MODE)));
+                                // Delay before updating MainScreenController
+                                await Future.delayed(
+                                    const Duration(milliseconds: 50));
                                 setState(() {});
                               },
                               thumbColor: isDarkMode()

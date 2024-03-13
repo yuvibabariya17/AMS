@@ -125,7 +125,7 @@ class LoginController extends GetxController {
         if (responseDetail.status == 1) {
           UserPreferences().saveSignInInfo(responseDetail.data);
           UserPreferences().setToken(responseDetail.data.token.toString());
-          Get.offAll(dashboard());
+          Get.offAll(MyHomePage());
         } else {
           showDialogForScreen(context, responseDetail.message.toString(),
               callback: () {});

@@ -16,9 +16,7 @@ import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +35,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   var controller = Get.put(HomeScreenController());
 //  late _DataSource events;
   String? formattedDate;
@@ -45,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     formattedDate = Common().getCurrentDateFormate();
     controller.getHomeList(context, Common().getCurrentDate());
   }
@@ -63,7 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      isDarkMode();
+      logcat("HomeScreen", 'RESUME');
+      setState(() {});
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     controller.selectedDate = DateTime.now();
     String apiPassingDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     controller.picDate.value = Common().formatDate(apiPassingDate.toString());

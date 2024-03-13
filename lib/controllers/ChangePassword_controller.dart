@@ -309,7 +309,7 @@ class ChangePasswordController extends GetxController {
             if (fromProfile) {
               Get.back();
             } else {
-              Get.to(dashboard());
+              Get.to(MyHomePage());
             }
           });
         } else {

@@ -11,6 +11,7 @@ import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:booking_app/screens/ChangepasswordScreen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -221,7 +222,10 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 }),
                 setNavtile(Asset.settingslider, ScreenTitle.settings, () {
                   Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(Settings());
+                  Get.to(Settings())!.then((value) {
+                    logcat("Settingsss", "Back");
+                    //Get.find<HomeScreenController>().updateDarkMode();
+                  });
                 }),
                 setNavtile(Asset.multipleUser, "Customer", isBig: true, () {
                   Get.find<HomeScreenController>().closeDrawer();

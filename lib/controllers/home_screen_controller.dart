@@ -7,6 +7,7 @@ import 'package:booking_app/Models/hairservice_model.dart';
 import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/preference/UserPreference.dart';
@@ -38,7 +39,7 @@ class HomeScreenController extends GetxController {
   bool switch_state = false;
   bool switch_state1 = false;
   GlobalKey<ScrollSnapListState> keydata = GlobalKey();
-  DateTime? selectedDate =DateTime.now(); 
+  DateTime? selectedDate = DateTime.now();
 
   var icon;
   var leading;
@@ -55,6 +56,11 @@ class HomeScreenController extends GetxController {
 
   changeIndex(int index) async {
     currentPage = index;
+    update();
+  }
+
+  void updateDarkMode() {
+    isDarkMode();
     update();
   }
 
@@ -163,7 +169,6 @@ class HomeScreenController extends GetxController {
         DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(dateTime);
     return formattedTime;
   }
-
 
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
