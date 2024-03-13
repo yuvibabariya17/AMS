@@ -307,8 +307,8 @@ class ProductSellingController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                customerId.value = customerObjectList[index].name.toString();
-                coursectr.text =
+                customerId.value = customerObjectList[index].id.toString();
+                customerctr.text =
                     customerObjectList[index].name.capitalize.toString();
               },
               title: Text(
@@ -402,7 +402,7 @@ class ProductSellingController extends GetxController {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
                 productCategoryId.value =
-                    productCategoryObjectList[index].name.toString();
+                    productCategoryObjectList[index].id.toString();
                 productCatctr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
               },
@@ -496,7 +496,7 @@ class ProductSellingController extends GetxController {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
                 brandCategoryId.value =
-                    BrnadCategoryObjectList[index].name.toString();
+                    BrnadCategoryObjectList[index].id.toString();
                 brandctr.text =
                     BrnadCategoryObjectList[index].name.capitalize.toString();
               },

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Screens/BrandCategoryScreen.dart';
 import 'package:booking_app/Screens/CustomerScreen/CustomerScreen.dart';
 import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
@@ -90,23 +91,26 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
             shadowColor: Colors.white,
             elevation: 0,
             backgroundColor: isDarkMode() ? black : Colors.grey[900],
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  buildHeader(context),
-                  SizedBox(
-                    height:
-                        SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.3.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                buildHeader(context),
+                SizedBox(
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.3.h,
+                ),
+                Divider(
+                  color: Colors.grey,
+                  height: 2.h,
+                  thickness: 1,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    // Wrap buildMenuItems with SingleChildScrollView
+                    child: buildMenuItems(context),
                   ),
-                  Divider(
-                    color: Colors.grey,
-                    height: 2.h,
-                    thickness: 1,
-                  ),
-                  buildMenuItems(context),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -131,8 +135,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'http://192.168.1.7:4000/uploads/$profile', // URL of the expert's image
+                    imageUrl: '${ApiUrl.ImgUrl}${profile}',
                     placeholder: (context, url) =>
                         SvgPicture.asset(Asset.profileimg),
                     errorWidget: (context, url, error) =>
@@ -143,45 +146,41 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   ),
                 ),
               ),
-              // CircleAvatar(
-              //   radius: 4.5.h,
-              //   backgroundColor: Colors.white,
-              //   child: SvgPicture.asset(
-              //     Asset.profileimg,
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
               SizedBox(width: 2.5.w),
-              Container(
-                margin: EdgeInsets.only(bottom: 1.5.h, top: 1.8.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name.toString(),
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 16.sp
-                              : 14.sp,
-                          color: Colors.white,
-                          fontFamily: opensansMedium,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(
-                      height: SizerUtil.deviceType == DeviceType.mobile
-                          ? 1.h
-                          : 0.2.h,
-                    ),
-                    Text(
-                      number.toString(),
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 10.sp
-                              : 8.sp,
-                          color: Colors.white,
-                          fontFamily: opensansMedium),
-                    )
-                  ],
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 1.5.h, top: 1.8.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name.capitalize.toString(),
+                        maxLines: 3,
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 16.sp
+                                : 14.sp,
+                            color: Colors.white,
+                            fontFamily: opensansMedium,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 0.2.h,
+                      ),
+                      Text(
+                        number.toString(),
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 10.sp
+                                : 8.sp,
+                            color: Colors.white,
+                            fontFamily: opensansMedium),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -267,7 +266,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 setNavtile(Asset.share, ScreenTitle.signOut, () {
                   PopupDialogsforSignOut(context);
                 }),
-                SizedBox(height: 5.5.h),
+                SizedBox(height: 8.h),
               ],
             )),
       );

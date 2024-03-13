@@ -85,7 +85,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                                       context: context,
                                                       initialDate: controller
                                                           .selectedStartDate,
-                                                      firstDate: DateTime(1950),
+                                                      firstDate: DateTime.now(),
                                                       lastDate: DateTime(2050)
 
                                                       // .add(const Duration(

@@ -2,6 +2,7 @@ import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/StudentCourseListModel.dart';
 import 'package:booking_app/Screens/StudentScreen/AddStudentCourseScreen.dart';
 import 'package:booking_app/controllers/StudentCourse_controller.dart';
+import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -320,466 +321,11 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.filteredStudentObjectList.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(
-          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-        ),
-        child: GridView.builder(
-          shrinkWrap: true,
-          clipBehavior: Clip.antiAlias,
-          padding: EdgeInsets.only(bottom: 35.h),
-          physics: BouncingScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+          margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
           ),
-          itemBuilder: (context, index) {
-            ListofStudentCourse data =
-                controller.filteredStudentObjectList[index];
-            return Container(
-              padding: EdgeInsets.only(
-                left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-                right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-              ),
-              decoration: BoxDecoration(
-                color: isDarkMode() ? black : white,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
-                    spreadRadius: 0.1,
-                    blurRadius: 10,
-                    offset: Offset(0.5, 0.5),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                insetPadding: EdgeInsets.symmetric(
-                                    vertical: 15.h, horizontal: 4.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      20.0), // Adjust the radius as needed
-                                ),
-                                elevation: 0.0, // No shadow
-                                //clipBehavior: Clip.antiAlias,
-                                backgroundColor: isDarkMode() ? black : white,
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 3.h,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 55.w,
-                                              child: Marquee(
-                                                style: TextStyle(
-                                                  fontFamily: fontRegular,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 16.sp
-                                                          : 10.sp,
-                                                ),
-                                                text: "STUDENT COURSE DETAILS",
-                                                scrollAxis: Axis
-                                                    .horizontal, // Use Axis.vertical for vertical scrolling
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start, // Adjust as needed
-                                                blankSpace:
-                                                    20.0, // Adjust the space between text repetitions
-                                                velocity:
-                                                    50.0, // Adjust the scrolling speed
-                                                pauseAfterRound: const Duration(
-                                                    seconds:
-                                                        1), // Time to pause after each scroll
-                                                startPadding: 2
-                                                    .w, // Adjust the initial padding
-                                                accelerationDuration:
-                                                    const Duration(
-                                                        seconds:
-                                                            1), // Duration for acceleration
-                                                accelerationCurve: Curves
-                                                    .linear, // Acceleration curve
-                                                decelerationDuration:
-                                                    const Duration(
-                                                        milliseconds:
-                                                            500), // Duration for deceleration
-                                                decelerationCurve: Curves
-                                                    .easeOut, // Deceleration curve
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Icon(
-                                                  Icons.cancel,
-                                                  size: 24.0,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                ),
-                                              ),
-                                            ),
-                                          ]),
-                                    ),
-                                    Divider(
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Column(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            height: 20.h,
-                                            width: 60.w,
-                                            // padding: EdgeInsets.all(
-                                            //   SizerUtil.deviceType == DeviceType.mobile
-                                            //       ? 1.2.w
-                                            //       : 1.0.w,
-                                            // ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(15)),
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                imageUrl: data.idProofUrlInfo
-                                                            .image !=
-                                                        null
-                                                    ? '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}'
-                                                    // '${ip}${data.photoUrlInfo.image}'
-                                                    : "",
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          color: primaryColor),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  Asset.placeholder,
-                                                  height: 11.h,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )),
-                                        SizedBox(
-                                          height: 2.h,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Course Name : ",
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w800,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                data.courseInfo.name.capitalize
-                                                    .toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontSize: SizerUtil
-                                                                .deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 10.sp,
-                                                    color: isDarkMode()
-                                                        ? white
-                                                        : black,
-                                                    fontFamily: fontRegular),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Course Fee : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // controller.launchPhoneCall(
-                                            //     data.customerInfo.contactNo);
-                                          },
-                                          child: Text(
-                                            '₹ ${data.courseInfo.fees.toString()}',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              style: TextStyle(
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontBold,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Duration : ',
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            data.courseInfo.duration.toString(),
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          )
-                                        ]),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Other Notes : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            data.otherNotes.toString(),
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-
-                          // Get.to(FullScreenImage(
-                          //   imageUrl:
-                          //       '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}',
-                          //   title: ScreenTitle.expert,
-                          // ))!
-                          //     .then(
-                          //         (value) => {Common().trasparent_statusbar()});
-                        },
-                        child: Container(
-                            height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 12.h,
-                            width: 60.w,
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: data.idProofUrlInfo.image != null
-                                    ? '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}'
-                                    : "",
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(
-                                      color: primaryColor),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  Asset.placeholder,
-                                  height: 11.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )),
-                      )
-                    ],
-                  ),
-                  // SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          data.courseInfo.name.capitalize.toString(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 14.sp
-                                : 10.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '₹ ${data.fees.toString()}',
-                        style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: opensansMedium,
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 11.sp
-                              : 9.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(AddStudentCourseScreen(
-                                  isEdit: true, editStudentCourse: data))
-                              ?.then((value) {
-                            if (value == true) {
-                              controller.getStudentCourseList(context, false);
-                            }
-                          });
-                        },
-                        child: Container(
-                          child: SvgPicture.asset(
-                            Asset.edit,
-                            height: 2.3.h,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5.0),
-                      GestureDetector(
-                        onTap: () {
-                          showDeleteConfirmationDialog(data.id);
-                        },
-                        child: Container(
-                          child: Icon(
-                            Icons.delete_rounded,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
-                            size: 3.h,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-          itemCount: controller.filteredStudentObjectList.length,
-        ),
-      );
+          child: getStudentCourseList());
     } else {
       return Container(
         height: SizerUtil.height / 1.3,
@@ -796,6 +342,614 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
         ),
       );
     }
+  }
+
+  getStudentCourseList() {
+    return GridView.builder(
+      shrinkWrap: true,
+      clipBehavior: Clip.antiAlias,
+      padding: EdgeInsets.only(bottom: 35.h),
+      physics: BouncingScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+      ),
+      itemBuilder: (context, index) {
+        ListofStudentCourse data = controller.filteredStudentObjectList[index];
+        return Container(
+          padding: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+          ),
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode()
+                    ? Colors.white.withOpacity(0.2)
+                    : Colors.black.withOpacity(0.2),
+                spreadRadius: 0.1,
+                blurRadius: 10,
+                offset: Offset(0.5, 0.5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      getStudentCourseDetails(context, data);
+
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return AlertDialog(
+                      //       insetPadding: EdgeInsets.symmetric(
+                      //           vertical: 15.h, horizontal: 4.h),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(
+                      //             20.0), // Adjust the radius as needed
+                      //       ),
+                      //       elevation: 0.0, // No shadow
+                      //       //clipBehavior: Clip.antiAlias,
+                      //       backgroundColor: isDarkMode() ? black : white,
+                      //       content: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Container(
+                      //             height: 3.h,
+                      //             child: Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.center,
+                      //                 crossAxisAlignment:
+                      //                     CrossAxisAlignment.center,
+                      //                 children: [
+                      //                   Container(
+                      //                     width: 55.w,
+                      //                     child: Marquee(
+                      //                       style: TextStyle(
+                      //                         fontFamily: fontRegular,
+                      //                         color:
+                      //                             isDarkMode() ? white : black,
+                      //                         fontSize: SizerUtil.deviceType ==
+                      //                                 DeviceType.mobile
+                      //                             ? 16.sp
+                      //                             : 10.sp,
+                      //                       ),
+                      //                       text: "STUDENT COURSE DETAILS",
+                      //                       scrollAxis: Axis
+                      //                           .horizontal, // Use Axis.vertical for vertical scrolling
+                      //                       crossAxisAlignment:
+                      //                           CrossAxisAlignment
+                      //                               .start, // Adjust as needed
+                      //                       blankSpace:
+                      //                           20.0, // Adjust the space between text repetitions
+                      //                       velocity:
+                      //                           50.0, // Adjust the scrolling speed
+                      //                       pauseAfterRound: const Duration(
+                      //                           seconds:
+                      //                               1), // Time to pause after each scroll
+                      //                       startPadding: 2
+                      //                           .w, // Adjust the initial padding
+                      //                       accelerationDuration: const Duration(
+                      //                           seconds:
+                      //                               1), // Duration for acceleration
+                      //                       accelerationCurve: Curves
+                      //                           .linear, // Acceleration curve
+                      //                       decelerationDuration: const Duration(
+                      //                           milliseconds:
+                      //                               500), // Duration for deceleration
+                      //                       decelerationCurve: Curves
+                      //                           .easeOut, // Deceleration curve
+                      //                     ),
+                      //                   ),
+                      //                   Spacer(),
+                      //                   Align(
+                      //                     alignment: Alignment.topRight,
+                      //                     child: GestureDetector(
+                      //                       onTap: () {
+                      //                         Navigator.of(context).pop();
+                      //                       },
+                      //                       child: Icon(
+                      //                         Icons.cancel,
+                      //                         size: 24.0,
+                      //                         color:
+                      //                             isDarkMode() ? white : black,
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                 ]),
+                      //           ),
+                      //           Divider(
+                      //             color: Colors.grey,
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Column(
+                      //             // mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Container(
+                      //                   height: 20.h,
+                      //                   width: 60.w,
+                      //                   // padding: EdgeInsets.all(
+                      //                   //   SizerUtil.deviceType == DeviceType.mobile
+                      //                   //       ? 1.2.w
+                      //                   //       : 1.0.w,
+                      //                   // ),
+                      //                   child: ClipRRect(
+                      //                     borderRadius: const BorderRadius.all(
+                      //                         Radius.circular(15)),
+                      //                     child: CachedNetworkImage(
+                      //                       fit: BoxFit.cover,
+                      //                       imageUrl: data
+                      //                                   .idProofUrlInfo.image !=
+                      //                               null
+                      //                           ? '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}'
+                      //                           // '${ip}${data.photoUrlInfo.image}'
+                      //                           : "",
+                      //                       placeholder: (context, url) =>
+                      //                           const Center(
+                      //                         child: CircularProgressIndicator(
+                      //                             color: primaryColor),
+                      //                       ),
+                      //                       errorWidget:
+                      //                           (context, url, error) =>
+                      //                               Image.asset(
+                      //                         Asset.placeholder,
+                      //                         height: 11.h,
+                      //                         fit: BoxFit.cover,
+                      //                       ),
+                      //                     ),
+                      //                   )),
+                      //               SizedBox(
+                      //                 height: 2.h,
+                      //               ),
+                      //               Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.start,
+                      //                 crossAxisAlignment:
+                      //                     CrossAxisAlignment.start,
+                      //                 children: [
+                      //                   Text(
+                      //                     "Course Name : ",
+                      //                     style: TextStyle(
+                      //                       fontSize: 12.sp,
+                      //                       fontWeight: FontWeight.w800,
+                      //                       color: isDarkMode() ? white : black,
+                      //                     ),
+                      //                   ),
+                      //                   Expanded(
+                      //                     child: Text(
+                      //                       data.courseInfo.name.capitalize
+                      //                           .toString(),
+                      //                       overflow: TextOverflow.ellipsis,
+                      //                       maxLines: 3,
+                      //                       textAlign: TextAlign.start,
+                      //                       style: TextStyle(
+                      //                           fontSize:
+                      //                               SizerUtil.deviceType ==
+                      //                                       DeviceType.mobile
+                      //                                   ? 12.sp
+                      //                                   : 10.sp,
+                      //                           color: isDarkMode()
+                      //                               ? white
+                      //                               : black,
+                      //                           fontFamily: fontRegular),
+                      //                     ),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Text(
+                      //                 "Course Fee : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               GestureDetector(
+                      //                 onTap: () {
+                      //                   // controller.launchPhoneCall(
+                      //                   //     data.customerInfo.contactNo);
+                      //                 },
+                      //                 child: Text(
+                      //                   '₹ ${data.courseInfo.fees.toString()}',
+                      //                   maxLines: 1,
+                      //                   overflow: TextOverflow.ellipsis,
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //               mainAxisAlignment: MainAxisAlignment.start,
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.center,
+                      //               children: [
+                      //                 RichText(
+                      //                   text: TextSpan(
+                      //                     style: TextStyle(
+                      //                       fontSize: 8.sp,
+                      //                       fontWeight: FontWeight.w700,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontBold,
+                      //                     ),
+                      //                     children: [
+                      //                       TextSpan(
+                      //                         text: 'Duration : ',
+                      //                         style: TextStyle(
+                      //                           fontSize: 12.sp,
+                      //                           fontWeight: FontWeight.w800,
+                      //                         ),
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ),
+                      //                 Text(
+                      //                   data.courseInfo.duration.toString(),
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 )
+                      //               ]),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Text(
+                      //                 "Other Notes : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               Expanded(
+                      //                 child: Text(
+                      //                   data.otherNotes.toString(),
+                      //                   maxLines: 3,
+                      //                   overflow: TextOverflow.ellipsis,
+                      //                   textAlign: TextAlign.start,
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     );
+                      //   },
+                      // );
+
+                      // // Get.to(FullScreenImage(
+                      //   imageUrl:
+                      //       '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}',
+                      //   title: ScreenTitle.expert,
+                      // ))!
+                      //     .then(
+                      //         (value) => {Common().trasparent_statusbar()});
+                    },
+                    child: Container(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 12.h,
+                        width: 60.w,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: data.idProofUrlInfo.image != null
+                                ? '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}'
+                                : "",
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                  color: primaryColor),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              Asset.placeholder,
+                              height: 11.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      data.courseInfo.name.capitalize.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                        fontFamily: opensansMedium,
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 10.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '₹ ${data.fees.toString()}',
+                    style: TextStyle(
+                      color: isDarkMode() ? white : black,
+                      fontFamily: opensansMedium,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 11.sp
+                          : 9.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(AddStudentCourseScreen(
+                              isEdit: true, editStudentCourse: data))
+                          ?.then((value) {
+                        if (value == true) {
+                          controller.getStudentCourseList(context, false);
+                        }
+                      });
+                    },
+                    child: Container(
+                      child: SvgPicture.asset(
+                        Asset.edit,
+                        height: 2.3.h,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 5.0),
+                  GestureDetector(
+                    onTap: () {
+                      showDeleteConfirmationDialog(data.id);
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                        size: 3.h,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: controller.filteredStudentObjectList.length,
+    );
+  }
+
+  getStudentCourseDetails(BuildContext context, ListofStudentCourse data) {
+    return Common().commonDetailsDialog(
+      isCustomer: true,
+      context,
+      "STUDENT COURSE DETAILS",
+      Column(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              height: 20.h,
+              width: 60.w,
+              // padding: EdgeInsets.all(
+              //   SizerUtil.deviceType == DeviceType.mobile
+              //       ? 1.2.w
+              //       : 1.0.w,
+              // ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: data.idProofUrlInfo.image != null
+                      ? '${ApiUrl.ImgUrl}${data.idProofUrlInfo.image}'
+                      // '${ip}${data.photoUrlInfo.image}'
+                      : "",
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    Asset.placeholder,
+                    height: 11.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )),
+          SizedBox(
+            height: 2.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Course Name : ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  data.courseInfo.name.capitalize.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontRegular),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Course Fee : ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // controller.launchPhoneCall(
+                  //     data.customerInfo.contactNo);
+                },
+                child: Text(
+                  '₹ ${data.courseInfo.fees.toString()}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 12.sp,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontRegular),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 8.sp,
+                      fontWeight: FontWeight.w700,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontBold,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Duration : ',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  data.courseInfo.duration.toString(),
+                  style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 12.sp,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontRegular),
+                )
+              ]),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Other Notes : ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  height: 20.h,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      data.otherNotes.toString(),
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+      
+        ],
+      ),
+    );
   }
 
   Widget apiOtherStates(state) {

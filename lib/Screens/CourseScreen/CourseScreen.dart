@@ -6,7 +6,6 @@ import 'package:booking_app/controllers/CourseController.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -272,510 +271,11 @@ class _CourseScreenState extends State<CourseScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.filteredCourseObjectList.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(
-          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-        ),
-        child: GridView.builder(
-          shrinkWrap: true,
-          clipBehavior: Clip.antiAlias,
-          padding: EdgeInsets.only(
-              bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
-          physics: BouncingScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+          margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
           ),
-          itemBuilder: (context, index) {
-            ListofCourse data = controller.filteredCourseObjectList[index];
-            return Container(
-              padding: EdgeInsets.only(
-                left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-                right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-              ),
-              decoration: BoxDecoration(
-                color: isDarkMode() ? black : white,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
-                    spreadRadius: 0.1,
-                    blurRadius: 10,
-                    offset: Offset(0.5, 0.5),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                insetPadding: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 4.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      20.0), // Adjust the radius as needed
-                                ),
-                                elevation: 0.0, // No shadow
-                                //clipBehavior: Clip.antiAlias,
-                                backgroundColor: isDarkMode() ? black : white,
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 3.h,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 55.w,
-                                              child: Marquee(
-                                                style: TextStyle(
-                                                  fontFamily: fontRegular,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                  fontSize:
-                                                      SizerUtil.deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 16.sp
-                                                          : 10.sp,
-                                                ),
-                                                text: "COURSE DETAILS",
-                                                scrollAxis: Axis
-                                                    .horizontal, // Use Axis.vertical for vertical scrolling
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start, // Adjust as needed
-                                                blankSpace:
-                                                    20.0, // Adjust the space between text repetitions
-                                                velocity:
-                                                    50.0, // Adjust the scrolling speed
-                                                pauseAfterRound: const Duration(
-                                                    seconds:
-                                                        1), // Time to pause after each scroll
-                                                startPadding: 2
-                                                    .w, // Adjust the initial padding
-                                                accelerationDuration:
-                                                    const Duration(
-                                                        seconds:
-                                                            1), // Duration for acceleration
-                                                accelerationCurve: Curves
-                                                    .linear, // Acceleration curve
-                                                decelerationDuration:
-                                                    const Duration(
-                                                        milliseconds:
-                                                            500), // Duration for deceleration
-                                                decelerationCurve: Curves
-                                                    .easeOut, // Deceleration curve
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Icon(
-                                                  Icons.cancel,
-                                                  size: 24.0,
-                                                  color: isDarkMode()
-                                                      ? white
-                                                      : black,
-                                                ),
-                                              ),
-                                            ),
-                                          ]),
-                                    ),
-                                    Divider(
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Column(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            height: 20.h,
-                                            width: 60.w,
-                                            // padding: EdgeInsets.all(
-                                            //   SizerUtil.deviceType == DeviceType.mobile
-                                            //       ? 1.2.w
-                                            //       : 1.0.w,
-                                            // ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(15)),
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                imageUrl: data.thumbnailUrlInfo
-                                                            .image !=
-                                                        null
-                                                    ? '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}'
-                                                    // '${ip}${data.photoUrlInfo.image}'
-                                                    : "",
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          color: primaryColor),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  Asset.placeholder,
-                                                  height: 11.h,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Course Name : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            data.name.capitalize.toString(),
-                                            maxLines: 3,
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              style: TextStyle(
-                                                fontSize: 8.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontBold,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Fees : ',
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '₹ ${data.fees.toString()}',
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          )
-                                        ]),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Duration : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        Text(
-                                          data.duration.toString(),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 12.sp,
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: fontRegular),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Description : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            data.description.toString(),
-                                            maxLines: 3,
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.visible,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Notes : ",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDarkMode() ? white : black,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            data.other_notes.toString(),
-                                            maxLines: 3,
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.visible,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 12.sp
-                                                        : 12.sp,
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: fontRegular),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-
-                          // Get.to(FullScreenImage(
-                          //   imageUrl:
-                          //       '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}',
-                          //   title: "Course",
-                          // ))!
-                          //     .then(
-                          //         (value) => {Common().trasparent_statusbar()});
-                        },
-                        child: Container(
-                            height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 12.h,
-                            width: 60.w,
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl:
-                                    '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}',
-                                // '${ip}${data.thumbnailUrlInfo.image}',
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(
-                                      color: primaryColor),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  Asset.placeholder,
-                                  height: 11.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )),
-                      )
-                    ],
-                  ),
-                  // SizedBox(height: 10.0),
-                  Container(
-                    padding: EdgeInsets.only(
-                        left: 1.w,
-                        right: SizerUtil.deviceType == DeviceType.mobile
-                            ? 1.w
-                            : 0.0.w),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                data.name.capitalize.toString(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontSize:
-                                      SizerUtil.deviceType == DeviceType.mobile
-                                          ? 14.sp
-                                          : 10.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                                height:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 0.0
-                                        : 3.h),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '₹ ${data.fees.toString()}',
-                              style: TextStyle(
-                                color: isDarkMode() ? white : black,
-                                fontFamily: opensansMedium,
-                                fontSize:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 11.sp
-                                        : 9.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(AddCourseScreen(
-                                        isEdit: true, editCourse: data))
-                                    ?.then((value) {
-                                  if (value == true) {
-                                    controller.getCourseList(context, false);
-                                  }
-                                });
-                              },
-                              child: Container(
-                                child: SvgPicture.asset(
-                                  Asset.edit,
-                                  height: 2.3.h,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 5.0),
-                            GestureDetector(
-                              onTap: () {
-                                showDeleteConfirmationDialog(data.id);
-                              },
-                              child: Container(
-                                child: Icon(
-                                  Icons.delete_rounded,
-                                  color: Colors.grey,
-                                  size: 3.h,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-          itemCount: controller.filteredCourseObjectList.length,
-        ),
-      );
+          child: getCourseList());
 
       // ListView.builder(
       //     shrinkWrap: true,
@@ -940,6 +440,636 @@ class _CourseScreenState extends State<CourseScreen> {
         ),
       );
     }
+  }
+
+  getCourseList() {
+    return GridView.builder(
+      shrinkWrap: true,
+      clipBehavior: Clip.antiAlias,
+      padding: EdgeInsets.only(
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
+      physics: BouncingScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+      ),
+      itemBuilder: (context, index) {
+        ListofCourse data = controller.filteredCourseObjectList[index];
+        return Container(
+          padding: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+          ),
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode()
+                    ? Colors.white.withOpacity(0.2)
+                    : Colors.black.withOpacity(0.2),
+                spreadRadius: 0.1,
+                blurRadius: 10,
+                offset: Offset(0.5, 0.5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      getCourseDetails(context, data);
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return AlertDialog(
+                      //       insetPadding: EdgeInsets.symmetric(
+                      //           vertical: 10.h, horizontal: 4.h),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(
+                      //             20.0), // Adjust the radius as needed
+                      //       ),
+                      //       elevation: 0.0, // No shadow
+                      //       //clipBehavior: Clip.antiAlias,
+                      //       backgroundColor: isDarkMode() ? black : white,
+                      //       content: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Container(
+                      //             height: 3.h,
+                      //             child: Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.center,
+                      //                 crossAxisAlignment:
+                      //                     CrossAxisAlignment.center,
+                      //                 children: [
+                      //                   Container(
+                      //                     width: 55.w,
+                      //                     child: Marquee(
+                      //                       style: TextStyle(
+                      //                         fontFamily: fontRegular,
+                      //                         color:
+                      //                             isDarkMode() ? white : black,
+                      //                         fontSize: SizerUtil.deviceType ==
+                      //                                 DeviceType.mobile
+                      //                             ? 16.sp
+                      //                             : 10.sp,
+                      //                       ),
+                      //                       text: "COURSE DETAILS",
+                      //                       scrollAxis: Axis
+                      //                           .horizontal, // Use Axis.vertical for vertical scrolling
+                      //                       crossAxisAlignment:
+                      //                           CrossAxisAlignment
+                      //                               .start, // Adjust as needed
+                      //                       blankSpace:
+                      //                           20.0, // Adjust the space between text repetitions
+                      //                       velocity:
+                      //                           50.0, // Adjust the scrolling speed
+                      //                       pauseAfterRound: const Duration(
+                      //                           seconds:
+                      //                               1), // Time to pause after each scroll
+                      //                       startPadding: 2
+                      //                           .w, // Adjust the initial padding
+                      //                       accelerationDuration: const Duration(
+                      //                           seconds:
+                      //                               1), // Duration for acceleration
+                      //                       accelerationCurve: Curves
+                      //                           .linear, // Acceleration curve
+                      //                       decelerationDuration: const Duration(
+                      //                           milliseconds:
+                      //                               500), // Duration for deceleration
+                      //                       decelerationCurve: Curves
+                      //                           .easeOut, // Deceleration curve
+                      //                     ),
+                      //                   ),
+                      //                   Spacer(),
+                      //                   Align(
+                      //                     alignment: Alignment.topRight,
+                      //                     child: GestureDetector(
+                      //                       onTap: () {
+                      //                         Navigator.of(context).pop();
+                      //                       },
+                      //                       child: Icon(
+                      //                         Icons.cancel,
+                      //                         size: 24.0,
+                      //                         color:
+                      //                             isDarkMode() ? white : black,
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                 ]),
+                      //           ),
+                      //           Divider(
+                      //             color: Colors.grey,
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Column(
+                      //             // mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Container(
+                      //                   height: 20.h,
+                      //                   width: 60.w,
+                      //                   // padding: EdgeInsets.all(
+                      //                   //   SizerUtil.deviceType == DeviceType.mobile
+                      //                   //       ? 1.2.w
+                      //                   //       : 1.0.w,
+                      //                   // ),
+                      //                   child: ClipRRect(
+                      //                     borderRadius: const BorderRadius.all(
+                      //                         Radius.circular(15)),
+                      //                     child: CachedNetworkImage(
+                      //                       fit: BoxFit.cover,
+                      //                       imageUrl: data.thumbnailUrlInfo
+                      //                                   .image !=
+                      //                               null
+                      //                           ? '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}'
+                      //                           // '${ip}${data.photoUrlInfo.image}'
+                      //                           : "",
+                      //                       placeholder: (context, url) =>
+                      //                           const Center(
+                      //                         child: CircularProgressIndicator(
+                      //                             color: primaryColor),
+                      //                       ),
+                      //                       errorWidget:
+                      //                           (context, url, error) =>
+                      //                               Image.asset(
+                      //                         Asset.placeholder,
+                      //                         height: 11.h,
+                      //                         fit: BoxFit.cover,
+                      //                       ),
+                      //                     ),
+                      //                   )),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Text(
+                      //                 "Course Name : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               Expanded(
+                      //                 child: Text(
+                      //                   data.name.capitalize.toString(),
+                      //                   maxLines: 3,
+                      //                   textAlign: TextAlign.start,
+                      //                   overflow: TextOverflow.ellipsis,
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //               mainAxisAlignment: MainAxisAlignment.start,
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.center,
+                      //               children: [
+                      //                 RichText(
+                      //                   text: TextSpan(
+                      //                     style: TextStyle(
+                      //                       fontSize: 8.sp,
+                      //                       fontWeight: FontWeight.w700,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontBold,
+                      //                     ),
+                      //                     children: [
+                      //                       TextSpan(
+                      //                         text: 'Fees : ',
+                      //                         style: TextStyle(
+                      //                           fontSize: 12.sp,
+                      //                           fontWeight: FontWeight.w800,
+                      //                         ),
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ),
+                      //                 Text(
+                      //                   '₹ ${data.fees.toString()}',
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 )
+                      //               ]),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Text(
+                      //                 "Duration : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               Text(
+                      //                 data.duration.toString(),
+                      //                 maxLines: 1,
+                      //                 overflow: TextOverflow.ellipsis,
+                      //                 style: TextStyle(
+                      //                     fontSize: SizerUtil.deviceType ==
+                      //                             DeviceType.mobile
+                      //                         ? 12.sp
+                      //                         : 12.sp,
+                      //                     color: isDarkMode() ? white : black,
+                      //                     fontFamily: fontRegular),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Text(
+                      //                 "Description : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               Expanded(
+                      //                 child: Text(
+                      //                   data.description.toString(),
+                      //                   maxLines: 3,
+                      //                   textAlign: TextAlign.start,
+                      //                   overflow: TextOverflow.visible,
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 1.h,
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Text(
+                      //                 "Notes : ",
+                      //                 style: TextStyle(
+                      //                   fontSize: 12.sp,
+                      //                   fontWeight: FontWeight.w800,
+                      //                   color: isDarkMode() ? white : black,
+                      //                 ),
+                      //               ),
+                      //               Expanded(
+                      //                 child: Text(
+                      //                   data.other_notes.toString(),
+                      //                   maxLines: 3,
+                      //                   textAlign: TextAlign.start,
+                      //                   overflow: TextOverflow.visible,
+                      //                   style: TextStyle(
+                      //                       fontSize: SizerUtil.deviceType ==
+                      //                               DeviceType.mobile
+                      //                           ? 12.sp
+                      //                           : 12.sp,
+                      //                       color: isDarkMode() ? white : black,
+                      //                       fontFamily: fontRegular),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     );
+                      //   },
+                      // );
+
+                      // Get.to(FullScreenImage(
+                      //   imageUrl:
+                      //       '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}',
+                      //   title: "Course",
+                      // ))!
+                      //     .then(
+                      //         (value) => {Common().trasparent_statusbar()});
+                    },
+                    child: Container(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 12.h,
+                        width: 60.w,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl:
+                                '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}',
+                            // '${ip}${data.thumbnailUrlInfo.image}',
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                  color: primaryColor),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              Asset.placeholder,
+                              height: 11.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              Container(
+                padding: EdgeInsets.only(
+                    left: 1.w,
+                    right: SizerUtil.deviceType == DeviceType.mobile
+                        ? 1.w
+                        : 0.0.w),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            data.name.capitalize.toString(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontFamily: opensansMedium,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 14.sp
+                                      : 10.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? 0.0
+                                : 3.h),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '₹ ${data.fees.toString()}',
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 11.sp
+                                : 9.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(AddCourseScreen(
+                                    isEdit: true, editCourse: data))
+                                ?.then((value) {
+                              if (value == true) {
+                                controller.getCourseList(context, false);
+                              }
+                            });
+                          },
+                          child: Container(
+                            child: SvgPicture.asset(
+                              Asset.edit,
+                              height: 2.3.h,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 5.0),
+                        GestureDetector(
+                          onTap: () {
+                            showDeleteConfirmationDialog(data.id);
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.delete_rounded,
+                              color: Colors.grey,
+                              size: 3.h,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: controller.filteredCourseObjectList.length,
+    );
+  }
+
+  getCourseDetails(BuildContext context, ListofCourse data) {
+    return Common().commonDetailsDialog(
+        context,
+        "COURSE DETAILS",
+        Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  height: 20.h,
+                  width: 60.w,
+                  // padding: EdgeInsets.all(
+                  //   SizerUtil.deviceType == DeviceType.mobile
+                  //       ? 1.2.w
+                  //       : 1.0.w,
+                  // ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: data.thumbnailUrlInfo.image != null
+                          ? '${ApiUrl.ImgUrl}${data.thumbnailUrlInfo.image}'
+                          // '${ip}${data.photoUrlInfo.image}'
+                          : "",
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(color: primaryColor),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        Asset.placeholder,
+                        height: 11.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Course Name : ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      data.name.capitalize.toString(),
+                      maxLines: 3,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 8.sp,
+                          fontWeight: FontWeight.w700,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontBold,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Fees : ',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '₹ ${data.fees.toString()}',
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    )
+                  ]),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Duration : ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
+                    ),
+                  ),
+                  Text(
+                    data.duration.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 12.sp,
+                        color: isDarkMode() ? white : black,
+                        fontFamily: fontRegular),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Description : ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      data.description.toString(),
+                      maxLines: 3,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.visible,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
+                  ),
+                ],
+              )
+            ]));
   }
 
   Widget apiOtherStates(state) {

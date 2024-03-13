@@ -780,6 +780,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ),
             ],
           ),
+          SizedBox(
+            height: 1.h,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

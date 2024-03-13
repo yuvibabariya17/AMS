@@ -48,11 +48,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     controller.getHomeList(context, Common().getCurrentDate());
   }
 
-  String formatTime(String dateTimeString) {
-    // Parse the date string into a DateTime object
+  String formatDate(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+    return formattedDate;
+  }
 
-    // Format the DateTime object into the desired format
+  String formatTime(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
     String formattedDate = DateFormat('h:mm a').format(dateTime);
     return formattedDate;
   }
@@ -624,6 +627,91 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                               SizedBox(
                                                 height: 1.h,
                                               ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Date of Appointment : ",
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      color: isDarkMode()
+                                                          ? white
+                                                          : black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    formatDate(selectedData
+                                                        .dateOfAppointment
+                                                        .toString()),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 12.sp,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                        fontFamily:
+                                                            fontRegular),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 1.h),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Time of Appointment : ",
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      color: isDarkMode()
+                                                          ? white
+                                                          : black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    formatTime(
+                                                      selectedData
+                                                          .timeOfAppointment
+                                                          .toString(),
+                                                    ),
+
+                                                    // item.dateOfAppointment
+                                                    //     .toString(),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 12.sp,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                        fontFamily:
+                                                            fontRegular),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 1.h),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,

@@ -23,7 +23,7 @@ styleTextForErrorFieldHint() {
   return TextStyle(
       fontSize: 11.sp,
       fontFamily: fontRegular,
-      color: isDarkMode() ? white : red);
+      color: isDarkMode() ? red : red);
 }
 
 styleTextFormFieldText() {
