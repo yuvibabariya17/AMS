@@ -7,6 +7,7 @@ import 'package:booking_app/Models/hairservice_model.dart';
 import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/theme_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/preference/UserPreference.dart';
@@ -56,6 +57,11 @@ class HomeScreenController extends GetxController {
 
   changeIndex(int index) async {
     currentPage = index;
+    update();
+  }
+
+  void updateDarkMode() {
+    isDarkMode();
     update();
   }
 
