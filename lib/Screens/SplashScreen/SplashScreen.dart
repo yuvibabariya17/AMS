@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/OnboardingScreen/IntroScreen%20.dart';
-import 'package:booking_app/Screens/PackageScreen/PackageScreen.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class _SplashscreenState extends State<Splashscreen> {
     Timer(const Duration(seconds: 3), () async {
       SignInData? retrievedObject = await UserPreferences().getSignInInfo();
       if (retrievedObject != null) {
-        Get.offAll(const PackageScreen());
+        Get.offAll(const dashboard());
       } else {
         Get.offAll(const IntroScreen());
         // Get.offAll(const IntroScreen());

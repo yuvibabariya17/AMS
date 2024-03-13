@@ -4,53 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/helper.dart';
 
 class Common {
-  Future _ackAlert(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Not in stock'),
-          content: const Text('This item is no longer available'),
-          actions: [
-            ElevatedButton(
-              child: const Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  openDialoag(String name, BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Text(name + ' is now a verified account'),
-            title: const Text('Registration Successful'),
-            actions: <Widget>[
-              MaterialButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Verified',
-                  style: TextStyle(color: Colors.blue),
-                ),
-              )
-            ],
-          );
-        });
-  }
-
   Widget getDivider() {
     return Container(
       height: 0.5.h,
@@ -60,22 +19,84 @@ class Common {
     );
   }
 
-  void _showInSnackBar({required String message}) {
-    var _formKey;
-    _formKey.currentState.showSnackBar(
-      SnackBar(
-        content: GestureDetector(
-          onTap: () {},
-          child: Text(
-            message,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-        ),
-        duration: (const Duration(seconds: 4)),
-        elevation: 0,
-        backgroundColor: Colors.black,
-      ),
+  Future commonDetailsDialog(
+      BuildContext context, String title, Widget contain) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 3.h),
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(20.0), // Adjust the radius as needed
+            ),
+            elevation: 0.0, // No shadow
+            //clipBehavior: Clip.antiAlias,
+            backgroundColor: isDarkMode() ? black : white,
+            content:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                height: 3.h,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 55.w,
+                        child: Marquee(
+                          style: TextStyle(
+                            fontFamily: fontRegular,
+                            color: isDarkMode() ? white : black,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 16.sp
+                                : 10.sp,
+                          ),
+                          text: title,
+                          scrollAxis: Axis
+                              .horizontal, // Use Axis.vertical for vertical scrolling
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start, // Adjust as needed
+                          blankSpace:
+                              20.0, // Adjust the space between text repetitions
+                          velocity: 50.0, // Adjust the scrolling speed
+                          pauseAfterRound: const Duration(
+                              seconds: 1), // Time to pause after each scroll
+                          startPadding: 2.w, // Adjust the initial padding
+                          accelerationDuration: const Duration(
+                              seconds: 1), // Duration for acceleration
+                          accelerationCurve:
+                              Curves.linear, // Acceleration curve
+                          decelerationDuration: const Duration(
+                              milliseconds: 500), // Duration for deceleration
+                          decelerationCurve:
+                              Curves.easeOut, // Deceleration curve
+                        ),
+                      ),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.cancel,
+                            size: 24.0,
+                            color: isDarkMode() ? white : black,
+                          ),
+                        ),
+                      ),
+                    ]),
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              contain
+            ]));
+      },
     );
   }
 
