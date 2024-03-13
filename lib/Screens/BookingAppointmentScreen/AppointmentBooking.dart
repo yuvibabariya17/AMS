@@ -3,6 +3,7 @@ import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
 import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/core/Common/Common.dart';
+import 'package:booking_app/core/Common/CustomCheckbox.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
@@ -143,7 +144,18 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                   child: Container(
                     margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
                     padding: EdgeInsets.only(
-                        left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                      left: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.w,
+                      right: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.w,
+                      top:
+                          SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.h,
+                      bottom: SizerUtil.deviceType == DeviceType.mobile
+                          ? 1.h
+                          : 0.8.h,
+                    ),
                     child: Form(
                         key: controller.formKey,
                         child: Column(
@@ -458,7 +470,11 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                               physics:
                                                   NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
-                                              childAspectRatio: 2.0,
+                                              childAspectRatio:
+                                                  SizerUtil.deviceType ==
+                                                          DeviceType.mobile
+                                                      ? 2.0
+                                                      : 2 / 0.8,
                                               crossAxisCount: 3,
                                               crossAxisSpacing: 17,
                                               mainAxisSpacing: 4,
@@ -500,10 +516,6 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                                             controller
                                                                 .selectedAppointmentSlotId
                                                                 .value);
-                                                        // logcat(
-                                                        //     "SELECT_ITEM",
-                                                        //     controller
-                                                        //         .isItemSelected.value);
                                                       });
                                                     },
                                                     child: AnimatedContainer(
@@ -638,24 +650,46 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Checkbox(
-                                        activeColor:
-                                            isDarkMode() ? white : black,
-                                        checkColor:
-                                            isDarkMode() ? black : white,
-                                        visualDensity: const VisualDensity(
-                                          horizontal: -2,
-                                        ),
-                                        value: controller.isRemind.value,
-                                        onChanged: (value) {
-                                          controller.isRemind.value = value!;
-                                          controller.enableSignUpButton();
-                                          setState(() {
-                                            // logcat(tag, data)
-                                          });
-                                        },
-                                      ),
-                                      SizedBox(width: 0.5.w),
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? Checkbox(
+                                              activeColor:
+                                                  isDarkMode() ? white : black,
+                                              checkColor:
+                                                  isDarkMode() ? black : white,
+                                              visualDensity:
+                                                  VisualDensity(horizontal: -2),
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              value: controller.isRemind.value,
+                                              onChanged: (value) {
+                                                controller.isRemind.value =
+                                                    value!;
+                                                controller.enableSignUpButton();
+                                                setState(() {
+                                                  // logcat(tag, data)
+                                                });
+                                              },
+                                            )
+                                          : CustomCheckbox(
+                                              checkColor:
+                                                  isDarkMode() ? black : white,
+                                              color:
+                                                  isDarkMode() ? white : black,
+                                              isChecked:
+                                                  controller.isRemind.value,
+                                              onChanged: (value) {
+                                                controller.isRemind.value =
+                                                    value!;
+                                                controller.enableSignUpButton();
+                                                setState(() {});
+                                              },
+                                            ),
+                                      SizedBox(
+                                          width: SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 0.5.w
+                                              : 1.w),
                                       GestureDetector(
                                         onTap: () async {
                                           if (controller.isRemind.value ==
@@ -675,6 +709,10 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           style: TextStyle(
                                               fontFamily: opensansMedium,
                                               fontWeight: FontWeight.w600,
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? null
+                                                  : 10.sp,
                                               color:
                                                   isDarkMode() ? white : black),
                                         ),
@@ -740,7 +778,11 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             //     ),
                             //   ),
                             // ),
-
+                            SizedBox(
+                                height:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? null
+                                        : 1.h),
                             FadeInUp(
                                 from: 50,
                                 child: Obx(() {

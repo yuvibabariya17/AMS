@@ -24,7 +24,6 @@ import '../../core/constants/strings.dart';
 import '../../core/utils/helper.dart';
 
 class Settings extends StatefulWidget {
-  
   const Settings({super.key});
 
   @override
@@ -76,18 +75,19 @@ class _SettingsState extends State<Settings> {
               //   onClick: () {},
               // ),
               SizedBox(
-                height: 3.h,
+                height: SizerUtil.deviceType == DeviceType.mobile ? 3.h : 1.h,
               ),
               Container(
-                margin: EdgeInsets.only(left: 8.w, right: 8.w),
+                margin: EdgeInsets.only(
+                  left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
+                  right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
+                ),
                 child: ListView(
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   children: [
                     //PROFILE INFORMATION SCREEN
-
                     // settingRow(Asset.user, SettingConstant.profile_info, () {6+7
-
                     //   Get.to(ProfileInformationScreen());
                     // }, Asset.rightbackbutton),
                     // dividerforSetting(),
@@ -98,7 +98,8 @@ class _SettingsState extends State<Settings> {
                     dividerforSetting(),
                     Container(
                       width: SizerUtil.width,
-                      height: 3.h,
+                      height:
+                          SizerUtil.deviceType == DeviceType.mobile ? 3.h : 4.h,
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -106,7 +107,10 @@ class _SettingsState extends State<Settings> {
                             color: isDarkMode() ? white : black,
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 5.5.w),
+                            margin: EdgeInsets.only(
+                                left: SizerUtil.deviceType == DeviceType.mobile
+                                    ? 5.5.w
+                                    : 5.7.w),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -115,7 +119,10 @@ class _SettingsState extends State<Settings> {
                                   style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 13.5.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 13.5.sp
+                                        : 10.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -167,9 +174,8 @@ class _SettingsState extends State<Settings> {
                         ],
                       ),
                     ),
-
                     dividerforSetting(),
-                    settingRow(Asset.bug, "Report Bug", () {
+                    settingRow(Asset.bug, SettingConstant.reportBug, () {
                       Get.to(AddReportBugScreen());
                     }, Asset.rightbackbutton),
                     dividerforSetting(),

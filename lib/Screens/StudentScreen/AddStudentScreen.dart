@@ -11,7 +11,6 @@ import 'package:booking_app/custom_componannt/form_inputs.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
 class AddStudentScreen extends StatefulWidget {
@@ -96,7 +95,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       child: Container(
                         margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
                         padding: EdgeInsets.only(
-                            left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                            left: SizerUtil.deviceType == DeviceType.mobile
+                                ? 7.0.w
+                                : 5.w,
+                            right: SizerUtil.deviceType == DeviceType.mobile
+                                ? 7.0.w
+                                : 5.w,
+                            top: 2.h,
+                            bottom: 1.h),
                         child: Form(
                             key: controller.formKey,
                             child: Column(
@@ -288,7 +294,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                       }, CommonConstant.submit,
                                           validate: controller
                                               .isFormInvalidate.value);
-                                    }))
+                                    })),
+                                SizedBox(
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 0.h
+                                          : 2.h,
+                                ),
                               ],
                             )),
                       ),

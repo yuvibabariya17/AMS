@@ -4,6 +4,7 @@ import 'package:booking_app/Screens/ExpertScreen/ExpertScreen.dart';
 import 'package:booking_app/controllers/StaffController.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -84,13 +85,21 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 1.h, right: 7.w),
+                            margin: EdgeInsets.only(
+                              top: 1.h,
+                              right: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 7.w
+                                  : 7.w,
+                            ),
                             child: Text(
                               "View More >",
                               style: TextStyle(
                                 color: isDarkMode() ? white : black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 13.sp,
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 13.sp
+                                        : 11.sp,
                               ),
                             ),
                           ),
@@ -102,8 +111,12 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                     child: Container(
                       margin: EdgeInsets.only(top: 1.h),
                       padding: EdgeInsets.only(
-                        left: 7.w,
-                        right: 7.w,
+                        left: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.w
+                            : 5.w,
+                        right: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.w
+                            : 5.w,
                       ),
                       child: ListView.builder(
                           shrinkWrap: true,
@@ -114,7 +127,16 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                             ExpertList data =
                                 controller.filteredExpertObjectList[index];
                             return Container(
-                              margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
+                              margin: EdgeInsets.only(
+                                  bottom: 1.h,
+                                  right: 1.w,
+                                  top: SizerUtil.deviceType == DeviceType.mobile
+                                      ? 1.w
+                                      : 1.w,
+                                  left:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 1.w
+                                          : 1.w),
                               child: Container(
                                 padding: EdgeInsets.only(
                                     top: 1.h,
@@ -132,37 +154,20 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Stack(children: [
-                                          CircleAvatar(
-                                            radius: 3.h,
-                                            backgroundColor: Colors.white,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                              '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                                          Container(
+                                            height: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 6.h
+                                                : 8.h,
+                                            child: CircleAvatar(
+                                              radius: 3.h,
+                                              backgroundColor: white,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                                              ),
                                             ),
-                                            // child: ClipRRect(
-                                            //   borderRadius: BorderRadius.circular(50),
-                                            //   child: CachedNetworkImage(
-                                            //     imageUrl:
-                                            //         '${ApiUrl.ImgUrl}${data.upload_info.image}',
-                                            //     placeholder: (context, url) =>
-                                            //         SvgPicture.asset(
-                                            //             Asset.profileimg),
-                                            //     errorWidget: (context, url, error) =>
-                                            //         SvgPicture.asset(
-                                            //             Asset.profileimg),
-                                            //     fit: BoxFit.cover,
-                                            //   ),
-                                            // ),
                                           ),
-
-                                          // CircleAvatar(
-                                          //   radius: 3.7.h,
-                                          //   backgroundColor: Colors.white,
-                                          //   child: SvgPicture.asset(
-                                          //     Asset.profileimg,
-                                          //     fit: BoxFit.cover,
-                                          //   ),
-                                          // ),
                                         ]),
                                         SizedBox(width: 3.w),
                                         Expanded(
@@ -180,12 +185,19 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                         ? white
                                                         : black,
                                                     fontFamily: opensansMedium,
-                                                    fontSize: 15.5.sp,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 15.5.sp
+                                                        : 10.sp,
                                                     fontWeight:
                                                         FontWeight.w700),
                                               )),
                                               SizedBox(
-                                                height: 0.5.h,
+                                                height: SizerUtil.deviceType ==
+                                                        DeviceType.mobile
+                                                    ? 0.5.h
+                                                    : 0.0.h,
                                               ),
                                               Text(
                                                 '₹ ${data.amount.toString()}',
@@ -194,7 +206,11 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                         ? white
                                                         : black,
                                                     fontFamily: opensansMedium,
-                                                    fontSize: 11.sp,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 11.sp
+                                                        : 8.sp,
                                                     fontWeight:
                                                         FontWeight.w400),
                                               )
@@ -212,8 +228,8 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                   boxShadow: [
                                     BoxShadow(
                                         color: isDarkMode()
-                                            ? Colors.white.withOpacity(0.2)
-                                            : Colors.black.withOpacity(0.2),
+                                            ? white.withOpacity(0.2)
+                                            : black.withOpacity(0.2),
                                         spreadRadius: 0.1,
                                         blurRadius: 3,
                                         offset: Offset(0.5, 0.5)),

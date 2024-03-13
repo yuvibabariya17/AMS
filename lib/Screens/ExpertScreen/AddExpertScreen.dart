@@ -102,9 +102,23 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
             slivers: [
               SliverToBoxAdapter(
                 child: Container(
-                  margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
+                  margin: EdgeInsets.only(
+                    left: SizerUtil.deviceType == DeviceType.mobile
+                        ? 1.0.w
+                        : 0.5.w,
+                    right: SizerUtil.deviceType == DeviceType.mobile
+                        ? 1.0.w
+                        : 0.5.w,
+                  ),
                   padding: EdgeInsets.only(
-                      left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                      left: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.w,
+                      right: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.w,
+                      top: 2.h,
+                      bottom: 1.h),
                   child: Form(
                       key: controller.formKey,
                       child: Column(
@@ -231,7 +245,6 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                   ? ThemeData.dark().copyWith(
                                                       primaryColor:
                                                           primaryColor,
-                                                      backgroundColor: white,
                                                       buttonTheme:
                                                           ButtonThemeData(
                                                         textTheme:
@@ -244,20 +257,21 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                                   50), // Set your border radius
                                                         ),
                                                       ),
-                                                      useMaterial3: true,
-                                                      colorScheme:
-                                                          const ColorScheme
+                                                      colorScheme: const ColorScheme
                                                               .dark(
                                                         primary: Colors
                                                             .teal, // Set your primary color
-                                                      ).copyWith(
+                                                      )
+                                                          .copyWith(
                                                               secondary:
-                                                                  secondaryColor),
+                                                                  secondaryColor)
+                                                          .copyWith(
+                                                              background:
+                                                                  white),
                                                     )
                                                   : ThemeData.light().copyWith(
                                                       primaryColor:
                                                           primaryColor,
-                                                      backgroundColor: white,
                                                       buttonTheme:
                                                           ButtonThemeData(
                                                         textTheme:
@@ -270,15 +284,17 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                                   50), // Set your border radius
                                                         ),
                                                       ),
-                                                      useMaterial3: true,
-                                                      colorScheme:
-                                                          const ColorScheme
+                                                      colorScheme: const ColorScheme
                                                               .light(
                                                         primary: Colors
                                                             .teal, // Set your primary color
-                                                      ).copyWith(
+                                                      )
+                                                          .copyWith(
                                                               secondary:
-                                                                  secondaryColor),
+                                                                  secondaryColor)
+                                                          .copyWith(
+                                                              background:
+                                                                  white),
                                                     ),
                                               child: child!,
                                             );
@@ -407,7 +423,6 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                   ? ThemeData.dark().copyWith(
                                                       primaryColor:
                                                           primaryColor,
-                                                      backgroundColor: white,
                                                       buttonTheme:
                                                           ButtonThemeData(
                                                         textTheme:
@@ -420,20 +435,21 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                                   50), // Set your border radius
                                                         ),
                                                       ),
-                                                      useMaterial3: true,
-                                                      colorScheme:
-                                                          const ColorScheme
+                                                      colorScheme: const ColorScheme
                                                               .dark(
                                                         primary: Colors
                                                             .teal, // Set your primary color
-                                                      ).copyWith(
+                                                      )
+                                                          .copyWith(
                                                               secondary:
-                                                                  secondaryColor),
+                                                                  secondaryColor)
+                                                          .copyWith(
+                                                              background:
+                                                                  white),
                                                     )
                                                   : ThemeData.light().copyWith(
                                                       primaryColor:
                                                           primaryColor,
-                                                      backgroundColor: white,
                                                       buttonTheme:
                                                           ButtonThemeData(
                                                         textTheme:
@@ -446,15 +462,17 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                                                   50), // Set your border radius
                                                         ),
                                                       ),
-                                                      useMaterial3: true,
-                                                      colorScheme:
-                                                          const ColorScheme
+                                                      colorScheme: const ColorScheme
                                                               .light(
                                                         primary: Colors
                                                             .teal, // Set your primary color
-                                                      ).copyWith(
+                                                      )
+                                                          .copyWith(
                                                               secondary:
-                                                                  secondaryColor),
+                                                                  secondaryColor)
+                                                          .copyWith(
+                                                              background:
+                                                                  white),
                                                     ),
                                               child: child!,
                                             );
@@ -573,7 +591,12 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                 }, CommonConstant.submit,
                                     validate:
                                         controller.isFormInvalidate.value);
-                              }))
+                              })),
+                          SizedBox(
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? null
+                                : 2.h,
+                          ),
 
                           // FadeInUp(
                           //     from: 50,

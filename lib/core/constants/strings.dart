@@ -221,6 +221,7 @@ class SettingConstant {
   static const String settings = 'Settings';
   static const String profile_info = 'Profile Information';
   static const String invite_frd = 'Invite Friends';
+  static const String reportBug = 'Report Bug';
   static const String change_theme = 'Change Theme';
   static const String rate_us = 'Rate Us';
   static const String share_us = 'Share Us';

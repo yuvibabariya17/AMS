@@ -134,7 +134,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 35.h),
+                  padding: EdgeInsets.only(
+                      bottom: SizerUtil.deviceType == DeviceType.mobile
+                          ? 35.h
+                          : 32.h),
                   clipBehavior: Clip.antiAlias,
                   itemBuilder: (context, index) {
                     //ProductItem data = controller.staticData[index];
@@ -144,9 +147,31 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                              left: 7.w, right: 7.w, bottom: 1.h, top: 3.h),
+                              left: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 7.w
+                                  : 5.w,
+                              right: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 7.w
+                                  : 5.w,
+                              bottom: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 1.h
+                                  : 0.5.h,
+                              top: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 3.h
+                                  : 2.h),
                           padding: EdgeInsets.only(
-                              top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
+                              top: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 2.h
+                                  : 1.h,
+                              left: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 4.w
+                                  : 3.w,
+                              right: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 4.w
+                                  : 3.w,
+                              bottom: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 2.h
+                                  : 1.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -169,7 +194,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   style: TextStyle(
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
-                                      fontSize: 12.sp,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 12.sp
+                                          : 10.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Container(
@@ -181,7 +209,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                     style: TextStyle(
                                         color: isDarkMode() ? white : black,
                                         fontFamily: opensansMedium,
-                                        fontSize: 10.sp,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 10.sp
+                                            : 8.sp,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -202,10 +233,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   child: Container(
                                     child: SvgPicture.asset(
                                       Asset.edit,
-                                      height: 2.3.h,
-                                      color: isDarkMode()
-                                          ? Colors.grey
-                                          : Colors.grey,
+                                      height: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 2.3.h
+                                          : 2.5.h,
+                                      color: Colors.grey,
                                     ),
                                   ),
                                 ),
@@ -239,7 +271,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                       ? white
                                                       : black,
                                                   fontFamily: opensansMedium,
-                                                  fontSize: 12.sp,
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 12.sp
+                                                          : 10.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Container(
@@ -255,7 +291,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                         ? white
                                                         : black,
                                                     fontFamily: opensansMedium,
-                                                    fontSize: 10.sp,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 10.sp
+                                                        : 8.sp,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -275,7 +315,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                       ? white
                                                       : black,
                                                   fontFamily: opensansMedium,
-                                                  fontSize: 12.sp,
+                                                  fontSize:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 12.sp
+                                                          : 10.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Expanded(
@@ -291,7 +335,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                         ? white
                                                         : black,
                                                     fontFamily: opensansMedium,
-                                                    fontSize: 10.sp,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 10.sp
+                                                        : 8.sp,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -306,7 +354,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                     ? white
                                                     : black,
                                                 fontFamily: opensansMedium,
-                                                fontSize: 12.sp,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 12.sp
+                                                        : 10.sp,
                                                 fontWeight: FontWeight.w700),
                                           ),
                                           Container(
@@ -318,7 +370,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                     ? white
                                                     : black,
                                                 fontFamily: opensansMedium,
-                                                fontSize: 10.sp,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 10.sp
+                                                        : 8.sp,
                                                 fontWeight: FontWeight.w500),
                                           )),
                                         ]),
@@ -337,7 +393,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   SvgPicture.asset(
                                     color: isDarkMode() ? white : black,
                                     Asset.user,
-                                    height: 1.8.h,
+                                    height: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 1.8.h
+                                        : 2.h,
                                   ),
                                   SizedBox(
                                     width: 2.w,
@@ -347,7 +406,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                     style: TextStyle(
                                         color: isDarkMode() ? white : black,
                                         fontFamily: opensansMedium,
-                                        fontSize: 12.sp,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 12.sp
+                                            : 10.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Spacer(),

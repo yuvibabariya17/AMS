@@ -134,8 +134,7 @@ class ProductSellingController extends GetxController {
       isFormInvalidate.value = false;
     } else if (CustomerModel.value.isValidate == false) {
       isFormInvalidate.value = false;
-    }
-    else {
+    } else {
       isFormInvalidate.value = true;
     }
   }
@@ -154,7 +153,6 @@ class ProductSellingController extends GetxController {
     enableSignUpButton();
   }
 
-  
   void validateCustomer(String? val) {
     StudentModel.update((model) {
       if (val != null && val.isEmpty) {
@@ -250,13 +248,11 @@ class ProductSellingController extends GetxController {
     }
   }
 
-
- RxBool isCustomerTypeApiList = false.obs;
+  RxBool isCustomerTypeApiList = false.obs;
   RxList<ListofCustomer> customerObjectList = <ListofCustomer>[].obs;
   RxString customerId = "".obs;
 
-
-   void getCustomerList(context) async {
+  void getCustomerList(context) async {
     state.value = ScreenState.apiLoading;
     isCustomerTypeApiList.value = true;
     // try {
@@ -291,8 +287,7 @@ class ProductSellingController extends GetxController {
     // }
   }
 
-
-   Widget setCustomerList() {
+  Widget setCustomerList() {
     return Obx(() {
       if (isCustomerTypeApiList.value == true)
         return setDropDownContent([].obs, Text("Loading"),
@@ -314,16 +309,16 @@ class ProductSellingController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("ONTAP", "SACHIN");
-                customerId.value =
-                    customerObjectList[index].name.toString();
+                customerId.value = customerObjectList[index].name.toString();
                 coursectr.text =
                     customerObjectList[index].name.capitalize.toString();
-
-              //  validateStudent(val);
               },
               title: Text(
                 customerObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -397,8 +392,6 @@ class ProductSellingController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
-
-
 
   // void getVideo(context) async {
   //   var loadingIndicator = LoadingProgressDialog();
@@ -503,12 +496,10 @@ class ProductSellingController extends GetxController {
               ),
             ],
             aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-        if (file != null) {
-          uploadReportFile = File(file.path).obs;
-          imgctr.text = file.name;
-          validateImage(imgctr.text);
-          getImage(context);
-        }
+        uploadReportFile = File(file.path).obs;
+        imgctr.text = file.name;
+        validateImage(imgctr.text);
+        getImage(context);
 
         // if (croppedFile != null) {
         //   uploadImageFile = File(croppedFile.path).obs;

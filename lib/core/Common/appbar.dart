@@ -37,7 +37,6 @@ class HomeAppBar extends StatelessWidget {
               ? Container()
               : InkWell(
                   onTap: () {
-                    logcat("ISCLICK", "BACK");
                     isBack == true
                         ? Get.back()
                         : openDrawer?.currentState?.openDrawer();
@@ -50,9 +49,20 @@ class HomeAppBar extends StatelessWidget {
                               height: 4.h,
                               color: isDarkMode() ? white : black,
                             )
-                          : SvgPicture.asset(
-                              Asset.menu,
-                              color: isDarkMode() ? white : black,
+                          : Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 0.0
+                                          : 2.0.w),
+                              child: SvgPicture.asset(
+                                Asset.menu,
+                                height:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? null
+                                        : 2.5.h,
+                                color: isDarkMode() ? white : black,
+                              ),
                             )
                       : Container()),
           Expanded(
@@ -68,7 +78,9 @@ class HomeAppBar extends StatelessWidget {
                     maxLines: 1,
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      fontSize: 16.5.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 16.5.sp
+                          : 13.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: opensans_Bold,
                       fontStyle: FontStyle.normal,
@@ -95,6 +107,9 @@ class HomeAppBar extends StatelessWidget {
                             child: SvgPicture.asset(
                               Asset.notification,
                               color: isDarkMode() ? white : black,
+                              height: SizerUtil.deviceType == DeviceType.mobile
+                                  ? null
+                                  : 2.5.h,
                             ),
                           ),
                         ),

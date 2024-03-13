@@ -16,7 +16,9 @@ import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -121,7 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: BouncingScrollPhysics(),
               child: Column(children: [
                 Container(
-                  margin: EdgeInsets.only(top: 2.5.h, left: 3.h),
+                  margin: EdgeInsets.only(
+                    top: 2.5.h,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,9 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                            margin: EdgeInsets.only(left: 3.h),
                             child: Text("Today",
                                 style: TextStyle(
-                                    fontSize: 17.5.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 17.5.sp
+                                        : 14.sp,
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
                                     fontWeight: FontWeight.w700)),
@@ -142,13 +150,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             () {
                               return FadeInDown(
                                 from: 70,
-                                child: Text(
-                                  (controller.picDate.value.toString()),
-                                  style: TextStyle(
-                                      fontSize: 16.5.sp,
-                                      color: isDarkMode() ? white : black,
-                                      fontFamily: opensansMedium,
-                                      fontWeight: FontWeight.w700),
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 3.h),
+                                  child: Text(
+                                    (controller.picDate.value.toString()),
+                                    style: TextStyle(
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 17.5.sp
+                                            : 14.sp,
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontWeight: FontWeight.w700),
+                                  ),
                                 ),
                               );
                             },
@@ -210,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 1.h,
                 ),
-                Container(
+                Padding(
                   padding: EdgeInsets.only(left: 5.w, right: 2.w),
                   child: DatePicker(
                     DateTime.now(),
@@ -252,7 +266,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.grey,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 6.w),
+                  margin: EdgeInsets.only(
+                      left: SizerUtil.deviceType == DeviceType.mobile
+                          ? 6.w
+                          : 5.w),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -261,7 +278,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Time Slot",
                           style: TextStyle(
                               color: isDarkMode() ? white : black,
-                              fontSize: 16.sp,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 17.5.sp
+                                      : 14.sp,
                               fontWeight: FontWeight.w700),
                         )
                       ]),
@@ -1172,7 +1192,8 @@ class _HomeScreenState extends State<HomeScreen> {
             "No any appointment for this date",
             style: TextStyle(
                 fontFamily: fontMedium,
-                fontSize: 12.sp,
+                fontSize:
+                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 10.sp,
                 fontWeight: FontWeight.w700,
                 color: isDarkMode() ? white : black),
           ),
@@ -1204,7 +1225,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                 "Add Appointment",
                 style: TextStyle(
-                    color: isDarkMode() ? white : white, fontSize: 10.sp),
+                  color: isDarkMode() ? white : white,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                ),
               )),
               decoration: BoxDecoration(
                 color: isDarkMode() ? black : black,

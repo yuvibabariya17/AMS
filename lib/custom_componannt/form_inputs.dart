@@ -36,7 +36,8 @@ Widget getReactiveFormField(
     final String? index,
     bool isEnable = true}) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 1.2.h),
+    margin: EdgeInsets.symmetric(
+        vertical: SizerUtil.deviceType == DeviceType.mobile ? 1.2.h : 1.h),
     child: CustomFormField(
         hintText: hintLabel,
         errorText: errorText,

@@ -166,7 +166,9 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
       height: SizerUtil.deviceType == DeviceType.mobile
           ? SizerUtil.height / 2
           : SizerUtil.height / 1.9, // Change as per your requirement
-      width: SizerUtil.width, // Change as per your requirement
+      width: SizerUtil.deviceType == DeviceType.mobile
+          ? SizerUtil.width
+          : SizerUtil.width / 1.5, // Change as per your requirement
       child: Column(
         children: [
           getDividerForShowDialog(),
@@ -177,7 +179,8 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
                   child: Text(
                 "Empty List",
                 style: TextStyle(
-                    fontSize: 4.5.w,
+                    fontSize:
+                        SizerUtil.deviceType == DeviceType.mobile ? 4.sp : 3.sp,
                     fontFamily: fontMedium,
                     color: isDarkMode() ? white : black),
               )),
@@ -205,7 +208,8 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
               title,
               style: TextStyle(
                   fontFamily: fontMedium,
-                  fontSize: 20.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 20.sp : 13.sp,
                   color: isDarkMode() ? white : black),
             ),
           ),
@@ -231,17 +235,19 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                       ? Brightness.dark
                       : Brightness.light, // Set the brightness to light
                   scaffoldBackgroundColor:
-                      Colors.white, // Set the background color to white
+                      white, // Set the background color to white
                   textTheme: CupertinoTextThemeData(
-                    textStyle: TextStyle(
-                        color: Colors.black), // Set text color to black
+                    textStyle:
+                        TextStyle(color: black), // Set text color to black
                   ),
                 ),
                 child: CupertinoAlertDialog(
                   title: Text(
                     isVideo == true ? "Video" : "Photo",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 18
+                          : 10.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontBold,
                       fontWeight: FontWeight.bold,
@@ -250,7 +256,8 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                   content: Text(
                     isVideo == true ? "Upload Video From" : "Upload Photo From",
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize:
+                          SizerUtil.deviceType == DeviceType.mobile ? 13 : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontMedium,
                     ),
@@ -271,21 +278,8 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                             fontFamily: fontRegular,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 13.sp
-                                : 11.sp),
+                                : 8.sp),
                       ),
-                      // Icon(
-                      //   Icons.camera_alt,
-                      //   size: SizerUtil.deviceType == DeviceType.mobile
-                      //       ? 20.sp
-                      //       : 15.sp,
-                      // ),
-                      //  Text(LocalizationKeys.no.tr,
-                      //     style: const TextStyle(
-                      //       fontSize: 15,
-                      //       color: black,
-                      //       fontFamily: fontBold,
-                      //       fontWeight: FontWeight.bold,
-                      //     )),
                     ),
                     CupertinoDialogAction(
                       onPressed: () {
@@ -302,23 +296,9 @@ Future<Object?> selectImageFromCameraOrGallery(BuildContext context,
                             fontFamily: fontRegular,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 13.sp
-                                : 11.sp),
+                                : 8.sp),
                       ),
-                      // Icon(
-                      //   Icons.photo_size_select_actual_outlined,
-                      //   size: SizerUtil.deviceType == DeviceType.mobile
-                      //       ? 20.sp
-                      //       : 15.sp,
-                      // )
-                      // Text(LocalizationKeys.yes.tr,
-                      //     style: const TextStyle(
-                      //       fontSize: 15,
-                      //       color: black,
-                      //       fontFamily: fontBold,
-                      //       fontWeight: FontWeight.bold,
-                      //     )),
                     ),
-                    // The "No" button
                   ],
                 ),
               )),

@@ -77,11 +77,11 @@ getTitle(String title) {
         style: TextStyle(
             color: isDarkMode() ? white : black,
             fontFamily: opensans_Bold,
-            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 13.sp,
+            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 10.sp,
             fontWeight: FontWeight.w700),
       ),
       SizedBox(
-        height: 0.5.h,
+        height: SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h,
       ),
     ],
   );
@@ -222,35 +222,44 @@ getMiniButton(
 }
 
 getFormButton(Function fun, str, {required bool validate}) {
-  return InkWell(
-    onTap: () {
-      fun();
-    },
-    child: Container(
-      height: SizerUtil.deviceType == DeviceType.mobile ? 6.h : 5.9.h,
-      alignment: Alignment.center,
-      //  padding: EdgeInsets.only(top: 1.h),
-      width: SizerUtil.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            SizerUtil.deviceType == DeviceType.mobile ? 5.h : 1.4.h),
-        color: validate ? isDarkMode() ? white : black : Colors.grey,
-        boxShadow: [
-          BoxShadow(
-              color: validate
-                  ? primaryColor.withOpacity(0.2)
-                  : Colors.grey.withOpacity(0.2),
-              blurRadius: 10.0,
-              offset: const Offset(0, 1),
-              spreadRadius: 3.0)
-        ],
-      ),
-      child: Text(
-        str,
-        style: TextStyle(
-            color:isDarkMode() ? black : white,
-            fontFamily: fontBold,
-            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 8.sp),
+  return Center(
+    child: InkWell(
+      onTap: () {
+        fun();
+      },
+      child: Container(
+        height: SizerUtil.deviceType == DeviceType.mobile ? 6.h : 5.9.h,
+        alignment: Alignment.center,
+        //  padding: EdgeInsets.only(top: 1.h),
+        width: SizerUtil.deviceType == DeviceType.mobile
+            ? SizerUtil.width
+            : SizerUtil.width / 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 5.h : 1.4.h),
+          color: validate
+              ? isDarkMode()
+                  ? white
+                  : black
+              : Colors.grey,
+          boxShadow: [
+            BoxShadow(
+                color: validate
+                    ? primaryColor.withOpacity(0.2)
+                    : Colors.grey.withOpacity(0.2),
+                blurRadius: 10.0,
+                offset: const Offset(0, 1),
+                spreadRadius: 3.0)
+          ],
+        ),
+        child: Text(
+          str,
+          style: TextStyle(
+              color: isDarkMode() ? black : white,
+              fontFamily: fontBold,
+              fontSize:
+                  SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 8.sp),
+        ),
       ),
     ),
   );

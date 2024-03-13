@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/notification_model.dart';
@@ -139,9 +138,31 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                         controller.appointmentObjectList[index];
                     return Container(
                       margin: EdgeInsets.only(
-                          left: 7.w, right: 7.w, bottom: 1.h, top: 3.h),
+                          left: SizerUtil.deviceType == DeviceType.mobile
+                              ? 7.w
+                              : 5.w,
+                          right: SizerUtil.deviceType == DeviceType.mobile
+                              ? 7.w
+                              : 5.w,
+                          bottom: SizerUtil.deviceType == DeviceType.mobile
+                              ? 1.h
+                              : 0.5.h,
+                          top: SizerUtil.deviceType == DeviceType.mobile
+                              ? 3.h
+                              : 2.h),
                       padding: EdgeInsets.only(
-                          top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
+                          top: SizerUtil.deviceType == DeviceType.mobile
+                              ? 2.h
+                              : 1.h,
+                          left: SizerUtil.deviceType == DeviceType.mobile
+                              ? 4.w
+                              : 3.w,
+                          right: SizerUtil.deviceType == DeviceType.mobile
+                              ? 4.w
+                              : 3.w,
+                          bottom: SizerUtil.deviceType == DeviceType.mobile
+                              ? 2.h
+                              : 1.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -153,7 +174,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               style: TextStyle(
                                   color: isDarkMode() ? white : black,
                                   fontFamily: opensansMedium,
-                                  fontSize: 12.sp,
+                                  fontSize:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 12.sp
+                                          : 10.sp,
                                   fontWeight: FontWeight.w700),
                             ),
                             Container(
@@ -164,7 +188,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 10.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 10.sp
+                                        : 8.sp,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -202,7 +229,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                               color:
                                                   isDarkMode() ? white : black,
                                               fontFamily: opensansMedium,
-                                              fontSize: 12.sp,
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 10.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
                                         Container(
@@ -217,7 +247,11 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                     ? white
                                                     : black,
                                                 fontFamily: opensansMedium,
-                                                fontSize: 10.sp,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 10.sp
+                                                        : 8.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         ),
@@ -236,7 +270,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                               color:
                                                   isDarkMode() ? white : black,
                                               fontFamily: opensansMedium,
-                                              fontSize: 12.sp,
+                                              fontSize: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 12.sp
+                                                  : 10.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
                                         Container(
@@ -249,7 +286,11 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                     ? white
                                                     : black,
                                                 fontFamily: opensansMedium,
-                                                fontSize: 10.sp,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
+                                                            DeviceType.mobile
+                                                        ? 10.sp
+                                                        : 8.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         ),
@@ -262,7 +303,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                         style: TextStyle(
                                             color: isDarkMode() ? white : black,
                                             fontFamily: opensansMedium,
-                                            fontSize: 12.sp,
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 10.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
@@ -275,7 +319,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                         style: TextStyle(
                                             color: isDarkMode() ? white : black,
                                             fontFamily: opensansMedium,
-                                            fontSize: 10.sp,
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 10.sp
+                                                : 8.sp,
                                             fontWeight: FontWeight.w500),
                                       )),
                                     ]),
@@ -294,7 +341,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               SvgPicture.asset(
                                 color: isDarkMode() ? white : black,
                                 Asset.user,
-                                height: 1.8.h,
+                                height:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 1.8.h
+                                        : 2.h,
                               ),
                               SizedBox(
                                 width: 2.w,
@@ -304,7 +354,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 12.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 12.sp
+                                        : 10.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                               Spacer(),
@@ -556,7 +609,8 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
         return CupertinoAlertDialog(
           title: Text('Confirm Delete', style: TextStyle(fontSize: 17.sp)),
           content: Text('Are you sure you want to cancel this Appointment?',
-              style: TextStyle(fontSize: 12.sp, color: isDarkMode() ? white : white)),
+              style: TextStyle(
+                  fontSize: 12.sp, color: isDarkMode() ? white : white)),
           actions: <Widget>[
             TextButton(
               onPressed: () {

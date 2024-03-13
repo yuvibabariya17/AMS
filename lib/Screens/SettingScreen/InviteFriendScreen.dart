@@ -5,9 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
 import '../../core/constants/strings.dart';
@@ -40,23 +38,24 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
               ),
               child: SvgPicture.asset(
                 Asset.referfriend,
-                height: 32.h,
-                width: 32.h,
+                height: SizerUtil.deviceType == DeviceType.mobile ? 32.h : 30.h,
+                width: SizerUtil.deviceType == DeviceType.mobile ? 32.h : 30.h,
               ),
             ),
             SizedBox(
-              height: 1.5.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 1.5.h : 1.h,
             ),
             Text(
               Strings.share_code,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: opensansMedium,
-                  fontSize: 13.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 13.sp : 10.sp,
                   fontWeight: FontWeight.w500),
             ),
             SizedBox(
-              height: 3.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 3.h : 2.h,
             ),
             Container(
               padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w),
@@ -73,7 +72,10 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                               Strings.refer_code,
                               style: TextStyle(
                                   fontFamily: opensans_Bold,
-                                  fontSize: 16.sp,
+                                  fontSize:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 16.sp
+                                          : 13.sp,
                                   fontWeight: FontWeight.w700),
                             ),
                           ],
@@ -101,7 +103,10 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                                 "4854WAF",
                                 style: TextStyle(
                                     fontFamily: fontUrbanistBold,
-                                    fontSize: 15.sp),
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 15.sp
+                                        : 12.sp),
                               )),
                             )),
                         Container(
@@ -119,23 +124,32 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                                   style: TextStyle(
                                       color:
                                           isDarkMode() ? black : Colors.white,
-                                      fontSize: 15.sp,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 15.sp
+                                          : 11.sp,
                                       fontFamily: opensans_Bold,
                                       fontWeight: FontWeight.w400),
                                 )))
                       ],
                     ),
                     SizedBox(
-                      height: 4.h,
+                      height:
+                          SizerUtil.deviceType == DeviceType.mobile ? 4.h : 3.h,
                     ),
                     Text(
                       Strings.social_media,
                       style: TextStyle(
                           fontFamily: opensans_Bold,
-                          fontSize: 16.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 16.sp
+                              : 13.sp,
                           fontWeight: FontWeight.w700),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 4.h
+                            : 3.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -145,12 +159,12 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                             height: 5.h,
                             width: 35.w,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: white,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
+                                    color: black.withOpacity(0.2),
                                     spreadRadius: 0.1,
                                     blurRadius: 10,
                                     offset: Offset(0.5, 0.5)),
@@ -160,14 +174,20 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  child: SvgPicture.asset(Asset.facebook),
+                                  child: SvgPicture.asset(
+                                    Asset.facebook,
+                                    height: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? null
+                                        : 3.h,
+                                  ),
                                 ),
                                 SizedBox(width: 2.w),
                                 Container(
                                   child: Text(
                                     Strings.fb,
                                     style: TextStyle(
-                                      color: isDarkMode() ? black : black,
+                                      color: black,
                                       fontFamily: opensansMedium,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -181,11 +201,11 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                           height: 5.h,
                           width: 35.w,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: white,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: black.withOpacity(0.2),
                                   spreadRadius: 0.1,
                                   blurRadius: 10,
                                   offset: Offset(0.5, 0.5)),
@@ -195,7 +215,13 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                child: SvgPicture.asset(Asset.twitter),
+                                child: SvgPicture.asset(
+                                  Asset.twitter,
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? null
+                                          : 3.h,
+                                ),
                               ),
                               SizedBox(width: 1.w),
                               Container(
@@ -221,11 +247,11 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                           height: 5.h,
                           width: 35.w,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: white,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: black.withOpacity(0.2),
                                   spreadRadius: 0.1,
                                   blurRadius: 10,
                                   offset: Offset(0.5, 0.5)),
@@ -235,7 +261,13 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                child: SvgPicture.asset(Asset.instagram),
+                                child: SvgPicture.asset(
+                                  Asset.instagram,
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? null
+                                          : 3.h,
+                                ),
                               ),
                               SizedBox(width: 2.w),
                               Container(
@@ -253,11 +285,11 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                           height: 5.h,
                           width: 35.w,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: white,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: black.withOpacity(0.2),
                                   spreadRadius: 0.1,
                                   blurRadius: 10,
                                   offset: Offset(0.5, 0.5)),
@@ -267,7 +299,13 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                child: SvgPicture.asset(Asset.message),
+                                child: SvgPicture.asset(
+                                  Asset.message,
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? null
+                                          : 3.h,
+                                ),
                               ),
                               SizedBox(width: 1.w),
                               Container(

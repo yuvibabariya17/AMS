@@ -74,14 +74,20 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                        margin:
-                            EdgeInsets.only(left: 5.w, right: 8.w, top: 1.h),
+                        margin: EdgeInsets.only(
+                            left: 5.w,
+                            right: SizerUtil.deviceType == DeviceType.mobile
+                                ? 8.w
+                                : 7.w,
+                            top: 1.h),
                         child: Text(
                           "View More >",
                           style: TextStyle(
                             color: isDarkMode() ? white : black,
                             fontWeight: FontWeight.w800,
-                            fontSize: 13.sp,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 13.sp
+                                : 11.sp,
                           ),
                         )),
                   ],
@@ -91,8 +97,9 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                 child: Container(
                   margin: EdgeInsets.only(top: 1.h),
                   padding: EdgeInsets.only(
-                    left: 7.w,
-                    right: 7.w,
+                    left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 5.w,
+                    right:
+                        SizerUtil.deviceType == DeviceType.mobile ? 7.w : 5.w,
                   ),
                   child: ListView.builder(
                       physics: BouncingScrollPhysics(),
@@ -112,7 +119,15 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             controller.serviceObjectList[index];
                         return Container(
                           padding: EdgeInsets.only(
-                              left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+                            left: 3.w,
+                            right: 3.w,
+                            top: SizerUtil.deviceType == DeviceType.mobile
+                                ? 1.h
+                                : 0.5.h,
+                            bottom: SizerUtil.deviceType == DeviceType.mobile
+                                ? 1.h
+                                : 0.5.h,
+                          ),
                           margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
                           decoration: BoxDecoration(
                             color: isDarkMode() ? black : white,
@@ -132,7 +147,6 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(height: 1.h),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +161,10 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                     style: TextStyle(
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
-                                      fontSize: 13.sp,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 13.sp
+                                          : 10.sp,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -163,14 +180,15 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                     style: TextStyle(
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
-                                      fontSize: 11.sp,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 11.sp
+                                          : 9.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
                               ),
-
-                              // SizedBox(height: 5.0),
                             ],
                           ),
                         );
@@ -188,7 +206,11 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
             child: Text(
               "Data not Found",
               textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: fontMedium, fontSize: 12.sp),
+              style: TextStyle(
+                  fontFamily: fontMedium,
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 12.sp
+                      : 11.sp),
             ),
           ),
         ],

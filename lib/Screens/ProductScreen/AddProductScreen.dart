@@ -106,7 +106,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   child: Container(
                     margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
                     padding: EdgeInsets.only(
-                        left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                        left: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.0.w
+                            : 5.w,
+                        right: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.0.w
+                            : 5.w,
+                        top: 2.h,
+                        bottom: 1.h),
                     child: Form(
                         key: controller.formKey,
                         child: Column(
@@ -159,14 +166,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                                     context,
                                                     isCamera: false);
                                           });
-                                          // await controller.PopupDialogs(context);
                                           setState(() {});
                                         },
                                         isReadOnly: true,
-                                        // onTap: () async {
-                                        //   await controller
-                                        //       .actionClickUploadImage(context);
-                                        // },
                                         errorText: controller
                                             .productimgModel.value.error,
                                         inputType: TextInputType.text,
@@ -286,7 +288,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   }, CommonConstant.submit,
                                       validate:
                                           controller.isFormInvalidate.value);
-                                }))
+                                })),
+                            SizedBox(
+                              height: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 0.h
+                                  : 2.h,
+                            ),
                           ],
                         )),
                   ),
