@@ -75,15 +75,11 @@ class _PackageScreenState extends State<PackageScreen> {
                   }
                 });
               },
-              child: isDarkMode()
-                  ? Icon(
-                      Icons.add,
-                      color: black,
-                    )
-                  : Icon(
-                      Icons.add,
-                      color: white,
-                    )),
+              child: Icon(
+                Icons.add,
+                color: isDarkMode() ? black : white,
+                size: SizerUtil.deviceType == DeviceType.mobile ? null : 3.h,
+              )),
         ),
         body: Column(
           children: [
@@ -92,13 +88,14 @@ class _PackageScreenState extends State<PackageScreen> {
             }),
             Container(
               margin: EdgeInsets.only(
-                top: 3.h,
-                left: 1.0.w,
-                right: 1.0.w,
+                top: SizerUtil.deviceType == DeviceType.mobile ? 3.h : 2.5.h,
+                left: SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
+                right:
+                    SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
               ),
               padding: EdgeInsets.only(
-                left: 7.0.w,
-                right: 7.0.w,
+                left: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
               ),
               child: Container(
                 height: 5.5.h,
@@ -112,8 +109,15 @@ class _PackageScreenState extends State<PackageScreen> {
                       hintStyle: TextStyle(
                         color: isDarkMode() ? white : black,
                       ),
-                      contentPadding:
-                          EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                      contentPadding: EdgeInsets.only(
+                        top: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                        left: 2.h,
+                        bottom: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                      ),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
@@ -122,12 +126,22 @@ class _PackageScreenState extends State<PackageScreen> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
                               BorderSide(color: isDarkMode() ? white : black)),
-                      suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.search_sharp,
-                            color: isDarkMode() ? white : black,
-                          ))),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(
+                          right: SizerUtil.deviceType == DeviceType.mobile
+                              ? 0.0
+                              : 2.w,
+                        ),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search_sharp,
+                              color: isDarkMode() ? white : black,
+                              size: SizerUtil.deviceType == DeviceType.mobile
+                                  ? null
+                                  : 3.h,
+                            )),
+                      )),
                   controller: _search,
                   cursorColor: isDarkMode() ? white : black,
                   keyboardType: TextInputType.name,
@@ -322,24 +336,25 @@ class _PackageScreenState extends State<PackageScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.filteredPackageObjectList.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(left: 8.w, right: 8.w),
+        margin: EdgeInsets.only(
+          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+        ),
         child: ListView.builder(
           shrinkWrap: true,
           clipBehavior: Clip.antiAlias,
-          padding: EdgeInsets.only(bottom: 35.h),
-
+          padding: EdgeInsets.only(
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
           physics: BouncingScrollPhysics(),
-          // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //   crossAxisCount: 2, // Adjust the number of columns as needed
-          //   crossAxisSpacing: 10.0,
-          //   mainAxisSpacing: 10.0,
-          // ),
           itemBuilder: (context, index) {
             PackageList data = controller.filteredPackageObjectList[index];
-
             return Container(
-              padding:
-                  EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
+              padding: EdgeInsets.only(
+                left: 3.w,
+                right: 3.w,
+                top: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.2.h,
+                bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.5.h,
+              ),
               margin: EdgeInsets.only(bottom: 1.h),
               decoration: BoxDecoration(
                 color: isDarkMode() ? black : white,
@@ -347,8 +362,8 @@ class _PackageScreenState extends State<PackageScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
+                        ? white.withOpacity(0.2)
+                        : black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5),
@@ -359,61 +374,25 @@ class _PackageScreenState extends State<PackageScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Stack(
-                  //   children: [
-                  //     //CLICPRRECT
-                  //     Container(
-                  //         height: 11.h,
-                  //         width: 60.w,
-                  //         // padding: EdgeInsets.all(
-                  //         //   SizerUtil.deviceType == DeviceType.mobile
-                  //         //       ? 1.2.w
-                  //         //       : 1.0.w,
-                  //         // ),
-                  //         child: ClipRRect(
-                  //           borderRadius: const BorderRadius.all(
-                  //               Radius.circular(15)),
-                  //           child: CachedNetworkImage(
-                  //             fit: BoxFit.cover,
-                  //             imageUrl: "",
-                  //             placeholder: (context, url) =>
-                  //                 const Center(
-                  //               child: CircularProgressIndicator(
-                  //                   color: primaryColor),
-                  //             ),
-                  //             errorWidget: (context, url, error) =>
-                  //                 Image.asset(
-                  //               Asset.placeholder,
-                  //               height: 11.h,
-                  //               fit: BoxFit.cover,
-                  //             ),
-                  //           ),
-                  //         ))
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                           child: Text(
-                        //  data.serviceInfo != null
-                        //     ? data.serviceInfo!.name
-                        //     : "",
                         data.name != null ? data.name : "",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: isDarkMode() ? white : black,
                             fontFamily: opensansMedium,
-                            fontSize: 14.sp,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 14.sp
+                                : 10.sp,
                             fontWeight: FontWeight.w700),
                       )),
-                      // SizedBox(height: 5.0),
                     ],
                   ),
-                  // SizedBox(height: 5.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -429,12 +408,13 @@ class _PackageScreenState extends State<PackageScreen> {
                           style: TextStyle(
                               color: isDarkMode() ? white : black,
                               fontFamily: opensansMedium,
-                              fontSize: 11.sp,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 11.sp
+                                      : 9.sp,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
-
-                      // Spacer(),
                       GestureDetector(
                         onTap: () {
                           Get.to(AddPackageScreen(

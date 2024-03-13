@@ -98,23 +98,27 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     }
                   });
                 },
-                child: isDarkMode()
-                    ? Icon(
-                        Icons.add,
-                        color: black,
-                      )
-                    : Icon(
-                        Icons.add,
-                        color: white,
-                      )),
+                child: Icon(
+                  Icons.add,
+                  color: isDarkMode() ? black : white,
+                  size: SizerUtil.deviceType == DeviceType.mobile ? null : 3.h,
+                )),
           ),
           body: Column(children: [
             getCommonToolbar(ScreenTitle.service, () {
               Get.back();
             }),
             Container(
-              margin: EdgeInsets.only(top: 3.h, left: 1.0.w, right: 1.0.w),
-              padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w),
+              margin: EdgeInsets.only(
+                top: SizerUtil.deviceType == DeviceType.mobile ? 3.h : 2.5.h,
+                left: SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
+                right:
+                    SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
+              ),
+              padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
+              ),
               child: Container(
                 height: 5.5.h,
                 child: TextField(
@@ -123,8 +127,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   }),
                   style: TextStyle(color: isDarkMode() ? white : black),
                   decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                      contentPadding: EdgeInsets.only(
+                        top: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                        left: 2.h,
+                        bottom: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                      ),
                       hintText: CommonConstant.search,
                       hintStyle: TextStyle(
                         color: isDarkMode() ? white : black,
@@ -137,12 +148,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
                               BorderSide(color: isDarkMode() ? white : black)),
-                      suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.search_sharp,
-                            color: isDarkMode() ? white : black,
-                          ))),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(
+                            right: SizerUtil.deviceType == DeviceType.mobile
+                                ? 0.0
+                                : 2.w),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search_sharp,
+                              color: isDarkMode() ? white : black,
+                              size: SizerUtil.deviceType == DeviceType.mobile
+                                  ? null
+                                  : 3.h,
+                            )),
+                      )),
                   controller: search,
                   cursorColor: isDarkMode() ? white : black,
                   keyboardType: TextInputType.name,
@@ -253,16 +273,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
         controller.filteredServiceObjectList.isNotEmpty) {
       return Container(
         margin: EdgeInsets.only(
-          left: 8.w,
-          right: 8.w,
+          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
         ),
         // padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
         child: ListView.builder(
           shrinkWrap: true,
           clipBehavior: Clip.antiAlias,
-          padding: EdgeInsets.only(bottom: 35.h),
+          padding: EdgeInsets.only(
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
           physics: BouncingScrollPhysics(),
-
           // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           //   crossAxisCount: 2, // Adjust the number of columns as needed
           //   crossAxisSpacing: 10.0,
@@ -271,10 +291,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
           itemBuilder: (context, index) {
             VendorServiceList data =
                 controller.filteredServiceObjectList[index];
-
             return Container(
-              padding:
-                  EdgeInsets.only(left: 5.w, right: 3.w, top: 1.h, bottom: 1.h),
+              padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 3.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 3.w,
+                top: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.5.h,
+                bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.5.h,
+              ),
               margin: EdgeInsets.only(bottom: 1.h),
               decoration: BoxDecoration(
                 color: isDarkMode() ? black : white,
@@ -282,8 +305,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
+                        ? white.withOpacity(0.2)
+                        : black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5),
@@ -348,7 +371,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 14.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 11.sp,
                           fontWeight: FontWeight.w700,
                         ),
                         // textAlign: TextAlign.center,
@@ -365,7 +390,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 11.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 11.sp
+                              : 9.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

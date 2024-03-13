@@ -117,9 +117,23 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Container(
-                    margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
+                    margin: EdgeInsets.only(
+                      left: SizerUtil.deviceType == DeviceType.mobile
+                          ? 1.0.w
+                          : 0.5.w,
+                      right: SizerUtil.deviceType == DeviceType.mobile
+                          ? 1.0.w
+                          : 0.5.w,
+                    ),
                     padding: EdgeInsets.only(
-                        left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                        left: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.0.w
+                            : 5.w,
+                        right: SizerUtil.deviceType == DeviceType.mobile
+                            ? 7.0.w
+                            : 5.w,
+                        top: 2.h,
+                        bottom: 1.h),
                     child: Form(
                         key: controller.formKey,
                         child: Column(
@@ -278,7 +292,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                 data: isDarkMode()
                                                     ? ThemeData.dark().copyWith(
                                                         primaryColor: black,
-                                                        backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
                                                           textTheme:
@@ -292,20 +305,22 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                                         50), // Set your border radius
                                                           ),
                                                         ),
-                                                        useMaterial3: true,
                                                         colorScheme:
                                                             const ColorScheme
-                                                                .dark(
+                                                                    .dark(
                                                           primary: Colors
                                                               .teal, // Set your primary color
-                                                        ).copyWith(
-                                                                secondary:
-                                                                    secondaryColor),
+                                                        )
+                                                                .copyWith(
+                                                                    secondary:
+                                                                        secondaryColor)
+                                                                .copyWith(
+                                                                    background:
+                                                                        white),
                                                       )
                                                     : ThemeData.light()
                                                         .copyWith(
                                                         primaryColor: white,
-                                                        backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
                                                           textTheme:
@@ -319,15 +334,18 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                                         50), // Set your border radius
                                                           ),
                                                         ),
-                                                        useMaterial3: true,
                                                         colorScheme:
                                                             const ColorScheme
-                                                                .light(
+                                                                    .light(
                                                           primary: Colors
                                                               .teal, // Set your primary color
-                                                        ).copyWith(
-                                                                secondary:
-                                                                    secondaryColor),
+                                                        )
+                                                                .copyWith(
+                                                                    secondary:
+                                                                        secondaryColor)
+                                                                .copyWith(
+                                                                    background:
+                                                                        white),
                                                       ),
                                                 child: child!,
                                               );
@@ -495,7 +513,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                     ? ThemeData.dark().copyWith(
                                                         primaryColor:
                                                             primaryColor,
-                                                        backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
                                                           textTheme:
@@ -509,21 +526,23 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                                         50), // Set your border radius
                                                           ),
                                                         ),
-                                                        useMaterial3: true,
                                                         colorScheme:
                                                             const ColorScheme
-                                                                .dark(
+                                                                    .dark(
                                                           primary: Colors
                                                               .teal, // Set your primary color
-                                                        ).copyWith(
-                                                                secondary:
-                                                                    secondaryColor),
+                                                        )
+                                                                .copyWith(
+                                                                    secondary:
+                                                                        secondaryColor)
+                                                                .copyWith(
+                                                                    background:
+                                                                        white),
                                                       )
                                                     : ThemeData.light()
                                                         .copyWith(
                                                         primaryColor:
                                                             primaryColor,
-                                                        backgroundColor: white,
                                                         buttonTheme:
                                                             ButtonThemeData(
                                                           textTheme:
@@ -537,15 +556,18 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                                                         50), // Set your border radius
                                                           ),
                                                         ),
-                                                        useMaterial3: true,
                                                         colorScheme:
                                                             const ColorScheme
-                                                                .light(
+                                                                    .light(
                                                           primary: Colors
                                                               .teal, // Set your primary color
-                                                        ).copyWith(
-                                                                secondary:
-                                                                    secondaryColor),
+                                                        )
+                                                                .copyWith(
+                                                                    secondary:
+                                                                        secondaryColor)
+                                                                .copyWith(
+                                                                    background:
+                                                                        white),
                                                       ),
                                                 child: child!,
                                               );
@@ -699,7 +721,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         true) {
                                       if (widget.isEdit == true) {
                                         // Call updateCourse API
-
                                         controller.UpdateVendorServiceApi(
                                           context,
                                           widget.editService!.serviceId,
@@ -712,7 +733,12 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                   }, CommonConstant.submit,
                                       validate:
                                           controller.isFormInvalidate.value);
-                                }))
+                                })),
+                            SizedBox(
+                              height: SizerUtil.deviceType == DeviceType.mobile
+                                  ? null
+                                  : 2.h,
+                            ),
                           ],
                         )),
                   ),

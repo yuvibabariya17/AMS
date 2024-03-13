@@ -85,18 +85,17 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                 }
               });
             },
-            child: isDarkMode()
-                ? Icon(
-                    Icons.add,
-                    color: black,
-                  )
-                : Icon(
-                    Icons.add,
-                    color: white,
-                  )),
+            child: Icon(
+              Icons.add,
+              color: isDarkMode() ? black : white,
+              size: SizerUtil.deviceType == DeviceType.mobile ? null : 3.h,
+            )),
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+        margin: EdgeInsets.only(
+          left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 0.2.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 0.2.w,
+        ),
         child: Column(
           children: [
             getAppbar(
@@ -116,7 +115,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         length: 2,
         child: Column(children: [
           SizedBox(
-            height: 2.5.h,
+            height: SizerUtil.deviceType == DeviceType.mobile ? 2.5.h : 2.1.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -150,15 +149,18 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         width: 40.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
-          horizontal: 3.5.w,
+          horizontal: SizerUtil.deviceType == DeviceType.mobile ? 3.5.w : 4.5.w,
         ),
-        padding:
-            EdgeInsets.only(left: 5.w, right: 5.w, top: 1.3.h, bottom: 1.3.h),
+        padding: EdgeInsets.only(
+          left: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 2.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 2.w,
+          top: SizerUtil.deviceType == DeviceType.mobile ? 1.3.h : 0.8.h,
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.3.h : 0.8.h,
+        ),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: currentPage == index ? Colors.black : Colors.white,
-            border: Border.all(
-                color: isDarkMode() ? Colors.white : Colors.transparent),
+            color: currentPage == index ? black : white,
+            border: Border.all(color: isDarkMode() ? white : transparent),
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,
@@ -174,42 +176,16 @@ class _AppointmentScreenState extends State<AppointmentScreen>
             Text(
               str,
               style: TextStyle(
-                  fontSize: 12.5.sp,
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 12.5.sp
+                      : 9.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
-                  color:
-                      currentPage == index ? Colors.white : Colors.grey[850]),
+                  color: currentPage == index ? white : Colors.grey[850]),
             ),
             SizedBox(
               width: currentPage == index ? 4.w : 0,
             ),
-            // currentPage == index
-            //     ? Container(
-            //         decoration: BoxDecoration(
-            //           borderRadius: BorderRadius.circular(10),
-            //           color:
-            //               currentPage == index || isDarkMode() ? white : black,
-            //           boxShadow: [
-            //             BoxShadow(
-            //                 color: isDarkMode()
-            //                     ? Colors.white.withOpacity(0.2)
-            //                     : Colors.black.withOpacity(0.2),
-            //                 spreadRadius: 0.1,
-            //                 blurRadius: 10,
-            //                 offset: Offset(0.5, 0.5)),
-            //           ],
-            //         ),
-            //         padding:
-            //             EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
-            //         child: currentPage == index
-            //             ? Text("6",
-            //                 style: TextStyle(
-            //                   fontSize: 12.5.sp,
-            //                   color: isDarkMode() ? black : null,
-            //                 ))
-            //             : null,
-            //       )
-            //     : Container()
           ],
         ),
       ),

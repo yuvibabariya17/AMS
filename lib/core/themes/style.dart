@@ -14,10 +14,11 @@ styleTextForFieldLabel(FocusNode node) {
 
 styleTextForFieldHint() {
   return TextStyle(
-      fontSize: 11.sp,
+      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 11.sp : 9.sp,
       fontFamily: fontRegular,
       color: isDarkMode() ? white : black);
 }
+
 styleTextForErrorFieldHint() {
   return TextStyle(
       fontSize: 11.sp,
@@ -28,7 +29,7 @@ styleTextForErrorFieldHint() {
 styleTextFormFieldText() {
   return TextStyle(
       fontFamily: fontRegular,
-      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 7.sp,
+      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 9.sp,
       color: isDarkMode() ? white : Color(0xFF262C2E));
 }
 

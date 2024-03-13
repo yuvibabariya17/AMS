@@ -71,7 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         child: Scaffold(
           backgroundColor: transparent,
           body: Container(
-            margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w, top: 1.h),
+            margin: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+                top: 1.h),
             child: Column(
               children: [
                 Container(
@@ -188,9 +191,11 @@ class _ProfileScreenState extends State<ProfileScreen>
         width: 25.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
-          horizontal: 8,
+          horizontal: SizerUtil.deviceType == DeviceType.mobile ? 8 : 20,
         ),
-        padding: EdgeInsets.only(top: 11, bottom: 11),
+        padding: EdgeInsets.only(
+            top: 11,
+            bottom: SizerUtil.deviceType == DeviceType.mobile ? 11 : 1.h),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: selectedTabIndex == index
@@ -216,7 +221,9 @@ class _ProfileScreenState extends State<ProfileScreen>
           children: [
             Text(str,
                 style: TextStyle(
-                  fontSize: 12.2.sp,
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 12.2.sp
+                      : 11.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
                   color: selectedTabIndex == index

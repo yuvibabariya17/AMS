@@ -137,21 +137,22 @@ class _CustomFormFieldState extends State<CustomFormField> {
       decoration: InputDecoration(
         labelStyle: styleTextForFieldLabel(widget.node),
         contentPadding: EdgeInsets.only(
-            left: 5.w,
-            right: 5.w,
+            left: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 4.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 4.w,
             top: SizerUtil.deviceType == DeviceType.mobile
                 ? widget.isExpand!
                     ? 10.h
                     : 0.w
                 : 3.w,
-            bottom: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 3.w),
+            bottom: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 2.w),
         //EdgeInsets.symmetric(vertical: 1.8.h, horizontal: 5.w),
         hintText: widget.hintText,
         errorText: widget.errorText,
         errorStyle: styleTextForErrorFieldHint(),
         hintStyle: styleTextForFieldHint(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 20),
           borderSide: const BorderSide(
             color: inputBorderColor,
             width: 1.5,
@@ -159,11 +160,13 @@ class _CustomFormFieldState extends State<CustomFormField> {
         ),
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.redAccent, width: 1.2),
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
         ),
         counterText: '',
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
           borderSide: const BorderSide(
             color: inputBorderColor,
           ),
@@ -182,7 +185,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
               )
             : null,
         prefixIconConstraints:
-            const BoxConstraints(minHeight: 25, maxHeight: 30),
+            const BoxConstraints(minHeight: 25, maxHeight: 50),
         suffixIcon: widget.wantSuffix == true
             ? GestureDetector(
                 onTap: () {
@@ -227,8 +230,19 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   }
                 },
                 child: widget.time == true
-                    ? SvgPicture.asset(Asset.time,
-                        height: 7, width: 7, fit: BoxFit.scaleDown)
+                    ? Padding(
+                        padding: SizerUtil.deviceType == DeviceType.mobile
+                            ? EdgeInsets.all(4.w)
+                            : EdgeInsets.only(right: 3.w),
+                        child: SvgPicture.asset(Asset.time,
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? 0
+                                : 10,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 0
+                                : 10,
+                            fit: BoxFit.contain),
+                      )
                     : widget.isDropdown == true
                         ? Row(
                             mainAxisSize: MainAxisSize.min, // added line
@@ -250,7 +264,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                 //     SizerUtil.deviceType == DeviceType.mobile
                                 //         ? 30
                                 //         : 40,
-                                color: Colors.black.withOpacity(0.2),
+                                color: black.withOpacity(0.2),
                               ),
                               widget.isAdd == true
                                   ? IconButton(
@@ -270,8 +284,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                               DeviceType.mobile
                                           ? 25
                                           : 40,
-                                      color:
-                                          isDarkMode() ? Colors.white : black,
+                                      color: isDarkMode() ? white : black,
                                     )
                                   : Container(),
                             ],
@@ -295,12 +308,24 @@ class _CustomFormFieldState extends State<CustomFormField> {
                         //             width: 5.w,
                         //           )
                         widget.isCalender == true
-                            ? SvgPicture.asset(
-                                Asset.calender,
-                                height: 5,
-                                width: 5,
-                                fit: BoxFit.scaleDown,
-                                color: Colors.grey,
+                            ? Padding(
+                                padding:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? EdgeInsets.all(4.w)
+                                        : EdgeInsets.only(right: 3.w),
+                                child: SvgPicture.asset(
+                                  Asset.calender,
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 0
+                                          : 8,
+                                  width:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 0
+                                          : 8,
+                                  fit: BoxFit.contain,
+                                  color: Colors.grey,
+                                ),
                               )
                             : InkWell(
                                 child: widget.isPassword == true
@@ -396,10 +421,23 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                               // ),
                                             ),
                                           )
-                                        : SvgPicture.asset(Asset.photos,
-                                            height: 5,
-                                            width: 5,
-                                            fit: BoxFit.scaleDown),
+                                        : Padding(
+                                            padding: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? EdgeInsets.all(4.w)
+                                                : EdgeInsets.only(right: 3.w),
+                                            child: SvgPicture.asset(
+                                                Asset.photos,
+                                                height: SizerUtil.deviceType ==
+                                                        DeviceType.mobile
+                                                    ? 0
+                                                    : 8,
+                                                width: SizerUtil.deviceType ==
+                                                        DeviceType.mobile
+                                                    ? 0
+                                                    : 8,
+                                                fit: BoxFit.contain),
+                                          ),
                               ))
             : Container(
                 width: 1,

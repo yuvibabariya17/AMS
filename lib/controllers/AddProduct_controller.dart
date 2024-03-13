@@ -330,7 +330,6 @@ class addProductController extends GetxController {
       if (isProductCategoryList.value == true)
         return setDropDownContent([].obs, Text("Loading"),
             isApiIsLoading: isProductCategoryList.value);
-
       return setDropDownTestContent(
         productCategoryObjectList,
         ListView.builder(
@@ -339,19 +338,17 @@ class addProductController extends GetxController {
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               dense: true,
-              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-              contentPadding:
-                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              visualDensity: VisualDensity(
+                  horizontal: 0,
+                  vertical:
+                      SizerUtil.deviceType == DeviceType.mobile ? -4 : -1),
+              contentPadding: EdgeInsets.all(0),
               horizontalTitleGap: null,
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("ONTAP", "SACHIN");
-
                 productCategoryId.value =
                     productCategoryObjectList[index].id.toString();
-
-                logcat("ONTAP", productCategoryId.value.toString());
                 categroryCtr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
 
@@ -359,7 +356,12 @@ class addProductController extends GetxController {
               },
               title: Text(
                 productCategoryObjectList[index].name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -447,12 +449,10 @@ class addProductController extends GetxController {
             imageQuality: 100)
         .then((file) async {
       if (file != null) {
-        if (file != null) {
-          uploadImageFile = File(file.path).obs;
-          productimgCtr.text = file.name;
-          validateProductimg(productimgCtr.text);
-          getImageApi(context);
-        }
+        uploadImageFile = File(file.path).obs;
+        productimgCtr.text = file.name;
+        validateProductimg(productimgCtr.text);
+        getImageApi(context);
       }
     });
 
@@ -511,12 +511,10 @@ class addProductController extends GetxController {
         //       ),
         //     ],
         //     aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-        if (file != null) {
-          uploadImageFile = File(file.path).obs;
-          productimgCtr.text = file.name;
-          validateProductimg(productimgCtr.text);
-          getImageApi(context);
-        }
+        uploadImageFile = File(file.path).obs;
+        productimgCtr.text = file.name;
+        validateProductimg(productimgCtr.text);
+        getImageApi(context);
 
         // if (croppedFile != null) {
         //   uploadImageFile = File(croppedFile.path).obs;

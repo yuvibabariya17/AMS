@@ -359,7 +359,6 @@ class AddserviceController extends GetxController {
                     serviceCategoryList[index].name.toString());
                 categoryId.value = serviceCategoryList[index].id.toString();
                 categoryctr.text = serviceCategoryList[index].name.toString();
-
                 validateCategory(categoryctr.text);
                 getSubCategoryList(context, categoryId.value.toString());
               },

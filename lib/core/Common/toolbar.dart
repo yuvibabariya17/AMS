@@ -253,7 +253,9 @@ getCommonToolbar(title, Function? callback) {
                       fontFamily: fontBold,
                       color: isDarkMode() ? white : black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.sp),
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 18.sp
+                          : 15.sp),
                 ),
               ),
             ),
@@ -284,7 +286,9 @@ getAppbar(
                       fontFamily: fontBold,
                       color: isDarkMode() ? white : headingTextColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.sp),
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 18.sp
+                          : 16.sp),
                 ),
               ),
             ),
@@ -675,10 +679,9 @@ Widget iosBackPress(callback) {
 Widget commonBackPress(callback) {
   return Container(
     margin: EdgeInsets.only(
-        left: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 10.w),
+        left: SizerUtil.deviceType == DeviceType.mobile ? 5.5.w : 4.w),
     child: GestureDetector(
       onTap: () {
-        print("CLICK");
         callback();
       },
       child: Container(

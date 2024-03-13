@@ -10,7 +10,7 @@ class ThemeController extends GetxController {
   ThemeController({this.storageBox}) {}
 
   final Box<int>? storageBox;
-  RxBool isDark = true.obs;
+  RxBool isDark = false.obs;
   RxInt? isDarkMode = 0.obs;
 
   @override

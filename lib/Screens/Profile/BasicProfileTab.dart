@@ -50,10 +50,17 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 3.h, left: 8.w, right: 8.w, bottom: 1.h),
+      margin: EdgeInsets.only(
+          top: 3.h,
+          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
+          bottom: 1.h),
       child: Container(
-        padding:
-            EdgeInsets.only(top: 1.5.h, left: 6.w, right: 4.w, bottom: 1.5.h),
+        padding: EdgeInsets.only(
+            top: 1.5.h,
+            left: SizerUtil.deviceType == DeviceType.mobile ? 6.w : 4.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 6.w : 4.w,
+            bottom: 1.5.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -68,7 +75,9 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                       fontFamily: opensansMedium,
                       fontWeight: FontWeight.w700,
                       color: isDarkMode() ? Colors.grey : black,
-                      fontSize: 13.5.sp),
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 13.5.sp
+                          : 10.5.sp),
                 ),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -81,22 +90,28 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                         });
                       },
                       icon: SvgPicture.asset(Asset.edit,
-                          height: 2.3.h,
-                          color: isDarkMode() ? Colors.grey : Colors.grey)),
+                          height: SizerUtil.deviceType == DeviceType.mobile
+                              ? 2.3.h
+                              : 2.6.h,
+                          color: Colors.grey)),
                 )
               ],
             ),
-            SizedBox(height: 0.5.h),
+            SizedBox(
+                height:
+                    SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h),
             Text(
               fullName.value,
               style: TextStyle(
                   color: isDarkMode() ? white : black,
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
-                  fontSize: 13.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.sp
+                      : 10.sp),
             ),
             SizedBox(
-              height: 2.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
             ),
             Text(
               CommonConstant.company_name,
@@ -104,21 +119,25 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
-                  fontSize: 13.5.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.5.sp
+                      : 10.5.sp),
             ),
             SizedBox(
-              height: 0.5.h,
-            ),
+                height:
+                    SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h),
             Text(
               companyname.value,
               style: TextStyle(
                   color: isDarkMode() ? white : black,
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
-                  fontSize: 13.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.sp
+                      : 10.sp),
             ),
             SizedBox(
-              height: 2.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
             ),
             Text(
               "Company Address :",
@@ -126,21 +145,25 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
-                  fontSize: 13.5.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.5.sp
+                      : 10.5.sp),
             ),
             SizedBox(
-              height: 0.5.h,
-            ),
+                height:
+                    SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h),
             Text(
               address.value,
               style: TextStyle(
                   color: isDarkMode() ? white : black,
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
-                  fontSize: 13.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.sp
+                      : 10.sp),
             ),
             SizedBox(
-              height: 2.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
             ),
             Text(
               Strings.contact_one,
@@ -148,21 +171,25 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
-                  fontSize: 13.5.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.5.sp
+                      : 10.5.sp),
             ),
             SizedBox(
-              height: 0.5.h,
-            ),
+                height:
+                    SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h),
             Text(
               mobile.value,
               style: TextStyle(
                   color: isDarkMode() ? white : black,
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
-                  fontSize: 13.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.sp
+                      : 10.sp),
             ),
             SizedBox(
-              height: 2.h,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
             ),
             Text(
               "Whatsapp Number :",
@@ -170,18 +197,22 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w700,
                   color: isDarkMode() ? Colors.grey : black,
-                  fontSize: 13.5.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.5.sp
+                      : 10.5.sp),
             ),
             SizedBox(
-              height: 0.5.h,
-            ),
+                height:
+                    SizerUtil.deviceType == DeviceType.mobile ? 0.5.h : 0.2.h),
             Text(
               Whatsapp.value,
               style: TextStyle(
                   color: isDarkMode() ? white : black,
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
-                  fontSize: 13.sp),
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 13.sp
+                      : 10.sp),
             ),
           ],
         ),
@@ -191,8 +222,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
           boxShadow: [
             BoxShadow(
                 color: isDarkMode()
-                    ? Colors.white.withOpacity(0.2)
-                    : Colors.black.withOpacity(0.2),
+                    ? white.withOpacity(0.2)
+                    : black.withOpacity(0.2),
                 spreadRadius: 0.1,
                 blurRadius: 10,
                 offset: Offset(0.5, 0.5)),

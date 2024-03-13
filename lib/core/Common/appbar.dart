@@ -49,12 +49,20 @@ class HomeAppBar extends StatelessWidget {
                               height: 4.h,
                               color: isDarkMode() ? white : black,
                             )
-                          : SvgPicture.asset(
-                              Asset.menu,
-                              height: SizerUtil.deviceType == DeviceType.mobile
-                                  ? null
-                                  : 2.5.h,
-                              color: isDarkMode() ? white : black,
+                          : Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 0.0
+                                          : 2.0.w),
+                              child: SvgPicture.asset(
+                                Asset.menu,
+                                height:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? null
+                                        : 2.5.h,
+                                color: isDarkMode() ? white : black,
+                              ),
                             )
                       : SvgPicture.asset(
                           Asset.cart,

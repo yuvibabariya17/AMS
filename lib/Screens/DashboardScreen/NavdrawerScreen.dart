@@ -83,7 +83,9 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
             ),
           ),
           child: Drawer(
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: SizerUtil.deviceType == DeviceType.mobile
+                ? MediaQuery.of(context).size.width * 0.8
+                : MediaQuery.of(context).size.width * 0.6,
             shadowColor: Colors.white,
             elevation: 0,
             backgroundColor: isDarkMode() ? black : Colors.grey[900],
@@ -93,7 +95,8 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                 children: [
                   buildHeader(context),
                   SizedBox(
-                    height: 1.h,
+                    height:
+                        SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.3.h,
                   ),
                   Divider(
                     color: Colors.grey,
@@ -113,7 +116,10 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
   buildHeader(BuildContext context) => FadeInLeft(
         from: 50,
         child: Container(
-          padding: EdgeInsets.only(top: 5.5.h, left: 2.5.h, bottom: 2.h),
+          padding: EdgeInsets.only(
+              top: SizerUtil.deviceType == DeviceType.mobile ? 5.5.h : 4.h,
+              left: 2.5.h,
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.h),
           color: isDarkMode() ? black : Colors.grey[900],
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -131,6 +137,8 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                     errorWidget: (context, url, error) =>
                         SvgPicture.asset(Asset.profileimg),
                     fit: BoxFit.cover,
+                    height:
+                        SizerUtil.deviceType == DeviceType.mobile ? null : 8.h,
                   ),
                 ),
               ),
@@ -151,18 +159,24 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                     Text(
                       name.toString(),
                       style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 16.sp
+                              : 14.sp,
                           color: Colors.white,
                           fontFamily: opensansMedium,
                           fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
-                      height: 1.h,
+                      height: SizerUtil.deviceType == DeviceType.mobile
+                          ? 1.h
+                          : 0.2.h,
                     ),
                     Text(
                       number.toString(),
                       style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 10.sp
+                              : 8.sp,
                           color: Colors.white,
                           fontFamily: opensansMedium),
                     )
@@ -178,7 +192,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
         from: 50,
         child: Container(
             color: isDarkMode() ? black : Colors.grey[900],
-            padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
+            // padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
                 setNavtile(Asset.serviceNav, "Service", isBig: true, () {

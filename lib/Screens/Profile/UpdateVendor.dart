@@ -3,7 +3,6 @@ import 'package:booking_app/controllers/UpdateVendor_controller.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/models/SignInModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
@@ -37,7 +36,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
     logcat("USERNAME", retrievedObject!.userName.toString());
     logcat("COMPANY", retrievedObject.companyName.toString());
 
-    controller.Vendornamectr.text = retrievedObject!.userName.toString();
+    controller.Vendornamectr.text = retrievedObject.userName.toString();
     controller.companyctr.text = retrievedObject.companyName.toString();
     controller.addressctr.text = retrievedObject.companyAddress.toString();
     //controller.statectr.text = retrievedObject.stateId.toString();
@@ -85,7 +84,14 @@ class _UpdateVendorState extends State<UpdateVendor> {
                 child: Container(
                   margin: EdgeInsets.only(left: 1.0.w, right: 1.0.w),
                   padding: EdgeInsets.only(
-                      left: 7.0.w, right: 7.0.w, top: 2.h, bottom: 1.h),
+                      left: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.5.w,
+                      right: SizerUtil.deviceType == DeviceType.mobile
+                          ? 7.0.w
+                          : 5.5.w,
+                      top: 2.h,
+                      bottom: 1.h),
                   child: Form(
                       key: controller.formKey,
                       child: Column(
@@ -103,7 +109,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.Vendornamectr,
                                       hintLabel: 'Enter Name',
                                       onChanged: (val) {
-                                       // controller.validateVendorname(val);
+                                        // controller.validateVendorname(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -142,7 +148,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       hintLabel: Strings.company_address_hint,
                                       isExpand: true,
                                       onChanged: (val) {
-                                       // controller.validateAddressname(val);
+                                        // controller.validateAddressname(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -161,7 +167,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       controller: controller.emailctr,
                                       hintLabel: CommonConstant.emailId_hint,
                                       onChanged: (val) {
-                                       // controller.validateEmail(val);
+                                        // controller.validateEmail(val);
                                         setState(() {});
                                       },
                                       errorText:
@@ -203,7 +209,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                       //formType: FieldType.Mobile,
                                       hintLabel: Strings.contact_no_hint,
                                       onChanged: (val) {
-                                       // controller.validatePhone1(val);
+                                        // controller.validatePhone1(val);
                                         setState(() {});
                                       },
                                       errorText: controller
@@ -434,7 +440,7 @@ class _UpdateVendorState extends State<UpdateVendor> {
                           //             inputType: TextInputType.none,
                           //           );
                           //         }))),
-                        
+
                           SizedBox(
                             height: 3.h,
                           ),
@@ -449,7 +455,12 @@ class _UpdateVendorState extends State<UpdateVendor> {
                                 }, CommonConstant.submit,
                                     validate:
                                         controller.isFormInvalidate.value);
-                              }))
+                              })),
+                          SizedBox(
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? null
+                                : 2.h,
+                          ),
                         ],
                       )),
                 ),

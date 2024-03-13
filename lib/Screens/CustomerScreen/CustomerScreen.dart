@@ -90,23 +90,27 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     }
                   });
                 },
-                child: isDarkMode()
-                    ? Icon(
-                        Icons.add,
-                        color: black,
-                      )
-                    : Icon(
-                        Icons.add,
-                        color: white,
-                      )),
+                child: Icon(
+                  Icons.add,
+                  color: isDarkMode() ? black : white,
+                  size: SizerUtil.deviceType == DeviceType.mobile ? null : 3.h,
+                )),
           ),
           body: Column(children: [
             getCommonToolbar("Customer", () {
               Get.back();
             }),
             Container(
-              margin: EdgeInsets.only(top: 3.h, left: 1.0.w, right: 1.0.w),
-              padding: EdgeInsets.only(left: 7.0.w, right: 7.0.w),
+              margin: EdgeInsets.only(
+                top: SizerUtil.deviceType == DeviceType.mobile ? 3.h : 2.5.h,
+                left: SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
+                right:
+                    SizerUtil.deviceType == DeviceType.mobile ? 1.0.w : 0.3.w,
+              ),
+              padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 7.0.w : 6.w,
+              ),
               child: Container(
                 height: 5.5.h,
                 child: TextField(
@@ -115,8 +119,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   }),
                   style: TextStyle(color: isDarkMode() ? white : black),
                   decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.only(top: 1.h, left: 2.h, bottom: 1.h),
+                      contentPadding: EdgeInsets.only(
+                        top: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                        left: 2.h,
+                        bottom: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.h
+                            : 1.2.h,
+                      ),
                       hintText: CommonConstant.search,
                       hintStyle: TextStyle(
                         color: isDarkMode() ? white : black,
@@ -129,19 +140,28 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
                               BorderSide(color: isDarkMode() ? white : black)),
-                      suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.search_sharp,
-                            color: isDarkMode() ? white : black,
-                          ))),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(
+                          right: SizerUtil.deviceType == DeviceType.mobile
+                              ? 0.0
+                              : 2.w,
+                        ),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search_sharp,
+                              color: isDarkMode() ? white : black,
+                              size: SizerUtil.deviceType == DeviceType.mobile
+                                  ? null
+                                  : 3.h,
+                            )),
+                      )),
                   controller: search,
                   cursorColor: isDarkMode() ? white : black,
                   keyboardType: TextInputType.name,
                 ),
               ),
             ),
-
             Expanded(
               child: Container(
                 child: RefreshIndicator(
@@ -279,32 +299,38 @@ class _CustomerScreenState extends State<CustomerScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.filteredCustomerObjectList.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(left: 7.w, right: 7.w),
+        margin: EdgeInsets.only(
+          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+        ),
         child: GridView.builder(
           shrinkWrap: true,
           clipBehavior: Clip.antiAlias,
-          padding: EdgeInsets.only(bottom: 35.h),
+          padding: EdgeInsets.only(
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
           physics: BouncingScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // Adjust the number of columns as needed
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
+            childAspectRatio:
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
           ),
           itemBuilder: (context, index) {
             ListofCustomer data = controller.filteredCustomerObjectList[index];
-
-            // final imageUrl =
-            //    " 'http://192.168.1.7:4000/uploads/${data.picInfo!.image}';";
             return Container(
-              padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+              padding: EdgeInsets.only(
+                left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+                right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+              ),
               decoration: BoxDecoration(
                 color: isDarkMode() ? black : white,
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 boxShadow: [
                   BoxShadow(
                     color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
+                        ? white.withOpacity(0.2)
+                        : black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5),
@@ -325,13 +351,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             .then((value) => {Common().trasparent_statusbar()});
                       },
                       child: Container(
-                          height: 11.h,
+                          height: SizerUtil.deviceType == DeviceType.mobile
+                              ? 11.h
+                              : 12.h,
                           width: 60.w,
-                          // padding: EdgeInsets.all(
-                          //   SizerUtil.deviceType == DeviceType.mobile
-                          //       ? 1.2.w
-                          //       : 1.0.w,
-                          // ),
                           child: ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
@@ -339,8 +362,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               fit: BoxFit.cover,
                               imageUrl: data.picInfo != null
                                   ? '${ApiUrl.ImgUrl}${data.picInfo!.image}'
-
-                                  // '${ip}${data.picInfo!.image}'
                                   : "",
                               placeholder: (context, url) => const Center(
                                 child: CircularProgressIndicator(
@@ -354,38 +375,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             ),
                           )),
                     )
-                    // CachedNetworkImage(
-                    //   fit: BoxFit.cover,
-                    //   imageUrl: data.pic,
-                    //   placeholder: (context, url) => SvgPicture.asset(
-                    //     Asset.profileimg,
-                    //     color:
-                    //         isDarkMode() ? Colors.white : Colors.black,
-                    //     height: 4.5.h,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    //   errorWidget: (context, url, error) =>
-                    //       SvgPicture.asset(
-                    //     Asset.profileimg,
-                    //     color:
-                    //         isDarkMode() ? Colors.white : Colors.black,
-                    //     height: 4.5.h,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    // )
-
-                    // CircleAvatar(
-                    //   radius: 3.5.h,
-                    //   backgroundColor: Colors.white,
-                    //   child: SvgPicture.asset(
-                    //     data.pic,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    // ),
                   ]),
-                  // SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.only(left: 1.5.w, right: 1.5.w),
+                    padding: EdgeInsets.only(
+                        left: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.5.w
+                            : 1.w,
+                        right: SizerUtil.deviceType == DeviceType.mobile
+                            ? 1.w
+                            : 0.0.w),
                     child: Column(
                       children: [
                         Row(
@@ -400,15 +398,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 14.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 14.sp
+                                        : 10.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                             ),
-                            // SizedBox(height: 5.0),
                           ],
                         ),
-
-                        // SizedBox(height: 5.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -416,12 +414,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             Container(
                               child: Text(
                                 data.contactNo,
-                                // data.fees.toString(),
-                                // '${model.fullName.capitalize} (${model.age} Years)'
                                 style: TextStyle(
                                     color: isDarkMode() ? white : black,
                                     fontFamily: opensansMedium,
-                                    fontSize: 11.sp,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 11.sp
+                                        : 9.sp,
                                     fontWeight: FontWeight.w400),
                               ),
                             ),

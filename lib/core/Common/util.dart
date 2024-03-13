@@ -1,3 +1,4 @@
+import 'package:booking_app/core/constants/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -97,8 +98,13 @@ Widget setNavtile(
     },
     child: Container(
       padding: EdgeInsets.only(
-        top: 1.5.h,
-        bottom: 1.5.h,
+        top: SizerUtil.deviceType == DeviceType.mobile ? 1.5.h : 1.h,
+        bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.5.h : 1.h,
+        left: SizerUtil.deviceType == DeviceType.mobile
+            ? 7.w
+            : title == ScreenTitle.signOut
+                ? 5.w
+                : 4.w,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -107,24 +113,34 @@ Widget setNavtile(
           isBig == true
               ? SvgPicture.asset(
                   svg,
-                  color: isDarkMode() ? white : white,
-                  height: 2.9.h,
-                  width: 1.7.h,
+                  color: white,
+                  height: 2.5.h,
+                  width: 1.6.h,
                 )
               : SvgPicture.asset(
                   svg,
-                  color: isDarkMode() ? white : white,
+                  color: white,
                   height: 2.1.h,
                   width: 1.5.h,
                 ),
           SizedBox(
-            width: isBig == true ? 3.w : 3.5.w,
+            width: isBig == true
+                ? SizerUtil.deviceType == DeviceType.mobile
+                    ? 3.w
+                    : 3.5.w
+                : SizerUtil.deviceType == DeviceType.mobile
+                    ? 3.5.w
+                    : title == ScreenTitle.signOut
+                        ? 3.5.w
+                        : 3.0.w,
           ),
           Text(title,
               style: TextStyle(
                   color: Colors.grey,
                   fontFamily: opensansMedium,
-                  fontSize: 12.5.sp,
+                  fontSize: SizerUtil.deviceType == DeviceType.mobile
+                      ? 12.5.sp
+                      : 10.sp,
                   fontWeight: FontWeight.w600))
         ],
       ),
@@ -174,24 +190,35 @@ Widget settingRow(String svg, String title, Function callback, String arrow) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          title == "Report Bug"
+          title == SettingConstant.reportBug
               ? SvgPicture.asset(
                   svg,
                   color: isDarkMode() ? white : black,
-                  height: 2.8.h,
-                  width: 1.h,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 2.8.h : 2.5.h,
+                  width: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 2.h,
                 )
               : SvgPicture.asset(
                   svg,
                   color: isDarkMode() ? white : black,
+                  fit: BoxFit.contain,
+                  height: SizerUtil.deviceType == DeviceType.mobile ? null : 25,
+                  width: SizerUtil.deviceType == DeviceType.mobile ? null : 25,
                 ),
           SizedBox(
-            width: title == "Invite Friends" ? 5.w : 5.5.w,
+            width: title == SettingConstant.invite_frd
+                ? SizerUtil.deviceType == DeviceType.mobile
+                    ? 5.w
+                    : 5.w
+                : SizerUtil.deviceType == DeviceType.mobile
+                    ? 5.5.w
+                    : 5.w,
           ),
           Text(
             title,
             style: TextStyle(
-                fontSize: 14.sp,
+                fontSize:
+                    SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 11.sp,
                 color: isDarkMode() ? white : black,
                 fontFamily: opensansMedium,
                 fontWeight: FontWeight.w400),
