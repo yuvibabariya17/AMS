@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
+import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
-import 'package:booking_app/Models/UploadImageModel.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
 import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/home_screen_controller.dart';
@@ -16,9 +17,6 @@ import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 
 class ProductSellingController extends GetxController {
@@ -327,6 +325,195 @@ class ProductSellingController extends GetxController {
     });
   }
 
+  RxBool isProductCategoryList = false.obs;
+  RxList<ListProductCategory> productCategoryObjectList =
+      <ListProductCategory>[].obs;
+  RxString productCategoryId = "".obs;
+
+  void getProductCategoryList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      state.value = ScreenState.apiLoading;
+    } else {
+      loadingIndicator.show(context, "");
+    }
+
+    isProductCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.productCategoryList,
+          allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isProductCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = ProductCategoryListModel.fromJson(responseData);
+
+          state.value = ScreenState.apiSuccess;
+          productCategoryObjectList.clear();
+          productCategoryObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isProductCategoryList.value = false;
+    }
+  }
+
+  Widget setProductCategoryList() {
+    return Obx(() {
+      if (isProductCategoryList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isProductCategoryList.value);
+
+      return setDropDownTestContent(
+        productCategoryObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: productCategoryObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                productCategoryId.value =
+                    productCategoryObjectList[index].name.toString();
+                productCatctr.text =
+                    productCategoryObjectList[index].name.capitalize.toString();
+              },
+              title: Text(
+                productCategoryObjectList[index].name.toString(),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  RxBool isBrandCategoryList = false.obs;
+  RxList<BrandCatList> BrnadCategoryObjectList = <BrandCatList>[].obs;
+  RxString brandCategoryId = "".obs;
+
+  void getBrandCategoryList(context, bool isFirst) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      state.value = ScreenState.apiLoading;
+    } else {
+      loadingIndicator.show(context, '');
+    }
+
+    isBrandCategoryList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.brandCategoryList,
+          allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isBrandCategoryList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = BrandCategoryModel.fromJson(responseData);
+
+          state.value = ScreenState.apiSuccess;
+          BrnadCategoryObjectList.clear();
+          BrnadCategoryObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isBrandCategoryList.value = false;
+    }
+  }
+
+  Widget setBrand() {
+    return Obx(() {
+      if (isBrandCategoryList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isBrandCategoryList.value);
+
+      return setDropDownTestContent(
+        BrnadCategoryObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: BrnadCategoryObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                brandCategoryId.value =
+                    BrnadCategoryObjectList[index].name.toString();
+                brandctr.text =
+                    BrnadCategoryObjectList[index].name.capitalize.toString();
+              },
+              title: Text(
+                BrnadCategoryObjectList[index].name.toString(),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 13.5.sp,
+                    color: isDarkMode() ? white : black),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
   showDialogForScreen(context, String message, {Function? callback}) {
     showMessage(
         context: context,
@@ -341,177 +528,4 @@ class ProductSellingController extends GetxController {
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }
-
-  void getImage(context) async {
-    var loadingIndicator = LoadingProgressDialog();
-    loadingIndicator.show(context, '');
-
-    try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      var response = await Repository.multiPartPost({
-        "file": uploadReportFile.value!.path.split('/').last,
-      }, ApiUrl.uploadImage,
-          multiPart: uploadReportFile.value != null
-              ? http.MultipartFile(
-                  'file',
-                  uploadReportFile.value!.readAsBytes().asStream(),
-                  uploadReportFile.value!.lengthSync(),
-                  filename: uploadReportFile.value!.path.split('/').last,
-                )
-              : null,
-          allowHeader: true);
-      var responseDetail = await response.stream.toBytes();
-      loadingIndicator.hide(context);
-
-      var result = String.fromCharCodes(responseDetail);
-      var json = jsonDecode(result);
-      var responseData = UploadImageModel.fromJson(json);
-      if (response.statusCode == 200) {
-        logcat("responseData", jsonEncode(responseData));
-        if (responseData.status == "True") {
-          logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-          uploadImageId.value = responseData.data.id.toString();
-        } else {
-          showDialogForScreen(context, responseData.message.toString(),
-              callback: () {});
-        }
-      } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
-            callback: () {});
-      }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
-  }
-
-  // void getVideo(context) async {
-  //   var loadingIndicator = LoadingProgressDialog();
-  //   loadingIndicator.show(context, '');
-
-  //   try {
-  //     if (networkManager.connectionType == 0) {
-  //       loadingIndicator.hide(context);
-  //       showDialogForScreen(context, Connection.noConnection, callback: () {
-  //         Get.back();
-  //       });
-  //       return;
-  //     }
-  //     var response = await Repository.multiPartPost({
-  //       "file": uploadVideoFile.value!.path.split('/').last,
-  //     }, ApiUrl.uploadImage,
-  //         multiPart: uploadVideoFile.value != null
-  //             ? http.MultipartFile(
-  //                 'file',
-  //                 uploadVideoFile.value!.readAsBytes().asStream(),
-  //                 uploadVideoFile.value!.lengthSync(),
-  //                 filename: uploadVideoFile.value!.path.split('/').last,
-  //               )
-  //             : null,
-  //         allowHeader: true);
-  //     var responseDetail = await response.stream.toBytes();
-  //     loadingIndicator.hide(context);
-
-  //     var result = String.fromCharCodes(responseDetail);
-  //     var json = jsonDecode(result);
-  //     var responseData = UploadImageModel.fromJson(json);
-  //     if (response.statusCode == 200) {
-  //       logcat("responseData", jsonEncode(responseData));
-  //       if (responseData.status == "True") {
-  //         logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
-  //         uploadBreacherId.value = responseData.data.id.toString();
-  //       } else {
-  //         showDialogForScreen(context, responseData.message.toString(),
-  //             callback: () {});
-  //       }
-  //     } else {
-  //       state.value = ScreenState.apiError;
-  //       showDialogForScreen(context, responseData.message.toString(),
-  //           callback: () {});
-  //     }
-  //   } catch (e) {
-  //     logcat("Exception", e);
-  //     showDialogForScreen(context, Connection.servererror, callback: () {});
-  //     loadingIndicator.hide(context);
-  //   }
-  // }
-
-  actionClickUploadImage(context, {bool? isCamera}) async {
-    await ImagePicker()
-        .pickImage(
-            //source: ImageSource.gallery,
-            source: isCamera == true ? ImageSource.camera : ImageSource.gallery,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            imageQuality: 100)
-        .then((file) async {
-      if (file != null) {
-        //Cropping the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-            sourcePath: file.path,
-            maxWidth: 1080,
-            maxHeight: 1080,
-            cropStyle: CropStyle.rectangle,
-            aspectRatioPresets: Platform.isAndroid
-                ? [
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio16x9
-                  ]
-                : [
-                    CropAspectRatioPreset.original,
-                    CropAspectRatioPreset.square,
-                    CropAspectRatioPreset.ratio3x2,
-                    CropAspectRatioPreset.ratio4x3,
-                    CropAspectRatioPreset.ratio5x3,
-                    CropAspectRatioPreset.ratio5x4,
-                    CropAspectRatioPreset.ratio7x5,
-                    CropAspectRatioPreset.ratio16x9
-                  ],
-            uiSettings: [
-              AndroidUiSettings(
-                  toolbarTitle: 'Crop Image',
-                  cropGridColor: primaryColor,
-                  toolbarColor: primaryColor,
-                  statusBarColor: primaryColor,
-                  toolbarWidgetColor: white,
-                  activeControlsWidgetColor: primaryColor,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: false),
-              IOSUiSettings(
-                title: 'Crop Image',
-                cancelButtonTitle: 'Cancel',
-                doneButtonTitle: 'Done',
-                aspectRatioLockEnabled: false,
-              ),
-            ],
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-        uploadReportFile = File(file.path).obs;
-        imgctr.text = file.name;
-        validateImage(imgctr.text);
-        getImage(context);
-
-        // if (croppedFile != null) {
-        //   uploadImageFile = File(croppedFile.path).obs;
-        //   profilePic.value = croppedFile.path;
-        //   update();
-        // }
-      }
-    });
-
-    update();
-  }
-
-  Rx<File?> uploadReportFile = null.obs;
-  Rx<File?> uploadVideoFile = null.obs;
 }

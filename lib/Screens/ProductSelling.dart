@@ -27,6 +27,9 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
   @override
   void initState() {
     controller.getCustomerList(context);
+    controller.getProductCategoryList(context, true);
+    controller.getBrandCategoryList(context, true);
+
     super.initState();
   }
 
@@ -143,7 +146,6 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                               //     controller.setCategoryList(),
                                               //     'Select Category');
                                             },
-                                            isReadOnly: true,
                                             errorText: controller
                                                 .ProductModel.value.error,
                                             inputType: TextInputType.none,
@@ -566,16 +568,10 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                       // controller.validateState(val);
                                     },
                                     onTap: () {
-                                      // showDropdownMessage(
-                                      //     context,
-                                      //     controller.setStateDialog(),
-                                      //     AlertDialogList.state);
-                                      // controller.searchctr.text = "";
-
-                                      showDropdownMessage(
+                                      showDropDownDialog(
                                           context,
-                                          // controller.setStateDialog(),
-                                          "Product Category");
+                                          controller.setProductCategoryList(),
+                                          "Product Category List");
                                     },
                                     isReadOnly: true,
                                     wantSuffix: true,
@@ -599,16 +595,8 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                       // controller.validateState(val);
                                     },
                                     onTap: () {
-                                      // showDropdownMessage(
-                                      //     context,
-                                      //     controller.setStateDialog(),
-                                      //     AlertDialogList.state);
-                                      // controller.searchctr.text = "";
-
-                                      showDropdownMessage(
-                                          context,
-                                          // controller.setStateDialog(),
-                                          "Brand");
+                                      showDropDownDialog(context,
+                                          controller.setBrand(), "Brand List");
                                     },
                                     isReadOnly: true,
                                     wantSuffix: true,
@@ -631,13 +619,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                     onChanged: (val) {
                                       // controller.validateState(val);
                                     },
-                                    onTap: () {
-                                      // showDropdownMessage(
-                                      //     context,
-                                      //     controller.setStateDialog(),
-                                      //     AlertDialogList.state);
-                                      // controller.searchctr.text = "";
-                                    },
+                                    onTap: () {},
                                     isEnable: true,
                                     inputType: TextInputType.text,
                                     errorText:
@@ -663,23 +645,17 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                   inputType: TextInputType.number,
                                 ),
                               ),
-
                               SizedBox(width: 8.0),
                               Expanded(
                                 child: getReactiveFormField(
                                   node: controller.priceNode,
                                   controller: controller.pricectr,
                                   hintLabel: "Price",
-                                  onChanged: (value) {
-                                    // Your onChanged logic for Text Field 1
-                                  },
-                                  onTap: () {
-                                    // Your onTap logic for Text Field 1
-                                  },
+                                  onChanged: (value) {},
+                                  onTap: () {},
                                   inputType: TextInputType.number,
                                 ),
                               ),
-                              // Adjust the spacing between the two text fields
                             ],
                           ),
                           Column(children: [
@@ -709,7 +685,9 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                           margin: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 2.h),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Get.back();
+                            },
                             child: Container(
                               height: 13.w,
                               alignment: Alignment.center,

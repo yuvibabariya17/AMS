@@ -288,9 +288,7 @@ class _PackageScreenState extends State<PackageScreen> {
     // ignore: unrelated_type_equality_checks
     if (controller.state == ScreenState.apiSuccess &&
         controller.filteredPackageObjectList.isNotEmpty) {
-      return Container(
-          margin: EdgeInsets.only(left: 8.w, right: 8.w),
-          child: getPackageList());
+      return Container(child: getPackageList());
     } else {
       return Container(
         height: SizerUtil.height / 1.3,
@@ -321,7 +319,11 @@ class _PackageScreenState extends State<PackageScreen> {
         return Container(
           padding:
               EdgeInsets.only(left: 3.w, right: 3.w, top: 1.h, bottom: 1.h),
-          margin: EdgeInsets.only(bottom: 1.h),
+          margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+            bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 1.h,
+          ),
           decoration: BoxDecoration(
             color: isDarkMode() ? black : white,
             borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -583,6 +585,8 @@ class _PackageScreenState extends State<PackageScreen> {
               ),
               Expanded(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Other Notes : ",
@@ -615,6 +619,8 @@ class _PackageScreenState extends State<PackageScreen> {
             ],
           ),
         ));
+ 
+ 
   }
 
   //  showDialog(

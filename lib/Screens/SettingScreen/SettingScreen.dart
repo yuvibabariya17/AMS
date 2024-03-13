@@ -184,11 +184,8 @@ class _SettingsState extends State<Settings> {
                     dividerforSetting(),
                     settingRow(Asset.share, SettingConstant.share_us, () {},
                         Asset.rightbackbutton),
-                    dividerforSetting(),
-                    settingRow(Asset.signout, SettingConstant.logout, () {
-                      PopupDialogsforSignOut(context);
-                    }, Asset.rightbackbutton),
-                    dividerforSetting(),
+
+                    // dividerforSetting(),
                   ],
                 ),
               ),
