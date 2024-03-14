@@ -333,14 +333,13 @@ class _ProductScreenState extends State<ProductScreen> {
       padding: EdgeInsets.only(
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-         crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.1,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.1,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListofProduct data = controller.filteredProductObjectList[index];
@@ -384,12 +383,12 @@ class _ProductScreenState extends State<ProductScreen> {
                       //         (value) => {Common().trasparent_statusbar()});
                     },
                     child: Container(
-                      height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -693,367 +692,367 @@ class _ProductScreenState extends State<ProductScreen> {
             ]));
   }
 
-  getProductList() {
-    return GridView.builder(
-      shrinkWrap: true,
-      clipBehavior: Clip.antiAlias,
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.only(
-          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Adjust the number of columns as needed
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
-      ),
-      itemBuilder: (context, index) {
-        ListofProduct data = controller.filteredProductObjectList[index];
-        return Container(
-          padding: EdgeInsets.only(
-            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-          ),
-          decoration: BoxDecoration(
-            color: isDarkMode() ? black : white,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            boxShadow: [
-              BoxShadow(
-                color: isDarkMode()
-                    ? white.withOpacity(0.2)
-                    : black.withOpacity(0.2),
-                spreadRadius: 0.1,
-                blurRadius: 10,
-                offset: Offset(0.5, 0.5),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      getProductDetails(
-                        context,
-                        data,
-                      );
-                      // Get.to(FullScreenImage(
-                      //   imageUrl:
-                      //       '${ApiUrl.ImgUrl}${data.uploadInfo.image}',
-                      //   title: ScreenTitle.expert,
-                      // ))!
-                      //     .then(
-                      //         (value) => {Common().trasparent_statusbar()});
-                    },
-                    child: Container(
-                        height: SizerUtil.deviceType == DeviceType.mobile
-                            ? 11.h
-                            : 12.5.h,
-                        width: 60.w,
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: data.uploadInfo.image != null
-                                ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
-                                : "",
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                  color: primaryColor),
-                            ),
-                            errorWidget: (context, url, error) => Image.asset(
-                              Asset.placeholder,
-                              height: 11.h,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      data.name.capitalize.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: isDarkMode() ? white : black,
-                        fontFamily: opensansMedium,
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 14.sp
-                            : 9.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '₹ ${data.amount.toString()}',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: isDarkMode() ? white : black,
-                      fontFamily: opensansMedium,
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 11.sp
-                          : 9.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(AddProductScreen(isEdit: true, editProduct: data))
-                          ?.then((value) {
-                        if (value == true) {
-                          controller.getProductList(context, false);
-                        }
-                      });
-                    },
-                    child: Container(
-                      child: SvgPicture.asset(
-                        Asset.edit,
-                        height: 2.3.h,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 5.0),
-                  GestureDetector(
-                    onTap: () {
-                      showDeleteConfirmationDialog(data.id);
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.delete_rounded,
-                        color: Colors.grey,
-                        size: 3.h,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-      itemCount: controller.filteredProductObjectList.length,
-    );
-  }
+  // getProductList() {
+  //   return GridView.builder(
+  //     shrinkWrap: true,
+  //     clipBehavior: Clip.antiAlias,
+  //     physics: BouncingScrollPhysics(),
+  //     padding: EdgeInsets.only(
+  //         bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
+  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //       crossAxisCount: 2, // Adjust the number of columns as needed
+  //       crossAxisSpacing: 10.0,
+  //       mainAxisSpacing: 10.0,
+  //       childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+  //     ),
+  //     itemBuilder: (context, index) {
+  //       ListofProduct data = controller.filteredProductObjectList[index];
+  //       return Container(
+  //         padding: EdgeInsets.only(
+  //           left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+  //           right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+  //         ),
+  //         decoration: BoxDecoration(
+  //           color: isDarkMode() ? black : white,
+  //           borderRadius: BorderRadius.all(Radius.circular(15)),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: isDarkMode()
+  //                   ? white.withOpacity(0.2)
+  //                   : black.withOpacity(0.2),
+  //               spreadRadius: 0.1,
+  //               blurRadius: 10,
+  //               offset: Offset(0.5, 0.5),
+  //             ),
+  //           ],
+  //         ),
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             Stack(
+  //               children: [
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     getProductDetails(
+  //                       context,
+  //                       data,
+  //                     );
+  //                     // Get.to(FullScreenImage(
+  //                     //   imageUrl:
+  //                     //       '${ApiUrl.ImgUrl}${data.uploadInfo.image}',
+  //                     //   title: ScreenTitle.expert,
+  //                     // ))!
+  //                     //     .then(
+  //                     //         (value) => {Common().trasparent_statusbar()});
+  //                   },
+  //                   child: Container(
+  //                       height: SizerUtil.deviceType == DeviceType.mobile
+  //                           ? 11.h
+  //                           : 12.5.h,
+  //                       width: 60.w,
+  //                       child: ClipRRect(
+  //                         borderRadius:
+  //                             const BorderRadius.all(Radius.circular(15)),
+  //                         child: CachedNetworkImage(
+  //                           fit: BoxFit.cover,
+  //                           imageUrl: data.uploadInfo.image != null
+  //                               ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
+  //                               : "",
+  //                           placeholder: (context, url) => const Center(
+  //                             child: CircularProgressIndicator(
+  //                                 color: primaryColor),
+  //                           ),
+  //                           errorWidget: (context, url, error) => Image.asset(
+  //                             Asset.placeholder,
+  //                             height: 11.h,
+  //                             fit: BoxFit.cover,
+  //                           ),
+  //                         ),
+  //                       )),
+  //                 )
+  //               ],
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Expanded(
+  //                   child: Text(
+  //                     data.name.capitalize.toString(),
+  //                     overflow: TextOverflow.ellipsis,
+  //                     style: TextStyle(
+  //                       color: isDarkMode() ? white : black,
+  //                       fontFamily: opensansMedium,
+  //                       fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                           ? 14.sp
+  //                           : 9.sp,
+  //                       fontWeight: FontWeight.w700,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Text(
+  //                   '₹ ${data.amount.toString()}',
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: TextStyle(
+  //                     color: isDarkMode() ? white : black,
+  //                     fontFamily: opensansMedium,
+  //                     fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                         ? 11.sp
+  //                         : 9.sp,
+  //                     fontWeight: FontWeight.w400,
+  //                   ),
+  //                 ),
+  //                 Spacer(),
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     Get.to(AddProductScreen(isEdit: true, editProduct: data))
+  //                         ?.then((value) {
+  //                       if (value == true) {
+  //                         controller.getProductList(context, false);
+  //                       }
+  //                     });
+  //                   },
+  //                   child: Container(
+  //                     child: SvgPicture.asset(
+  //                       Asset.edit,
+  //                       height: 2.3.h,
+  //                       color: Colors.grey,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 SizedBox(width: 5.0),
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     showDeleteConfirmationDialog(data.id);
+  //                   },
+  //                   child: Container(
+  //                     child: Icon(
+  //                       Icons.delete_rounded,
+  //                       color: Colors.grey,
+  //                       size: 3.h,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //     itemCount: controller.filteredProductObjectList.length,
+  //   );
+  // }
 
-  getProductDetails(
-    BuildContext context,
-    ListofProduct data,
-  ) {
-    return Common().commonDetailsDialog(
-        context,
-        "PRODUCT DETAILS",
-        // isDescription: true,
-        isNotes: true,
-        Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  height: 20.h,
-                  width: 60.w,
-                  // padding: EdgeInsets.all(
-                  //   SizerUtil.deviceType == DeviceType.mobile
-                  //       ? 1.2.w
-                  //       : 1.0.w,
-                  // ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: data.uploadInfo.image != null
-                          ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
-                          // '${ip}${data.photoUrlInfo.image}'
-                          : "",
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(color: primaryColor),
-                      ),
-                      errorWidget: (context, url, error) => Image.asset(
-                        Asset.placeholder,
-                        height: 11.h,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )),
-              SizedBox(
-                height: 2.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Product Name : ",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w800,
-                      color: isDarkMode() ? white : black,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      data.name.capitalize.toString(),
-                      overflow: TextOverflow.visible,
-                      maxLines: 3,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 10.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Prodcut Category : ",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w800,
-                      color: isDarkMode() ? white : black,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      data.productCategoryInfo.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w700,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontBold,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Amount : ',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      '₹ ${data.amount.toString()}',
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
-                    )
-                  ]),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Quantity : ",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w800,
-                      color: isDarkMode() ? white : black,
-                    ),
-                  ),
-                  Text(
-                    data.qty.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 12.sp
-                            : 12.sp,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontRegular),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Description : ",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w800,
-                      color: isDarkMode() ? white : black,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 18.h,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          data.description.toString(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.mobile
-                                      ? 12.sp
-                                      : 12.sp,
-                              color: isDarkMode() ? white : black,
-                              fontFamily: fontRegular),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ]));
-  }
+  // getProductDetails(
+  //   BuildContext context,
+  //   ListofProduct data,
+  // ) {
+  //   return Common().commonDetailsDialog(
+  //       context,
+  //       "PRODUCT DETAILS",
+  //       // isDescription: true,
+  //       isNotes: true,
+  //       Column(
+  //           // mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             Container(
+  //                 height: 20.h,
+  //                 width: 60.w,
+  //                 // padding: EdgeInsets.all(
+  //                 //   SizerUtil.deviceType == DeviceType.mobile
+  //                 //       ? 1.2.w
+  //                 //       : 1.0.w,
+  //                 // ),
+  //                 child: ClipRRect(
+  //                   borderRadius: const BorderRadius.all(Radius.circular(15)),
+  //                   child: CachedNetworkImage(
+  //                     fit: BoxFit.cover,
+  //                     imageUrl: data.uploadInfo.image != null
+  //                         ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
+  //                         // '${ip}${data.photoUrlInfo.image}'
+  //                         : "",
+  //                     placeholder: (context, url) => const Center(
+  //                       child: CircularProgressIndicator(color: primaryColor),
+  //                     ),
+  //                     errorWidget: (context, url, error) => Image.asset(
+  //                       Asset.placeholder,
+  //                       height: 11.h,
+  //                       fit: BoxFit.cover,
+  //                     ),
+  //                   ),
+  //                 )),
+  //             SizedBox(
+  //               height: 2.h,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(
+  //                   "Product Name : ",
+  //                   style: TextStyle(
+  //                     fontSize: 12.sp,
+  //                     fontWeight: FontWeight.w800,
+  //                     color: isDarkMode() ? white : black,
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   child: Text(
+  //                     data.name.capitalize.toString(),
+  //                     overflow: TextOverflow.visible,
+  //                     maxLines: 3,
+  //                     textAlign: TextAlign.start,
+  //                     style: TextStyle(
+  //                         fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                             ? 12.sp
+  //                             : 10.sp,
+  //                         color: isDarkMode() ? white : black,
+  //                         fontFamily: fontRegular),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 0.5.h,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(
+  //                   "Prodcut Category : ",
+  //                   style: TextStyle(
+  //                     fontSize: 12.sp,
+  //                     fontWeight: FontWeight.w800,
+  //                     color: isDarkMode() ? white : black,
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   child: Text(
+  //                     data.productCategoryInfo.name,
+  //                     maxLines: 2,
+  //                     overflow: TextOverflow.visible,
+  //                     textAlign: TextAlign.start,
+  //                     style: TextStyle(
+  //                         fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                             ? 12.sp
+  //                             : 12.sp,
+  //                         color: isDarkMode() ? white : black,
+  //                         fontFamily: fontRegular),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 0.5.h,
+  //             ),
+  //             Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   RichText(
+  //                     text: TextSpan(
+  //                       style: TextStyle(
+  //                         fontSize: 8.sp,
+  //                         fontWeight: FontWeight.w700,
+  //                         color: isDarkMode() ? white : black,
+  //                         fontFamily: fontBold,
+  //                       ),
+  //                       children: [
+  //                         TextSpan(
+  //                           text: 'Amount : ',
+  //                           style: TextStyle(
+  //                             fontSize: 12.sp,
+  //                             fontWeight: FontWeight.w800,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Text(
+  //                     '₹ ${data.amount.toString()}',
+  //                     style: TextStyle(
+  //                         fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                             ? 12.sp
+  //                             : 12.sp,
+  //                         color: isDarkMode() ? white : black,
+  //                         fontFamily: fontRegular),
+  //                   )
+  //                 ]),
+  //             SizedBox(
+  //               height: 0.5.h,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Text(
+  //                   "Quantity : ",
+  //                   style: TextStyle(
+  //                     fontSize: 12.sp,
+  //                     fontWeight: FontWeight.w800,
+  //                     color: isDarkMode() ? white : black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   data.qty.toString(),
+  //                   maxLines: 1,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: TextStyle(
+  //                       fontSize: SizerUtil.deviceType == DeviceType.mobile
+  //                           ? 12.sp
+  //                           : 12.sp,
+  //                       color: isDarkMode() ? white : black,
+  //                       fontFamily: fontRegular),
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 0.5.h,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(
+  //                   "Description : ",
+  //                   style: TextStyle(
+  //                     fontSize: 12.sp,
+  //                     fontWeight: FontWeight.w800,
+  //                     color: isDarkMode() ? white : black,
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   child: Container(
+  //                     height: 18.h,
+  //                     child: SingleChildScrollView(
+  //                       scrollDirection: Axis.vertical,
+  //                       child: Text(
+  //                         data.description.toString(),
+  //                         textAlign: TextAlign.start,
+  //                         style: TextStyle(
+  //                             fontSize:
+  //                                 SizerUtil.deviceType == DeviceType.mobile
+  //                                     ? 12.sp
+  //                                     : 12.sp,
+  //                             color: isDarkMode() ? white : black,
+  //                             fontFamily: fontRegular),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ]));
+  // }
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {

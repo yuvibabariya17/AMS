@@ -29,9 +29,12 @@ class Common {
                 vertical: isNotes == true
                     ? 10.h
                     : isDescription == true
-                        ? 15.h
+                        ? SizerUtil.deviceType == DeviceType.mobile
+                            ? 15.h
+                            : 10.h
                         : 20.h,
-                horizontal: 3.h),
+                horizontal:   SizerUtil.deviceType == DeviceType.mobile
+                        ?  3.h : 2.h ),
             shape: RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.circular(20.0), // Adjust the radius as needed

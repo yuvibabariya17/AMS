@@ -316,173 +316,11 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
     if (controller.state == ScreenState.apiSuccess &&
         controller.filterrdBrandObjectList.isNotEmpty) {
       return Container(
-        margin: EdgeInsets.only(
-          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
-        ),
-        child: GridView.builder(
-          shrinkWrap: true,
-          clipBehavior: Clip.antiAlias,
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.only(
-              bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+          margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
           ),
-          itemBuilder: (context, index) {
-            BrandCatList data = controller.filterrdBrandObjectList[index];
-            return Container(
-              padding: EdgeInsets.only(
-                left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-                right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-              ),
-              decoration: BoxDecoration(
-                color: isDarkMode() ? black : white,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDarkMode()
-                        ? white.withOpacity(0.2)
-                        : black.withOpacity(0.2),
-                    spreadRadius: 0.1,
-                    blurRadius: 10,
-                    offset: Offset(0.5, 0.5),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(FullScreenImage(
-                            imageUrl:
-                                '${ApiUrl.ImgUrl}${data.uploadInfo.image}',
-                            title: "Brand Category",
-                          ))!
-                              .then(
-                                  (value) => {Common().trasparent_statusbar()});
-                        },
-                        child: Container(
-                            height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: data.uploadInfo.image != null
-                                    ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
-                                    : "",
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(
-                                      color: primaryColor),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  Asset.placeholder,
-                                  height: 11.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          data.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 14.sp
-                                : 7.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          data.description,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.sp
-                                : 7.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(AddBrandCategoryScreen(
-                                  isEdit: true, editBrandCategory: data))
-                              ?.then((value) {
-                            if (value == true) {
-                              controller.getBrandCategoryList(context, false);
-                            }
-                          });
-                        },
-                        child: Container(
-                          child: SvgPicture.asset(
-                            Asset.edit,
-                            height: 2.2.h,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 1.w),
-                      GestureDetector(
-                        onTap: () {
-                          showDeleteConfirmationDialog(data.id);
-                        },
-                        child: Container(
-                          child: Icon(
-                            Icons.delete_rounded,
-                            color: isDarkMode() ? Colors.grey : Colors.grey,
-                            size: 2.9.h,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-          itemCount: controller.filterrdBrandObjectList.length,
-        ),
-      );
+          child: getBrand());
     } else {
       return Container(
         height: SizerUtil.height / 1.3,
@@ -491,7 +329,251 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
             child: Text(
               CommonConstant.noDataFound,
               style: TextStyle(
-                  fontFamily: fontMedium,
+                fontFamily: fontMedium,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w800,
+                color: isDarkMode() ? white : black,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  getBrand() {
+    return GridView.builder(
+      shrinkWrap: true,
+      clipBehavior: Clip.antiAlias,
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.only(
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+      ),
+      itemBuilder: (context, index) {
+        BrandCatList data = controller.filterrdBrandObjectList[index];
+        return Container(
+          padding: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+          ),
+          decoration: BoxDecoration(
+            color: isDarkMode() ? black : white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode()
+                    ? white.withOpacity(0.2)
+                    : black.withOpacity(0.2),
+                spreadRadius: 0.1,
+                blurRadius: 10,
+                offset: Offset(0.5, 0.5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      getBrandCategoryDetails(context, data);
+                    },
+                    child: Container(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: data.uploadInfo.image != null
+                                ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
+                                : "",
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                  color: primaryColor),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              Asset.placeholder,
+                              height: 11.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      data.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                        fontFamily: opensansMedium,
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 14.sp
+                            : 7.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      data.description,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                        fontFamily: opensansMedium,
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.sp
+                            : 7.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(AddBrandCategoryScreen(
+                              isEdit: true, editBrandCategory: data))
+                          ?.then((value) {
+                        if (value == true) {
+                          controller.getBrandCategoryList(context, false);
+                        }
+                      });
+                    },
+                    child: Container(
+                      child: SvgPicture.asset(
+                        Asset.edit,
+                        height: 2.2.h,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 1.w),
+                  GestureDetector(
+                    onTap: () {
+                      showDeleteConfirmationDialog(data.id);
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                        size: 2.9.h,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+      itemCount: controller.filterrdBrandObjectList.length,
+    );
+  }
+
+  getBrandCategoryDetails(BuildContext context, BrandCatList data) {
+    return Common().commonDetailsDialog(
+      context,
+      "PACKAGE DETAILS",
+      isDescription: true,
+      Column(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              height: 20.h,
+              width: 60.w,
+              // padding: EdgeInsets.all(
+              //   SizerUtil.deviceType == DeviceType.mobile
+              //       ? 1.2.w
+              //       : 1.0.w,
+              // ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: data.uploadInfo.image != null
+                      ? '${ApiUrl.ImgUrl}${data.uploadInfo.image}'
+                      // '${ip}${data.photoUrlInfo.image}'
+                      : "",
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    Asset.placeholder,
+                    height: 11.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )),
+          SizedBox(
+            height: 2.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Brand Category Name : ",
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  data.name.capitalize.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontRegular),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Description : ",
+                style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,

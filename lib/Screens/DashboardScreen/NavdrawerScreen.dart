@@ -195,7 +195,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
             // padding: EdgeInsets.only(left: 2.2.h, top: 1.5.h, bottom: 1.h),
             child: Wrap(
               children: [
-                setNavtile(Asset.serviceNav, "Service", isBig: true, () {
+                setNavtile(Asset.serviceNav, "Service", () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ServiceScreen());
                 }),

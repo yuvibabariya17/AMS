@@ -277,9 +277,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
         );
       },
     );
-  
-  
-  
   }
 
   Widget apiSuccess(ScreenState state) {
@@ -320,12 +317,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile ? 2 : 3,
 
         // Adjust the number of columns as needed
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.8 : 1.3,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.8 : 1.5,
       ),
       itemBuilder: (context, index) {
         VendorServiceList data = controller.filteredServiceObjectList[index];
@@ -367,7 +364,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 14.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 7.sp,
                           fontWeight: FontWeight.w700,
                         ),
                         // textAlign: TextAlign.center,
@@ -383,7 +382,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 11.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 7.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

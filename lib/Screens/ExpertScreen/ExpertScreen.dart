@@ -344,14 +344,13 @@ class _ExpertScreenState extends State<ExpertScreen> {
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ExpertList data = controller.filteredExpertObjectList[index];
@@ -412,12 +411,12 @@ class _ExpertScreenState extends State<ExpertScreen> {
                       //         (value) => {Common().trasparent_statusbar()});
                     },
                     child: Container(
-                      height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         // padding: EdgeInsets.all(
                         //   SizerUtil.deviceType == DeviceType.mobile
                         //       ? 1.2.w
@@ -460,17 +459,15 @@ class _ExpertScreenState extends State<ExpertScreen> {
                         color: isDarkMode() ? white : black,
                         fontFamily: opensansMedium,
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 14.sp
-                                : 7.sp,
+                            ? 14.sp
+                            : 7.sp,
                         fontWeight: FontWeight.w700),
                   )),
-                 
                 ],
               ),
               SizedBox(
-                      height: SizerUtil.deviceType == DeviceType.mobile
-                          ? 5.0
-                          : 0.1.h),
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 5.0 : 0.1.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -484,8 +481,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                         color: isDarkMode() ? white : black,
                         fontFamily: opensansMedium,
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.sp
-                                : 7.sp,
+                            ? 11.sp
+                            : 7.sp,
                         fontWeight: FontWeight.w400),
                   ),
                   Spacer(),
@@ -538,8 +535,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              height: 20.h,
-              width: 60.w,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 11.h : 14.h,
+              width: SizerUtil.deviceType == DeviceType.mobile ? 60.w : 60.w,
               // padding: EdgeInsets.all(
               //   SizerUtil.deviceType == DeviceType.mobile
               //       ? 1.2.w
@@ -568,7 +565,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 "Expert Name : ",
