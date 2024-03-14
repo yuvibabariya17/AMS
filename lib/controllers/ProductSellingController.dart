@@ -419,7 +419,9 @@ class ProductSellingController extends GetxController {
                 customerObjectList[index].name.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );

@@ -8,7 +8,6 @@ import 'package:booking_app/custom_componannt/form_inputs.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 

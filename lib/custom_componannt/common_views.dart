@@ -258,7 +258,7 @@ getFormButton(Function fun, str, {required bool validate}) {
               color: isDarkMode() ? black : white,
               fontFamily: fontBold,
               fontSize:
-                  SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 8.sp),
+                  SizerUtil.deviceType == DeviceType.mobile ? 14.sp : 9.sp),
         ),
       ),
     ),

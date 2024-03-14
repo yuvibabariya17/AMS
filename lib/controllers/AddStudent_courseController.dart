@@ -263,7 +263,9 @@ class AddStudentCourseController extends GetxController {
                 studentObjectList[index].name.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );
@@ -346,7 +348,9 @@ class AddStudentCourseController extends GetxController {
                 studentCourseObjectList[index].name.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );
@@ -503,12 +507,10 @@ class AddStudentCourseController extends GetxController {
             imageQuality: 100)
         .then((file) async {
       if (file != null) {
-        if (file != null) {
-          uploadIdProof = File(file.path).obs;
-          imgctr.text = file.name;
-          validateImage(imgctr.text);
-          getIdproofApi(context);
-        }
+        uploadIdProof = File(file.path).obs;
+        imgctr.text = file.name;
+        validateImage(imgctr.text);
+        getIdproofApi(context);
       }
     });
 

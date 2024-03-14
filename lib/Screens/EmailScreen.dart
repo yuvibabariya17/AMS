@@ -47,10 +47,12 @@ class _EmailScreenState extends State<EmailScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
-                      left: 7.0.w,
-                      right: 7.0.w,
-                    ),
+                    padding: SizerUtil.deviceType == DeviceType.mobile
+                        ? EdgeInsets.only(
+                            left: 6.0.w,
+                            right: 7.0.w,
+                          )
+                        : EdgeInsets.all(20),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,8 +60,12 @@ class _EmailScreenState extends State<EmailScreen> {
                         children: [
                           SvgPicture.asset(
                             Asset.email,
-                            height: 20.h,
-                            width: 15.h,
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? 20.h
+                                : 14.h,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 15.h
+                                : 14.h,
                           ),
                         ],
                       ),

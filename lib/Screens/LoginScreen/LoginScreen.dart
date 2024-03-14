@@ -4,7 +4,6 @@ import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final controller = Get.put(LoginController());
-  bool _isHidden = true;
 
   @override
   void initState() {
@@ -73,7 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 3.5.w),
+                        margin: EdgeInsets.only(
+                            left: SizerUtil.deviceType == DeviceType.mobile
+                                ? 3.5.w
+                                : 0.0),
                         child: FadeInDown(
                           from: 50,
                           child: isDarkMode()
@@ -95,7 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             CommonConstant.ams,
                             style: TextStyle(
                                 color: isDarkMode() ? white : black,
-                                fontSize: 35.sp,
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 35.sp
+                                        : 28.sp,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: fontUrbanistBlack),
                           ),
@@ -111,8 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             LoginScreenConstant.signInAccount,
                             style: TextStyle(
-                                color: isDarkMode() ? white : black,
-                                fontSize: 18.sp,
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 18.sp
+                                        : 14.sp,
                                 fontFamily: opensans_Bold,
                                 fontWeight: FontWeight.w700),
                           ),
@@ -184,7 +190,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                   fontFamily: opensans_Bold,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 12.sp),
+                                  fontSize:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 12.sp
+                                          : 8.sp),
                             ),
                           ),
                         ],

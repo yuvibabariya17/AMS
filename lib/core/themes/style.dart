@@ -21,7 +21,7 @@ styleTextForFieldHint() {
 
 styleTextForErrorFieldHint() {
   return TextStyle(
-      fontSize: 11.sp,
+      fontSize: SizerUtil.deviceType == DeviceType.mobile ? 11.sp : 9.sp,
       fontFamily: fontRegular,
       color: isDarkMode() ? red : red);
 }

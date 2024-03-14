@@ -286,7 +286,7 @@ class AddexpertController extends GetxController {
 
       var response = await Repository.put({
         "name": Expertctr.text.toString().trim(),
-        "vendor_id": retrievedObject!.id.toString().trim(),
+        "vendor_id": retrievedObject.id.toString().trim(),
         "service_id": ServiceId.value.toString().trim(),
         "amount": int.parse(Pricectr.text),
         "image_id": uploadImageId.value.toString(),
@@ -347,7 +347,12 @@ class AddexpertController extends GetxController {
               },
               title: Text(
                 serviceObjectList[index].serviceInfo.name.toString(),
-                style: TextStyle(fontFamily: fontRegular, fontSize: 13.5.sp,  color: isDarkMode() ? white : black),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
+                    color: isDarkMode() ? white : black),
               ),
             );
           },
@@ -520,12 +525,10 @@ class AddexpertController extends GetxController {
               ),
             ],
             aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
-        if (file != null) {
-          uploadImageFile = File(file.path).obs;
-          Profilectr.text = file.name;
-          validateProfile(Profilectr.text);
-          getImageApi(context);
-        }
+        uploadImageFile = File(file.path).obs;
+        Profilectr.text = file.name;
+        validateProfile(Profilectr.text);
+        getImageApi(context);
 
         // if (croppedFile != null) {
         //   uploadImageFile = File(croppedFile.path).obs;

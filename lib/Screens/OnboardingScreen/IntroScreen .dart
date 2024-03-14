@@ -94,7 +94,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                       : 27.h
                                   : SizerUtil.deviceType == DeviceType.mobile
                                       ? 35.h
-                                      : 37.h,
+                                      : 40.h,
                             ),
                           ),
                           SizedBox(
@@ -135,7 +135,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                           fontSize: SizerUtil.deviceType ==
                                                   DeviceType.mobile
                                               ? 13.sp
-                                              : 12.sp,
+                                              : 10.sp,
                                           fontWeight: FontWeight.w400,
                                           fontFamily: opensansMedium),
                                       textAlign: TextAlign.center),
@@ -149,7 +149,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                           fontSize: SizerUtil.deviceType ==
                                                   DeviceType.mobile
                                               ? 13.sp
-                                              : 12.sp,
+                                              : 10.sp,
                                           fontWeight: FontWeight.w400,
                                           fontFamily: opensansMedium),
                                       textAlign: TextAlign.center),
@@ -162,7 +162,14 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: _currentPage + 1 == contents.length
                           ? Padding(
                               padding: EdgeInsets.only(
-                                  top: 8.h, left: 11.5.w, right: 11.5.w),
+                                top: 8.h,
+                                left: SizerUtil.deviceType == DeviceType.mobile
+                                    ? 11.5.w
+                                    : 25.w,
+                                right: SizerUtil.deviceType == DeviceType.mobile
+                                    ? 11.5.w
+                                    : 25.w,
+                              ),
                               child: FadeInUp(
                                 from: 50,
                                 child: ElevatedButton(
@@ -173,14 +180,18 @@ class _IntroScreenState extends State<IntroScreen> {
                                     backgroundColor:
                                         isDarkMode() ? white : black,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(
+                                          SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 12
+                                              : 15),
                                     ),
                                     padding: EdgeInsets.all(15),
                                     textStyle: TextStyle(
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 13.sp
-                                            : 15.sp),
+                                            : 14.sp),
                                   ),
                                   child: Center(
                                       child: Text(
@@ -191,7 +202,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 15.sp
-                                            : 14.sp,
+                                            : 11.sp,
                                         fontWeight: FontWeight.w700),
                                   )),
                                 ),
@@ -226,7 +237,10 @@ class _IntroScreenState extends State<IntroScreen> {
                                       child: Icon(
                                           Icons.arrow_forward_ios_rounded,
                                           color: isDarkMode() ? white : white,
-                                          size: 6.5.h),
+                                          size: SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 6.5.h
+                                              : 5.h),
                                     ),
                                   ),
                                 ],

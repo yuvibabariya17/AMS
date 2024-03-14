@@ -341,10 +341,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Adjust the number of columns as needed
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+       crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
+            crossAxisSpacing: 10.0,
+            childAspectRatio:
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListofCustomer data = controller.filteredCustomerObjectList[index];
@@ -382,10 +386,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     //     .then((value) => {Common().trasparent_statusbar()});
                   },
                   child: Container(
-                      height: SizerUtil.deviceType == DeviceType.mobile
-                          ? 11.h
-                          : 12.h,
-                      width: 60.w,
+                    height: SizerUtil.deviceType == DeviceType.mobile
+                              ? 11.h
+                              : 8.h,
+                          width: SizerUtil.deviceType == DeviceType.mobile
+                              ? 60.w
+                              : 50.w,
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),

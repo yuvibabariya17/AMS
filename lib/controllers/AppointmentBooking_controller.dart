@@ -188,7 +188,7 @@ class AppointmentBookingController extends GetxController {
   void validateCustomer(String? val) {
     CustomerModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Name";
+        model!.error = "Select Customer";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -202,7 +202,7 @@ class AppointmentBookingController extends GetxController {
   void validateService(String? val) {
     ServicesModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Service Name";
+        model!.error = "Select Service";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -468,7 +468,7 @@ class AppointmentBookingController extends GetxController {
         "notes": Notectr.text.toString().trim()
       });
       var response = await Repository.put({
-        "vendor_id": retrievedObject!.id.toString().trim(),
+        "vendor_id": retrievedObject.id.toString().trim(),
         "customer_id": customerId.value.toString().trim(),
         "export_id": expertId.value.toString().trim(),
         "vendor_service_id": ServiceId.value.toString().trim(),
@@ -713,7 +713,9 @@ class AppointmentBookingController extends GetxController {
                 expertObjectList[index].name.capitalize.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );
@@ -756,7 +758,9 @@ class AppointmentBookingController extends GetxController {
                 serviceObjectList[index].serviceInfo.name.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );
@@ -874,14 +878,15 @@ class AppointmentBookingController extends GetxController {
                 customerId.value = customerObjectList[index].id.toString();
                 Customerctr.text =
                     customerObjectList[index].name.capitalize.toString();
-
                 validateCustomer(Customerctr.text);
               },
               title: Text(
                 customerObjectList[index].name.capitalize.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 13.5.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
                     color: isDarkMode() ? white : black),
               ),
             );

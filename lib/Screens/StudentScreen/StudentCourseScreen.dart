@@ -351,10 +351,14 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
       padding: EdgeInsets.only(bottom: 35.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Adjust the number of columns as needed
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+          crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
+            crossAxisSpacing: 10.0,
+            childAspectRatio:
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListofStudentCourse data = controller.filteredStudentObjectList[index];
@@ -671,9 +675,11 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                     },
                     child: Container(
                         height: SizerUtil.deviceType == DeviceType.mobile
-                            ? 11.h
-                            : 12.h,
-                        width: 60.w,
+                                ? 11.h
+                                : 8.h,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 60.w
+                                : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -711,7 +717,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                         fontFamily: opensansMedium,
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 10.sp,
+                            : 7.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -729,7 +735,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                       fontFamily: opensansMedium,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 11.sp
-                          : 9.sp,
+                          : 7.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),

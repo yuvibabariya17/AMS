@@ -316,7 +316,9 @@ getViewProfile(title, {bool showBackButton = true, Function? callback}) {
                       fontFamily: fontBold,
                       color: isDarkMode() ? white : headingTextColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 21.sp),
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 21.sp
+                          : 16.sp),
                 ),
               ),
             ),
