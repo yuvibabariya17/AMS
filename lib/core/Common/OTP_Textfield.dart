@@ -51,7 +51,7 @@ class _OtpInputState extends State<OtpInput> {
         controller: widget.controller,
         autofocus: widget.autoFocus,
         cursorWidth: 0.8,
-        cursorHeight: SizerUtil.deviceType == DeviceType.mobile ? 30 : 30,
+        cursorHeight: SizerUtil.deviceType == DeviceType.mobile ? 30 : 45,
         maxLength: 1,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.number,
@@ -67,9 +67,10 @@ class _OtpInputState extends State<OtpInput> {
             });
           }
         },
+        textAlignVertical: TextAlignVertical.center,
         style: TextStyle(
             fontFamily: fontUrbanistExtraBold,
-            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 22.sp : 16.sp,
+            fontSize: SizerUtil.deviceType == DeviceType.mobile ? 22.sp : 15.sp,
             color: black),
         decoration: InputDecoration(
           fillColor: widget.controller.text.toString().isNotEmpty
@@ -78,8 +79,8 @@ class _OtpInputState extends State<OtpInput> {
           filled: widget.controller.text.toString().isNotEmpty ? true : false,
           counterText: '',
           contentPadding: EdgeInsets.only(
-              top: SizerUtil.deviceType == DeviceType.mobile ? 1.2.h : 2.h,
-              bottom: 2.h),
+              top: SizerUtil.deviceType == DeviceType.mobile ? 1.2.h : 0,
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 0),
           hintStyle: const TextStyle(
             fontFamily: fontRegular,
           ),

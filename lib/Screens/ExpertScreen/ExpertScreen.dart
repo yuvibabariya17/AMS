@@ -282,20 +282,24 @@ class _ExpertScreenState extends State<ExpertScreen> {
             brightness: isDarkMode()
                 ? Brightness.dark
                 : Brightness.light, // Set the brightness to light
-            scaffoldBackgroundColor:
-                Colors.white, // Set the background color to white
+            scaffoldBackgroundColor: white, // Set the background color to white
             textTheme: CupertinoTextThemeData(
-              textStyle:
-                  TextStyle(color: Colors.black), // Set text color to black
+              textStyle: TextStyle(color: black), // Set text color to black
             ),
           ),
           child: CupertinoAlertDialog(
             title: Text('Confirm Delete',
                 style: TextStyle(
-                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 17.sp
+                        : 9.sp,
+                    color: isDarkMode() ? white : black)),
             content: Text('Are you sure you want to delete this Expert?',
                 style: TextStyle(
-                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 7.sp,
+                    color: isDarkMode() ? white : black)),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -303,7 +307,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 },
                 child: Text('Cancel',
                     style: TextStyle(
-                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.sp
+                            : 8.sp,
+                        color: isDarkMode() ? white : black)),
               ),
               TextButton(
                 onPressed: () {
@@ -314,7 +321,9 @@ class _ExpertScreenState extends State<ExpertScreen> {
                   'Yes',
                   style: TextStyle(
                     color: isDarkMode() ? white : black,
-                    fontSize: 11.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 11.sp
+                        : 8.sp,
                   ),
                 ),
               ),
@@ -342,11 +351,14 @@ class _ExpertScreenState extends State<ExpertScreen> {
               bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
           physics: BouncingScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
+            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
             crossAxisSpacing: 10.0,
             childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
-            mainAxisSpacing: 10.0,
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
           ),
           itemBuilder: (context, index) {
             ExpertList data = controller.filteredExpertObjectList[index];
@@ -392,7 +404,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                       //     ),
                       //   ),
                       // ),
-
                       //CLICPRRECT
                       GestureDetector(
                         onTap: () {
@@ -407,13 +418,10 @@ class _ExpertScreenState extends State<ExpertScreen> {
                         child: Container(
                             height: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.h
-                                : 12.h,
-                            width: 60.w,
-                            // padding: EdgeInsets.all(
-                            //   SizerUtil.deviceType == DeviceType.mobile
-                            //       ? 1.2.w
-                            //       : 1.0.w,
-                            // ),
+                                : 8.h,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 60.w
+                                : 50.w,
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),
@@ -421,8 +429,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                                 fit: BoxFit.cover,
                                 imageUrl:
                                     '${ApiUrl.ImgUrl}${data.upload_info.image}',
-
-                                //   '${ip}${data.upload_info.image}',
                                 placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator(
                                       color: primaryColor),
@@ -438,7 +444,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                       )
                     ],
                   ),
-                  // SizedBox(height: 10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,16 +458,15 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 14.sp
-                                : 10.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w700),
                       )),
-                      SizedBox(
-                          height: SizerUtil.deviceType == DeviceType.mobile
-                              ? 5.0
-                              : 3.h),
                     ],
                   ),
-                  // SizedBox(height: 5.0),
+                  SizedBox(
+                      height: SizerUtil.deviceType == DeviceType.mobile
+                          ? 5.0
+                          : 0.1.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -477,7 +481,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.sp
-                                : 9.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w400),
                       ),
                       Spacer(),

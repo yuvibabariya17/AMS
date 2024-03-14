@@ -326,11 +326,14 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
           padding: EdgeInsets.only(
               bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
+            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
             crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
             childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
           ),
           itemBuilder: (context, index) {
             BrandCatList data = controller.filterrdBrandObjectList[index];
@@ -345,8 +348,8 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
+                        ? white.withOpacity(0.2)
+                        : black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5),
@@ -372,8 +375,10 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                         child: Container(
                             height: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.h
-                                : 12.h,
-                            width: 60.w,
+                                : 8.h,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 60.w
+                                : 50.w,
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),
@@ -411,7 +416,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 14.sp
-                                : 10.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -432,7 +437,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.sp
-                                : 9.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),

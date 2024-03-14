@@ -766,8 +766,8 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             SizedBox(
                                 height:
                                     SizerUtil.deviceType == DeviceType.mobile
-                                        ? null
-                                        : 1.h),
+                                        ? 0
+                                        : 2.h),
                             FadeInUp(
                                 from: 50,
                                 child: Obx(() {

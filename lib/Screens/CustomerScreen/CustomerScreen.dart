@@ -252,41 +252,43 @@ class _CustomerScreenState extends State<CustomerScreen> {
             brightness: isDarkMode()
                 ? Brightness.dark
                 : Brightness.light, // Set the brightness to light
-            scaffoldBackgroundColor:
-                Colors.white, // Set the background color to white
+            scaffoldBackgroundColor: white, // Set the background color to white
             textTheme: CupertinoTextThemeData(
-              textStyle:
-                  TextStyle(color: Colors.black), // Set text color to black
+              textStyle: TextStyle(color: black), // Set text color to black
             ),
           ),
-          child: CupertinoAlertDialog(
-            title: Text('Confirm Delete',
-                style: TextStyle(
-                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
-            content: Text('Are you sure you want to delete this Customer?',
-                style: TextStyle(
-                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text('Cancel',
-                    style: TextStyle(
-                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
-              ),
-              TextButton(
-                onPressed: () {
-                  controller.deleteCustomerList(context, customerId);
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text(
-                  'Yes',
+          child: Container(
+            width: double.infinity,
+            child: CupertinoAlertDialog(
+              title: Text('Confirm Delete',
                   style: TextStyle(
-                      color: isDarkMode() ? white : black, fontSize: 11.sp),
+                      fontSize: 17.sp, color: isDarkMode() ? white : black)),
+              content: Text('Are you sure you want to delete this Customer?',
+                  style: TextStyle(
+                      fontSize: 12.sp, color: isDarkMode() ? white : black)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Cancel',
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDarkMode() ? white : black)),
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: () {
+                    controller.deleteCustomerList(context, customerId);
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text(
+                    'Yes',
+                    style: TextStyle(
+                        color: isDarkMode() ? white : black, fontSize: 11.sp),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -310,11 +312,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
               bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
           physics: BouncingScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
+            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
             crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
             childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
           ),
           itemBuilder: (context, index) {
             ListofCustomer data = controller.filteredCustomerObjectList[index];
@@ -353,8 +358,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       child: Container(
                           height: SizerUtil.deviceType == DeviceType.mobile
                               ? 11.h
-                              : 12.h,
-                          width: 60.w,
+                              : 8.h,
+                          width: SizerUtil.deviceType == DeviceType.mobile
+                              ? 60.w
+                              : 50.w,
                           child: ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
@@ -401,7 +408,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 14.sp
-                                        : 10.sp,
+                                        : 7.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                             ),
@@ -420,7 +427,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 11.sp
-                                        : 9.sp,
+                                        : 6.sp,
                                     fontWeight: FontWeight.w400),
                               ),
                             ),

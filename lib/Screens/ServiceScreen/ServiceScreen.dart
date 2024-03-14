@@ -276,7 +276,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
           left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
           right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.3.w,
         ),
-        // padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
         child: ListView.builder(
           shrinkWrap: true,
           clipBehavior: Clip.antiAlias,

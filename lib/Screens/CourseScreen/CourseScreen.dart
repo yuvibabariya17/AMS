@@ -282,11 +282,14 @@ class _CourseScreenState extends State<CourseScreen> {
               bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
           physics: BouncingScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Adjust the number of columns as needed
+            crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+                ? 2
+                : 3, // Adjust the number of columns as needed
             crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
+            mainAxisSpacing:
+                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
             childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
           ),
           itemBuilder: (context, index) {
             ListofCourse data = controller.filteredCourseObjectList[index];
@@ -301,8 +304,8 @@ class _CourseScreenState extends State<CourseScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: isDarkMode()
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.2),
+                        ? white.withOpacity(0.2)
+                        : black.withOpacity(0.2),
                     spreadRadius: 0.1,
                     blurRadius: 10,
                     offset: Offset(0.5, 0.5),
@@ -328,8 +331,10 @@ class _CourseScreenState extends State<CourseScreen> {
                         child: Container(
                             height: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.h
-                                : 12.h,
-                            width: 60.w,
+                                : 8.h,
+                            width: SizerUtil.deviceType == DeviceType.mobile
+                                ? 60.w
+                                : 50.w,
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),
@@ -377,18 +382,17 @@ class _CourseScreenState extends State<CourseScreen> {
                                   fontSize:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 14.sp
-                                          : 10.sp,
+                                          : 7.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                                height:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 0.0
-                                        : 3.h),
                           ],
                         ),
+                        SizedBox(
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? 0.0
+                                : 0.1.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -401,7 +405,7 @@ class _CourseScreenState extends State<CourseScreen> {
                                 fontSize:
                                     SizerUtil.deviceType == DeviceType.mobile
                                         ? 11.sp
-                                        : 9.sp,
+                                        : 7.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),

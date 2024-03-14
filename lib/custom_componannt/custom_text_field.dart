@@ -152,7 +152,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         hintStyle: styleTextForFieldHint(),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
-              SizerUtil.deviceType == DeviceType.mobile ? 30 : 20),
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
           borderSide: const BorderSide(
             color: inputBorderColor,
             width: 1.5,
@@ -442,21 +442,23 @@ class _CustomFormFieldState extends State<CustomFormField> {
             : Container(
                 width: 1,
               ),
-
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
           borderSide: const BorderSide(
             color: primaryColor,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(
+              SizerUtil.deviceType == DeviceType.mobile ? 30 : 50),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
