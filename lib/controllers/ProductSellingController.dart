@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/BrandCategoryModel.dart';
+import 'package:booking_app/Models/CommonModel.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
@@ -15,6 +16,7 @@ import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -104,11 +106,7 @@ class ProductSellingController extends GetxController {
 
   var isLoading = false.obs;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  var StudentModel = ValidationModel(null, null, isValidate: false).obs;
-  var ImageModel = ValidationModel(null, null, isValidate: false).obs;
-  var FeesModel = ValidationModel(null, null, isValidate: false).obs;
   var ProductModel = ValidationModel(null, null, isValidate: false).obs;
-  var NotesModel = ValidationModel(null, null, isValidate: false).obs;
   var OrderDateModel = ValidationModel(null, null, isValidate: false).obs;
   var ProductcatModel = ValidationModel(null, null, isValidate: false).obs;
   var BrandModel = ValidationModel(null, null, isValidate: false).obs;
@@ -118,71 +116,21 @@ class ProductSellingController extends GetxController {
   var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    if (StudentModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (ImageModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (FeesModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (ProductModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (NotesModel.value.isValidate == false) {
-      isFormInvalidate.value = false;
-    } else if (OrderDateModel.value.isValidate == false) {
+    if (OrderDateModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (CustomerModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (ProductModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
     }
   }
 
-  void validateStudent(String? val) {
-    StudentModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Name";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
   void validateCustomer(String? val) {
-    StudentModel.update((model) {
+    CustomerModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Customer";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
-  void validateImage(String? val) {
-    ImageModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Select Image";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
-  void validateFees(String? val) {
-    FeesModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Address";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -196,7 +144,7 @@ class ProductSellingController extends GetxController {
   void validateProduct(String? val) {
     ProductModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Email";
+        model!.error = "Select Product";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -207,10 +155,66 @@ class ProductSellingController extends GetxController {
     enableSignUpButton();
   }
 
-  void validateNotes(String? val) {
-    NotesModel.update((model) {
+  void validateProductCategory(String? val) {
+    ProductModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Contact Number";
+        model!.error = "Select Product Category";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateBrand(String? val) {
+    ProductModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Select Brand";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateName(String? val) {
+    ProductModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Product Name";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validateQty(String? val) {
+    ProductModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Quantity";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+
+    enableSignUpButton();
+  }
+
+  void validatePrice(String? val) {
+    ProductModel.update((model) {
+      if (val != null && val.isEmpty) {
+        model!.error = "Enter Product Price";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -233,6 +237,106 @@ class ProductSellingController extends GetxController {
     });
 
     enableSignUpButton();
+  }
+
+  void productSellApi(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      var retrievedObject = await UserPreferences().getSignInInfo();
+      logcat("Passing_data::", {
+        "date_of_sale": orderDatectr.value.toString(),
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "product_category_id": productCategoryId.value.toString()
+      });
+
+      var response = await Repository.post({
+        "date_of_sale": orderDatectr.value.toString(),
+        "vendor_id": retrievedObject!.id.toString().trim(),
+        "product_category_id": productCategoryId.value.toString()
+      }, ApiUrl.addProductSale, allowHeader: true);
+
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
+  }
+
+  void sellingDetails(context) async {
+    var loadingIndicator = LoadingProgressDialog();
+    try {
+      if (networkManager.connectionType == 0) {
+        loadingIndicator.hide(context);
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      loadingIndicator.show(context, '');
+      //   var retrievedObject = await UserPreferences().getSignInInfo();
+      logcat("Passing_data::", {
+        "product_sale_id": "6501b02a3c7d91c34dbaca17",
+        "product_id": "64991ce8f9f9493f9fa96c38",
+        "qty": 2
+      });
+
+      var response = await Repository.post({
+        "product_sale_id": "6501b02a3c7d91c34dbaca17",
+        "product_id": "64991ce8f9f9493f9fa96c38",
+        "qty": 2
+      }, ApiUrl.addproductSaleDetails, allowHeader: true);
+
+      loadingIndicator.hide(context);
+      var data = jsonDecode(response.body);
+      logcat("RESPOSNE", data);
+      if (response.statusCode == 200) {
+        var responseDetail = CommonModel.fromJson(data);
+        if (responseDetail.status == 1) {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {
+            Get.back(result: true);
+          });
+        } else {
+          showDialogForScreen(context, responseDetail.message.toString(),
+              callback: () {});
+        }
+      } else {
+        state.value = ScreenState.apiError;
+        showDialogForScreen(context, data['message'].toString(),
+            callback: () {});
+      }
+    } catch (e) {
+      logcat("Exception", e);
+      showDialogForScreen(context, Connection.servererror, callback: () {});
+      loadingIndicator.hide(context);
+    }
   }
 
   RxBool isFormInvalidate = false.obs;

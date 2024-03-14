@@ -713,4 +713,6 @@ class AddserviceController extends GetxController {
       loadingIndicator.hide(context);
     }
   }
+
+
 }

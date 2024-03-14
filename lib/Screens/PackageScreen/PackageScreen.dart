@@ -455,8 +455,8 @@ class _PackageScreenState extends State<PackageScreen> {
                     // flex: 2,
                     child: Text(
                       data.name.capitalize.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      overflow: TextOverflow.visible,
+                      maxLines: 3,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
@@ -583,44 +583,76 @@ class _PackageScreenState extends State<PackageScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Other Notes : ",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w800,
-                        color: isDarkMode() ? white : black,
-                      ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Other Notes : ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
                     ),
-                    Expanded(
-                      child: Container(
-                        width: 20.w,
-                        child: ReadMoreText(
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 10.h,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(
                           data.otherNotes.toString(),
-                          preDataTextStyle:
-                              TextStyle(fontWeight: FontWeight.w500),
-                          style: TextStyle(color: Colors.black),
-                          colorClickableText: Colors.red,
-                          trimMode: TrimMode.Line,
-                          trimLines: 3,
                           textAlign: TextAlign.start,
-                          trimCollapsedText: 'Show more',
-                          trimExpandedText: ' show less',
+                          style: TextStyle(
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 12.sp
+                                      : 12.sp,
+                              color: isDarkMode() ? white : black,
+                              fontFamily: fontRegular),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              // Expanded(
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         "Other Notes : ",
+              //         style: TextStyle(
+              //           fontSize: 12.sp,
+              //           fontWeight: FontWeight.w800,
+              //           color: isDarkMode() ? white : black,
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Container(
+              //           width: 20.w,
+              //           child: ReadMoreText(
+              //             data.otherNotes.toString(),
+              //             preDataTextStyle:
+              //                 TextStyle(fontWeight: FontWeight.w500),
+              //             style: TextStyle(color: Colors.black),
+              //             colorClickableText: Colors.red,
+              //             trimMode: TrimMode.Line,
+              //             trimLines: 3,
+              //             textAlign: TextAlign.start,
+              //             trimCollapsedText: 'Show more',
+              //             trimExpandedText: ' show less',
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ));
- 
- 
   }
 
   //  showDialog(

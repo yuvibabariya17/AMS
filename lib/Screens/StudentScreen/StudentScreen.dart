@@ -549,7 +549,7 @@ class _StudentScreenState extends State<StudentScreen> {
               Expanded(
                 child: Text(
                   data.name.capitalize.toString(),
-                  overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.visible,
                   textAlign: TextAlign.start,
                   maxLines: 2,
                   style: TextStyle(
@@ -650,24 +650,53 @@ class _StudentScreenState extends State<StudentScreen> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  data.address,
-                  maxLines: 3,
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 12.sp
-                          : 12.sp,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontRegular),
+                child: Container(
+                  height: 6.h,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      data.address.toString(),
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(
-            height: 1.h,
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Text(
+          //       "Address : ",
+          //       style: TextStyle(
+          //         fontSize: 12.sp,
+          //         fontWeight: FontWeight.w800,
+          //         color: isDarkMode() ? white : black,
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Text(
+          //         data.address,
+          //         maxLines: 3,
+          //         textAlign: TextAlign.start,
+          //         overflow: TextOverflow.ellipsis,
+          //         style: TextStyle(
+          //             fontSize: SizerUtil.deviceType == DeviceType.mobile
+          //                 ? 12.sp
+          //                 : 12.sp,
+          //             color: isDarkMode() ? white : black,
+          //             fontFamily: fontRegular),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

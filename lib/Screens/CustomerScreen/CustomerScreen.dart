@@ -506,7 +506,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
     return Common().commonDetailsDialog(
       context,
       "COURSE DETAILS",
-      isCustomer: true,
+      isNotes: true,
+      // isDescription: true,
       Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -538,7 +539,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   ),
                 )),
             SizedBox(
-              height: 2.h,
+              height: 1.h,
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -568,7 +569,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   ),
                 ]),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -598,7 +599,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ],
             ),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -636,38 +637,37 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   )
                 ]),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Address : ",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w800,
-                    color: isDarkMode() ? white : black,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    data.address,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Address : ",
                     style: TextStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 12.sp
-                            : 12.sp,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontRegular),
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: Text(
+                      data.address,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 12.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
+                  ),
+                ]),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             GestureDetector(
               onTap: () {
@@ -700,7 +700,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ),
             ),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             GestureDetector(
               onTap: () {
@@ -733,7 +733,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ),
             ),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -764,7 +764,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ],
             ),
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -779,17 +779,21 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    data.description,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 12.sp
-                            : 12.sp,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontRegular),
+                  child: Container(
+                    height: 10.h,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        data.description.toString(),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 12.sp,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                      ),
+                    ),
                   ),
                 ),
               ],

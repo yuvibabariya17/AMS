@@ -101,98 +101,100 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                     right:
                         SizerUtil.deviceType == DeviceType.mobile ? 7.w : 5.w,
                   ),
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      //   crossAxisCount:
-                      //       2, // Set the number of columns as per your requirement
-                      //   crossAxisSpacing:
-                      //       6.w, // Set the spacing between columns
-                      //   mainAxisSpacing: 3.h, // Set the spacing between rows
-                      // ),
-                      clipBehavior: Clip.antiAlias,
-                      itemCount: controller.serviceObjectList.length,
-                      itemBuilder: (context, index) {
-                        VendorServiceList data =
-                            controller.serviceObjectList[index];
-                        return Container(
-                          padding: EdgeInsets.only(
-                            left: 3.w,
-                            right: 3.w,
-                            top: SizerUtil.deviceType == DeviceType.mobile
-                                ? 1.h
-                                : 0.5.h,
+                  child: Container(
+                    width: double.infinity,
+                    child: GridView.builder(
+                        shrinkWrap: true,
+                        clipBehavior: Clip.antiAlias,
+                        padding: EdgeInsets.only(
                             bottom: SizerUtil.deviceType == DeviceType.mobile
-                                ? 1.h
-                                : 0.5.h,
-                          ),
-                          margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
-                          decoration: BoxDecoration(
-                            color: isDarkMode() ? black : white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: isDarkMode()
-                                    ? Colors.white.withOpacity(0.2)
-                                    : Colors.black.withOpacity(0.2),
-                                spreadRadius: 0.1,
-                                blurRadius: 3,
-                                offset: Offset(0.5, 0.5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data.serviceInfo.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    // data.serviceInfo != null
-                                    //     ? data.serviceInfo!.name
-                                    //     : "",
-                                    style: TextStyle(
-                                      color: isDarkMode() ? white : black,
-                                      fontFamily: opensansMedium,
-                                      fontSize: SizerUtil.deviceType ==
-                                              DeviceType.mobile
-                                          ? 13.sp
-                                          : 10.sp,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                ? 20.h
+                                : 10.h),
+                        physics: BouncingScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                          childAspectRatio:
+                              SizerUtil.deviceType == DeviceType.mobile
+                                  ? 2.0
+                                  : 1.3,
+                        ),
+                        itemCount: controller.serviceObjectList.length,
+                        itemBuilder: (context, index) {
+                          VendorServiceList data =
+                              controller.serviceObjectList[index];
+                          return Container(
+                            padding: EdgeInsets.only(
+                              left: 3.w,
+                              right: 3.w,
+                              top: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 2.h
+                                  : 0.5.h,
+                              bottom: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 1.h
+                                  : 0.5.h,
+                            ),
+                            // margin: EdgeInsets.only(bottom: 1.h, right: 1.w),
+                            decoration: BoxDecoration(
+                              color: isDarkMode() ? black : white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: isDarkMode()
+                                      ? Colors.white.withOpacity(0.2)
+                                      : Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0.1,
+                                  blurRadius: 3,
+                                  offset: Offset(0.5, 0.5),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.serviceInfo.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  // data.serviceInfo != null
+                                  //     ? data.serviceInfo!.name
+                                  //     : "",
+                                  style: TextStyle(
+                                    color: isDarkMode() ? white : black,
+                                    fontFamily: opensansMedium,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 14.sp
+                                        : 10.sp,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  // SizedBox(height: 5.0),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '₹ ${data.fees.toString()}',
-                                    style: TextStyle(
-                                      color: isDarkMode() ? white : black,
-                                      fontFamily: opensansMedium,
-                                      fontSize: SizerUtil.deviceType ==
-                                              DeviceType.mobile
-                                          ? 11.sp
-                                          : 9.sp,
-                                      fontWeight: FontWeight.w400,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '₹ ${data.fees.toString()}',
+                                      style: TextStyle(
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 11.sp
+                                            : 9.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
                 ),
               ),
             ],

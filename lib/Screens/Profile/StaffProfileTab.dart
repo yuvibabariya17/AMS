@@ -109,19 +109,29 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(top: 1.h),
+                      margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
                       padding: EdgeInsets.only(
                         left: SizerUtil.deviceType == DeviceType.mobile
-                            ? 7.w
+                            ? 5.w
                             : 5.w,
                         right: SizerUtil.deviceType == DeviceType.mobile
-                            ? 7.w
+                            ? 5.w
                             : 5.w,
                       ),
-                      child: ListView.builder(
+                      child: GridView.builder(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10.0,
+                            mainAxisSpacing: 10.0,
+                            childAspectRatio:
+                                SizerUtil.deviceType == DeviceType.mobile
+                                    ? 1.5
+                                    : 1.3,
+                          ),
                           clipBehavior: Clip.antiAlias,
                           itemBuilder: (context, index) {
                             ExpertList data =
@@ -131,94 +141,90 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                   bottom: 1.h,
                                   right: 1.w,
                                   top: SizerUtil.deviceType == DeviceType.mobile
-                                      ? 1.w
-                                      : 1.w,
+                                      ? 1.h
+                                      : 1.h,
                                   left:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 1.w
                                           : 1.w),
                               child: Container(
                                 padding: EdgeInsets.only(
-                                    top: 1.h,
-                                    left: 3.w,
-                                    right: 1.w,
-                                    bottom: 1.h),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  //  top: 1.h,
+                                  left: 3.w,
+                                  right: 1.w,
+                                  // bottom: 1.h
+                                ),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Stack(children: [
-                                          Container(
-                                            height: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 6.h
-                                                : 8.h,
-                                            child: CircleAvatar(
-                                              radius: 3.h,
-                                              backgroundColor: white,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                '${ApiUrl.ImgUrl}${data.upload_info.image}',
-                                              ),
-                                            ),
+                                    Stack(children: [
+                                      Container(
+                                        height: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 6.h
+                                            : 8.h,
+                                        child: CircleAvatar(
+                                          radius: 3.h,
+                                          backgroundColor: white,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                            '${ApiUrl.ImgUrl}${data.upload_info.image}',
                                           ),
-                                        ]),
-                                        SizedBox(width: 3.w),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  child: Text(
-                                                data.name.capitalize.toString(),
-                                                style: TextStyle(
-                                                    color: isDarkMode()
-                                                        ? white
-                                                        : black,
-                                                    fontFamily: opensansMedium,
-                                                    fontSize: SizerUtil
-                                                                .deviceType ==
+                                        ),
+                                      ),
+                                    ]),
+                                    SizedBox(width: 2.w),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.name.capitalize.toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: opensansMedium,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
                                                             DeviceType.mobile
-                                                        ? 15.5.sp
+                                                        ? 14.sp
                                                         : 10.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              )),
-                                              SizedBox(
-                                                height: SizerUtil.deviceType ==
-                                                        DeviceType.mobile
-                                                    ? 0.5.h
-                                                    : 0.0.h,
-                                              ),
-                                              Text(
-                                                '₹ ${data.amount.toString()}',
-                                                style: TextStyle(
-                                                    color: isDarkMode()
-                                                        ? white
-                                                        : black,
-                                                    fontFamily: opensansMedium,
-                                                    fontSize: SizerUtil
-                                                                .deviceType ==
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          // SizedBox(
+                                          //   height: SizerUtil.deviceType ==
+                                          //           DeviceType.mobile
+                                          //       ? 0.5.h
+                                          //       : 0.0.h,
+                                          // ),
+                                          Text(
+                                            data.serviceInfo.name.toString(),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                color: isDarkMode()
+                                                    ? white
+                                                    : black,
+                                                fontFamily: opensansMedium,
+                                                fontSize:
+                                                    SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 11.sp
                                                         : 8.sp,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 decoration: BoxDecoration(

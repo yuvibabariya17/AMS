@@ -141,10 +141,6 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                                   context,
                                                   controller.setCustomerList(),
                                                   "Customer List");
-                                              // showDropdownMessage(
-                                              //     context,
-                                              //     controller.setCategoryList(),
-                                              //     'Select Category');
                                             },
                                             errorText: controller
                                                 .ProductModel.value.error,
@@ -211,7 +207,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                       return getFormButton(() {
                                         if (controller.isFormInvalidate.value ==
                                             true) {
-                                          //  controller.AddCourseApi(context);
+                                          controller.productSellApi(context);
                                         }
                                       }, CommonConstant.submit,
                                           validate: controller
@@ -613,8 +609,8 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                               duration: const Duration(milliseconds: 300),
                               child: Obx(() {
                                 return getReactiveFormField(
-                                    node: controller.brandNode,
-                                    controller: controller.brandctr,
+                                    node: controller.productNameNode,
+                                    controller: controller.productNamectr,
                                     hintLabel: "Product Name",
                                     onChanged: (val) {
                                       // controller.validateState(val);

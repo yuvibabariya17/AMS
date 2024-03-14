@@ -777,7 +777,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
 
   getStudentCourseDetails(BuildContext context, ListofStudentCourse data) {
     return Common().commonDetailsDialog(
-      isCustomer: true,
+      isDescription: true,
       context,
       "STUDENT COURSE DETAILS",
       Column(
@@ -928,7 +928,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               ),
               Expanded(
                 child: Container(
-                  height: 20.h,
+                  height: 10.h,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Text(
@@ -946,7 +946,6 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               ),
             ],
           ),
-      
         ],
       ),
     );

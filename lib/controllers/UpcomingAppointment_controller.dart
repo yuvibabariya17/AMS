@@ -70,14 +70,14 @@ class UpcomingAppointmentController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
-        "search": {
-          "startAt": selectedDateString != null ? selectedDateString : ''
-          // "endAt": selectedDateString.toString()
-          // "vendor_id": "65964339a438e9a2e56bb859",
-          // "customer_id": "65002e988f256c43ccea2fcb",
-          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
-          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
-        }
+        // "search": {
+        //   "startAt": selectedDateString != null ? selectedDateString : ''
+        //   // "endAt": selectedDateString.toString()
+        //   // "vendor_id": "65964339a438e9a2e56bb859",
+        //   // "customer_id": "65002e988f256c43ccea2fcb",
+        //   // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+        //   // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        // }
       });
 
       var response = await Repository.post({
@@ -87,14 +87,14 @@ class UpcomingAppointmentController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
-        "search": {
-          "startAt": selectedDateString != null ? selectedDateString : ''
-          // "endAt": selectedDateString.toString()
-          // "vendor_id": "65964339a438e9a2e56bb859",
-          // "customer_id": "65002e988f256c43ccea2fcb",
-          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
-          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
-        }
+        // "search": {
+        //   "startAt": selectedDateString != null ? selectedDateString : ''
+        //   // "endAt": selectedDateString.toString()
+        //   // "vendor_id": "65964339a438e9a2e56bb859",
+        //   // "customer_id": "65002e988f256c43ccea2fcb",
+        //   // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+        //   // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        // }
       }, ApiUrl.appointmentList, allowHeader: true);
       if (isFirst == false) {
         loadingIndicator.hide(context);

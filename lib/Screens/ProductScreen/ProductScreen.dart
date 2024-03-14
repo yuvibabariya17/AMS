@@ -490,7 +490,8 @@ class _ProductScreenState extends State<ProductScreen> {
     return Common().commonDetailsDialog(
         context,
         "PRODUCT DETAILS",
-        isCustomer: true,
+        // isDescription: true,
+        isNotes: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -553,7 +554,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -571,7 +572,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Text(
                       data.productCategoryInfo.name,
                       maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.visible,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
@@ -584,7 +585,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -620,7 +621,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     )
                   ]),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -648,7 +649,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -663,26 +664,25 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      data.description.toString(),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                    child: Container(
+                      height: 18.h,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(
+                          data.description.toString(),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 12.sp
+                                      : 12.sp,
+                              color: isDarkMode() ? white : black,
+                              fontFamily: fontRegular),
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              SizedBox(
-                height: 1.h,
               ),
             ]));
   }

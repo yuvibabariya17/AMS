@@ -430,73 +430,123 @@ Widget notification(isNotify) {
 }
 
 Future<Object?> PopupDialogsforSignOut(BuildContext context) {
-  return showGeneralDialog(
-      barrierColor:
-          isDarkMode() ? white.withOpacity(0.6) : black.withOpacity(0.6),
-      transitionBuilder: (context, a1, a2, widget) {
-        return Transform.scale(
-          scale: a1.value,
-          child: Opacity(
-              opacity: a1.value,
-              child: CupertinoAlertDialog(
-                title: Text(
-                  "Sign Out",
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return CupertinoTheme(
+        data: CupertinoThemeData(
+          brightness: isDarkMode()
+              ? Brightness.dark
+              : Brightness.light, // Set the brightness to light
+          scaffoldBackgroundColor:
+              Colors.white, // Set the background color to white
+          textTheme: CupertinoTextThemeData(
+            textStyle:
+                TextStyle(color: Colors.black), // Set text color to black
+          ),
+        ),
+        child: CupertinoAlertDialog(
+          title: Text('Sign Out',
+              style: TextStyle(
+                  fontSize: 17.sp, color: isDarkMode() ? white : black)),
+          content: Text("Are you sure to SignOut?",
+              style: TextStyle(
+                  fontSize: 12.sp, color: isDarkMode() ? white : black)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('No',
                   style: TextStyle(
-                    fontSize: 18,
-                    color: isDarkMode() ? white : white,
-                    fontFamily: fontBold,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                content: Text(
-                  "Are you sure to SignOut?",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: isDarkMode() ? white : white,
-                    fontFamily: fontMedium,
-                  ),
-                ),
-                actions: [
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    isDefaultAction: true,
-                    isDestructiveAction: true,
-                    child: Text("No",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: isDarkMode() ? white : white,
-                          fontFamily: fontBold,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ),
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      UserPreferences().logout();
-                      Get.offAll(LoginScreen());
-                    },
-                    isDefaultAction: true,
-                    isDestructiveAction: true,
-                    child: Text("Yes",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: isDarkMode() ? white : white,
-                          fontFamily: fontBold,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ),
-                  // The "No" button
-                ],
-              )),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 200),
-      barrierDismissible: true,
-      barrierLabel: '',
-      context: context,
-      pageBuilder: (context, animation1, animation2) {
-        return Container();
-      });
+                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                UserPreferences().logout();
+                Get.offAll(LoginScreen());
+              },
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+
+  // return showGeneralDialog(
+  //     // barrierColor: isDarkMode() ? white.withOpacity(0.6) : black,
+  //     transitionBuilder: (context, a1, a2, widget) {
+  //       return Transform.scale(
+  //         scale: a1.value,
+  //         child: Opacity(
+  //             opacity: a1.value,
+  //             child: Cuperti(
+  //               child: CupertinoAlertDialog(
+  //                 title: Text(
+  //                   "Sign Out",
+  //                   style: TextStyle(
+  //                     fontSize: 18,
+  //                     color: isDarkMode() ? white : white,
+  //                     fontFamily: fontBold,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 content: Text(
+  //                   "Are you sure to SignOut?",
+  //                   style: TextStyle(
+  //                     fontSize: 13,
+  //                     color: isDarkMode() ? white : white,
+  //                     fontFamily: fontMedium,
+  //                   ),
+  //                 ),
+  //                 actions: [
+  //                   CupertinoDialogAction(
+  //                     onPressed: () {
+  //                       Navigator.pop(context);
+  //                     },
+  //                     isDefaultAction: true,
+  //                     isDestructiveAction: true,
+  //                     child: Text("No",
+  //                         style: TextStyle(
+  //                           fontSize: 15,
+  //                           color: isDarkMode() ? white : white,
+  //                           fontFamily: fontBold,
+  //                           fontWeight: FontWeight.bold,
+  //                         )),
+  //                   ),
+  //                   CupertinoDialogAction(
+  //                     onPressed: () {
+  //                       Navigator.pop(context);
+  //                       UserPreferences().logout();
+  //                       Get.offAll(LoginScreen());
+  //                     },
+  //                     isDefaultAction: true,
+  //                     isDestructiveAction: true,
+  //                     child: Text("Yes",
+  //                         style: TextStyle(
+  //                           fontSize: 15,
+  //                           color: isDarkMode() ? white : white,
+  //                           fontFamily: fontBold,
+  //                           fontWeight: FontWeight.bold,
+  //                         )),
+  //                   ),
+  //                   // The "No" button
+  //                 ],
+  //               ),
+  //             )),
+  //       );
+  //     },
+  //     transitionDuration: const Duration(milliseconds: 200),
+  //     barrierDismissible: true,
+  //     barrierLabel: '',
+  //     context: context,
+  //     pageBuilder: (context, animation1, animation2) {
+  //       return Container();
+  //     });
 }

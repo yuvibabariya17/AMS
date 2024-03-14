@@ -20,13 +20,18 @@ class Common {
   }
 
   Future commonDetailsDialog(BuildContext context, String title, Widget contain,
-      {bool? isCustomer}) {
+      {bool? isNotes, bool? isDescription}) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
             insetPadding: EdgeInsets.symmetric(
-                vertical: isCustomer == true ? 10.h : 20.h, horizontal: 3.h),
+                vertical: isNotes == true
+                    ? 10.h
+                    : isDescription == true
+                        ? 15.h
+                        : 20.h,
+                horizontal: 3.h),
             shape: RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.circular(20.0), // Adjust the radius as needed

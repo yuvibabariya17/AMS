@@ -913,6 +913,7 @@ class _CourseScreenState extends State<CourseScreen> {
     return Common().commonDetailsDialog(
         context,
         "COURSE DETAILS",
+        isDescription: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -975,7 +976,7 @@ class _CourseScreenState extends State<CourseScreen> {
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -1011,7 +1012,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     )
                   ]),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1039,7 +1040,7 @@ class _CourseScreenState extends State<CourseScreen> {
                 ],
               ),
               SizedBox(
-                height: 1.h,
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1054,21 +1055,26 @@ class _CourseScreenState extends State<CourseScreen> {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      data.description.toString(),
-                      maxLines: 3,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.visible,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                    child: Container(
+                      height: 20.h,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(
+                          data.description.toString(),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 12.sp
+                                      : 12.sp,
+                              color: isDarkMode() ? white : black,
+                              fontFamily: fontRegular),
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )
+              ),
             ]));
   }
 

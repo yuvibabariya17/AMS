@@ -4,7 +4,6 @@ class ApiUrl {
 
   static const liveApiUrl = "http://192.168.1.18:4001/";
 
-
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";
   static const addCustomer = "customer/add";
@@ -75,4 +74,6 @@ class ApiUrl {
   static const editPackage = "package/edit";
   static const editProdcutCategory = "product/category/edit";
   static const editBrandCategory = "brand/category/edit";
+  static const addProductSale = "product/sale/add";
+  static const addproductSaleDetails = "product/sale/details/add";
 }
