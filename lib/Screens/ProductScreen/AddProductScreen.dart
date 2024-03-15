@@ -214,7 +214,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         },
                                         isReadOnly: true,
                                         onTap: () {
-                                          controller.categroryCtr.text = "";
+                                          //  controller.categroryCtr.text = "";
                                           showDropDownDialog(
                                               context,
                                               controller.setCategoryList(),

@@ -296,7 +296,7 @@ class _StudentScreenState extends State<StudentScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  controller.deleteServiceList(context, serviceId);
+                  controller.deleteStudentList(context, serviceId);
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 child: Text(
@@ -349,14 +349,13 @@ class _StudentScreenState extends State<StudentScreen> {
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         StudentList data = controller.filteredStudentObjectList[index];
@@ -398,12 +397,12 @@ class _StudentScreenState extends State<StudentScreen> {
                       //         (value) => {Common().trasparent_statusbar()});
                     },
                     child: Container(
-                       height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -475,7 +474,9 @@ class _StudentScreenState extends State<StudentScreen> {
                     child: Container(
                       child: SvgPicture.asset(
                         Asset.edit,
-                        height: 2.3.h,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 2.3.h
+                            : 2.h,
                         color: isDarkMode() ? Colors.grey : Colors.grey,
                       ),
                     ),
@@ -483,13 +484,18 @@ class _StudentScreenState extends State<StudentScreen> {
                   SizedBox(width: 5.0),
                   GestureDetector(
                     onTap: () {
-                      showDeleteConfirmationDialog(data.id);
+                      Common().commonDeleteDialog(context, "Service", () {
+                        controller.deleteStudentList(context, data.id);
+                      });
+                      // showDeleteConfirmationDialog(data.id);
                     },
                     child: Container(
                       child: Icon(
                         Icons.delete_rounded,
                         color: isDarkMode() ? Colors.grey : Colors.grey,
-                        size: 3.h,
+                        size: SizerUtil.deviceType == DeviceType.mobile
+                            ? 3.h
+                            : 2.8.h,
                       ),
                     ),
                   ),

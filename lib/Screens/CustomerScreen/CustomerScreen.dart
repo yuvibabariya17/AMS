@@ -338,17 +338,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.only(
-          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 8.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-       crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListofCustomer data = controller.filteredCustomerObjectList[index];
@@ -386,12 +385,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     //     .then((value) => {Common().trasparent_statusbar()});
                   },
                   child: Container(
-                    height: SizerUtil.deviceType == DeviceType.mobile
-                              ? 11.h
-                              : 8.h,
-                          width: SizerUtil.deviceType == DeviceType.mobile
-                              ? 60.w
-                              : 50.w,
+                      height: SizerUtil.deviceType == DeviceType.mobile
+                          ? 11.h
+                          : 8.h,
+                      width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 60.w
+                          : 50.w,
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),
@@ -413,89 +412,83 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       )),
                 )
               ]),
-              Container(
-                padding: EdgeInsets.only(
-                    left:
-                        SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-                    right: SizerUtil.deviceType == DeviceType.mobile
-                        ? 1.w
-                        : 0.0.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            data.name.capitalize.toString(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: isDarkMode() ? white : black,
-                                fontFamily: opensansMedium,
-                                fontSize:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 14.sp
-                                        : 10.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      data.name.capitalize.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: opensansMedium,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 7.sp,
+                          fontWeight: FontWeight.w700),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            data.contactNo,
-                            style: TextStyle(
-                                color: isDarkMode() ? white : black,
-                                fontFamily: opensansMedium,
-                                fontSize:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 11.sp
-                                        : 9.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            Get.to(AddCustomerScreen(
-                                    isEdit: true, editCustomer: data))
-                                ?.then((value) {
-                              if (value == true) {
-                                controller.getCustomerList(context, false);
-                              }
-                            });
-                          },
-                          child: Container(
-                            child: SvgPicture.asset(
-                              Asset.edit,
-                              height: 2.3.h,
-                              color: isDarkMode() ? Colors.grey : Colors.grey,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 3.0),
-                        GestureDetector(
-                          onTap: () {
-                            showDeleteConfirmationDialog(data.id);
-                          },
-                          child: Container(
-                            child: Icon(
-                              Icons.delete_rounded,
-                              color: isDarkMode() ? Colors.grey : Colors.grey,
-                              size: 3.h,
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Text(
+                      data.contactNo,
+                      style: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: opensansMedium,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 7.sp,
+                          fontWeight: FontWeight.w400),
                     ),
-                  ],
-                ),
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(AddCustomerScreen(
+                              isEdit: true, editCustomer: data))
+                          ?.then((value) {
+                        if (value == true) {
+                          controller.getCustomerList(context, false);
+                        }
+                      });
+                    },
+                    child: Container(
+                      child: SvgPicture.asset(
+                        Asset.edit,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 2.3.h
+                            : 2.h,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 3.0),
+                  GestureDetector(
+                    onTap: () {
+                      Common().commonDeleteDialog(context, "Customer", () {
+                        controller.deleteCustomerList(context, data.id);
+                      });
+
+                      //showDeleteConfirmationDialog(data.id);
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: isDarkMode() ? Colors.grey : Colors.grey,
+                        size: SizerUtil.deviceType == DeviceType.mobile
+                            ? 3.h
+                            : 2.8.h,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -511,16 +504,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
   ) {
     return Common().commonDetailsDialog(
       context,
-      "COURSE DETAILS",
-      isNotes: true,
+      "CUSTOMER DETAILS",
+     // isDescription: true,
       // isDescription: true,
       Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-                height: 20.h,
-                width: 60.w,
+                height: SizerUtil.deviceType == DeviceType.mobile ? 11.h : 18.h,
+                width: SizerUtil.deviceType == DeviceType.mobile ? 60.w : 60.w,
                 // padding: EdgeInsets.all(
                 //   SizerUtil.deviceType == DeviceType.mobile
                 //       ? 1.2.w
@@ -554,7 +547,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   Text(
                     "Customer Name : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -568,7 +563,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 10.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -584,7 +579,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 Text(
                   "Date of Birth : ",
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
                     fontWeight: FontWeight.w800,
                     color: isDarkMode() ? white : black,
                   ),
@@ -598,7 +595,39 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 12.sp,
+                          : 8.sp,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontRegular),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 0.5.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Date of Anniversary : ",
+                  style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
+                    fontWeight: FontWeight.w800,
+                    color: isDarkMode() ? white : black,
+                  ),
+                ),
+                Text(
+                  formatDate(
+                    data.dateOfAnniversary.toString(),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -609,50 +638,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 8.sp,
-                        fontWeight: FontWeight.w700,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontBold,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Date of Anniversary : ',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    formatDate(
-                      data.dateOfAnniversary.toString(),
-                    ),
-                    style: TextStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 12.sp
-                            : 12.sp,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontRegular),
-                  )
-                ]),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Address : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -666,7 +659,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 12.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -686,7 +679,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   Text(
                     "Contact No : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -698,7 +693,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 8.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -719,7 +714,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   Text(
                     "Whatsapp No : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -731,7 +728,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 8.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -748,7 +745,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 Text(
                   "Email ID : ",
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
                     fontWeight: FontWeight.w800,
                     color: isDarkMode() ? white : black,
                   ),
@@ -762,7 +761,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 8.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -779,14 +778,20 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 Text(
                   "Description : ",
                   style: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
                     fontWeight: FontWeight.w800,
                     color: isDarkMode() ? white : black,
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    height: 10.h,
+                     width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 0.w
+                          :  10.w,
+                    height:
+                        SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Text(
@@ -795,7 +800,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         style: TextStyle(
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 12.sp
-                                : 12.sp,
+                                : 8.sp,
                             color: isDarkMode() ? white : black,
                             fontFamily: fontRegular),
                       ),

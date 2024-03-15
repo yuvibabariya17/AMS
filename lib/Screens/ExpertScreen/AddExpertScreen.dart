@@ -202,7 +202,7 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                       wantSuffix: true,
                                       isdown: true,
                                       onTap: () {
-                                        controller.Servicectr.text = "";
+                                        //  controller.Servicectr.text = "";
 
                                         showDropDownDialog(
                                             context,

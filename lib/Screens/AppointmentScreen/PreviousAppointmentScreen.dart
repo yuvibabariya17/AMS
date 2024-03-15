@@ -140,13 +140,13 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                       margin: EdgeInsets.only(
                           left: SizerUtil.deviceType == DeviceType.mobile
                               ? 7.w
-                              : 5.w,
+                              : 10.w,
                           right: SizerUtil.deviceType == DeviceType.mobile
                               ? 7.w
-                              : 5.w,
+                              : 10.w,
                           bottom: SizerUtil.deviceType == DeviceType.mobile
                               ? 1.h
-                              : 0.5.h,
+                              : 2.h,
                           top: SizerUtil.deviceType == DeviceType.mobile
                               ? 3.h
                               : 2.h),
@@ -177,7 +177,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                   fontSize:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 12.sp
-                                          : 10.sp,
+                                          : 8.sp,
                                   fontWeight: FontWeight.w700),
                             ),
                             Container(
@@ -191,7 +191,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 10.sp
-                                        : 8.sp,
+                                        : 7.sp,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -232,7 +232,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                               fontSize: SizerUtil.deviceType ==
                                                       DeviceType.mobile
                                                   ? 12.sp
-                                                  : 10.sp,
+                                                  : 8.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
                                         Container(
@@ -251,7 +251,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 10.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         ),
@@ -265,7 +265,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                       children: [
                                         Text(
                                           //  data.title,
-                                          "Customer Name : ",
+                                          "Customer : ",
                                           style: TextStyle(
                                               color:
                                                   isDarkMode() ? white : black,
@@ -273,7 +273,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                               fontSize: SizerUtil.deviceType ==
                                                       DeviceType.mobile
                                                   ? 12.sp
-                                                  : 10.sp,
+                                                  : 8.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
                                         Container(
@@ -290,7 +290,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 10.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                         ),
@@ -306,7 +306,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                             fontSize: SizerUtil.deviceType ==
                                                     DeviceType.mobile
                                                 ? 12.sp
-                                                : 10.sp,
+                                                : 8.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
@@ -322,7 +322,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                             fontSize: SizerUtil.deviceType ==
                                                     DeviceType.mobile
                                                 ? 10.sp
-                                                : 8.sp,
+                                                : 7.sp,
                                             fontWeight: FontWeight.w500),
                                       )),
                                     ]),
@@ -357,7 +357,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 12.sp
-                                        : 10.sp,
+                                        : 8.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                               Spacer(),
@@ -367,7 +367,10 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                         showDeleteConfirmationDialog(data.id);
                                       },
                                       child: Container(
-                                        height: 4.h,
+                                        height: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 4.h
+                                            : 4.5.h,
                                         width: 20.w,
                                         child: Center(
                                           child: Text(
@@ -600,7 +603,6 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
       ),
     );
   }
-
 
   Future<void> showDeleteConfirmationDialog(String serviceId) async {
     return showDialog(

@@ -294,7 +294,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  controller.deleteProductCategoryList(context, serviceId);
+                  controller.deleteBrandCategoryList(context, serviceId);
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 child: Text(
@@ -478,7 +478,11 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                   SizedBox(width: 1.w),
                   GestureDetector(
                     onTap: () {
-                      showDeleteConfirmationDialog(data.id);
+                      Common().commonDeleteDialog(context, "Brand Category",
+                          () {
+                        controller.deleteBrandCategoryList(context, data.id);
+                      });
+                      //  showDeleteConfirmationDialog(data.id);
                     },
                     child: Container(
                       child: Icon(
@@ -501,15 +505,15 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
   getBrandCategoryDetails(BuildContext context, BrandCatList data) {
     return Common().commonDetailsDialog(
       context,
-      "PACKAGE DETAILS",
+      "BRAND CATEGORY DETAILS",
       isDescription: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              height: 20.h,
-              width: 60.w,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 18.h,
+              width: SizerUtil.deviceType == DeviceType.mobile ? 60.w : 60.w,
               // padding: EdgeInsets.all(
               //   SizerUtil.deviceType == DeviceType.mobile
               //       ? 1.2.w
@@ -543,7 +547,8 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
               Text(
                 "Brand Category Name : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -557,7 +562,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -574,7 +579,8 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
               Text(
                 "Description : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -590,7 +596,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 12.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),

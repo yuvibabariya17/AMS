@@ -223,7 +223,7 @@ getCommonToolbar(title, Function? callback) {
                       fontWeight: FontWeight.bold,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 18.sp
-                          : 15.sp),
+                          : 12.sp),
                 ),
               ),
             ),
@@ -256,7 +256,7 @@ getAppbar(
                       fontWeight: FontWeight.bold,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 18.sp
-                          : 16.sp),
+                          : 12.sp),
                 ),
               ),
             ),
@@ -450,10 +450,14 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
         child: CupertinoAlertDialog(
           title: Text('Sign Out',
               style: TextStyle(
-                  fontSize: 17.sp, color: isDarkMode() ? white : black)),
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 17.sp : 9.sp,
+                  color: isDarkMode() ? white : black)),
           content: Text("Are you sure to SignOut?",
               style: TextStyle(
-                  fontSize: 12.sp, color: isDarkMode() ? white : black)),
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 7.sp,
+                  color: isDarkMode() ? white : black)),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -461,7 +465,10 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
               },
               child: Text('No',
                   style: TextStyle(
-                      fontSize: 11.sp, color: isDarkMode() ? white : black)),
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 11.sp
+                          : 8.sp,
+                      color: isDarkMode() ? white : black)),
             ),
             TextButton(
               onPressed: () {
@@ -472,7 +479,10 @@ Future<Object?> PopupDialogsforSignOut(BuildContext context) {
               child: Text(
                 'Yes',
                 style: TextStyle(
-                    color: isDarkMode() ? white : black, fontSize: 11.sp),
+                  color: isDarkMode() ? white : black,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 11.sp : 8.sp,
+                ),
               ),
             ),
           ],

@@ -86,7 +86,7 @@ class StudentController extends GetxController {
     }
   }
 
-  void deleteServiceList(context, String itemId) async {
+  void deleteStudentList(context, String itemId) async {
     state.value = ScreenState.apiLoading;
     isStudentList.value = true;
     try {
@@ -111,7 +111,7 @@ class StudentController extends GetxController {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
 
-          logcat("SERVICE RESPONSE", jsonEncode(studentObjectList));
+          logcat("STUDENT RESPONSE", jsonEncode(studentObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});

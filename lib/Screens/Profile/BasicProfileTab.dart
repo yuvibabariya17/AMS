@@ -51,10 +51,11 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: 3.h,
-          left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
-          right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 6.w,
-          bottom: 1.h),
+        top: 3.h,
+        left: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 13.w,
+        right: SizerUtil.deviceType == DeviceType.mobile ? 8.w : 13.w,
+        bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 12.h,
+      ),
       child: Container(
         padding: EdgeInsets.only(
             top: 1.5.h,
@@ -77,7 +78,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                       color: isDarkMode() ? Colors.grey : black,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 13.5.sp
-                          : 10.5.sp),
+                          : 8.sp),
                 ),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -107,8 +108,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
-                      ? 13.sp
-                      : 10.sp),
+                      ? 13.5.sp
+                      : 8.sp),
             ),
             SizedBox(
               height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
@@ -121,7 +122,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 13.5.sp
-                      : 10.5.sp),
+                      : 8.sp),
             ),
             SizedBox(
                 height:
@@ -133,8 +134,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
-                      ? 13.sp
-                      : 10.sp),
+                      ? 13.5.sp
+                      : 8.sp),
             ),
             SizedBox(
               height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
@@ -147,7 +148,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 13.5.sp
-                      : 10.5.sp),
+                      : 8.sp),
             ),
             SizedBox(
                 height:
@@ -159,8 +160,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
-                      ? 13.sp
-                      : 10.sp),
+                      ? 13.5.sp
+                      : 8.sp),
             ),
             SizedBox(
               height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
@@ -173,7 +174,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 13.5.sp
-                      : 10.5.sp),
+                      : 8.sp),
             ),
             SizedBox(
                 height:
@@ -185,8 +186,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
-                      ? 13.sp
-                      : 10.sp),
+                      ? 13.5.sp
+                      : 8.sp),
             ),
             SizedBox(
               height: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.0.h,
@@ -199,7 +200,7 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   color: isDarkMode() ? Colors.grey : black,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 13.5.sp
-                      : 10.5.sp),
+                      : 8.sp),
             ),
             SizedBox(
                 height:
@@ -211,8 +212,8 @@ class _BasicprofileTabScreenState extends State<BasicprofileTabScreen> {
                   fontFamily: opensansMedium,
                   fontWeight: FontWeight.w400,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
-                      ? 13.sp
-                      : 10.sp),
+                      ? 13.5.sp
+                      : 8.sp),
             ),
           ],
         ),

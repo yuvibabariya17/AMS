@@ -77,8 +77,8 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                         margin: EdgeInsets.only(
                             left: 5.w,
                             right: SizerUtil.deviceType == DeviceType.mobile
-                                ? 8.w
-                                : 7.w,
+                                ? 7.w
+                                : 13.w,
                             top: 1.h),
                         child: Text(
                           "View More >",
@@ -87,7 +87,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             fontWeight: FontWeight.w800,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 13.sp
-                                : 11.sp,
+                                : 8.sp,
                           ),
                         )),
                   ],
@@ -97,9 +97,9 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                 child: Container(
                   margin: EdgeInsets.only(top: 1.h),
                   padding: EdgeInsets.only(
-                    left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 5.w,
+                    left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 8.w,
                     right:
-                        SizerUtil.deviceType == DeviceType.mobile ? 7.w : 5.w,
+                        SizerUtil.deviceType == DeviceType.mobile ? 7.w : 8.w,
                   ),
                   child: Container(
                     width: double.infinity,
@@ -112,13 +112,14 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                 : 10.h),
                         physics: BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount:
+                              SizerUtil.deviceType == DeviceType.mobile ? 2 : 3,
                           crossAxisSpacing: 10.0,
                           mainAxisSpacing: 10.0,
                           childAspectRatio:
                               SizerUtil.deviceType == DeviceType.mobile
                                   ? 2.0
-                                  : 1.3,
+                                  : 1.8,
                         ),
                         itemCount: controller.serviceObjectList.length,
                         itemBuilder: (context, index) {
@@ -126,8 +127,12 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                               controller.serviceObjectList[index];
                           return Container(
                             padding: EdgeInsets.only(
-                              left: 3.w,
-                              right: 3.w,
+                              left: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 3.w
+                                  : 1.w,
+                              right: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 3.w
+                                  : 1.w,
                               top: SizerUtil.deviceType == DeviceType.mobile
                                   ? 2.h
                                   : 0.5.h,
@@ -152,7 +157,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                               ],
                             ),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -168,7 +173,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 14.sp
-                                        : 10.sp,
+                                        : 9.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),

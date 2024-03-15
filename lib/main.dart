@@ -3,6 +3,7 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:booking_app/Screens/SplashScreen/SplashScreen.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
@@ -14,7 +15,7 @@ import 'core/themes/app_theme.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context) { 
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -24,6 +25,10 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MyApp());
 }
 
@@ -39,36 +44,26 @@ class MyApp extends StatelessWidget {
     int isDarkMode = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
     getStorage.write(GetStorageKey.IS_DARK_MODE, isDarkMode);
     Common().trasparent_statusbar();
-    return FutureBuilder(
-      future: _init(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Sizer(
-            builder: (context, orientation, deviceType) {
-              return ThemeProvider(
-                initTheme: isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
-                child: Builder(builder: (context) {
-                  return GetBuilder<ThemeController>(
-                    init: ThemeController(),
-                    builder: (ctr) {
-                      return GetMaterialApp(
-                        title: CommonConstant.ams,
-                        theme: !ctr.isDark.value
-                            ? ThemeData.light()
-                            : ThemeData.dark(),
-                        debugShowCheckedModeBanner: false,
-                        home: Splashscreen(),
-                        defaultTransition: Transition.rightToLeftWithFade,
-                      );
-                    },
-                  );
-                }),
-              );
-            },
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return ThemeProvider(
+          initTheme: isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
+          child: Builder(builder: (context) {
+            return GetBuilder<ThemeController>(
+              init: ThemeController(),
+              builder: (ctr) {
+                return GetMaterialApp(
+                  title: CommonConstant.ams,
+                  theme:
+                      !ctr.isDark.value ? ThemeData.light() : ThemeData.dark(),
+                  debugShowCheckedModeBanner: false,
+                  home: Splashscreen(),
+                  defaultTransition: Transition.rightToLeftWithFade,
+                );
+              },
+            );
+          }),
+        );
       },
     );
   }

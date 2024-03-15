@@ -129,7 +129,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               controller.validateStudent(val);
                                             },
                                             onTap: () {
-                                              controller.studentctr.text = "";
+                                              //  controller.studentctr.text = "";
                                               showDropDownDialog(
                                                   context,
                                                   controller.setStudentList(),
@@ -159,7 +159,7 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               setState(() {});
                                             },
                                             onTap: () {
-                                              controller.coursectr.text = "";
+                                              //  controller.coursectr.text = "";
                                               showDropDownDialog(
                                                   context,
                                                   controller.setCourseList(),

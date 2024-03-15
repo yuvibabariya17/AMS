@@ -207,10 +207,10 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         setState(() {});
       }),
       child: AnimatedContainer(
-        width: 40.w,
+        width:  SizerUtil.deviceType == DeviceType.mobile ? 40.w :30.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
-          horizontal: SizerUtil.deviceType == DeviceType.mobile ? 3.5.w : 4.5.w,
+          horizontal: SizerUtil.deviceType == DeviceType.mobile ? 3.5.w : 4.w,
         ),
         padding: EdgeInsets.only(
           left: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 2.w,
@@ -239,13 +239,13 @@ class _AppointmentScreenState extends State<AppointmentScreen>
               style: TextStyle(
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 12.5.sp
-                      : 9.sp,
+                      : 8.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
                   color: currentPage == index ? white : Colors.grey[850]),
             ),
             SizedBox(
-              width: currentPage == index ? 4.w : 0,
+              width: currentPage == index ? 0.w : 0.w,
             ),
           ],
         ),

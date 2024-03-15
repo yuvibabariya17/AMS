@@ -125,7 +125,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                         style: TextStyle(
                             color: isDarkMode() ? white : black,
                             fontFamily: opensansMedium,
-                            fontSize: 16.5.sp,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 18.sp
+                                : 12.sp,
                             fontWeight: FontWeight.w700),
                       )
                     ],
@@ -188,13 +190,13 @@ class _ProfileScreenState extends State<ProfileScreen>
         setState(() {});
       }),
       child: AnimatedContainer(
-        width: 25.w,
+        width: SizerUtil.deviceType == DeviceType.mobile ? 25.w : 20.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
           horizontal: SizerUtil.deviceType == DeviceType.mobile ? 8 : 20,
         ),
         padding: EdgeInsets.only(
-            top: 11,
+            top: SizerUtil.deviceType == DeviceType.mobile ? 11 : 1.h,
             bottom: SizerUtil.deviceType == DeviceType.mobile ? 11 : 1.h),
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -223,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 style: TextStyle(
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 12.2.sp
-                      : 11.sp,
+                      : 9.sp,
                   fontFamily: opensans_Bold,
                   fontWeight: FontWeight.w700,
                   color: selectedTabIndex == index

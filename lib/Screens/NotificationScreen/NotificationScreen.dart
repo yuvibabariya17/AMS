@@ -1,6 +1,5 @@
 import 'package:booking_app/Screens/NotificationScreen/PreviousNotificationScreen.dart';
 import 'package:booking_app/Screens/NotificationScreen/UpcomingNotificationScreen.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:flutter/material.dart';
@@ -90,26 +89,29 @@ class _NotificationScreenState extends State<NotificationScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              
               getTab(NotificationConstant.upcoming_title, 30, 0),
               getTab(NotificationConstant.previous_title, 30, 1),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 2.h, top: 2.h, left: 3.5.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'March 22,2023',
-                  style: TextStyle(
-                      color: isDarkMode() ? white : black,
-                      fontSize: 14.sp,
-                      fontFamily: opensansMedium,
-                      fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(bottom: 2.h, top: 2.h, left: 3.5.h),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     children: [
+          //       Text(
+          //         'March 22,2023',
+          //         style: TextStyle(
+          //             color: isDarkMode() ? white : black,
+          //             fontSize: SizerUtil.deviceType == DeviceType.mobile
+          //                 ? 12.5.sp
+          //                 : 10.sp,
+          //             fontFamily: opensansMedium,
+          //             fontWeight: FontWeight.w700),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Expanded(
             child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
@@ -134,13 +136,18 @@ class _NotificationScreenState extends State<NotificationScreen>
             }
           }),
           child: AnimatedContainer(
-            width: 40.w,
+            width: SizerUtil.deviceType == DeviceType.mobile ? 40.w : 30.w,
             duration: const Duration(milliseconds: 300),
             margin: EdgeInsets.symmetric(
-              horizontal: 3.5.w,
+              horizontal:
+                  SizerUtil.deviceType == DeviceType.mobile ? 3.5.w : 4.w,
             ),
             padding: EdgeInsets.only(
-                left: 5.w, right: 5.w, top: 1.3.h, bottom: 1.3.h),
+              left: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 2.w,
+              right: SizerUtil.deviceType == DeviceType.mobile ? 5.w : 2.w,
+              top: SizerUtil.deviceType == DeviceType.mobile ? 1.3.h : 1.h,
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.3.h : 1.h,
+            ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: controller.currentPage.value == index
@@ -165,36 +172,38 @@ class _NotificationScreenState extends State<NotificationScreen>
                 Text(
                   str,
                   style: TextStyle(
-                      fontSize: 12.5.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.5.sp
+                          : 8.sp,
                       fontFamily: opensans_Bold,
                       fontWeight: FontWeight.w700,
                       color: controller.currentPage.value == index
                           ? Colors.white
                           : Colors.grey[850]),
                 ),
-                SizedBox(
-                  width: controller.currentPage.value == index ? 4.w : 0,
-                ),
-                controller.currentPage.value == index
-                    ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: controller.currentPage.value == index ||
-                                  isDarkMode()
-                              ? white
-                              : black,
-                        ),
-                        padding: EdgeInsets.only(
-                            left: 5, right: 5, top: 1, bottom: 1),
-                        child: controller.currentPage.value == index
-                            ? Text("6",
-                                style: TextStyle(
-                                  fontSize: 12.5.sp,
-                                  color: isDarkMode() ? white : black,
-                                ))
-                            : null,
-                      )
-                    : Container()
+                // SizedBox(
+                //   width: controller.currentPage.value == index ? 4.w : 0,
+                // ),
+                // // controller.currentPage.value == index
+                // //     ? Container(
+                // //         decoration: BoxDecoration(
+                // //           borderRadius: BorderRadius.circular(10),
+                // //           color: controller.currentPage.value == index ||
+                // //                   isDarkMode()
+                // //               ? white
+                // //               : black,
+                // //         ),
+                // //         padding: EdgeInsets.only(
+                // //             left: 5, right: 5, top: 1, bottom: 1),
+                // //         child: controller.currentPage.value == index
+                // //             ? Text("6",
+                // //                 style: TextStyle(
+                // //                   fontSize: 12.5.sp,
+                // //                   color: isDarkMode() ? white : black,
+                // //                 ))
+                // //             : null,
+                // //       )
+                //     : Container()
               ],
             ),
           ),

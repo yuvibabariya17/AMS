@@ -160,7 +160,7 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                         style: TextStyle(
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 16.sp
-                                : 14.sp,
+                                : 10.sp,
                             color: Colors.white,
                             fontFamily: opensansMedium,
                             fontWeight: FontWeight.w700),

@@ -27,14 +27,18 @@ class Common {
         return AlertDialog(
             insetPadding: EdgeInsets.symmetric(
                 vertical: isNotes == true
-                    ? 10.h
+                    ? SizerUtil.deviceType == DeviceType.mobile
+                        ? 10.h
+                        : 20.h
                     : isDescription == true
                         ? SizerUtil.deviceType == DeviceType.mobile
                             ? 15.h
-                            : 10.h
-                        : 20.h,
-                horizontal:   SizerUtil.deviceType == DeviceType.mobile
-                        ?  3.h : 2.h ),
+                            : 25.h
+                        : SizerUtil.deviceType == DeviceType.mobile
+                            ? 20.h
+                            : 10.h,
+                horizontal:
+                    SizerUtil.deviceType == DeviceType.mobile ? 3.h : 6.h),
             shape: RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.circular(20.0), // Adjust the radius as needed
@@ -51,36 +55,52 @@ class Common {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: 55.w,
-                        child: Marquee(
-                          style: TextStyle(
-                            fontFamily: fontRegular,
-                            color: isDarkMode() ? white : black,
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 16.sp
-                                : 10.sp,
-                          ),
-                          text: title,
-                          scrollAxis: Axis
-                              .horizontal, // Use Axis.vertical for vertical scrolling
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start, // Adjust as needed
-                          blankSpace:
-                              20.0, // Adjust the space between text repetitions
-                          velocity: 50.0, // Adjust the scrolling speed
-                          pauseAfterRound: const Duration(
-                              seconds: 1), // Time to pause after each scroll
-                          startPadding: 2.w, // Adjust the initial padding
-                          accelerationDuration: const Duration(
-                              seconds: 1), // Duration for acceleration
-                          accelerationCurve:
-                              Curves.linear, // Acceleration curve
-                          decelerationDuration: const Duration(
-                              milliseconds: 500), // Duration for deceleration
-                          decelerationCurve:
-                              Curves.easeOut, // Deceleration curve
-                        ),
-                      ),
+                          width: 55.w,
+                          child: title.length > 18
+                              ? Marquee(
+                                  style: TextStyle(
+                                    fontFamily: fontRegular,
+                                    color: isDarkMode() ? white : black,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 16.sp
+                                        : 8.sp,
+                                  ),
+                                  text: title,
+                                  scrollAxis: Axis
+                                      .horizontal, // Use Axis.vertical for vertical scrolling
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start, // Adjust as needed
+                                  blankSpace:
+                                      20.0, // Adjust the space between text repetitions
+                                  velocity: 50.0, // Adjust the scrolling speed
+                                  pauseAfterRound: const Duration(
+                                      seconds:
+                                          1), // Time to pause after each scroll
+                                  startPadding:
+                                      2.w, // Adjust the initial padding
+                                  accelerationDuration: const Duration(
+                                      seconds: 1), // Duration for acceleration
+                                  accelerationCurve:
+                                      Curves.linear, // Acceleration curve
+                                  decelerationDuration: const Duration(
+                                      milliseconds:
+                                          500), // Duration for deceleration
+                                  decelerationCurve:
+                                      Curves.easeOut, // Deceleration curve
+                                )
+                              : Text(
+                                  title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: fontRegular,
+                                    color: isDarkMode() ? white : black,
+                                    fontSize: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                       ? 16.sp
+                                        : 8.sp,
+                                  ),
+                                )),
                       Spacer(),
                       Align(
                         alignment: Alignment.topRight,
@@ -105,6 +125,68 @@ class Common {
               ),
               contain
             ]));
+      },
+    );
+  }
+
+  Future commonDeleteDialog(
+      BuildContext context, String subText, Function callback) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: isDarkMode()
+                ? Brightness.dark
+                : Brightness.light, // Set the brightness to light
+            scaffoldBackgroundColor: white, // Set the background color to white
+            textTheme: CupertinoTextThemeData(
+              textStyle: TextStyle(color: black), // Set text color to black
+            ),
+          ),
+          child: CupertinoAlertDialog(
+            title: Text('Confirm Delete',
+                style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 17.sp
+                        : 9.sp,
+                    color: isDarkMode() ? white : black)),
+            content: Text('Are you sure you want to delete this ${subText}?',
+                style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 7.sp,
+                    color: isDarkMode() ? white : black)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel',
+                    style: TextStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.sp
+                            : 8.sp,
+                        color: isDarkMode() ? white : black)),
+              ),
+              TextButton(
+                onPressed: () {
+                  callback();
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                    color: isDarkMode() ? white : black,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 11.sp
+                        : 8.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }

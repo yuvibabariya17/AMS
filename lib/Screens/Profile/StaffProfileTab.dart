@@ -89,7 +89,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                               top: 1.h,
                               right: SizerUtil.deviceType == DeviceType.mobile
                                   ? 7.w
-                                  : 7.w,
+                                  : 13.w,
                             ),
                             child: Text(
                               "View More >",
@@ -99,7 +99,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                 fontSize:
                                     SizerUtil.deviceType == DeviceType.mobile
                                         ? 13.sp
-                                        : 11.sp,
+                                        : 8.sp,
                               ),
                             ),
                           ),
@@ -126,11 +126,14 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 10.0,
-                            mainAxisSpacing: 10.0,
+                            mainAxisSpacing:
+                                SizerUtil.deviceType == DeviceType.mobile
+                                    ? 10.0
+                                    : 15.0,
                             childAspectRatio:
                                 SizerUtil.deviceType == DeviceType.mobile
                                     ? 1.5
-                                    : 1.3,
+                                    : 1.8,
                           ),
                           clipBehavior: Clip.antiAlias,
                           itemBuilder: (context, index) {
@@ -139,19 +142,28 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                             return Container(
                               margin: EdgeInsets.only(
                                   bottom: 1.h,
-                                  right: 1.w,
+                                  right:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 1.w
+                                          : 4.w,
                                   top: SizerUtil.deviceType == DeviceType.mobile
                                       ? 1.h
                                       : 1.h,
                                   left:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 1.w
-                                          : 1.w),
+                                          : 4.w),
                               child: Container(
                                 padding: EdgeInsets.only(
                                   //  top: 1.h,
-                                  left: 3.w,
-                                  right: 1.w,
+                                  left:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 3.w
+                                          : 4.w,
+                                  right:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 3.w
+                                          : 4.w,
                                   // bottom: 1.h
                                 ),
                                 child: Row(
@@ -196,7 +208,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 14.sp
-                                                        : 10.sp,
+                                                        : 7.sp,
                                                 fontWeight: FontWeight.w700),
                                           ),
                                           // SizedBox(
@@ -219,7 +231,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 11.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                 fontWeight: FontWeight.w400),
                                           )
                                         ],

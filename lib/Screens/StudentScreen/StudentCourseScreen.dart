@@ -351,14 +351,13 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
       padding: EdgeInsets.only(bottom: 35.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListofStudentCourse data = controller.filteredStudentObjectList[index];
@@ -675,11 +674,11 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                     },
                     child: Container(
                         height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -761,7 +760,11 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   SizedBox(width: 5.0),
                   GestureDetector(
                     onTap: () {
-                      showDeleteConfirmationDialog(data.id);
+                      Common().commonDeleteDialog(context, "Student Course",
+                          () {
+                        controller.deleteStudentCourseList(context, data.id);
+                      });
+                      //  showDeleteConfirmationDialog(data.id);
                     },
                     child: Container(
                       child: Icon(
@@ -783,6 +786,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
 
   getStudentCourseDetails(BuildContext context, ListofStudentCourse data) {
     return Common().commonDetailsDialog(
+      isNotes: true,
       isDescription: true,
       context,
       "STUDENT COURSE DETAILS",
@@ -826,7 +830,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               Text(
                 "Course Name : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -840,7 +845,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -857,7 +862,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               Text(
                 "Course Fee : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -874,7 +880,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 12.sp,
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -885,38 +891,31 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
             height: 1.h,
           ),
           Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 8.sp,
-                      fontWeight: FontWeight.w700,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontBold,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Duration : ',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Duration : ",
+                style: TextStyle(
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
                 ),
-                Text(
-                  data.courseInfo.duration.toString(),
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 12.sp
-                          : 12.sp,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontRegular),
-                )
-              ]),
+              ),
+              Text(
+                '₹ ${data.courseInfo.duration.toString()}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
+                    color: isDarkMode() ? white : black,
+                    fontFamily: fontRegular),
+              ),
+            ],
+          ),
           SizedBox(
             height: 1.h,
           ),
@@ -927,7 +926,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               Text(
                 "Other Notes : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -943,7 +943,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 12.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),

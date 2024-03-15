@@ -149,13 +149,13 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                           margin: EdgeInsets.only(
                               left: SizerUtil.deviceType == DeviceType.mobile
                                   ? 7.w
-                                  : 5.w,
+                                  : 10.w,
                               right: SizerUtil.deviceType == DeviceType.mobile
                                   ? 7.w
-                                  : 5.w,
+                                  : 10.w,
                               bottom: SizerUtil.deviceType == DeviceType.mobile
                                   ? 1.h
-                                  : 0.5.h,
+                                  : 2.h,
                               top: SizerUtil.deviceType == DeviceType.mobile
                                   ? 3.h
                                   : 2.h),
@@ -177,17 +177,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(children: [
-                                // Text(
-                                //   "Date : " +
-                                //       formatDate(
-                                //           data.dateOfAppointment.toString()),
-                                //   style: TextStyle(
-                                //     fontFamily: opensansMedium,
-                                //     fontWeight: FontWeight.w700,
-                                //     fontSize: 14.sp,
-                                //     color: isDarkMode() ? white : black,
-                                //   ),
-                                // ),
                                 Text(
                                   //  data.title,
                                   "Date : ",
@@ -197,22 +186,20 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                       fontSize: SizerUtil.deviceType ==
                                               DeviceType.mobile
                                           ? 12.sp
-                                          : 10.sp,
+                                          : 8.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Container(
                                   child: Text(
-                                    //  data.title,
                                     formatDate(
                                         data.dateOfAppointment.toString()),
-
                                     style: TextStyle(
                                         color: isDarkMode() ? white : black,
                                         fontFamily: opensansMedium,
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 10.sp
-                                            : 8.sp,
+                                            : 7.sp,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -264,7 +251,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              //  data.title,
                                               "Time : ",
                                               style: TextStyle(
                                                   color: isDarkMode()
@@ -275,17 +261,15 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                       SizerUtil.deviceType ==
                                                               DeviceType.mobile
                                                           ? 12.sp
-                                                          : 10.sp,
+                                                          : 8.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Container(
                                               child: Text(
-                                                //  data.title,
                                                 formatTime(data
                                                     .appointmentSlotInfo
                                                     .timeOfAppointment
                                                     .toString()),
-
                                                 style: TextStyle(
                                                     color: isDarkMode()
                                                         ? white
@@ -295,7 +279,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                                 .deviceType ==
                                                             DeviceType.mobile
                                                         ? 10.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -319,7 +303,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                       SizerUtil.deviceType ==
                                                               DeviceType.mobile
                                                           ? 12.sp
-                                                          : 10.sp,
+                                                          : 8.sp,
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Expanded(
@@ -339,7 +323,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                                 .deviceType ==
                                                             DeviceType.mobile
                                                         ? 10.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -358,7 +342,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 12.sp
-                                                        : 10.sp,
+                                                        : 8.sp,
                                                 fontWeight: FontWeight.w700),
                                           ),
                                           Container(
@@ -374,7 +358,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 10.sp
-                                                        : 8.sp,
+                                                        : 7.sp,
                                                 fontWeight: FontWeight.w500),
                                           )),
                                         ]),
@@ -409,7 +393,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 12.sp
-                                            : 10.sp,
+                                            : 8.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Spacer(),
@@ -418,12 +402,22 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                       showDeleteConfirmationDialog(data.id);
                                     },
                                     child: Container(
-                                      height: 4.h,
-                                      width: 20.w,
+                                      height: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 4.h
+                                          : 3.5.h,
+                                      width:SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 20.w
+                                          : 15.w,
                                       child: Center(
                                         child: Text(
                                           "Cancel",
                                           style: TextStyle(
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 12.sp
+                                                : 7.sp,
                                             color: isDarkMode() ? black : white,
                                           ),
                                           textAlign: TextAlign.center,

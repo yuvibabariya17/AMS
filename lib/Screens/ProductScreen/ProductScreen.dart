@@ -468,7 +468,10 @@ class _ProductScreenState extends State<ProductScreen> {
                   SizedBox(width: 5.0),
                   GestureDetector(
                     onTap: () {
-                      showDeleteConfirmationDialog(data.id);
+                      Common().commonDeleteDialog(context, "Product", () {
+                        controller.deleteProductList(context, data.id);
+                      });
+                      //  showDeleteConfirmationDialog(data.id);
                     },
                     child: Container(
                       child: Icon(
@@ -495,15 +498,17 @@ class _ProductScreenState extends State<ProductScreen> {
     return Common().commonDetailsDialog(
         context,
         "PRODUCT DETAILS",
-        // isDescription: true,
+       isDescription: true,
         isNotes: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                  height: 20.h,
-                  width: 60.w,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 20.h : 18.h,
+                  width:
+                      SizerUtil.deviceType == DeviceType.mobile ? 60.w : 60.w,
                   // padding: EdgeInsets.all(
                   //   SizerUtil.deviceType == DeviceType.mobile
                   //       ? 1.2.w
@@ -537,7 +542,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     "Product Name : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -551,7 +558,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 10.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -568,7 +575,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     "Prodcut Category : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -582,7 +591,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 12.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -593,38 +602,32 @@ class _ProductScreenState extends State<ProductScreen> {
                 height: 0.5.h,
               ),
               Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w700,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontBold,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Amount : ',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Amount : ",
+                    style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
                     ),
-                    Text(
-                      '₹ ${data.amount.toString()}',
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
-                    )
-                  ]),
+                  ),
+                  Text(
+                    data.amount.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 8.sp,
+                        color: isDarkMode() ? white : black,
+                        fontFamily: fontRegular),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 0.5.h,
               ),
@@ -635,7 +638,9 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     "Quantity : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -647,7 +652,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 8.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -663,14 +668,20 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     "Description : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      height: 18.h,
+                     width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 0.w
+                          :  10.w,
+                    height:
+                        SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Text(
@@ -680,7 +691,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               fontSize:
                                   SizerUtil.deviceType == DeviceType.mobile
                                       ? 12.sp
-                                      : 12.sp,
+                                      : 8.sp,
                               color: isDarkMode() ? white : black,
                               fontFamily: fontRegular),
                         ),

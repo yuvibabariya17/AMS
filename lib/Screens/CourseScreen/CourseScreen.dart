@@ -302,10 +302,11 @@ class _CourseScreenState extends State<CourseScreen> {
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Adjust the number of columns as needed
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile ? 2 : 3,
         crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.3,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
       ),
       itemBuilder: (context, index) {
         ListofCourse data = controller.filteredCourseObjectList[index];
@@ -341,8 +342,10 @@ class _CourseScreenState extends State<CourseScreen> {
                     child: Container(
                         height: SizerUtil.deviceType == DeviceType.mobile
                             ? 11.h
-                            : 12.h,
-                        width: 60.w,
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -368,12 +371,9 @@ class _CourseScreenState extends State<CourseScreen> {
               // SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.only(
-                    left: SizerUtil.deviceType == DeviceType.mobile
-                        ? 1.w
-                        : 2.w,
-                    right: SizerUtil.deviceType == DeviceType.mobile
-                        ? 1.w
-                        : 2.w),
+                    left: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 2.w,
+                    right:
+                        SizerUtil.deviceType == DeviceType.mobile ? 1.w : 2.w),
                 child: Column(
                   children: [
                     Row(
@@ -391,15 +391,15 @@ class _CourseScreenState extends State<CourseScreen> {
                               fontSize:
                                   SizerUtil.deviceType == DeviceType.mobile
                                       ? 14.sp
-                                      : 10.sp,
+                                      : 7.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         SizedBox(
                             height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 0.0
-                                : 3.h),
+                                ? 5.0
+                                : 0.1.h),
                       ],
                     ),
                     Row(
@@ -413,7 +413,7 @@ class _CourseScreenState extends State<CourseScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 11.sp
-                                : 9.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -439,7 +439,10 @@ class _CourseScreenState extends State<CourseScreen> {
                         SizedBox(width: 5.0),
                         GestureDetector(
                           onTap: () {
-                            showDeleteConfirmationDialog(data.id);
+                            Common().commonDeleteDialog(context, "Course", () {
+                              controller.deleteCourseList(context, data.id);
+                            });
+                            // showDeleteConfirmationDialog(data.id);
                           },
                           child: Container(
                             child: Icon(
@@ -466,7 +469,7 @@ class _CourseScreenState extends State<CourseScreen> {
     return Common().commonDetailsDialog(
         context,
         "COURSE DETAILS",
-        isDescription: true,
+       // isNotes: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -475,7 +478,7 @@ class _CourseScreenState extends State<CourseScreen> {
                   height:
                       SizerUtil.deviceType == DeviceType.mobile ? 11.h : 18.h,
                   width:
-                      SizerUtil.deviceType == DeviceType.mobile ? 60.w : 60.w,
+                      SizerUtil.deviceType == DeviceType.mobile ? 60.w : 50.w,
                   // padding: EdgeInsets.all(
                   //   SizerUtil.deviceType == DeviceType.mobile
                   //       ? 1.2.w
@@ -509,7 +512,9 @@ class _CourseScreenState extends State<CourseScreen> {
                   Text(
                     "Course Name : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -523,7 +528,7 @@ class _CourseScreenState extends State<CourseScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 12.sp,
+                              : 8.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -534,41 +539,32 @@ class _CourseScreenState extends State<CourseScreen> {
                 height: 0.5.h,
               ),
               Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w700,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontBold,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Fees : ',
-                            style: TextStyle(
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.mobile
-                                      ? 12.sp
-                                      : 12.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Fee : ",
+                    style: TextStyle(
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDarkMode() ? white : black,
                     ),
-                    Text(
-                      '₹ ${data.fees.toString()}',
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
-                    )
-                  ]),
+                  ),
+                  Text(
+                    data.fees.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 8.sp,
+                        color: isDarkMode() ? white : black,
+                        fontFamily: fontRegular),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 0.5.h,
               ),
@@ -579,7 +575,9 @@ class _CourseScreenState extends State<CourseScreen> {
                   Text(
                     "Duration : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -591,7 +589,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 8.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -607,16 +605,21 @@ class _CourseScreenState extends State<CourseScreen> {
                   Text(
                     "Description : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 8.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
                   ),
                   Expanded(
                     child: Container(
+                      width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 0.w
+                          :  20.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
                           ? 20.h
-                          : 25.h,
+                          : 20.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Text(
@@ -626,7 +629,7 @@ class _CourseScreenState extends State<CourseScreen> {
                               fontSize:
                                   SizerUtil.deviceType == DeviceType.mobile
                                       ? 12.sp
-                                      : 12.sp,
+                                      : 8.sp,
                               color: isDarkMode() ? white : black,
                               fontFamily: fontRegular),
                         ),

@@ -4,7 +4,6 @@ import 'package:booking_app/controllers/AddService_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
-import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:flutter/cupertino.dart';
@@ -241,7 +240,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         // },
                                         //  isAdd: true,
                                         onTap: () {
-                                          controller.Servicectr.text = "";
+                                          // controller.Servicectr.text = "";
                                           // if (controller
                                           //     .subCategoryctr.text.isEmpty) {
                                           //   return PopupDialogs(

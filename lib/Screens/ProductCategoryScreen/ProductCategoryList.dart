@@ -353,14 +353,13 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
       padding: EdgeInsets.only(
           bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-       crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
-                ? 2
-                : 3, // Adjust the number of columns as needed
-            crossAxisSpacing: 10.0,
-            childAspectRatio:
-                SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
-            mainAxisSpacing:
-                SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
+        crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
+            ? 2
+            : 3, // Adjust the number of columns as needed
+        crossAxisSpacing: 10.0,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.0 : 1.2,
+        mainAxisSpacing:
+            SizerUtil.deviceType == DeviceType.mobile ? 10.0 : 15.0,
       ),
       itemBuilder: (context, index) {
         ListProductCategory data = controller.filterrdProductObjectList[index];
@@ -403,11 +402,11 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                     },
                     child: Container(
                         height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.h
-                                : 8.h,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 60.w
-                                : 50.w,
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -491,7 +490,11 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                   SizedBox(width: 1.w),
                   GestureDetector(
                     onTap: () {
-                      showDeleteConfirmationDialog(data.id);
+                      Common().commonDeleteDialog(context, "Product Category",
+                          () {
+                        controller.deleteProductCategoryList(context, data.id);
+                      });
+                      //  showDeleteConfirmationDialog(data.id);
                     },
                     child: Container(
                       child: Icon(

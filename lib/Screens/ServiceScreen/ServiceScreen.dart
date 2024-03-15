@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/assets.dart';
@@ -229,7 +228,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 
-  Future<void> showDeleteConfirmationDialog(String serviceId) async {
+  // deleteDialog(){
+  //   return Common().commonDeleteDialog(context, "Are you sure want delete the Service",  )
+  // }
+
+  Future<void> showDeleteConfirmationDialog(
+    String serviceId,
+  ) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -248,10 +253,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
           child: CupertinoAlertDialog(
             title: Text('Confirm Delete',
                 style: TextStyle(
-                    fontSize: 17.sp, color: isDarkMode() ? white : black)),
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 17.sp
+                        : 9.sp,
+                    color: isDarkMode() ? white : black)),
             content: Text('Are you sure you want to delete this Service ?',
                 style: TextStyle(
-                    fontSize: 12.sp, color: isDarkMode() ? white : black)),
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 7.sp,
+                    color: isDarkMode() ? white : black)),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -259,17 +270,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 },
                 child: Text('Cancel',
                     style: TextStyle(
-                        fontSize: 11.sp, color: isDarkMode() ? white : black)),
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.sp
+                            : 8.sp,
+                        color: isDarkMode() ? white : black)),
               ),
               TextButton(
                 onPressed: () {
-                  controller.deleteServiceList(context, serviceId);
                   Navigator.of(context).pop(); // Close the dialog
                 },
                 child: Text(
                   'Yes',
                   style: TextStyle(
-                      color: isDarkMode() ? white : black, fontSize: 11.sp),
+                    color: isDarkMode() ? white : black,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 11.sp
+                        : 8.sp,
+                  ),
                 ),
               ),
             ],
@@ -322,12 +339,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
         // Adjust the number of columns as needed
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.8 : 1.5,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.8 : 1.8,
       ),
       itemBuilder: (context, index) {
         VendorServiceList data = controller.filteredServiceObjectList[index];
         return Container(
             padding: EdgeInsets.only(
+              top: SizerUtil.deviceType == DeviceType.mobile ? 0.h : 2.h,
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 0.h : 1.h,
               left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
               right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
             ),
@@ -350,26 +369,28 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 getServiceDetail(context, data);
               },
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        data.serviceInfo.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: isDarkMode() ? white : black,
-                          fontFamily: opensansMedium,
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 14.sp
-                              : 7.sp,
-                          fontWeight: FontWeight.w700,
+                      Expanded(
+                        child: Text(
+                          data.serviceInfo.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: isDarkMode() ? white : black,
+                            fontFamily: opensansMedium,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 14.sp
+                                : 7.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          // textAlign: TextAlign.center,
                         ),
-                        // textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -412,7 +433,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       SizedBox(width: 5.0),
                       GestureDetector(
                         onTap: () {
-                          showDeleteConfirmationDialog(data.id);
+                          Common().commonDeleteDialog(context, "Service", () {
+                            controller.deleteServiceList(context, data.id);
+                          });
+
+                          // showDeleteConfirmationDialog(data.id);
                         },
                         child: Container(
                           child: Icon(
@@ -436,6 +461,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     return Common().commonDetailsDialog(
         context,
         "SERVICE DETAILS",
+        isDescription: true,
         Expanded(
             child: Column(children: [
           Row(
@@ -445,7 +471,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Service Name : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -460,7 +487,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -477,7 +504,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Approx time : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -494,7 +522,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 12.sp,
+                          : 8.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -505,38 +533,31 @@ class _ServiceScreenState extends State<ServiceScreen> {
             height: 1.h,
           ),
           Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 8.sp,
-                      fontWeight: FontWeight.w700,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontBold,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Sitting : ',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Sitting : ",
+                style: TextStyle(
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
                 ),
-                Text(
-                  data.oppoxSetting.toString(),
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 12.sp
-                          : 12.sp,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontRegular),
-                )
-              ]),
+              ),
+              Text(
+                data.oppoxSetting.toString(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
+                    color: isDarkMode() ? white : black,
+                    fontFamily: fontRegular),
+              ),
+            ],
+          ),
           SizedBox(
             height: 1.h,
           ),
@@ -547,7 +568,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Sitting Duration : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -559,7 +581,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 12.sp,
+                        : 8.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -575,7 +597,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Sitting Days Interval : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -587,7 +610,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 12.sp,
+                        : 8.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -603,7 +626,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Days : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -615,7 +639,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 12.sp,
+                        : 8.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -631,7 +655,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Text(
                 "Price : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -643,7 +668,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 12.sp,
+                        : 8.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),

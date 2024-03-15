@@ -36,10 +36,14 @@ class _PreviousNotificationScreenState
     ));
   }
 
-  getListItem(BuildContext context, int index) {
+ getListItem(BuildContext context, int index) {
     NotificationItem data = controller.staticData[index];
     return Container(
-      margin: EdgeInsets.only(top: 1.h, left: 7.w, right: 7.w, bottom: 1.h),
+      margin: EdgeInsets.only(
+           top: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 2.h,
+          left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 10.w,
+          right: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 10.w,
+          bottom: 1.h),
       decoration: BoxDecoration(
         color: isDarkMode() ? black : white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -108,7 +112,10 @@ class _PreviousNotificationScreenState
                             style: TextStyle(
                                 color: isDarkMode() ? white : black,
                                 fontFamily: opensansMedium,
-                                fontSize: 14.sp,
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 12.sp
+                                        : 8.sp,
                                 fontWeight: FontWeight.w700),
                           ),
                         ),
@@ -122,7 +129,10 @@ class _PreviousNotificationScreenState
                                       ? Colors.orange
                                       : Colors.red,
                               fontFamily: opensans_Regular,
-                              fontSize: 10.sp,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 12.sp
+                                      : 8.sp,
                               fontWeight: FontWeight.w700),
                         ),
                       ],
@@ -133,7 +143,9 @@ class _PreviousNotificationScreenState
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 11.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 8.sp,
                           fontWeight: FontWeight.w400),
                     )),
                     Text(
@@ -141,7 +153,9 @@ class _PreviousNotificationScreenState
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 10.5.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 8.sp,
                           fontWeight: FontWeight.w400),
                     )
                   ],

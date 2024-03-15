@@ -135,7 +135,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                               setState(() {});
                                             },
                                             onTap: () {
-                                              controller.customerctr.text = "";
+                                              // controller.customerctr.text = "";
 
                                               showDropDownDialog(
                                                   context,

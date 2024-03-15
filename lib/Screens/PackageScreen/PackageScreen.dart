@@ -358,7 +358,9 @@ class _PackageScreenState extends State<PackageScreen> {
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
-                          fontSize: 14.sp,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 14.sp
+                              : 10.sp,
                           fontWeight: FontWeight.w700),
                     )),
                     // SizedBox(height: 5.0),
@@ -381,7 +383,9 @@ class _PackageScreenState extends State<PackageScreen> {
                         style: TextStyle(
                             color: isDarkMode() ? white : black,
                             fontFamily: opensansMedium,
-                            fontSize: 10.sp,
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 10.sp
+                                : 8.sp,
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -408,7 +412,10 @@ class _PackageScreenState extends State<PackageScreen> {
                     SizedBox(width: 5.0),
                     GestureDetector(
                       onTap: () {
-                        showDeleteConfirmationDialog(data.id);
+                        Common().commonDeleteDialog(context, "Package", () {
+                          controller.deletePackageList(context, data.id);
+                        });
+                        //   showDeleteConfirmationDialog(data.id);
                       },
                       child: Container(
                         child: Icon(
@@ -446,7 +453,9 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "Package Name : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -478,7 +487,9 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "Actual Fees : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -490,7 +501,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 10.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -506,7 +517,9 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "Package Fees : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -518,7 +531,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 10.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -534,7 +547,9 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "Start From : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -546,7 +561,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 10.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -562,7 +577,9 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "End to : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -574,7 +591,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 12.sp,
+                            : 10.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -591,14 +608,21 @@ class _PackageScreenState extends State<PackageScreen> {
                   Text(
                     "Other Notes : ",
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: SizerUtil.deviceType == DeviceType.mobile
+                          ? 12.sp
+                          : 10.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      height: 10.h,
+                      width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 0.w
+                          : 10.w,
+                      height: SizerUtil.deviceType == DeviceType.mobile
+                          ? 10.h
+                          : 5.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Text(
@@ -608,7 +632,7 @@ class _PackageScreenState extends State<PackageScreen> {
                               fontSize:
                                   SizerUtil.deviceType == DeviceType.mobile
                                       ? 12.sp
-                                      : 12.sp,
+                                      : 10.sp,
                               color: isDarkMode() ? white : black,
                               fontFamily: fontRegular),
                         ),

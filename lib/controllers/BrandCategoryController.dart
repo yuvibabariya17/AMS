@@ -86,7 +86,7 @@ class BrandCategoryController extends GetxController {
     }
   }
 
-  void deleteProductCategoryList(context, String itemId) async {
+  void deleteBrandCategoryList(context, String itemId) async {
     state.value = ScreenState.apiLoading;
     isBrandCategoryList.value = true;
     try {
