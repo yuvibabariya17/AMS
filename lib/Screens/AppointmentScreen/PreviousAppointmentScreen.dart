@@ -170,7 +170,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                           Row(children: [
                             Text(
                               //  data.title,
-                              "Date : ",
+                              Details.date,
                               style: TextStyle(
                                   color: isDarkMode() ? white : black,
                                   fontFamily: opensansMedium,
@@ -196,17 +196,6 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               ),
                             ),
                           ]),
-
-                          // Text(
-                          //   "Date : " +
-                          //       formatDate(data.dateOfAppointment.toString()),
-                          //   style: TextStyle(
-                          //     fontFamily: opensansMedium,
-                          //     fontWeight: FontWeight.w700,
-                          //     fontSize: 14.sp,
-                          //     color: isDarkMode() ? white : black,
-                          //   ),
-                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,7 +213,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                       children: [
                                         Text(
                                           //  data.title,
-                                          "Time : ",
+                                          Details.time,
                                           style: TextStyle(
                                               color:
                                                   isDarkMode() ? white : black,
@@ -265,7 +254,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                       children: [
                                         Text(
                                           //  data.title,
-                                          "Customer : ",
+                                          Details.customer,
                                           style: TextStyle(
                                               color:
                                                   isDarkMode() ? white : black,
@@ -299,7 +288,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                     Row(children: [
                                       Text(
                                         //  data.title,
-                                        "Appointment Type : ",
+                                        Details.appointment_type,
                                         style: TextStyle(
                                             color: isDarkMode() ? white : black,
                                             fontFamily: opensansMedium,

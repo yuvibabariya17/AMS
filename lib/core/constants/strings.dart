@@ -16,20 +16,6 @@ class Strings {
   static const String selectedMode = 'selectedMode';
   static const String isLanguageScreen = 'languageSelected';
 
-  //Empty Text
-  // static const dataEmpty = "Data Not Found";
-  // static const listEmpty = "List Is Empty";
-  // static const close = "OK";
-  // // App
-
-  // static const searchHere = 'Search.......';
-  // static const Preferences = "My Preferences";
-  // static const institute = "The Institute";
-  // static const programmes = "Programmes";
-  // static const services = "Services";
-  // static const software = "Software";
-  // static const others = "Others";
-
   static const dateFormat = 'dd-MM-yyyy';
   static const oldDateFormat = 'yyyy-MM-dd';
   static const apiDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -88,12 +74,6 @@ class Strings {
 
   static const String update_vendor = 'Update Vendor';
 
-  static const String enter_companyName = 'Enter Name';
-  static const String company_add = 'Company Address';
-  static const String enter_company_add = 'Company Address';
-  static const String enter_email = 'Enter Email ID';
-  static const String contact_persone_name = 'Contact Person Name';
-
   static const String enter_whatsapp_no = 'Enter Whatsapp No';
   static const String next = 'Next';
   static const String contact_no = 'Contact No';
@@ -102,23 +82,23 @@ class Strings {
   static const String logo_hint = 'Select Image(Logo)';
   static const String breachers = 'Breachers';
   static const String breachers_hint = 'Select Breachers';
-  static const String pass_hint = 'Enter Password';
-  static const String contact_1 = 'Enter Contact No.1';
-  static const String contact_2 = 'Enter Contact No.2';
+  // static const String pass_hint = 'Enter Password';
+  // static const String contact_1 = 'Enter Contact No.1';
+//  static const String contact_2 = 'Enter Contact No.2';
   static const String whatsapp_hint = 'Enter Whatsapp No.';
   static const String profile_hint = 'Select Profile';
-  static const String property = 'Property Images';
-  static const String property_hint = 'Select Property Images';
+  // static const String property = 'Property Images';
+  // static const String property_hint = 'Select Property Images';
 
   //Vendor Service
-  static const String field = 'Field Name';
-  static const String field_hint = 'Enter Name';
-  static const String time = 'Time';
-  static const String time_hint = 'Time';
-  static const String approx = 'Approx Sittings';
-  static const String approx_hint = '15';
-  static const String duration = 'Sitting Duration';
-  static const String duration_hint = 'Sitting Duration';
+  // static const String field = 'Field Name';
+  // static const String field_hint = 'Enter Name';
+  // static const String time = 'Time';
+  // static const String time_hint = 'Time';
+  // static const String approx = 'Approx Sittings';
+  // static const String approx_hint = '15';
+  // static const String duration = 'Sitting Duration';
+  // static const String duration_hint = 'Sitting Duration';
 
   //OTP Screen
   static const String verification = 'Verification';
@@ -167,9 +147,9 @@ class LoginScreenConstant {
   static const String emailId_hint = 'Enter Email Id';
   static const String enter_password = 'Enter Password';
   static const String forgot_pass = 'Forgot Password?';
-  static const String sing_in = 'Sign In';
+  //static const String sing_in = 'Sign In';
   static const String havnt_account = 'Don’t have an account? ';
-  static const String sing_up = 'Sign up';
+  // static const String sing_up = 'Sign up';
 }
 
 class SignUpScreenContant {
@@ -267,20 +247,6 @@ class AppointmentBookingConstant {
   static const String Appointment_slot = 'Appointment Slot';
   static const String customer_hint = 'Customer Name';
   static const String Services = 'Services';
-  static const String time1 = '10:30 AM';
-  static const String time2 = '11:30 AM';
-  static const String time3 = '12:30 AM';
-  static const String time4 = '01:30 PM';
-  static const String time5 = '02:30 PM';
-  static const String time6 = '04:00 PM';
-  static const String time7 = '05:00 PM';
-  static const String time8 = '06:00 PM';
-  static const String time9 = '07:00 PM';
-  static const String time10 = '08:00 PM';
-  static const String time11 = '09:00 PM';
-  static const String time12 = '10:00 PM';
-  static const String notes = 'Other Notes';
-  static const String notes_hint = 'Add Notes';
 }
 
 class AddProductConstant {
@@ -300,6 +266,7 @@ class ScreenTitle {
   static const String addVendorService = 'Add Vendor Service';
   static const String addProduct = 'Add Product';
   static const String appointmentBooking = 'Appointment Booking';
+  static const String update_appointment = 'Update Booking';
   static const String addCourse = 'Add Course';
   static const String addCustomer = 'Add Customer';
   static const String reportBug = 'Report Bug';
@@ -373,4 +340,45 @@ class AddExpertConstant {
   static const String sittingDurationHint = 'Enter Sitting Duration';
   static const String days = 'Days';
   static const String daysHint = 'Enter Days';
+}
+
+class Details {
+  static const String date = 'Date : ';
+  static const String time = 'Time : ';
+  static const String customer = 'Customer : ';
+  static const String appointment_type = 'Appointment Type : ';
+  static const String loadMore = 'Load More : ';
+  // static const String customer = 'Customer : ';
+  // static const String customer = 'Customer : ';
+  // static const String customer = 'Customer : ';
+}
+
+class ShowList {
+  static const String customer_list = 'Customer List';
+  static const String service_list = 'Service List';
+  static const String expert_list = 'Expert List';
+  // static const String service_list = 'Service List';
+}
+
+class LabelText {
+  static const String expert = "Expert";
+  static const String amount = "Amount";
+  static const String price = "Price";
+  static const String fees = "Fees";
+  static const String appointment_type = "Appointment Type";
+  static const String notes = "Notes";
+  static const String duration = "Duration";
+  static const String customer = "Customer";
+  static const String service = "Service";
+  static const String appointment_slot = "Appointment Slot";
+}
+
+class HintText {
+  static const String select_Expert = "Select Expert";
+  static const String select_Date = "Select Date";
+  static const String enter_amount = "Enter Amount";
+  static const String enter_notes = "Enter Notes";
+  static const String enter_duration = "Enter Duration";
+  static const String select_customer = "Select Customer";
+  static const String select_service = "Select Service";
 }

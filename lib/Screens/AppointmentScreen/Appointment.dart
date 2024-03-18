@@ -113,7 +113,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         child: Column(
           children: [
             HomeAppBar(
-              title: "Appointment",
+              title: ScreenTitle.appointment,
               isfilter: false,
               icon: Asset.filter,
               onClick: () async {
@@ -207,7 +207,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         setState(() {});
       }),
       child: AnimatedContainer(
-        width:  SizerUtil.deviceType == DeviceType.mobile ? 40.w :30.w,
+        width: SizerUtil.deviceType == DeviceType.mobile ? 40.w : 30.w,
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.symmetric(
           horizontal: SizerUtil.deviceType == DeviceType.mobile ? 3.5.w : 4.w,

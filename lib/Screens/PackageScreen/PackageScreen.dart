@@ -440,6 +440,7 @@ class _PackageScreenState extends State<PackageScreen> {
     return Common().commonDetailsDialog(
         context,
         "PACKAGE DETAILS",
+        isNotes: true,
         Expanded(
           child: Column(
             children: [
@@ -618,7 +619,7 @@ class _PackageScreenState extends State<PackageScreen> {
                   Expanded(
                     child: Container(
                       width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 0.w
+                          ? 10.w
                           : 10.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
                           ? 10.h

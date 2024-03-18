@@ -35,6 +35,7 @@ class CustomFormField extends StatefulWidget {
       this.onAddBtn,
       this.isCalender,
       this.isHidden,
+      this.isHr,
       this.wantSuffix,
       this.onVerifiyButtonClick,
       this.isDataValidated,
@@ -75,6 +76,7 @@ class CustomFormField extends StatefulWidget {
   final bool? isDataValidated;
   final bool? isAdd;
   final bool? isdown;
+  final bool? isHr;
   final String? fromObsecureText;
   final Function? onTap;
   bool isEnable = true;
@@ -231,18 +233,23 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   }
                 },
                 child: widget.time == true
-                    ? Padding(
-                        padding: SizerUtil.deviceType == DeviceType.mobile
-                            ? EdgeInsets.all(4.w)
-                            : EdgeInsets.only(right: 3.w),
-                        child: SvgPicture.asset(Asset.time,
-                            height: SizerUtil.deviceType == DeviceType.mobile
-                                ? 0
-                                : 10,
-                            width: SizerUtil.deviceType == DeviceType.mobile
-                                ? 0
-                                : 10,
-                            fit: BoxFit.contain),
+                    ? GestureDetector(
+                        onTap: () {
+                          if (widget.onTap != null) widget.onTap!();
+                        },
+                        child: Padding(
+                          padding: SizerUtil.deviceType == DeviceType.mobile
+                              ? EdgeInsets.all(4.w)
+                              : EdgeInsets.only(right: 3.w),
+                          child: SvgPicture.asset(Asset.time,
+                              height: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 0
+                                  : 10,
+                              width: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 0
+                                  : 10,
+                              fit: BoxFit.contain),
+                        ),
                       )
                     : widget.isDropdown == true
                         ? Row(
@@ -290,156 +297,191 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                   : Container(),
                             ],
                           )
-                        :
-
-                        // widget.isDropdown == true
-                        //     ? Row(
-                        //       children: [
-                        //         SvgPicture.asset(
-                        //             Asset.dropdown,
-                        //             height: 5,
-                        //             width: 5,
-                        //             fit: BoxFit.scaleDown,
-                        //           ),
-                        //       ],
-                        //     )
-                        //     : widget.isAdd == true
-                        //         ? Container(
-                        //             color: black,
-                        //             width: 5.w,
-                        //           )
-                        widget.isCalender == true
-                            ? Padding(
-                                padding:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? EdgeInsets.all(4.w)
-                                        : EdgeInsets.only(right: 3.w),
-                                child: SvgPicture.asset(
-                                  Asset.calender,
-                                  height:
-                                      SizerUtil.deviceType == DeviceType.mobile
-                                          ? 0
-                                          : 8,
-                                  width:
-                                      SizerUtil.deviceType == DeviceType.mobile
-                                          ? 0
-                                          : 8,
-                                  fit: BoxFit.contain,
-                                  color: Colors.grey,
+                        : widget.isHr == true
+                            ? GestureDetector(
+                                onTap: () {
+                                  if (widget.onTap != null) widget.onTap!();
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 1.8.h,
+                                  ),
+                                  child: Text(
+                                    "HR",
+                                    style: TextStyle(fontSize: 13.sp),
+                                  ),
                                 ),
                               )
-                            : InkWell(
-                                child: widget.isPassword == true
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            right: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 0.w
-                                                : 3.w),
-                                        child: Icon(
-                                          widget.fromObsecureText == "LOGIN"
-                                              ? Get.find<LoginController>()
-                                                      .obsecureText
-                                                      .value
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility
-                                              : widget.fromObsecureText ==
-                                                      "UPDATE VENDOR"
-                                                  ? Get.find<UpdateVendorController>()
+                            :
+
+                            // widget.isDropdown == true
+                            //     ? Row(
+                            //       children: [
+                            //         SvgPicture.asset(
+                            //             Asset.dropdown,
+                            //             height: 5,
+                            //             width: 5,
+                            //             fit: BoxFit.scaleDown,
+                            //           ),
+                            //       ],
+                            //     )
+                            //     : widget.isAdd == true
+                            //         ? Container(
+                            //             color: black,
+                            //             width: 5.w,
+                            //           )
+                            widget.isCalender == true
+                                ? GestureDetector(
+                                    onTap: () {
+                                      if (widget.onTap != null) widget.onTap!();
+                                    },
+                                    child: Padding(
+                                      padding: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? EdgeInsets.all(4.w)
+                                          : EdgeInsets.only(right: 3.w),
+                                      child: SvgPicture.asset(
+                                        Asset.calender,
+                                        height: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 0
+                                            : 8,
+                                        width: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 0
+                                            : 8,
+                                        fit: BoxFit.contain,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                : InkWell(
+                                    child: widget.isPassword == true
+                                        ? Padding(
+                                            padding: EdgeInsets.only(
+                                                right: SizerUtil.deviceType ==
+                                                        DeviceType.mobile
+                                                    ? 0.w
+                                                    : 3.w),
+                                            child: Icon(
+                                              widget.fromObsecureText == "LOGIN"
+                                                  ? Get.find<LoginController>()
                                                           .obsecureText
                                                           .value
                                                       ? Icons.visibility_off
                                                       : Icons.visibility
                                                   : widget.fromObsecureText ==
-                                                          "RESETPASS"
-                                                      ? widget.index == "0"
-                                                          ? Get.find<ChangePasswordController>()
-                                                                  .obsecureOldPasswordText
-                                                                  .value
-                                                              ? Icons
-                                                                  .visibility_off
-                                                              : Icons.visibility
-                                                          : widget.index == "1"
+                                                          "UPDATE VENDOR"
+                                                      ? Get.find<UpdateVendorController>()
+                                                              .obsecureText
+                                                              .value
+                                                          ? Icons.visibility_off
+                                                          : Icons.visibility
+                                                      : widget.fromObsecureText ==
+                                                              "RESETPASS"
+                                                          ? widget.index == "0"
                                                               ? Get.find<ChangePasswordController>()
-                                                                      .obsecureNewPasswordText
+                                                                      .obsecureOldPasswordText
                                                                       .value
                                                                   ? Icons
                                                                       .visibility_off
                                                                   : Icons
                                                                       .visibility
                                                               : widget.index ==
-                                                                      "2"
+                                                                      "1"
                                                                   ? Get.find<ChangePasswordController>()
-                                                                          .obsecureConfirmPasswordText
+                                                                          .obsecureNewPasswordText
                                                                           .value
                                                                       ? Icons
                                                                           .visibility_off
                                                                       : Icons
                                                                           .visibility
-                                                                  : widget
-                                                                          .obsecuretext
-                                                                      ? Icons
-                                                                          .visibility_off
-                                                                      : Icons
-                                                                          .visibility
-                                                      : widget.obsecuretext
-                                                          ? Icons.visibility_off
-                                                          : Icons.visibility,
-                                          color: Colors.grey,
-                                          size: SizerUtil.deviceType ==
-                                                  DeviceType.mobile
-                                              ? 20.sp
-                                              : 15.sp,
-                                        ),
-                                      )
-                                    : widget.isdown == true
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              if (widget.onTap != null)
-                                                widget.onTap!();
-                                            },
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: SizerUtil.deviceType ==
-                                                          DeviceType.mobile
-                                                      ? 0.w
-                                                      : 3.w),
-                                              child: SvgPicture.asset(
-                                                Asset.dropdown,
-                                                height: 20,
-                                                width: 20,
-                                                fit: BoxFit.scaleDown,
-                                              ),
-                                              // child: Icon(
-                                              //   Icons
-                                              //       .keyboard_arrow_down_rounded,
-                                              //   size: SizerUtil.deviceType ==
-                                              //           DeviceType.mobile
-                                              //       ? 30
-                                              //       : 40,
-                                              //   color: Colors.black
-                                              //       .withOpacity(0.2),
-                                              // ),
+                                                                  : widget.index ==
+                                                                          "2"
+                                                                      ? Get.find<ChangePasswordController>()
+                                                                              .obsecureConfirmPasswordText
+                                                                              .value
+                                                                          ? Icons
+                                                                              .visibility_off
+                                                                          : Icons
+                                                                              .visibility
+                                                                      : widget
+                                                                              .obsecuretext
+                                                                          ? Icons
+                                                                              .visibility_off
+                                                                          : Icons
+                                                                              .visibility
+                                                          : widget.obsecuretext
+                                                              ? Icons
+                                                                  .visibility_off
+                                                              : Icons
+                                                                  .visibility,
+                                              color: Colors.grey,
+                                              size: SizerUtil.deviceType ==
+                                                      DeviceType.mobile
+                                                  ? 20.sp
+                                                  : 15.sp,
                                             ),
                                           )
-                                        : Padding(
-                                            padding: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? EdgeInsets.all(4.w)
-                                                : EdgeInsets.only(right: 3.w),
-                                            child: SvgPicture.asset(
-                                                Asset.photos,
-                                                height: SizerUtil.deviceType ==
-                                                        DeviceType.mobile
-                                                    ? 0
-                                                    : 8,
-                                                width: SizerUtil.deviceType ==
-                                                        DeviceType.mobile
-                                                    ? 0
-                                                    : 8,
-                                                fit: BoxFit.contain),
-                                          ),
-                              ))
+                                        : widget.isdown == true
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  if (widget.onTap != null)
+                                                    widget.onTap!();
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: SizerUtil
+                                                                  .deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 0.w
+                                                          : 3.w),
+                                                  child: SvgPicture.asset(
+                                                    Asset.dropdown,
+                                                    height: 20,
+                                                    width: 20,
+                                                    fit: BoxFit.scaleDown,
+                                                  ),
+                                                  // child: Icon(
+                                                  //   Icons
+                                                  //       .keyboard_arrow_down_rounded,
+                                                  //   size: SizerUtil.deviceType ==
+                                                  //           DeviceType.mobile
+                                                  //       ? 30
+                                                  //       : 40,
+                                                  //   color: Colors.black
+                                                  //       .withOpacity(0.2),
+                                                  // ),
+                                                ),
+                                              )
+                                            : GestureDetector(
+                                                onTap: () {
+                                                  if (widget.onTap != null)
+                                                    widget.onTap!();
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      SizerUtil.deviceType ==
+                                                              DeviceType.mobile
+                                                          ? EdgeInsets.all(4.w)
+                                                          : EdgeInsets.only(
+                                                              right: 3.w),
+                                                  child: SvgPicture.asset(
+                                                      Asset.photos,
+                                                      height: SizerUtil
+                                                                  .deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 0
+                                                          : 8,
+                                                      width: SizerUtil
+                                                                  .deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 0
+                                                          : 8,
+                                                      fit: BoxFit.contain),
+                                                ),
+                                              ),
+                                  ))
             : Container(
                 width: 1,
               ),

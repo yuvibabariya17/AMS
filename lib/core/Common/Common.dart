@@ -32,13 +32,13 @@ class Common {
                         : 20.h
                     : isDescription == true
                         ? SizerUtil.deviceType == DeviceType.mobile
-                            ? 15.h
+                            ? 12.h
                             : 25.h
                         : SizerUtil.deviceType == DeviceType.mobile
                             ? 20.h
                             : 10.h,
                 horizontal:
-                    SizerUtil.deviceType == DeviceType.mobile ? 3.h : 6.h),
+                    SizerUtil.deviceType == DeviceType.mobile ? 4.h : 6.h),
             shape: RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.circular(20.0), // Adjust the radius as needed

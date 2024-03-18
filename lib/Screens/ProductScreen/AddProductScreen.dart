@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/ProductListModel.dart';
+import 'package:booking_app/Screens/ProductCategoryScreen/AddProductCategory.dart';
 import 'package:booking_app/controllers/AddProduct_controller.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -207,11 +209,23 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         hintLabel:
                                             AddProductConstant.category_hint,
                                         wantSuffix: true,
-                                        isdown: true,
+                                        isDropdown: true,
                                         onChanged: (val) {
                                           controller.validateCategory(val);
                                           setState(() {});
                                         },
+                                        onAddBtn: () {
+                                          Get.to(AddProductCategoryScreen())
+                                              ?.then((value) {
+                                            if (value == true) {
+                                              logcat("ISDONE", "DONE");
+                                              controller.getProductCategoryList(
+                                                context,
+                                              );
+                                            }
+                                          });
+                                        },
+                                        isAdd: true,
                                         isReadOnly: true,
                                         onTap: () {
                                           //  controller.categroryCtr.text = "";

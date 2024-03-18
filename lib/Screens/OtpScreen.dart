@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:booking_app/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:booking_app/Screens/LoginScreen/LoginScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/utils/helper.dart';

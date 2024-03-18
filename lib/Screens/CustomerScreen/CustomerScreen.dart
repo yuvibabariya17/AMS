@@ -443,7 +443,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 14.sp
+                              ? 12.sp
                               : 7.sp,
                           fontWeight: FontWeight.w400),
                     ),
@@ -505,8 +505,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     return Common().commonDetailsDialog(
       context,
       "CUSTOMER DETAILS",
-     // isDescription: true,
-      // isDescription: true,
+      isDescription: true,
       Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -694,7 +693,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
                             : 8.sp,
-                        color: isDarkMode() ? white : black,
+                        color: isDarkMode() ? Colors.blue : Colors.blue,
                         fontFamily: fontRegular),
                   ),
                 ],
@@ -729,7 +728,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
                             : 8.sp,
-                        color: isDarkMode() ? white : black,
+                        color: isDarkMode() ? Colors.blue : Colors.blue,
                         fontFamily: fontRegular),
                   ),
                 ],
@@ -787,11 +786,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 ),
                 Expanded(
                   child: Container(
-                     width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 0.w
-                          :  10.w,
+                    width:
+                        SizerUtil.deviceType == DeviceType.mobile ? 10.w : 10.w,
                     height:
-                        SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h,
+                        SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Text(

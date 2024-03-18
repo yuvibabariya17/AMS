@@ -232,7 +232,7 @@ getFormButton(Function fun, str, {required bool validate}) {
         alignment: Alignment.center,
         //  padding: EdgeInsets.only(top: 1.h),
         width: SizerUtil.deviceType == DeviceType.mobile
-            ? SizerUtil.width
+            ? SizerUtil.width / 1
             : SizerUtil.width / 2,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(

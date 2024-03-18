@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               child: Column(children: [
                 Container(
                   margin: EdgeInsets.only(
-                    top: 2.5.h,
+                    top: 1.5.h,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                         CrossAxisAlignment
                                                             .center,
                                                     children: [
-                                                      item.service.length > 10
+                                                      item.service.length > 18
                                                           ? Container(
                                                               width: 55.w,
                                                               child: Marquee(
@@ -750,8 +750,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                               ? 12.sp
                                                               : 12.sp,
                                                           color: isDarkMode()
-                                                              ? white
-                                                              : black,
+                                                              ? Colors.blue
+                                                              : Colors.blue,
                                                           fontFamily:
                                                               fontRegular),
                                                     ),
@@ -1315,9 +1315,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             },
             child: Container(
               height: 5.h,
-              width: 35.w,
-              padding:
-                  EdgeInsets.only(top: 1.h, bottom: 1.h, left: 1.w, right: 1.w),
+              width: 37.w,
+              padding: EdgeInsets.only(
+                  top: 1.h, bottom: 1.h, left: 1.5.w, right: 1.8.w),
               child: Center(
                   child: Text(
                 "Add Appointment",

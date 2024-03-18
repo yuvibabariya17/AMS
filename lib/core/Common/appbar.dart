@@ -1,5 +1,4 @@
 import 'package:booking_app/core/themes/font_constant.dart';
-import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -30,7 +29,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 22, right: 5.w, top: 10),
+      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 0.5.h),
       child: Row(
         children: [
           title == 'Settings' || title == 'Appointment'

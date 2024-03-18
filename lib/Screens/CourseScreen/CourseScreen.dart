@@ -12,7 +12,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../Models/hairservice_model.dart';
 import '../../core/Common/toolbar.dart';
@@ -469,7 +468,7 @@ class _CourseScreenState extends State<CourseScreen> {
     return Common().commonDetailsDialog(
         context,
         "COURSE DETAILS",
-       // isNotes: true,
+        isDescription: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -553,7 +552,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     ),
                   ),
                   Text(
-                    data.fees.toString(),
+                    '₹ ${data.fees.toString()}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -615,10 +614,10 @@ class _CourseScreenState extends State<CourseScreen> {
                   Expanded(
                     child: Container(
                       width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 0.w
-                          :  20.w,
+                          ? 20.w
+                          : 20.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
-                          ? 20.h
+                          ? 10.h
                           : 20.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,

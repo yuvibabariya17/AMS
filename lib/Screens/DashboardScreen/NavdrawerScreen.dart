@@ -208,11 +208,11 @@ class _NavdrawerScreenState extends State<NavdrawerScreen> {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(CourseScreen());
                 }),
-                setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
-                    () {
-                  Get.find<HomeScreenController>().closeDrawer();
-                  Get.to(OfferFormScreen());
-                }),
+                // setNavtile(Asset.add_service_offer, ScreenTitle.serviceOffer,
+                //     () {
+                //   Get.find<HomeScreenController>().closeDrawer();
+                //   Get.to(OfferFormScreen());
+                // }),
                 setNavtile(Asset.passwordlock, ScreenTitle.changePassTitle, () {
                   Get.find<HomeScreenController>().closeDrawer();
                   Get.to(ChangePasswordScreen(

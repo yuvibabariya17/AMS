@@ -179,7 +179,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                               Row(children: [
                                 Text(
                                   //  data.title,
-                                  "Date : ",
+                                  Details.date,
                                   style: TextStyle(
                                       color: isDarkMode() ? white : black,
                                       fontFamily: opensansMedium,
@@ -251,7 +251,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "Time : ",
+                                              Details.time,
                                               style: TextStyle(
                                                   color: isDarkMode()
                                                       ? white
@@ -293,7 +293,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Customer : ",
+                                              Details.customer,
                                               style: TextStyle(
                                                   color: isDarkMode()
                                                       ? white
@@ -332,7 +332,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                         ),
                                         Row(children: [
                                           Text(
-                                            "Appointment Type : ",
+                                            Details.appointment_type,
                                             style: TextStyle(
                                                 color: isDarkMode()
                                                     ? white
@@ -406,7 +406,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                               DeviceType.mobile
                                           ? 4.h
                                           : 3.5.h,
-                                      width:SizerUtil.deviceType ==
+                                      width: SizerUtil.deviceType ==
                                               DeviceType.mobile
                                           ? 20.w
                                           : 15.w,
@@ -505,7 +505,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                       controller.currentPags.value, false);
                                   setState(() {});
                                 },
-                                child: Text('Load More'),
+                                child: Text(Details.loadMore),
                               )
                             : Container()
                       ],

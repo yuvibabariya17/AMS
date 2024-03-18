@@ -68,7 +68,9 @@ class _NotificationScreenState extends State<NotificationScreen>
             ),
           ]))),
           Container(
-            margin: EdgeInsets.only(top: 4.h),
+            margin: EdgeInsets.only(
+              top: 2.h,
+            ),
             child: getListViewItem(),
           ),
         ]),
@@ -85,11 +87,12 @@ class _NotificationScreenState extends State<NotificationScreen>
     return DefaultTabController(
         length: 2,
         child: Column(children: [
-          getPaddingFromStatusBar(),
+          SizedBox(
+            height: SizerUtil.deviceType == DeviceType.mobile ? 2.5.h : 2.1.h,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               getTab(NotificationConstant.upcoming_title, 30, 0),
               getTab(NotificationConstant.previous_title, 30, 1),
             ],

@@ -132,7 +132,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
         children: [
           getCommonToolbar(
               widget.isEdit == true
-                  ? "Update Appointment"
+                  ? ScreenTitle.update_appointment
                   : ScreenTitle.appointmentBooking, () {
             Get.back();
           }),
@@ -162,7 +162,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getTitle(CommonConstant.customer),
+                            getTitle(LabelText.customer),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -171,8 +171,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.CustomerNode,
                                         controller: controller.Customerctr,
-                                        hintLabel: AppointmentBookingConstant
-                                            .customer_hint,
+                                        hintLabel: HintText.select_customer,
                                         wantSuffix: true,
                                         isDropdown: true,
                                         // isdown: true,
@@ -180,16 +179,23 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           controller.validateCustomer(val);
                                         },
                                         onAddBtn: () {
-                                          Get.to(AddCustomerScreen());
+                                          Get.to(AddCustomerScreen())
+                                              ?.then((value) {
+                                            if (value == true) {
+                                              logcat("ISDONE", "DONE");
+                                              controller.getCustomerList(
+                                                context,
+                                              );
+                                            }
+                                          });
                                         },
                                         isAdd: true,
                                         isReadOnly: true,
                                         onTap: () {
-                                          controller.Customerctr.text = "";
                                           showDropDownDialog(
                                               context,
                                               controller.setCustomerList(),
-                                              "Customer List");
+                                              ShowList.customer_list);
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setExpertList(),
@@ -200,7 +206,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
-                            getTitle(AppointmentBookingConstant.Services),
+                            getTitle(LabelText.service),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -209,8 +215,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.ServiceNode,
                                         controller: controller.Servicectr,
-                                        hintLabel:
-                                            AppointmentBookingConstant.Services,
+                                        hintLabel: HintText.select_service,
                                         wantSuffix: true,
                                         isDropdown: true,
                                         // isdown: true,
@@ -220,15 +225,23 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         },
                                         isReadOnly: true,
                                         onAddBtn: () {
-                                          Get.to(AddServiceScreen());
+                                          Get.to(AddServiceScreen())
+                                              ?.then((value) {
+                                            if (value == true) {
+                                              logcat("ISDONE", "DONE");
+                                              controller.getServiceList(
+                                                context,
+                                              );
+                                            }
+                                          });
                                         },
                                         isAdd: true,
                                         onTap: () {
-                                          controller.Servicectr.text = "";
+                                          //  controller.Servicectr.text = "";
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),
-                                              "Service List");
+                                              ShowList.service_list);
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setServiceList(),
@@ -239,7 +252,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
-                            getTitle("Experts"),
+                            getTitle(LabelText.expert),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -248,12 +261,20 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.expertNode,
                                         controller: controller.expertctr,
-                                        hintLabel: "Select Expert",
+                                        hintLabel: HintText.select_Expert,
                                         wantSuffix: true,
                                         isDropdown: true,
                                         isReadOnly: true,
                                         onAddBtn: () {
-                                          Get.to(AddExpertScreen());
+                                          Get.to(AddExpertScreen())
+                                              ?.then((value) {
+                                            if (value == true) {
+                                              logcat("ISDONE", "DONE");
+                                              controller.getExpertList(
+                                                context,
+                                              );
+                                            }
+                                          });
                                         },
                                         isAdd: true,
                                         onChanged: (val) {
@@ -261,11 +282,11 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                           setState(() {});
                                         },
                                         onTap: () {
-                                          controller.expertctr.text = "";
+                                          //   controller.expertctr.text = "";
                                           showDropDownDialog(
                                               context,
                                               controller.setExpertList(),
-                                              "Expert List");
+                                              ShowList.expert_list);
                                           // showDropdownMessage(
                                           //     context,
                                           //     controller.setExpertList(),
@@ -276,7 +297,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.none,
                                       );
                                     }))),
-                            getTitle("Select Date"),
+                            getTitle(HintText.select_Date),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -285,7 +306,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.dateNode,
                                         controller: controller.datectr,
-                                        hintLabel: "Select Date",
+                                        hintLabel: HintText.select_Date,
                                         wantSuffix: true,
                                         isCalender: true,
                                         onTap: () async {
@@ -334,7 +355,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       );
                                     }))),
 
-                            getTitle(AddCourseConstant.duration),
+                            getTitle(LabelText.duration),
                             FadeInDown(
                               child: AnimatedSize(
                                 duration: const Duration(milliseconds: 300),
@@ -342,7 +363,9 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                   return getReactiveFormField(
                                       node: controller.durationNode,
                                       controller: controller.durationctr,
-                                      hintLabel: AddCourseConstant.durationHint,
+                                      hintLabel: HintText.enter_duration,
+                                      wantSuffix: true,
+                                      isHr: true,
                                       onChanged: (val) {
                                         controller.validateDuration(val);
                                       },
@@ -461,8 +484,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          getTitle(AppointmentBookingConstant
-                                              .Appointment_slot),
+                                          getTitle(LabelText.appointment_slot),
                                           SizedBox(
                                             height: 1.h,
                                           ),
@@ -579,7 +601,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             ),
 
                             SizedBox(height: 2.h),
-                            getTitle(CommonConstant.amount),
+                            getTitle(LabelText.amount),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -588,20 +610,19 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.AmountNode,
                                         controller: controller.Amountctr,
-                                        hintLabel: CommonConstant.amount_hint,
+                                        hintLabel: HintText.enter_amount,
                                         onChanged: (val) {
                                           controller.validateAmount(val);
                                           setState(() {});
                                         },
-                                        isReadOnly: widget.isEdit == true
-                                            ? true
-                                            : true,
+                                        isReadOnly:
+                                            widget.isEdit == true ? true : true,
                                         errorText:
                                             controller.AmountModel.value.error,
                                         inputType: TextInputType.number,
                                       );
                                     }))),
-                            getTitle("Appointment Type"),
+                            getTitle(LabelText.appointment_type),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -611,7 +632,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         node: controller.appointmentTypeNode,
                                         controller:
                                             controller.appointmentTypectr,
-                                        hintLabel: "Enter Appointment Type",
+                                        hintLabel: LabelText.appointment_type,
                                         onChanged: (val) {
                                           controller
                                               .validateAppointmentType(val);
@@ -622,7 +643,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                         inputType: TextInputType.name,
                                       );
                                     }))),
-                            getTitle(AddCourseConstant.notes),
+                            getTitle(LabelText.notes),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -631,7 +652,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                                       return getReactiveFormField(
                                         node: controller.NoteNode,
                                         controller: controller.Notectr,
-                                        hintLabel: AddCourseConstant.notesHint,
+                                        hintLabel: HintText.enter_notes,
                                         onChanged: (val) {
                                           controller.validateNote(val);
                                           setState(() {});
@@ -781,7 +802,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             SizedBox(
                                 height:
                                     SizerUtil.deviceType == DeviceType.mobile
-                                        ? 0
+                                        ? 1.h
                                         : 2.h),
                             FadeInUp(
                                 from: 50,

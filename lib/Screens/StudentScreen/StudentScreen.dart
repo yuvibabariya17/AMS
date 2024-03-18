@@ -484,7 +484,8 @@ class _StudentScreenState extends State<StudentScreen> {
                   SizedBox(width: 5.0),
                   GestureDetector(
                     onTap: () {
-                      Common().commonDeleteDialog(context, "Service", () {
+                      Common().commonDeleteDialog(context, "Student Details",
+                          () {
                         controller.deleteStudentList(context, data.id);
                       });
                       // showDeleteConfirmationDialog(data.id);
@@ -513,6 +514,7 @@ class _StudentScreenState extends State<StudentScreen> {
     return Common().commonDetailsDialog(
       context,
       "STUDENTS DETAILS",
+      isNotes: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -602,7 +604,7 @@ class _StudentScreenState extends State<StudentScreen> {
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
                           : 12.sp,
-                      color: isDarkMode() ? white : black,
+                      color: isDarkMode() ? Colors.blue : Colors.blue,
                       fontFamily: fontRegular),
                 ),
               ),

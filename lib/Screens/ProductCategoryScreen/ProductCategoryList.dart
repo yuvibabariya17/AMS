@@ -518,6 +518,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
     return Common().commonDetailsDialog(
       context,
       "PRODUCT CATEGORY DETAILS",
+      isDescription: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

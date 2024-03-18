@@ -373,149 +373,146 @@ class _ExpertScreenState extends State<ExpertScreen> {
               ),
             ],
           ),
-          child: Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
-                  children: [
-                    //CLICPRRECT
-                    GestureDetector(
-                      onTap: () {
-                        getExpertDetails(context, data);
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  //CLICPRRECT
+                  GestureDetector(
+                    onTap: () {
+                      getExpertDetails(context, data);
 
-                        // Get.to(FullScreenImage(
-                        //   imageUrl:
-                        //       '${ApiUrl.ImgUrl}${data.upload_info.image}',
-                        //   title: ScreenTitle.expert,
-                        // ))!
-                        //     .then(
-                        //         (value) => {Common().trasparent_statusbar()});
-                      },
-                      child: Container(
-                          height: SizerUtil.deviceType == DeviceType.mobile
-                              ? 11.h
-                              : 8.h,
-                          width: SizerUtil.deviceType == DeviceType.mobile
-                              ? 60.w
-                              : 50.w,
-                          // padding: EdgeInsets.all(
-                          //   SizerUtil.deviceType == DeviceType.mobile
-                          //       ? 1.2.w
-                          //       : 1.0.w,
-                          // ),
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl:
-                                  '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                      // Get.to(FullScreenImage(
+                      //   imageUrl:
+                      //       '${ApiUrl.ImgUrl}${data.upload_info.image}',
+                      //   title: ScreenTitle.expert,
+                      // ))!
+                      //     .then(
+                      //         (value) => {Common().trasparent_statusbar()});
+                    },
+                    child: Container(
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 11.h
+                            : 8.h,
+                        width: SizerUtil.deviceType == DeviceType.mobile
+                            ? 60.w
+                            : 50.w,
+                        // padding: EdgeInsets.all(
+                        //   SizerUtil.deviceType == DeviceType.mobile
+                        //       ? 1.2.w
+                        //       : 1.0.w,
+                        // ),
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl:
+                                '${ApiUrl.ImgUrl}${data.upload_info.image}',
 
-                              //   '${ip}${data.upload_info.image}',
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                    color: primaryColor),
-                              ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                Asset.placeholder,
-                                height: 11.h,
-                                fit: BoxFit.cover,
-                              ),
+                            //   '${ip}${data.upload_info.image}',
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                  color: primaryColor),
                             ),
-                          )),
-                    )
-                  ],
-                ),
-                // SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: Text(
-                      data.name.capitalize.toString(),
+                            errorWidget: (context, url, error) => Image.asset(
+                              Asset.placeholder,
+                              height: 11.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text(
+                    data.name.capitalize.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: isDarkMode() ? white : black,
+                        fontFamily: opensansMedium,
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 14.sp
+                            : 7.sp,
+                        fontWeight: FontWeight.w700),
+                  )),
+                ],
+              ),
+              SizedBox(
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 0 : 0.1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      data.serviceInfo.name.toString(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
+                      // '₹ ${data.amount.toString()}',
+                      // data.serviceInfo != null
+                      //     ? data.serviceInfo!.name
+                      //     : "",
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 14.sp
-                              : 7.sp,
-                          fontWeight: FontWeight.w700),
-                    )),
-                  ],
-                ),
-                SizedBox(
-                    height: SizerUtil.deviceType == DeviceType.mobile
-                        ? 5.0
-                        : 0.1.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        data.serviceInfo.name.toString(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        // '₹ ${data.amount.toString()}',
-                        // data.serviceInfo != null
-                        //     ? data.serviceInfo!.name
-                        //     : "",
-                        style: TextStyle(
-                            color: isDarkMode() ? white : black,
-                            fontFamily: opensansMedium,
-                            fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                ? 11.sp
-                                : 6.sp,
-                            fontWeight: FontWeight.w400),
+                              ? 11.sp
+                              : 6.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(AddExpertScreen(isEdit: true, editExpert: data))
+                          ?.then((value) {
+                        if (value == true) {
+                          controller.getExpertList(context, false);
+                        }
+                      });
+                    },
+                    child: Container(
+                      child: SvgPicture.asset(
+                        Asset.edit,
+                        height: SizerUtil.deviceType == DeviceType.mobile
+                            ? 2.3.h
+                            : 2.h,
+                        color: Colors.grey,
                       ),
                     ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(AddExpertScreen(isEdit: true, editExpert: data))
-                            ?.then((value) {
-                          if (value == true) {
-                            controller.getExpertList(context, false);
-                          }
-                        });
-                      },
-                      child: Container(
-                        child: SvgPicture.asset(
-                          Asset.edit,
-                          height: SizerUtil.deviceType == DeviceType.mobile
-                              ? 2.3.h
-                              : 2.h,
-                          color: Colors.grey,
-                        ),
+                  ),
+                  SizedBox(width: 5.0),
+                  GestureDetector(
+                    onTap: () {
+                      Common().commonDeleteDialog(context, "Expert", () {
+                        controller.deleteExpertList(context, data.id);
+                      });
+                      //  showDeleteConfirmationDialog(data.id);
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: Colors.grey,
+                        size: SizerUtil.deviceType == DeviceType.mobile
+                            ? 3.h
+                            : 2.8.h,
                       ),
                     ),
-                    SizedBox(width: 5.0),
-                    GestureDetector(
-                      onTap: () {
-                        Common().commonDeleteDialog(context, "Expert", () {
-                          controller.deleteExpertList(context, data.id);
-                        });
-                        //  showDeleteConfirmationDialog(data.id);
-                      },
-                      child: Container(
-                        child: Icon(
-                          Icons.delete_rounded,
-                          color: Colors.grey,
-                          size: SizerUtil.deviceType == DeviceType.mobile
-                              ? 3.h
-                              : 2.8.h,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         );
       },
@@ -527,14 +524,14 @@ class _ExpertScreenState extends State<ExpertScreen> {
     return Common().commonDetailsDialog(
       context,
       "EXPERT DETAILS",
-      isNotes: true,
+      //  isNotes: true,
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              height: SizerUtil.deviceType == DeviceType.mobile ? 11.h : 18.h,
-              width: SizerUtil.deviceType == DeviceType.mobile ? 60.w : 40.w,
+              height: SizerUtil.deviceType == DeviceType.mobile ? 15.h : 18.h,
+              width: SizerUtil.deviceType == DeviceType.mobile ? 70.w : 40.w,
               // padding: EdgeInsets.all(
               //   SizerUtil.deviceType == DeviceType.mobile
               //       ? 1.2.w

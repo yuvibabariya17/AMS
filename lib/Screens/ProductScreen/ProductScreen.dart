@@ -498,8 +498,8 @@ class _ProductScreenState extends State<ProductScreen> {
     return Common().commonDetailsDialog(
         context,
         "PRODUCT DETAILS",
-       isDescription: true,
-        isNotes: true,
+        isDescription: true,
+        //  isNotes: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -677,11 +677,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   Expanded(
                     child: Container(
-                     width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 0.w
-                          :  10.w,
-                    height:
-                        SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h,
+                      width: SizerUtil.deviceType == DeviceType.mobile
+                          ? 10.w
+                          : 10.w,
+                      height: SizerUtil.deviceType == DeviceType.mobile
+                          ? 15.h
+                          : 10.h,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Text(

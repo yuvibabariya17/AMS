@@ -1,10 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/StudentCourseListModel.dart';
+import 'package:booking_app/Screens/CourseScreen/AddCourseScreen.dart';
+import 'package:booking_app/Screens/StudentScreen/AddStudentScreen.dart';
 import 'package:booking_app/controllers/AddStudent_courseController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:booking_app/custom_componannt/form_inputs.dart';
@@ -123,8 +126,9 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                             controller: controller.studentctr,
                                             hintLabel: "Select Student",
                                             wantSuffix: true,
-                                            isdown: true,
+                                            isDropdown: true,
                                             isReadOnly: true,
+                                            isAdd: true,
                                             onChanged: (val) {
                                               controller.validateStudent(val);
                                             },
@@ -134,6 +138,17 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                                   context,
                                                   controller.setStudentList(),
                                                   "Student List");
+                                            },
+                                            onAddBtn: () {
+                                              Get.to(AddStudentScreen())
+                                                  ?.then((value) {
+                                                if (value == true) {
+                                                  logcat("ISDONE", "DONE");
+                                                  controller.getStudentList(
+                                                    context,
+                                                  );
+                                                }
+                                              });
                                             },
                                             errorText: controller
                                                 .StudentNameModel.value.error,
@@ -152,11 +167,23 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                             controller: controller.coursectr,
                                             hintLabel: "Select Course",
                                             wantSuffix: true,
-                                            isdown: true,
+                                            isDropdown: true,
                                             isReadOnly: true,
+                                            isAdd: true,
                                             onChanged: (val) {
                                               controller.validateCourse(val);
                                               setState(() {});
+                                            },
+                                            onAddBtn: () {
+                                              Get.to(AddCourseScreen())
+                                                  ?.then((value) {
+                                                if (value == true) {
+                                                  logcat("ISDONE", "DONE");
+                                                  controller.getCourseList(
+                                                    context,
+                                                  );
+                                                }
+                                              });
                                             },
                                             onTap: () {
                                               //  controller.coursectr.text = "";

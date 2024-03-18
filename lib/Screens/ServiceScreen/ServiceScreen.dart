@@ -339,16 +339,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
         // Adjust the number of columns as needed
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
-        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 1.8 : 1.8,
+        childAspectRatio: SizerUtil.deviceType == DeviceType.mobile ? 2.0 : 1.8,
       ),
       itemBuilder: (context, index) {
         VendorServiceList data = controller.filteredServiceObjectList[index];
         return Container(
             padding: EdgeInsets.only(
-              top: SizerUtil.deviceType == DeviceType.mobile ? 0.h : 2.h,
-              bottom: SizerUtil.deviceType == DeviceType.mobile ? 0.h : 1.h,
-              left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
-              right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+              left: SizerUtil.deviceType == DeviceType.mobile ? 3.w : 1.w,
+              right: SizerUtil.deviceType == DeviceType.mobile ? 3.w : 1.w,
+              top: SizerUtil.deviceType == DeviceType.mobile ? 2.h : 0.5.h,
+              bottom: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 0.5.h,
             ),
             decoration: BoxDecoration(
               color: isDarkMode() ? black : white,
@@ -461,7 +461,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     return Common().commonDetailsDialog(
         context,
         "SERVICE DETAILS",
-        isDescription: true,
+        // isDescription: true,
         Expanded(
             child: Column(children: [
           Row(
