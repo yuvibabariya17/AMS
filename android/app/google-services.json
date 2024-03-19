@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "604942527090",
+    "project_id": "ams-booking-app",
+    "storage_bucket": "ams-booking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604942527090:android:6a0826abda5544d66cf0eb",
+        "android_client_info": {
+          "package_name": "com.example.booking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_eAx_-597tUtiDmJlSik2rcY5SSNUP3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
