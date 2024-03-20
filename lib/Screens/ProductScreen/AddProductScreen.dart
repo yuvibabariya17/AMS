@@ -97,7 +97,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
       },
       child: CustomScaffold(
           body: Column(children: [
-        getCommonToolbar(ScreenTitle.addProduct, () {
+        getCommonToolbar(
+            widget.isEdit == true
+                ? ScreenTitle.updateProduct
+                : ScreenTitle.addProduct, () {
           Get.back();
         }),
         Expanded(
@@ -151,6 +154,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         controller: controller.productimgCtr,
                                         hintLabel: "Upload Photo",
                                         wantSuffix: true,
+                                        isPhoto: true,
                                         onChanged: (val) {
                                           controller.validateProductimg(val);
                                           setState(() {});

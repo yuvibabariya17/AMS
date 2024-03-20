@@ -454,34 +454,37 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                                   // ),
                                                 ),
                                               )
-                                            : GestureDetector(
-                                                onTap: () {
-                                                  if (widget.onTap != null)
-                                                    widget.onTap!();
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      SizerUtil.deviceType ==
+                                            : widget.isPhoto == true
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      if (widget.onTap != null)
+                                                        widget.onTap!();
+                                                    },
+                                                    child: Padding(
+                                                      padding: SizerUtil
+                                                                  .deviceType ==
                                                               DeviceType.mobile
                                                           ? EdgeInsets.all(4.w)
                                                           : EdgeInsets.only(
                                                               right: 3.w),
-                                                  child: SvgPicture.asset(
-                                                      Asset.photos,
-                                                      height: SizerUtil
-                                                                  .deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 0
-                                                          : 8,
-                                                      width: SizerUtil
-                                                                  .deviceType ==
-                                                              DeviceType.mobile
-                                                          ? 0
-                                                          : 8,
-                                                      fit: BoxFit.contain),
-                                                ),
-                                              ),
-                                  ))
+                                                      child: SvgPicture.asset(
+                                                          Asset.photos,
+                                                          height: SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType
+                                                                      .mobile
+                                                              ? 8
+                                                              : 8,
+                                                          width: SizerUtil
+                                                                      .deviceType ==
+                                                                  DeviceType
+                                                                      .mobile
+                                                              ? 8
+                                                              : 8,
+                                                          fit: BoxFit.contain),
+                                                    ),
+                                                  )
+                                                : Container()))
             : Container(
                 width: 1,
               ),

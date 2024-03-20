@@ -108,8 +108,8 @@ class StudentCourseController extends GetxController {
         if (data.status == 1) {
           updateLocalList(studentcourseList);
           state.value = ScreenState.apiSuccess;
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
+          // showDialogForScreen(context, responseData['message'],
+          //     callback: () {});
 
           logcat("COURSELIST RESPONSE", jsonEncode(studentObjectList));
         } else {

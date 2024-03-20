@@ -122,6 +122,7 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
                                             controller: controller.imgctr,
                                             hintLabel: "Select Photo",
                                             wantSuffix: true,
+                                            isPhoto: true,
                                             onChanged: (val) {
                                               controller.validateImage(val);
                                               setState(() {});

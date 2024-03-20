@@ -341,8 +341,10 @@ class AddStudentCourseController extends GetxController {
                     studentCourseObjectList[index].id.toString();
                 coursectr.text =
                     studentCourseObjectList[index].name.capitalize.toString();
+                Feesctr.text = studentCourseObjectList[index].fees.toString();
 
                 validateCourse(coursectr.text);
+                validateFees(Feesctr.text);
               },
               title: Text(
                 studentCourseObjectList[index].name.toString(),

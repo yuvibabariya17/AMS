@@ -471,7 +471,7 @@ class AddserviceController extends GetxController {
 
   RxBool isServiceTypeApiList = false.obs;
   RxList<ServiceList> serviceObjectList = <ServiceList>[].obs;
-  RxString ServiceId = "".obs;
+  RxString serviceId = "".obs;
 
   void getServiceList(
       context, bool isFirst, String categoryId, String subCategoryId) async {
@@ -554,7 +554,7 @@ class AddserviceController extends GetxController {
               onTap: () {
                 Get.back();
                 logcat("Service List", "LIST");
-                ServiceId.value = serviceObjectList[index].id.toString();
+                serviceId.value = serviceObjectList[index].id.toString();
                 Servicectr.text = serviceObjectList[index].name.toString();
 
                 validateServicename(Servicectr.text);
@@ -591,7 +591,7 @@ class AddserviceController extends GetxController {
 
   // UPDATE VENDOR API
 
-  void UpdateVendorServiceApi(context, String serviceId, String Id) async {
+  void UpdateVendorServiceApi(context, String Id) async {
     logcat("IDD:::::", serviceId.toString());
     var loadingIndicator = LoadingProgressDialog();
     try {
@@ -608,7 +608,7 @@ class AddserviceController extends GetxController {
 
       logcat("UpdateParam:", {
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": serviceId.toString().trim(),
+        "service_id": serviceId.value.toString().trim(),
         "fees": int.parse(Pricectr.text),
         "oppox_time": approxTime,
         "oppox_setting": int.parse(sittingctr.text),
@@ -669,7 +669,7 @@ class AddserviceController extends GetxController {
 
       logcat("ADDDDD_SERVICE", {
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "service_id": ServiceId.value.toString().trim(),
+        "service_id": serviceId.value.toString().trim(),
         "fees": int.parse(Pricectr.text),
         "oppox_time": approxTime,
         "oppox_setting": int.parse(sittingctr.text),
@@ -679,7 +679,7 @@ class AddserviceController extends GetxController {
       });
       var response = await Repository.post({
         "vendor_id": retrievedObject.id.toString().trim(),
-        "service_id": ServiceId.value.toString().trim(),
+        "service_id": serviceId.value.toString().trim(),
         "fees": int.parse(Pricectr.text),
         "oppox_time": approxTime,
         "oppox_setting": int.parse(sittingctr.text),

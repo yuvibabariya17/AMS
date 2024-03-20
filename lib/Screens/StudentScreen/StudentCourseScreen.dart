@@ -348,7 +348,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
     return GridView.builder(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.only(bottom: 35.h),
+      padding: EdgeInsets.only(
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
@@ -786,8 +787,8 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
 
   getStudentCourseDetails(BuildContext context, ListofStudentCourse data) {
     return Common().commonDetailsDialog(
-      isNotes: true,
-      isDescription: true,
+      // isNotes: true,
+      // isDescription: true,
       context,
       "STUDENT COURSE DETAILS",
       Column(
@@ -805,13 +806,13 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.black, // Set your desired border color here
-                    width: 1.0, // Set the width of the border
+                    color: Colors.grey, // Set your desired border color here
+                    width: 0.5, // Set the width of the border
                   ),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(18),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     imageUrl: data.idProofUrlInfo.image != null

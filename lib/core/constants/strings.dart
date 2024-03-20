@@ -269,6 +269,7 @@ class ScreenTitle {
   static const String update_appointment = 'Update Booking';
   static const String addCourse = 'Add Course';
   static const String addCustomer = 'Add Customer';
+  static const String addStudent = 'Add Student';
   static const String reportBug = 'Report Bug';
   static const String service = 'Service';
   static const String expert = 'Expert';
@@ -292,6 +293,15 @@ class ScreenTitle {
   static const String staff = 'Staff';
   static const String updateVendor = 'Update Vendor';
   static const String signIn = 'Sign In';
+  static const String updateProduct = 'Update Product';
+  static const String updateExpert = 'Update Expert';
+  static const String updateCourse = 'Update Course';
+  static const String updateCustomer = 'Update Customer';
+  static const String updateStudent = 'Update Student';
+  static const String updateStudentCourse = 'Update Student Course';
+  static const String updatePackage = 'Update Package';
+  static const String updateProductCategory = 'Update Product Category';
+  static const String updateBrandCategory = 'Update Brand Category';
 }
 
 class AlertDialogConstant {
@@ -371,6 +381,8 @@ class LabelText {
   static const String customer = "Customer";
   static const String service = "Service";
   static const String appointment_slot = "Appointment Slot";
+  static const String approx_time = "Approx Time";
+  static const String sitting = "Sitting";
 }
 
 class HintText {
@@ -381,4 +393,6 @@ class HintText {
   static const String enter_duration = "Enter Duration";
   static const String select_customer = "Select Customer";
   static const String select_service = "Select Service";
+  static const String enter_approx_time = "Enter Approx Time";
+  static const String sitting = "Enter Sitting";
 }

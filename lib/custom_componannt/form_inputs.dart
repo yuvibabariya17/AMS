@@ -57,6 +57,7 @@ Widget getReactiveFormField(
         wantSuffix: wantSuffix,
         isReadOnly: isReadOnly,
         isPassword: isPassword,
+        isPhoto: isPhoto,
         isAdd: isAdd,
         isHr: isHr,
         onTap: onTap,

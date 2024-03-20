@@ -339,7 +339,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.only(
-          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 8.h),
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
@@ -519,13 +519,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black, // Set your desired border color here
+                  color: Colors.grey, // Set your desired border color here
                   width: 1.0, // Set the width of the border
                 ),
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(18),
               ),
               child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
                   imageUrl: data.picInfo!.image != null
@@ -760,11 +760,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   overflow: TextOverflow.visible,
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      decoration: TextDecoration.underline,
+                      //  decoration: TextDecoration.underline,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
                           : 8.sp,
-                      color: isDarkMode() ? Colors.blue : Colors.blue,
+                      color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
               ),

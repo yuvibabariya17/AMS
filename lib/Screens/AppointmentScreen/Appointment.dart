@@ -179,6 +179,9 @@ class _AppointmentScreenState extends State<AppointmentScreen>
               getTab(ScreenTitle.previousAppointment, 30, 1),
             ],
           ),
+          SizedBox(
+            height: SizerUtil.deviceType == DeviceType.mobile ? 2.5.h : 2.1.h,
+          ),
           Expanded(
               child: TabBarView(
                   physics: NeverScrollableScrollPhysics(),

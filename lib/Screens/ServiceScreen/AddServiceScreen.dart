@@ -84,11 +84,10 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
       controller.sitingTime =
           widget.editService!.oppoxSettingDuration.toString().trim();
       controller.approxTime = widget.editService!.oppoxTime.toString().trim();
+      controller.serviceId.value =
+          widget.editService!.serviceId.toString().trim();
     }
 
-    logcat("DURATION", widget.editService!.oppoxSettingDuration.toString());
-
-    logcat("TIMEE", controller.sitingTime.toString());
     if (widget.isEdit == true) {
       validateFields();
     }
@@ -225,7 +224,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                             //             inputType: TextInputType.name,
                             //           );
                             //         }))),
-                            getTitle("Service"),
+                            getTitle(LabelText.service),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -234,7 +233,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                       return getReactiveFormField(
                                         node: controller.ServiceNode,
                                         controller: controller.Servicectr,
-                                        hintLabel: "Select Service",
+                                        hintLabel: HintText.select_service,
                                         isReadOnly: true,
                                         wantSuffix: true,
                                         isdown: true,
@@ -257,7 +256,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                           showDropDownDialog(
                                               context,
                                               controller.setServiceList(),
-                                              "Service List");
+                                              ShowList.service_list);
                                         },
 
                                         onChanged: (val) {
@@ -268,7 +267,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         inputType: TextInputType.name,
                                       );
                                     }))),
-                            getTitle(AddServiceConstant.approxTime),
+                            getTitle(LabelText.approx_time),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -277,8 +276,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                       return getReactiveFormField(
                                         node: controller.approxtimeNode,
                                         controller: controller.approxtimectr,
-                                        hintLabel:
-                                            AddServiceConstant.approxTimeHint,
+                                        hintLabel: HintText.enter_approx_time,
                                         wantSuffix: true,
                                         time: true,
                                         isReadOnly: true,
@@ -469,7 +467,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                             //             inputType: TextInputType.text,
                             //           );
                             //         }))),
-                            getTitle(AddServiceConstant.sitting),
+                            getTitle(LabelText.sitting),
                             FadeInUp(
                                 from: 30,
                                 child: AnimatedSize(
@@ -478,8 +476,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                       return getReactiveFormField(
                                         node: controller.sittingNode,
                                         controller: controller.sittingctr,
-                                        hintLabel:
-                                            AddServiceConstant.sittingHint,
+                                        hintLabel: HintText.sitting,
                                         onChanged: (val) {
                                           controller.validateSitting(val);
                                         },
@@ -726,7 +723,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                         // Call updateCourse API
                                         controller.UpdateVendorServiceApi(
                                           context,
-                                          widget.editService!.serviceId,
                                           widget.editService!.id,
                                         );
                                       } else {
@@ -739,7 +735,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                                 })),
                             SizedBox(
                               height: SizerUtil.deviceType == DeviceType.mobile
-                                  ? null
+                                  ? 5.h
                                   : 2.h,
                             ),
                           ],
@@ -754,59 +750,59 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     );
   }
 
-  static Future<Object?> PopupDialogs(
-      BuildContext context, String title, String subtext) {
-    return showGeneralDialog(
-        barrierColor: black.withOpacity(0.6),
-        transitionBuilder: (context, a1, a2, widget) {
-          return Transform.scale(
-            scale: a1.value,
-            child: Opacity(
-                opacity: a1.value,
-                child: CupertinoAlertDialog(
-                  title: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontBold,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  content: Text(
-                    subtext,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontMedium,
-                    ),
-                  ),
-                  actions: [
-                    CupertinoDialogAction(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      isDefaultAction: true,
-                      isDestructiveAction: true,
-                      child: Text("Continue",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: isDarkMode() ? white : black,
-                            fontFamily: fontBold,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                    // The "No" button
-                  ],
-                )),
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 200),
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {
-          return Container();
-        });
-  }
+  // static Future<Object?> PopupDialogs(
+  //     BuildContext context, String title, String subtext) {
+  //   return showGeneralDialog(
+  //       barrierColor: black.withOpacity(0.6),
+  //       transitionBuilder: (context, a1, a2, widget) {
+  //         return Transform.scale(
+  //           scale: a1.value,
+  //           child: Opacity(
+  //               opacity: a1.value,
+  //               child: CupertinoAlertDialog(
+  //                 title: Text(
+  //                   title,
+  //                   style: TextStyle(
+  //                     fontSize: 18,
+  //                     color: isDarkMode() ? white : black,
+  //                     fontFamily: fontBold,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 content: Text(
+  //                   subtext,
+  //                   style: TextStyle(
+  //                     fontSize: 13,
+  //                     color: isDarkMode() ? white : black,
+  //                     fontFamily: fontMedium,
+  //                   ),
+  //                 ),
+  //                 actions: [
+  //                   CupertinoDialogAction(
+  //                     onPressed: () {
+  //                       Navigator.pop(context);
+  //                     },
+  //                     isDefaultAction: true,
+  //                     isDestructiveAction: true,
+  //                     child: Text("Continue",
+  //                         style: TextStyle(
+  //                           fontSize: 15,
+  //                           color: isDarkMode() ? white : black,
+  //                           fontFamily: fontBold,
+  //                           fontWeight: FontWeight.bold,
+  //                         )),
+  //                   ),
+  //                   // The "No" button
+  //                 ],
+  //               )),
+  //         );
+  //       },
+  //       transitionDuration: const Duration(milliseconds: 200),
+  //       barrierDismissible: true,
+  //       barrierLabel: '',
+  //       context: context,
+  //       pageBuilder: (context, animation1, animation2) {
+  //         return Container();
+  //       });
+  // }
 }

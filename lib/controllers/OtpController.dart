@@ -12,7 +12,7 @@ class OtpController extends GetxController {
   late FocusNode node1, node2, node3, node4;
   late TextEditingController otp1, otp2, otp3, otp4;
 
-  Rx<ScreenState> state = ScreenState.apiLoading.obs; 
+  Rx<ScreenState> state = ScreenState.apiLoading.obs;
   RxString message = "".obs;
   RxList memberList = [].obs;
   RxBool isFormInvalidate = false.obs;

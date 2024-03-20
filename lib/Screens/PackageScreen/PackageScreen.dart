@@ -311,7 +311,8 @@ class _PackageScreenState extends State<PackageScreen> {
     return ListView.builder(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.only(bottom: 35.h),
+      padding: EdgeInsets.only(
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         PackageList data = controller.filteredPackageObjectList[index];
@@ -415,7 +416,6 @@ class _PackageScreenState extends State<PackageScreen> {
                         Common().commonDeleteDialog(context, "Package", () {
                           controller.deletePackageList(context, data.id);
                         });
-                        //   showDeleteConfirmationDialog(data.id);
                       },
                       child: Container(
                         child: Icon(
@@ -440,13 +440,10 @@ class _PackageScreenState extends State<PackageScreen> {
     return Common().commonDetailsDialog(
         context,
         "PACKAGE DETAILS",
-        isNotes: true,
+        // isNotes: true,
         Expanded(
           child: Column(
             children: [
-              SizedBox(
-                height: 1.h,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

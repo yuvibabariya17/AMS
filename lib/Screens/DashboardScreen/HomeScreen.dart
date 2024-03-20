@@ -480,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                     children: [
                                                       item.service.length > 18
                                                           ? Container(
-                                                              width: 55.w,
+                                                              width: 60.w,
                                                               child: Marquee(
                                                                 style:
                                                                     TextStyle(
@@ -529,27 +529,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                         .easeOut, // Deceleration curve
                                                               ),
                                                             )
-                                                          : Text(
-                                                              item.service,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    fontRegular,
-                                                                color:
-                                                                    isDarkMode()
-                                                                        ? white
-                                                                        : black,
-                                                                fontSize: SizerUtil
-                                                                            .deviceType ==
-                                                                        DeviceType
-                                                                            .mobile
-                                                                    ? 16.sp
-                                                                    : 10.sp,
+                                                          : Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          10.w),
+                                                              child: Text(
+                                                                item.service,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      fontRegular,
+                                                                  color: isDarkMode()
+                                                                      ? white
+                                                                      : black,
+                                                                  fontSize: SizerUtil
+                                                                              .deviceType ==
+                                                                          DeviceType
+                                                                              .mobile
+                                                                      ? 16.sp
+                                                                      : 10.sp,
+                                                                ),
                                                               ),
                                                             ),
-                                                      Spacer(),
+                                                      // Spacer(),
                                                       Align(
                                                         alignment:
                                                             Alignment.topRight,

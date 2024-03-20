@@ -433,7 +433,7 @@ class addProductController extends GetxController {
           return true;
         },
         message: message,
-        title: ScreenTitle.addProduct,
+        title:    ScreenTitle.addProduct,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

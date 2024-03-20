@@ -24,23 +24,23 @@ class _PreviousNotificationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: ListView.builder(
+    return ListView.builder(
       shrinkWrap: false,
-      padding: EdgeInsets.only(bottom: 10.h),
+      physics: BouncingScrollPhysics(),
       clipBehavior: Clip.antiAlias,
+      padding: EdgeInsets.only(bottom: 5.h, top: 1.h),
       itemBuilder: (context, index) {
         return getListItem(context, index);
       },
       itemCount: controller.staticData.length,
-    ));
+    );
   }
 
- getListItem(BuildContext context, int index) {
+  getListItem(BuildContext context, int index) {
     NotificationItem data = controller.staticData[index];
     return Container(
       margin: EdgeInsets.only(
-           top: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 2.h,
+          top: SizerUtil.deviceType == DeviceType.mobile ? 1.h : 2.h,
           left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 10.w,
           right: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 10.w,
           bottom: 1.h),

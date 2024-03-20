@@ -7,13 +7,11 @@ import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
-import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
@@ -196,7 +194,8 @@ class AddStudentController extends GetxController {
     }
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+  showDialogForScreen(context, String message, bool? isEdit,
+      {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -206,7 +205,8 @@ class AddStudentController extends GetxController {
           return true;
         },
         message: message,
-        title: "Student",
+        title:
+            isEdit == true ? ScreenTitle.updateStudent : ScreenTitle.addStudent,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }
@@ -216,7 +216,8 @@ class AddStudentController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -249,22 +250,23 @@ class AddStudentController extends GetxController {
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -274,7 +276,8 @@ class AddStudentController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, true,
+            callback: () {
           Get.back();
         });
         return;
@@ -306,22 +309,23 @@ class AddStudentController extends GetxController {
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), true,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, true,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -377,7 +381,8 @@ class AddStudentController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -406,17 +411,18 @@ class AddStudentController extends GetxController {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
           uploadImageId.value = responseData.data.id.toString();
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, responseData.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, responseData.message.toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -428,7 +434,8 @@ class AddStudentController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -457,17 +464,18 @@ class AddStudentController extends GetxController {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
           uploadIdproof.value = responseData.data.id.toString();
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, responseData.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, responseData.message.toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }

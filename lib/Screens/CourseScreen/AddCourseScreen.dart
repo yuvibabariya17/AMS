@@ -170,6 +170,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         controller: controller.Durationctr,
                                         hintLabel:
                                             AddCourseConstant.durationHint,
+                                        wantSuffix: true,
+                                        isHr: true,
                                         onChanged: (val) {
                                           controller.validateStartDate(val);
                                         },
@@ -233,6 +235,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           controller: controller.Idctr,
                                           hintLabel: "Upload Course Photo",
                                           wantSuffix: true,
+                                          isPhoto: true,
                                           onChanged: (val) {
                                             controller.validateId(val);
                                           },
@@ -282,7 +285,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     }, CommonConstant.submit,
                                         validate:
                                             controller.isFormInvalidate.value);
-                                  }))
+                                  })),
+                              SizedBox(
+                                height:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 5.h
+                                        : 2.h,
+                              ),
                             ],
                           )),
                     ),

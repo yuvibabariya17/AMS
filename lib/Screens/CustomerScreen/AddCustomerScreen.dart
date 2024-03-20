@@ -167,6 +167,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                           controller: controller.Profilectr,
                                           hintLabel: Strings.profile_photo_hint,
                                           wantSuffix: true,
+                                          isPhoto: true,
                                           onChanged: (val) {
                                             controller.validateProfile(val);
                                           },

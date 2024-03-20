@@ -285,8 +285,8 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                                           child: child!,
                                                         );
                                                       },
-                                                      firstDate: DateTime(1950),
-                                                      lastDate: DateTime(8000));
+                                                      firstDate: DateTime.now(),
+                                                      lastDate: DateTime(2100));
                                               if (pickedDate != null &&
                                                   pickedDate !=
                                                       controller

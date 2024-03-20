@@ -351,7 +351,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
       clipBehavior: Clip.antiAlias,
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.only(
-          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 9.h),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: SizerUtil.deviceType == DeviceType.mobile
             ? 2
@@ -518,7 +518,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
     return Common().commonDetailsDialog(
       context,
       "PRODUCT CATEGORY DETAILS",
-      isDescription: true,
+      // isDescription: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -534,13 +534,13 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.black, // Set your desired border color here
-                    width: 1.0, // Set the width of the border
+                    color: Colors.grey, // Set your desired border color here
+                    width: 0.5, // Set the width of the border
                   ),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(18),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     imageUrl: data.uploadInfo.image != null

@@ -181,6 +181,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                             controller: controller.imgctr,
                                             hintLabel: "Upload Photo",
                                             wantSuffix: true,
+                                            isPhoto: true,
                                             onChanged: (val) {
                                               controller.validateImage(val);
                                               setState(() {});
@@ -223,6 +224,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                             controller: controller.idctr,
                                             hintLabel: "Upload Image",
                                             wantSuffix: true,
+                                            isPhoto: true,
                                             onChanged: (val) {
                                               controller.validateId(val);
                                               setState(() {});

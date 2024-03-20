@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/ExpertModel.dart';
+import 'package:booking_app/Screens/ServiceScreen/AddServiceScreen.dart';
 import 'package:booking_app/controllers/AddExpert_controller.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/utils/helper.dart';
@@ -156,6 +157,7 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                       controller: controller.Profilectr,
                                       hintLabel: Strings.profile_photo_hint,
                                       wantSuffix: true,
+                                      isPhoto: true,
                                       onChanged: (val) {
                                         controller.validateProfile(val);
                                       },
@@ -200,9 +202,21 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                         controller.validateServicename(val);
                                         setState(() {});
                                       },
+                                      isAdd: true,
                                       isReadOnly: true,
                                       wantSuffix: true,
-                                      isdown: true,
+                                      isDropdown: true,
+                                      onAddBtn: () {
+                                        Get.to(AddServiceScreen())
+                                            ?.then((value) {
+                                          if (value == true) {
+                                            logcat("ISDONE", "DONE");
+                                            controller.getServiceList(
+                                              context,
+                                            );
+                                          }
+                                        });
+                                      },
                                       onTap: () {
                                         //  controller.Servicectr.text = "";
 
@@ -564,7 +578,10 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
                                       hintLabel: AddExpertConstant.priceHint,
                                       onChanged: (val) {
                                         controller.validatePrice(val);
+                                        setState(() {});
                                       },
+                                      isReadOnly:
+                                          widget.isEdit == true ? true : true,
                                       errorText:
                                           controller.PriceModel.value.error,
                                       inputType: TextInputType.number,

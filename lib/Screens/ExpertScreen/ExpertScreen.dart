@@ -55,7 +55,9 @@ class _ExpertScreenState extends State<ExpertScreen> {
         controller.filteredExpertObjectList = controller.expertObjectList
             .where((data) =>
                 data.name.toLowerCase().contains(query.toLowerCase()) ||
-                data.amount.toString().contains(query.toLowerCase()))
+                data.serviceInfo.name
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -399,11 +401,6 @@ class _ExpertScreenState extends State<ExpertScreen> {
                         width: SizerUtil.deviceType == DeviceType.mobile
                             ? 60.w
                             : 50.w,
-                        // padding: EdgeInsets.all(
-                        //   SizerUtil.deviceType == DeviceType.mobile
-                        //       ? 1.2.w
-                        //       : 1.0.w,
-                        // ),
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -428,90 +425,88 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 ],
               ),
               // SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: Text(
-                    data.name.capitalize.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: isDarkMode() ? white : black,
-                        fontFamily: opensansMedium,
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 14.sp
-                            : 7.sp,
-                        fontWeight: FontWeight.w700),
-                  )),
-                ],
-              ),
-              SizedBox(
-                  height:
-                      SizerUtil.deviceType == DeviceType.mobile ? 0 : 0.1.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      data.serviceInfo.name.toString(),
+              Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      data.name.capitalize.toString(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      // '₹ ${data.amount.toString()}',
-                      // data.serviceInfo != null
-                      //     ? data.serviceInfo!.name
-                      //     : "",
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 11.sp
-                              : 6.sp,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(AddExpertScreen(isEdit: true, editExpert: data))
-                          ?.then((value) {
-                        if (value == true) {
-                          controller.getExpertList(context, false);
-                        }
-                      });
-                    },
-                    child: Container(
-                      child: SvgPicture.asset(
-                        Asset.edit,
+                              ? 14.sp
+                              : 7.sp,
+                          fontWeight: FontWeight.w700),
+                    )),
+                    SizedBox(
                         height: SizerUtil.deviceType == DeviceType.mobile
-                            ? 2.3.h
-                            : 2.h,
-                        color: Colors.grey,
+                            ? 0
+                            : 0.1.h),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      data.serviceInfo.name.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: isDarkMode() ? white : black,
+                          fontFamily: opensansMedium,
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 10.sp
+                              : 7.sp,
+                          fontWeight: FontWeight.w500),
+                    )),
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(AddExpertScreen(isEdit: true, editExpert: data))
+                            ?.then((value) {
+                          if (value == true) {
+                            controller.getExpertList(context, false);
+                          }
+                        });
+                      },
+                      child: Container(
+                        child: SvgPicture.asset(
+                          Asset.edit,
+                          height: SizerUtil.deviceType == DeviceType.mobile
+                              ? 2.3.h
+                              : 2.h,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 5.0),
-                  GestureDetector(
-                    onTap: () {
-                      Common().commonDeleteDialog(context, "Expert", () {
-                        controller.deleteExpertList(context, data.id);
-                      });
-                      //  showDeleteConfirmationDialog(data.id);
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.delete_rounded,
-                        color: Colors.grey,
-                        size: SizerUtil.deviceType == DeviceType.mobile
-                            ? 3.h
-                            : 2.8.h,
+                    SizedBox(width: 5.0),
+                    GestureDetector(
+                      onTap: () {
+                        Common().commonDeleteDialog(context, "Expert", () {
+                          controller.deleteExpertList(context, data.id);
+                        });
+                        //  showDeleteConfirmationDialog(data.id);
+                      },
+                      child: Container(
+                        child: Icon(
+                          Icons.delete_rounded,
+                          color: Colors.grey,
+                          size: SizerUtil.deviceType == DeviceType.mobile
+                              ? 3.h
+                              : 2.8.h,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ]),
             ],
           ),
         );
@@ -540,13 +535,13 @@ class _ExpertScreenState extends State<ExpertScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.black, // Set your desired border color here
-                    width: 1.0, // Set the width of the border
+                    color: Colors.grey, // Set your desired border color here
+                    width: 0.5, // Set the width of the border
                   ),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(18),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(17)),
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     imageUrl: data.upload_info.image != null
@@ -569,7 +564,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Expert Name : ",
@@ -601,7 +596,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Service : ",
@@ -612,22 +607,17 @@ class _ExpertScreenState extends State<ExpertScreen> {
                   color: isDarkMode() ? white : black,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  // controller.launchPhoneCall(
-                  //     data.customerInfo.contactNo);
-                },
-                child: Text(
-                  data.serviceInfo.name.toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 12.sp
-                          : 8.sp,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontRegular),
-                ),
+              Text(
+                data.serviceInfo.name.toString(),
+                overflow: TextOverflow.visible,
+                maxLines: 3,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 8.sp,
+                    color: isDarkMode() ? white : black,
+                    fontFamily: fontRegular),
               ),
             ],
           ),

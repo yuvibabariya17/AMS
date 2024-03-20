@@ -468,7 +468,7 @@ class _CourseScreenState extends State<CourseScreen> {
     return Common().commonDetailsDialog(
         context,
         "COURSE DETAILS",
-        isDescription: true,
+        // isDescription: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -487,13 +487,13 @@ class _CourseScreenState extends State<CourseScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color:
-                            Colors.black, // Set your desired border color here
-                        width: 1.0, // Set the width of the border
+                            Colors.grey, // Set your desired border color here
+                        width: 0.5, // Set the width of the border
                       ),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
                       child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         imageUrl: data.thumbnailUrlInfo.image != null

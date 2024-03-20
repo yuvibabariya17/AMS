@@ -1,6 +1,7 @@
 import 'package:booking_app/Models/AppointmentListModel.dart';
 import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
+import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
@@ -33,7 +34,6 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     controller.appointmentObjectList.clear();
     controller.getAppointmentList(
       context,
-      
       true,
     );
     logcat("APPOINTMENT_LENGTH",
@@ -157,7 +157,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   ? 1.h
                                   : 2.h,
                               top: SizerUtil.deviceType == DeviceType.mobile
-                                  ? 3.h
+                                  ? 1.h
                                   : 2.h),
                           padding: EdgeInsets.only(
                               top: SizerUtil.deviceType == DeviceType.mobile
@@ -330,38 +330,53 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                             ),
                                           ],
                                         ),
-                                        Row(children: [
-                                          Text(
-                                            Details.appointment_type,
-                                            style: TextStyle(
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: opensansMedium,
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                Details.appointment_type,
+                                                style: TextStyle(
+                                                    color: isDarkMode()
+                                                        ? white
+                                                        : black,
+                                                    fontFamily: opensansMedium,
+                                                    fontSize: SizerUtil
+                                                                .deviceType ==
                                                             DeviceType.mobile
                                                         ? 12.sp
                                                         : 8.sp,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          Container(
-                                              child: Text(
-                                            data.appointmentType.capitalize
-                                                .toString(),
-                                            style: TextStyle(
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: opensansMedium,
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 10.sp
-                                                        : 7.sp,
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                        ]),
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                    child: Text(
+                                                  data.appointmentType
+                                                      .capitalize
+                                                      .toString(),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      color: isDarkMode()
+                                                          ? white
+                                                          : black,
+                                                      fontFamily:
+                                                          opensansMedium,
+                                                      fontSize: SizerUtil
+                                                                  .deviceType ==
+                                                              DeviceType.mobile
+                                                          ? 10.sp
+                                                          : 7.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )),
+                                              ),
+                                            ]),
                                       ],
                                     ),
                                   ),
@@ -399,7 +414,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   Spacer(),
                                   GestureDetector(
                                     onTap: () {
-                                      showDeleteConfirmationDialog(data.id);
+                                      Common().commonDeleteDialog(
+                                          context, "Appointment", () {
+                                        controller.deleteAppointment(
+                                            context, data.id);
+                                      });
                                     },
                                     child: Container(
                                       height: SizerUtil.deviceType ==

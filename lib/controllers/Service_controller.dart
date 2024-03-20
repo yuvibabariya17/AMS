@@ -99,8 +99,8 @@ class serviceController extends GetxController {
         if (data.status == 1) {
           updateLocalList(itemId);
           state.value = ScreenState.apiSuccess;
-          showDialogForScreen(context, responseData['message'],
-              callback: () {});
+          // showDialogForScreen(context, responseData['message'],
+          //     callback: () {});
 
           logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
         } else {

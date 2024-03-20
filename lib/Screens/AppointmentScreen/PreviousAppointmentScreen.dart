@@ -148,7 +148,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                               ? 1.h
                               : 2.h,
                           top: SizerUtil.deviceType == DeviceType.mobile
-                              ? 3.h
+                              ? 1.h
                               : 2.h),
                       padding: EdgeInsets.only(
                           top: SizerUtil.deviceType == DeviceType.mobile

@@ -1,10 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
 import 'package:booking_app/controllers/ProductSellingController.dart';
 import 'package:booking_app/core/Common/toolbar.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
 import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
+import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/custom_componannt/common_views.dart';
 import 'package:booking_app/custom_componannt/form_inputs.dart';
@@ -129,10 +131,23 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             controller: controller.customerctr,
                                             hintLabel: "Select Customer",
                                             wantSuffix: true,
-                                            isdown: true,
+                                            //  isdown: true,
+                                            isAdd: true,
+                                            isDropdown: true,
                                             onChanged: (val) {
                                               controller.validateCustomer(val);
                                               setState(() {});
+                                            },
+                                            onAddBtn: () {
+                                              Get.to(AddCustomerScreen())
+                                                  ?.then((value) {
+                                                if (value == true) {
+                                                  logcat("ISDONE", "DONE");
+                                                  controller.getCustomerList(
+                                                    context,
+                                                  );
+                                                }
+                                              });
                                             },
                                             onTap: () {
                                               // controller.customerctr.text = "";

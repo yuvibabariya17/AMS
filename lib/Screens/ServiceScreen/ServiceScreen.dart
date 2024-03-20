@@ -340,7 +340,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.only(
-          bottom: SizerUtil.deviceType == DeviceType.mobile ? 20.h : 10.h),
+          bottom: SizerUtil.deviceType == DeviceType.mobile ? 8.h : 8.h),
       physics: BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: SizerUtil.deviceType == DeviceType.mobile ? 2 : 3,

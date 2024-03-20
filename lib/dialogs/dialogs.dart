@@ -133,25 +133,32 @@ Widget setDropDownContent(RxList<dynamic> list, Widget content,
               child: Center(
                   child: Text(
                 "Empty List",
-                style: TextStyle(fontSize: 4.5.w, fontFamily: fontMedium),
+                style: TextStyle(
+                    fontSize:
+                        SizerUtil.deviceType == DeviceType.mobile ? 6.sp : 6.sp,
+                    fontFamily: fontMedium),
               )),
             )
           else if (isApiIsLoading == true)
             Expanded(
-              child: Center(
-                  child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
+                child: Center(
+              child: ClipOval(
                 child: Container(
-                  height: 30,
-                  width: 30,
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: isDarkMode() ? black : white,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                   child: Image.asset(
-                    "assets/gif/ZKZg.gif",
-                    width: 50,
-                    height: 50,
+                    "assets/gif/apiloader.gif",
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              )),
-            ),
+              ),
+            )),
           list.isNotEmpty ? Expanded(child: content) : Container(),
           SizedBox(
             height: 1.0.h,
@@ -180,7 +187,7 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
                 "Empty List",
                 style: TextStyle(
                     fontSize:
-                        SizerUtil.deviceType == DeviceType.mobile ? 4.sp : 3.sp,
+                        SizerUtil.deviceType == DeviceType.mobile ? 6.sp : 6.sp,
                     fontFamily: fontMedium,
                     color: isDarkMode() ? white : black),
               )),
