@@ -74,12 +74,12 @@ class _OtpInputState extends State<OtpInput> {
           if (value.trim().length == 1) {
             if (widget.onLastField != null) {
               Get.find<OtpController>().handleLastField(true);
-                 widget.node.nextFocus();
+              widget.node.nextFocus();
             }
           } else {
             logcat("widget.onLastField", "FALSE");
             Get.find<OtpController>().handleLastField(false);
-           
+
             widget.node.previousFocus();
           }
         },
