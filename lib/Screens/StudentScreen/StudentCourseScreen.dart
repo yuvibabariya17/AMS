@@ -790,7 +790,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
       // isNotes: true,
       // isDescription: true,
       context,
-      "STUDENT COURSE DETAILS",
+      "Student Course Details",
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

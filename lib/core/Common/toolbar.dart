@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../preference/UserPreference.dart';
@@ -56,6 +57,19 @@ getToolbar(title,
         ),
       ),
     ],
+  );
+}
+
+getPinTheme() {
+  return PinTheme(
+    width: 16.w,
+    height: 7.8.h,
+    textStyle: TextStyle(fontSize: 16.sp),
+    decoration: BoxDecoration(
+      color: const Color.fromRGBO(222, 231, 240, .57),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.transparent),
+    ),
   );
 }
 

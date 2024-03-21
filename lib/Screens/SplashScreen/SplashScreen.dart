@@ -25,7 +25,7 @@ class _SplashscreenState extends State<Splashscreen> {
       if (retrievedObject != null) {
         Get.offAll(MyHomePage());
       } else {
-        Get.offAll(const IntroScreen());
+        Get.offAll(IntroScreen());
       }
     });
     super.initState();

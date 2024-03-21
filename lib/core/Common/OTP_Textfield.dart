@@ -9,11 +9,12 @@ import 'package:sizer/sizer.dart';
 class OtpInput extends StatefulWidget {
   final TextEditingController controller;
   final bool autoFocus;
+  final bool? isLast;
   final FocusNode node;
   final Function(bool) onLastField;
 
   const OtpInput(this.controller, this.autoFocus, this.node, this.onLastField,
-      {Key? key})
+      {Key? key, this.isLast})
       : super(key: key);
 
   @override
@@ -30,18 +31,9 @@ class _OtpInputState extends State<OtpInput> {
     widget.controller.addListener(() {
       setState(() {});
     });
-
-    // setState(() {
-    //   widget.node.addListener(() {
-    //     if (widget.node.hasFocus) {
-    //       if (widget.controller.text.isEmpty) {
-    //         FocusScope.of(context).requestFocus(widget.node);
-    //       }
-    //     }
-    //   });
-    // });
   }
 
+  String fieldValue = "";
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -58,28 +50,35 @@ class _OtpInputState extends State<OtpInput> {
         cursorWidth: 0.8,
         cursorHeight: SizerUtil.deviceType == DeviceType.mobile ? 40 : 45,
         maxLength: 1,
-        textInputAction: TextInputAction.next,
+        textInputAction: widget.isLast == true || fieldValue.isNotEmpty
+            ? TextInputAction.done
+            : TextInputAction.next,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         onChanged: (value) {
-          print("ONCHANGE");
-          // if (value.trim().length == 1) {
-          //   setState(() {});
-          //   FocusScope.of(context).nextFocus();
-          // } else {
-          //   setState(() {
-          //     FocusScope.of(context).previousFocus();
-          //   });
-          // }
           if (value.trim().length == 1) {
+            fieldValue = value;
+            setState(() {});
             if (widget.onLastField != null) {
               Get.find<OtpController>().handleLastField(true);
-              widget.node.nextFocus();
+              if (widget.isLast == true) {
+                widget.node.unfocus();
+              } else {
+                widget.node.nextFocus();
+              }
+            } else {
+              Get.find<OtpController>().handleLastField(true);
+            }
+          } else if (value.isEmpty) {
+            fieldValue = value;
+            setState(() {});
+            if (widget.isLast != true) {
+              widget.node.previousFocus(); // Move focus to the previous field
             }
           } else {
             logcat("widget.onLastField", "FALSE");
             Get.find<OtpController>().handleLastField(false);
-
+            fieldValue = "";
             widget.node.previousFocus();
           }
         },

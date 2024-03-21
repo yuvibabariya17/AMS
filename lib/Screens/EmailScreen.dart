@@ -98,22 +98,16 @@ class _EmailScreenState extends State<EmailScreen> {
                         SizedBox(
                           height: 3.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 18.w,
-                            right: 18.w,
-                          ),
-                          child: FadeInUp(
-                            from: 50,
-                            child: Obx(() {
-                              return getFormButton(() {
-                                if (controller.isFormInvalidate.value == true) {
-                                  Get.to(OtpScreen());
-                                }
-                              }, CommonConstant.done,
-                                  validate: controller.isFormInvalidate.value);
-                            }),
-                          ),
+                        FadeInUp(
+                          from: 50,
+                          child: Obx(() {
+                            return getFormButton(() {
+                              if (controller.isFormInvalidate.value == true) {
+                                Get.to(OtpScreen());
+                              }
+                            }, CommonConstant.done,
+                                validate: controller.isFormInvalidate.value);
+                          }),
                         ),
                       ],
                     ),

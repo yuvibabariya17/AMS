@@ -469,7 +469,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
   getServiceDetail(BuildContext context, VendorServiceList data) {
     return Common().commonDetailsDialog(
         context,
-        "SERVICE DETAILS",
+        "Service Details",
         // isDescription: true,
         Expanded(
             child: Column(children: [

@@ -109,7 +109,9 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                      margin: EdgeInsets.only(
+                        top: 1.h,
+                      ),
                       padding: EdgeInsets.only(
                         left: SizerUtil.deviceType == DeviceType.mobile
                             ? 5.w
@@ -141,7 +143,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                 controller.filteredExpertObjectList[index];
                             return Container(
                               margin: EdgeInsets.only(
-                                  bottom: 1.h,
+                                  // bottom: 1.h,
                                   right:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 1.w

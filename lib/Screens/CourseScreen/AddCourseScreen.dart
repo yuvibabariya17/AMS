@@ -150,8 +150,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         return getReactiveFormField(
                                           node: controller.FeesNode,
                                           controller: controller.Feesctr,
-                                          hintLabel:
-                                              AddCourseConstant.priceHint,
+                                          hintLabel: "Enter Fees",
                                           onChanged: (val) {
                                             controller.validateFee(val);
                                           },

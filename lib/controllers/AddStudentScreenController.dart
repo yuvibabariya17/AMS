@@ -169,10 +169,10 @@ class AddStudentController extends GetxController {
   void validateContact(String? val) {
     ContactModel.update((model) {
       if (val == null || val.isEmpty) {
-        model!.error = "Enter Contact No.1";
+        model!.error = "Enter Contact No.";
         model.isValidate = false;
       } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
-        model!.error = "Enter Valid Contact No";
+        model!.error = "Enter Valid Contact No.";
         model.isValidate = false;
       } else {
         model!.error = null;

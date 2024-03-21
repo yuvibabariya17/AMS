@@ -155,7 +155,7 @@ class AddPackageController extends GetxController {
   void validateNote(String? val) {
     NoteModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Note";
+        model!.error = "Enter Notes";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -199,7 +199,8 @@ class AddPackageController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -235,22 +236,23 @@ class AddPackageController extends GetxController {
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -260,7 +262,8 @@ class AddPackageController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, true,
+            callback: () {
           Get.back();
         });
         return;
@@ -296,22 +299,23 @@ class AddPackageController extends GetxController {
       // var responseDetail = GetLoginModel.fromJson(data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), true,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, true,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -331,7 +335,8 @@ class AddPackageController extends GetxController {
     // Get.to(const SignUpScreen(false));
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+  showDialogForScreen(context, String message, bool? isEdit,
+      {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -341,7 +346,8 @@ class AddPackageController extends GetxController {
           return true;
         },
         message: message,
-        title: "Package",
+        title:
+            isEdit == true ? ScreenTitle.updatePackage : ScreenTitle.addPackage,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

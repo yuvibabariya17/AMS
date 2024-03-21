@@ -448,7 +448,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                           inputType: TextInputType.text,
                                         );
                                       }))),
-                              getTitle(Strings.contact_no_one),
+                              getTitle("Contact No."),
                               FadeInUp(
                                   from: 30,
                                   child: AnimatedSize(

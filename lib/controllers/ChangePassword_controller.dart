@@ -277,7 +277,7 @@ class ChangePasswordController extends GetxController {
     }
   }
 
-  void ResetPassApi(context, bool fromProfile) async {
+  void ChangePasswordApi(context, bool fromProfile) async {
     var loadingIndicator = LoadingProgressDialog();
     loadingIndicator.show(context, 'RESET PASSWORD');
 
@@ -324,7 +324,7 @@ class ChangePasswordController extends GetxController {
     } catch (e) {
       logcat("Exception", e);
       loadingIndicator.hide(context);
-      ResetPassApi(context, fromProfile);
+      ChangePasswordApi(context, fromProfile);
     }
   }
 

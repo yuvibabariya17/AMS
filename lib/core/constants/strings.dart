@@ -269,7 +269,11 @@ class ScreenTitle {
   static const String update_appointment = 'Update Booking';
   static const String addCourse = 'Add Course';
   static const String addCustomer = 'Add Customer';
-  static const String addStudent = 'Add Student';
+  static const String addStudent = 'Add Expert';
+  static const String addStudentCourse = 'Add Student Course';
+  static const String addPackage = 'Add Package';
+  static const String addProductCategory = 'Add Product Category';
+  static const String addBrandCategory = 'Add Brand Category';
   static const String reportBug = 'Report Bug';
   static const String service = 'Service';
   static const String expert = 'Expert';

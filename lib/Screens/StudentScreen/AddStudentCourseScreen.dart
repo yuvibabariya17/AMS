@@ -425,8 +425,8 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                 SizedBox(
                                   height:
                                       SizerUtil.deviceType == DeviceType.mobile
-                                          ? 0.h
-                                          : 4.h,
+                                          ? 5.h
+                                          : 2.h,
                                 ),
                               ],
                             )),

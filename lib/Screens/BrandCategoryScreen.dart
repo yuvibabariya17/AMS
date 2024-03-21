@@ -506,7 +506,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
   getBrandCategoryDetails(BuildContext context, BrandCatList data) {
     return Common().commonDetailsDialog(
       context,
-      "BRAND CATEGORY DETAILS",
+      "Brnad Category Details",
       // isDescription: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,

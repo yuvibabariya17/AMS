@@ -497,7 +497,7 @@ class _ProductScreenState extends State<ProductScreen> {
   ) {
     return Common().commonDetailsDialog(
         context,
-        "PRODUCT DETAILS",
+        "Product Details",
         //  isDescription: true,
         isNotes: true,
         Column(

@@ -420,7 +420,7 @@ class _AddPackageScreenState extends State<AddPackageScreen> {
                         })),
                     SizedBox(
                       height:
-                          SizerUtil.deviceType == DeviceType.mobile ? 0.h : 4.h,
+                          SizerUtil.deviceType == DeviceType.mobile ? 5.h : 2.h,
                     ),
                   ],
                 )),

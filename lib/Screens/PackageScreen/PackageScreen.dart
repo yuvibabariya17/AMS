@@ -439,7 +439,7 @@ class _PackageScreenState extends State<PackageScreen> {
   getShowDetailsOfDialog(BuildContext context, PackageList data) {
     return Common().commonDetailsDialog(
         context,
-        "PACKAGE DETAILS",
+        "Package Details",
         // isNotes: true,
         Expanded(
           child: Column(

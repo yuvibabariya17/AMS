@@ -505,7 +505,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   ) {
     return Common().commonDetailsDialog(
       context,
-      "CUSTOMER DETAILS",
+      "Customer Details",
       isDescription: true,
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(

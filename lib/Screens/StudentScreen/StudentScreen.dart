@@ -513,7 +513,7 @@ class _StudentScreenState extends State<StudentScreen> {
   getStudentDetails(BuildContext context, StudentList data) {
     return Common().commonDetailsDialog(
       context,
-      "STUDENTS DETAILS",
+      "Student Details",
       //  isNotes: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,

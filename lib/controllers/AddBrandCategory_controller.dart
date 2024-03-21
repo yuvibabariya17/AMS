@@ -106,49 +106,7 @@ class AddBrandCategoryController extends GetxController {
   void validateDescription(String? val) {
     DescriptionModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Address";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
-  void validateEmail(String? val) {
-    EmailModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Email";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
-  void validateId(String? val) {
-    IdModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Select Id";
-        model.isValidate = false;
-      } else {
-        model!.error = null;
-        model.isValidate = true;
-      }
-    });
-
-    enableSignUpButton();
-  }
-
-  void validateContact(String? val) {
-    ContactModel.update((model) {
-      if (val != null && val.isEmpty) {
-        model!.error = "Enter Contact Number";
+        model!.error = "Enter Description";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -170,7 +128,8 @@ class AddBrandCategoryController extends GetxController {
     }
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+  showDialogForScreen(context, String message, bool? isEdit,
+      {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -180,7 +139,9 @@ class AddBrandCategoryController extends GetxController {
           return true;
         },
         message: message,
-        title: "Brand Category",
+        title: isEdit == true
+            ? ScreenTitle.updateBrandCategory
+            : ScreenTitle.addBrandCategory,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }
@@ -190,7 +151,8 @@ class AddBrandCategoryController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -208,22 +170,23 @@ class AddBrandCategoryController extends GetxController {
       if (response.statusCode == 200) {
         var responseDetail = CommonModel.fromJson(data);
         if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), false,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -233,7 +196,8 @@ class AddBrandCategoryController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, true,
+            callback: () {
           Get.back();
         });
         return;
@@ -251,22 +215,23 @@ class AddBrandCategoryController extends GetxController {
       if (response.statusCode == 200) {
         var responseDetail = CommonModel.fromJson(data);
         if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), true,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
+          showDialogForScreen(context, responseDetail.message.toString(), true,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), true,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, true,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -281,7 +246,8 @@ class AddBrandCategoryController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -310,17 +276,18 @@ class AddBrandCategoryController extends GetxController {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
           uploadProfileId.value = responseData.data.id.toString();
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, responseData.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, responseData.message.toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -332,7 +299,8 @@ class AddBrandCategoryController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -361,17 +329,18 @@ class AddBrandCategoryController extends GetxController {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
           uploadImageId.value = responseData.data.id.toString();
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, responseData.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, responseData.message.toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }

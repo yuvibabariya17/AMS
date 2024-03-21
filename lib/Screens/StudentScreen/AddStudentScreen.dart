@@ -300,9 +300,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 SizedBox(
                                   height:
                                       SizerUtil.deviceType == DeviceType.mobile
-                                          ? 0.h
+                                          ? 5.h
                                           : 2.h,
                                 ),
+                                // Container(
+                                //   child:  Text(text),
+                                // )
                               ],
                             )),
                       ),
@@ -314,4 +317,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       )),
     );
   }
+
+  String text = "";
 }

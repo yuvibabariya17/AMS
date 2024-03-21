@@ -842,8 +842,10 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                             //               controller.isFormInvalidate.value);
                             //     })),
                             SizedBox(
-                              height: 2.h,
-                            )
+                              height: SizerUtil.deviceType == DeviceType.mobile
+                                  ? 5.h
+                                  : 2.h,
+                            ),
                           ],
                         )),
                   ),

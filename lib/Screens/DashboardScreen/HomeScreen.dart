@@ -555,22 +555,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                 ),
                                                               ),
                                                             ),
+                                                      SizedBox(
+                                                        width: 4.w,
+                                                      ),
                                                       // Spacer(),
-                                                      Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: Icon(
-                                                            Icons.cancel,
-                                                            size: 24.0,
-                                                            color: isDarkMode()
-                                                                ? white
-                                                                : black,
+                                                      Expanded(
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: Icon(
+                                                              Icons.cancel,
+                                                              size: 24.0,
+                                                              color:
+                                                                  isDarkMode()
+                                                                      ? white
+                                                                      : black,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),

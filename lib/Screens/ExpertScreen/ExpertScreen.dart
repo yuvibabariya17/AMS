@@ -518,7 +518,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
   getExpertDetails(BuildContext context, ExpertList data) {
     return Common().commonDetailsDialog(
       context,
-      "EXPERT DETAILS",
+      "Expert Details",
       //  isNotes: true,
       Column(
         mainAxisAlignment: MainAxisAlignment.center,

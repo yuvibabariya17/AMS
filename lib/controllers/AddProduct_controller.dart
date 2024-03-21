@@ -185,7 +185,8 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -212,22 +213,23 @@ class addProductController extends GetxController {
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -237,7 +239,8 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, true,
+            callback: () {
           Get.back();
         });
         return;
@@ -264,22 +267,23 @@ class addProductController extends GetxController {
       logcat("RESPOSNE", data);
       if (response.statusCode == 200) {
         if (data['status'] == 1) {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {
             Get.back(result: true);
           });
         } else {
-          showDialogForScreen(context, data['message'].toString(),
+          showDialogForScreen(context, data['message'].toString(), true,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
+        showDialogForScreen(context, data['message'].toString(), true,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, true,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
@@ -294,7 +298,8 @@ class addProductController extends GetxController {
     isProductCategoryList.value = true;
     // try {
     if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
+      showDialogForScreen(context, Connection.noConnection, false,
+          callback: () {
         Get.back();
       });
       return;
@@ -314,10 +319,12 @@ class addProductController extends GetxController {
         productCategoryObjectList.addAll(data.data);
         logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
       } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
+        showDialogForScreen(context, responseData['message'], false,
+            callback: () {});
       }
     } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
     }
     // } catch (e) {
     //   logcat('Exception', e);
@@ -379,7 +386,8 @@ class addProductController extends GetxController {
     try {
       if (networkManager.connectionType == 0) {
         loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
           Get.back();
         });
         return;
@@ -408,22 +416,24 @@ class addProductController extends GetxController {
           logcat("UPLOAD_IMAGE_ID", responseData.data.id.toString());
           uploadImageId.value = responseData.data.id.toString();
         } else {
-          showDialogForScreen(context, responseData.message.toString(),
+          showDialogForScreen(context, responseData.message.toString(), false,
               callback: () {});
         }
       } else {
         state.value = ScreenState.apiError;
-        showDialogForScreen(context, responseData.message.toString(),
+        showDialogForScreen(context, responseData.message.toString(), false,
             callback: () {});
       }
     } catch (e) {
       logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
       loadingIndicator.hide(context);
     }
   }
 
-  showDialogForScreen(context, String message, {Function? callback}) {
+  showDialogForScreen(context, String message, bool? isEdit,
+      {Function? callback}) {
     showMessage(
         context: context,
         callback: () {
@@ -433,7 +443,8 @@ class addProductController extends GetxController {
           return true;
         },
         message: message,
-        title:    ScreenTitle.addProduct,
+        title:
+            isEdit == true ? ScreenTitle.updateProduct : ScreenTitle.addProduct,
         negativeButton: '',
         positiveButton: CommonConstant.continuebtn);
   }

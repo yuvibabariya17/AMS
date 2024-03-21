@@ -213,7 +213,7 @@ class AddCustomerController extends GetxController {
   void validateContact1(String? val) {
     contact1Model.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Contact Number 1";
+        model!.error = "Enter Contact No.";
         model.isValidate = false;
       } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
         model!.error = "Enter Valid Contact No";
@@ -247,10 +247,10 @@ class AddCustomerController extends GetxController {
   void validateWhatsapp(String? val) {
     whatsappModel.update((model) {
       if (val != null && val.isEmpty) {
-        model!.error = "Enter Whatsapp Number";
+        model!.error = "Enter Whatsapp No.";
         model.isValidate = false;
       } else if (val.toString().trim()!.replaceAll(' ', '').length != 10) {
-        model!.error = "Enter Valid Contact No";
+        model!.error = "Enter Valid Whatsapp No.";
         model.isValidate = false;
       } else {
         model!.error = null;

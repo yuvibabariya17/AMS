@@ -9,6 +9,7 @@ import 'package:booking_app/custom_componannt/CustomeBackground.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -467,7 +468,7 @@ class _CourseScreenState extends State<CourseScreen> {
   getCourseDetails(BuildContext context, ListofCourse data) {
     return Common().commonDetailsDialog(
         context,
-        "COURSE DETAILS",
+        "Course Details",
         // isDescription: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
@@ -624,12 +625,13 @@ class _CourseScreenState extends State<CourseScreen> {
                   Expanded(
                     child: Container(
                       width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 20.w
+                          ? 25.w
                           : 20.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
                           ? 10.h
                           : 20.h,
                       child: SingleChildScrollView(
+                        dragStartBehavior: DragStartBehavior.start,
                         scrollDirection: Axis.vertical,
                         child: Text(
                           data.description.toString(),

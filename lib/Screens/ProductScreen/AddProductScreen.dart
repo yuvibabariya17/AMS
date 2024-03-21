@@ -309,7 +309,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 })),
                             SizedBox(
                               height: SizerUtil.deviceType == DeviceType.mobile
-                                  ? 0.h
+                                  ? 5.h
                                   : 2.h,
                             ),
                           ],

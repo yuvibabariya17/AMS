@@ -166,44 +166,38 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   );
                                 }))),
                         SizedBox(height: 5.0.h),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 14.w,
-                            right: 14.w,
-                          ),
-                          child: FadeInUp(
-                            from: 50,
-                            child: Obx(() {
-                              return widget.fromProfile == false
-                                  ? getFormButton(
-                                      () {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
-                                          Get.to(LoginScreen());
-                                        }
-                                      },
-                                      CommonConstant.done,
-                                      validate: widget.fromProfile == true
-                                          ? controller.isFormInvalidate.value
-                                          : controller
-                                              .isForgotPasswordValidate.value,
-                                    )
-                                  : getFormButton(
-                                      () {
-                                        if (controller.isFormInvalidate.value ==
-                                            true) {
-                                          controller.ResetPassApi(
-                                              context, true);
-                                        }
-                                      },
-                                      CommonConstant.done,
-                                      validate: widget.fromProfile == true
-                                          ? controller.isFormInvalidate.value
-                                          : controller
-                                              .isForgotPasswordValidate.value,
-                                    );
-                            }),
-                          ),
+                        FadeInUp(
+                          from: 50,
+                          child: Obx(() {
+                            return widget.fromProfile == false
+                                ? getFormButton(
+                                    () {
+                                      if (controller.isFormInvalidate.value ==
+                                          true) {
+                                        Get.to(LoginScreen());
+                                      }
+                                    },
+                                    CommonConstant.done,
+                                    validate: widget.fromProfile == true
+                                        ? controller.isFormInvalidate.value
+                                        : controller
+                                            .isForgotPasswordValidate.value,
+                                  )
+                                : getFormButton(
+                                    () {
+                                      if (controller.isFormInvalidate.value ==
+                                          true) {
+                                        controller.ChangePasswordApi(
+                                            context, true);
+                                      }
+                                    },
+                                    CommonConstant.done,
+                                    validate: widget.fromProfile == true
+                                        ? controller.isFormInvalidate.value
+                                        : controller
+                                            .isForgotPasswordValidate.value,
+                                  );
+                          }),
                         ),
                       ],
                     ),

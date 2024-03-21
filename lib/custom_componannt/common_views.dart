@@ -223,7 +223,7 @@ getMiniButton(
 
 getFormButton(Function fun, str, {required bool validate}) {
   return Center(
-    child: InkWell(
+    child: GestureDetector(
       onTap: () {
         fun();
       },

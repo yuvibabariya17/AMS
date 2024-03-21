@@ -59,13 +59,13 @@ class Common {
                           child: title.length > 18
                               ? Marquee(
                                   style: TextStyle(
-                                    fontFamily: fontRegular,
-                                    color: isDarkMode() ? white : black,
-                                    fontSize: SizerUtil.deviceType ==
-                                            DeviceType.mobile
-                                        ? 16.sp
-                                        : 8.sp,
-                                  ),
+                                      fontFamily: fontRegular,
+                                      color: isDarkMode() ? white : black,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 15.sp
+                                          : 8.sp,
+                                      fontWeight: FontWeight.w900),
                                   text: title,
                                   scrollAxis: Axis
                                       .horizontal, // Use Axis.vertical for vertical scrolling
@@ -93,13 +93,13 @@ class Common {
                                   title,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontFamily: fontRegular,
-                                    color: isDarkMode() ? white : black,
-                                    fontSize: SizerUtil.deviceType ==
-                                            DeviceType.mobile
-                                        ? 16.sp
-                                        : 8.sp,
-                                  ),
+                                      fontFamily: fontRegular,
+                                      color: isDarkMode() ? white : black,
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 15.sp
+                                          : 8.sp,
+                                      fontWeight: FontWeight.w900),
                                 )),
                       Spacer(),
                       Align(
