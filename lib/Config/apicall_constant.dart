@@ -1,8 +1,8 @@
 class ApiUrl {
-  static const buildApiUrl = "http://192.168.1.18:4001/api/";
+  static const buildApiUrl = "http://192.168.1.9:4001/api/";
   static const ImgUrl = "http://192.168.1.18:4001/";
 
-  static const liveApiUrl = "http://192.168.1.18:4001/";
+  static const liveApiUrl = "http://192.168.1.9:4001/";
 
   static const login = "vendor/login";
   static const resetpass = "vendor/changePassword";
@@ -75,5 +75,8 @@ class ApiUrl {
   static const editProdcutCategory = "product/category/edit";
   static const editBrandCategory = "brand/category/edit";
   static const addProductSale = "product/sale/add";
-  static const addproductSaleDetails = "product/sale/details/add";
+  static const productSaleList = "product/sale/list";
+  static const productSaleDelete = "product/sale/delete";
+  static const productSaleEdit = "product/sale/edit";
+  //static const addproductSaleDetails = "product/sale/details/add";
 }

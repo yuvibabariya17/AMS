@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/core/themes/color_const.dart';
@@ -30,6 +31,7 @@ class addProductController extends GetxController {
       productimgNode,
       descriptionNode,
       categoryNode,
+      brandNode,
       amountNode,
       quantitynode;
 
@@ -37,6 +39,7 @@ class addProductController extends GetxController {
       productimgCtr,
       descriptionCtr,
       categroryCtr,
+      brandCtr,
       amountCtr,
       quantityCtr;
 
@@ -48,6 +51,7 @@ class addProductController extends GetxController {
     productimgNode = FocusNode();
     descriptionNode = FocusNode();
     categoryNode = FocusNode();
+    brandNode = FocusNode();
     amountNode = FocusNode();
     quantitynode = FocusNode();
 
@@ -55,6 +59,7 @@ class addProductController extends GetxController {
     productimgCtr = TextEditingController();
     descriptionCtr = TextEditingController();
     categroryCtr = TextEditingController();
+    brandCtr = TextEditingController();
     amountCtr = TextEditingController();
     quantityCtr = TextEditingController();
 
@@ -68,6 +73,7 @@ class addProductController extends GetxController {
   var productimgModel = ValidationModel(null, null, isValidate: false).obs;
   var descriptionModel = ValidationModel(null, null, isValidate: false).obs;
   var categroryModel = ValidationModel(null, null, isValidate: false).obs;
+  var brandModel = ValidationModel(null, null, isValidate: false).obs;
   var amountModel = ValidationModel(null, null, isValidate: false).obs;
   var quantityModel = ValidationModel(null, null, isValidate: false).obs;
 
@@ -115,7 +121,20 @@ class addProductController extends GetxController {
   void validateCategory(String? val) {
     categroryModel.update((model) {
       if (val == null || val.isEmpty) {
-        model!.error = "Enter Category";
+        model!.error = "Select Category";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+    enableSignUpButton();
+  }
+
+  void validateBrand(String? val) {
+    brandModel.update((model) {
+      if (val == null || val.isEmpty) {
+        model!.error = "Select Brand";
         model.isValidate = false;
       } else {
         model!.error = null;
@@ -162,6 +181,8 @@ class addProductController extends GetxController {
       isFormInvalidate.value = false;
     } else if (categroryModel.value.isValidate == false) {
       isFormInvalidate.value = false;
+    } else if (brandModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
     } else if (amountModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (quantityModel.value.isValidate == false) {
@@ -196,6 +217,7 @@ class addProductController extends GetxController {
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "product_category_id": productCategoryId.value.toString(),
+        "brand_category_id": brandId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -205,6 +227,7 @@ class addProductController extends GetxController {
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "product_category_id": productCategoryId.value.toString(),
+        "brand_category_id": brandId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       }, ApiUrl.addProduct, allowHeader: true);
@@ -250,6 +273,7 @@ class addProductController extends GetxController {
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "product_category_id": productCategoryId.value.toString().trim(),
+        "brand_category_id": brandId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       });
@@ -259,6 +283,7 @@ class addProductController extends GetxController {
         "description": descriptionCtr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "product_category_id": productCategoryId.value.toString().trim(),
+        "brand_category_id": brandId.value.toString(),
         "amount": int.parse(amountCtr.text),
         "qty": int.parse(quantityCtr.text),
       }, '${ApiUrl.editProduct}/$id', allowHeader: true);
@@ -363,6 +388,93 @@ class addProductController extends GetxController {
               },
               title: Text(
                 productCategoryObjectList[index].name.toString(),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
+                    color: isDarkMode() ? white : black),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
+  RxBool isBrandList = false.obs;
+  RxList<BrandCatList> brandObjectList = <BrandCatList>[].obs;
+  RxString brandId = "".obs;
+
+  void getBrandList(context) async {
+    state.value = ScreenState.apiLoading;
+    isBrandList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, false,
+            callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response = await Repository.post({}, ApiUrl.brandCategoryList,
+          allowHeader: true);
+      isBrandList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" SERVICE RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        if (responseData['status'] == 1) {
+          var data = BrandCategoryModel.fromJson(responseData);
+
+          state.value = ScreenState.apiSuccess;
+          brandObjectList.clear();
+          brandObjectList.addAll(data.data);
+          logcat("SERVICE RESPONSE", jsonEncode(brandObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'], false,
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, false,
+            callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isBrandList.value = false;
+    }
+  }
+
+  Widget setBrandList() {
+    return Obx(() {
+      if (isBrandList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isBrandList.value);
+      return setDropDownTestContent(
+        brandObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: brandObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: VisualDensity(
+                  horizontal: 0,
+                  vertical:
+                      SizerUtil.deviceType == DeviceType.mobile ? -4 : -1),
+              contentPadding: EdgeInsets.all(0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                brandId.value = brandObjectList[index].id.toString();
+                brandCtr.text =
+                    brandObjectList[index].name.capitalize.toString();
+
+                validateBrand(brandCtr.text);
+              },
+              title: Text(
+                brandObjectList[index].name.toString(),
                 style: TextStyle(
                     fontFamily: fontRegular,
                     fontSize: SizerUtil.deviceType == DeviceType.mobile

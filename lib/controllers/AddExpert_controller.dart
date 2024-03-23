@@ -227,8 +227,8 @@ class AddexpertController extends GetxController {
         "service_id": ServiceId.value.toString(),
         "image_id": uploadImageId.value.toString(),
         "amount": int.parse(Pricectr.text),
-        "startTime": startTime,
-        "endTime": endTime
+        "startTime": startTime.replaceAll(' ', '').toString().trim(),
+        "endTime": endTime.replaceAll(' ', '').toString().trim(),
       }, ApiUrl.addExpert, allowHeader: true);
 
       loadingIndicator.hide(context);

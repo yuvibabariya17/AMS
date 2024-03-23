@@ -289,56 +289,6 @@ class ProductSellingController extends GetxController {
     }
   }
 
-  void sellingDetails(context) async {
-    var loadingIndicator = LoadingProgressDialog();
-    try {
-      if (networkManager.connectionType == 0) {
-        loadingIndicator.hide(context);
-        showDialogForScreen(context, Connection.noConnection, callback: () {
-          Get.back();
-        });
-        return;
-      }
-      loadingIndicator.show(context, '');
-      //   var retrievedObject = await UserPreferences().getSignInInfo();
-      logcat("Passing_data::", {
-        "product_sale_id": "6501b02a3c7d91c34dbaca17",
-        "product_id": "64991ce8f9f9493f9fa96c38",
-        "qty": 2
-      });
-
-      var response = await Repository.post({
-        "product_sale_id": "6501b02a3c7d91c34dbaca17",
-        "product_id": "64991ce8f9f9493f9fa96c38",
-        "qty": 2
-      }, ApiUrl.addproductSaleDetails, allowHeader: true);
-
-      loadingIndicator.hide(context);
-      var data = jsonDecode(response.body);
-      logcat("RESPOSNE", data);
-      if (response.statusCode == 200) {
-        var responseDetail = CommonModel.fromJson(data);
-        if (responseDetail.status == 1) {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {
-            Get.back(result: true);
-          });
-        } else {
-          showDialogForScreen(context, responseDetail.message.toString(),
-              callback: () {});
-        }
-      } else {
-        state.value = ScreenState.apiError;
-        showDialogForScreen(context, data['message'].toString(),
-            callback: () {});
-      }
-    } catch (e) {
-      logcat("Exception", e);
-      showDialogForScreen(context, Connection.servererror, callback: () {});
-      loadingIndicator.hide(context);
-    }
-  }
-
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
   RxString uploadBreacherId = ''.obs;

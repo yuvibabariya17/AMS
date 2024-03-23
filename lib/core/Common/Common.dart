@@ -25,6 +25,7 @@ class Common {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+            backgroundColor: isDarkMode() ? black : white,
             insetPadding: EdgeInsets.symmetric(
                 vertical: isNotes == true
                     ? SizerUtil.deviceType == DeviceType.mobile
@@ -33,10 +34,10 @@ class Common {
                     : isDescription == true
                         ? SizerUtil.deviceType == DeviceType.mobile
                             ? 12.h
-                            : 25.h
+                            : 12.h
                         : SizerUtil.deviceType == DeviceType.mobile
                             ? 20.h
-                            : 10.h,
+                            : 20.h,
                 horizontal:
                     SizerUtil.deviceType == DeviceType.mobile ? 4.h : 6.h),
             shape: RoundedRectangleBorder(
@@ -45,10 +46,11 @@ class Common {
             ),
             elevation: 0.0, // No shadow
             //clipBehavior: Clip.antiAlias,
-            backgroundColor: isDarkMode() ? black : white,
+
             content:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
+                color: isDarkMode() ? black : white,
                 height: 3.h,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +103,7 @@ class Common {
                                           : 8.sp,
                                       fontWeight: FontWeight.w900),
                                 )),
-                      Spacer(),
+                      // Spacer(),
                       Align(
                         alignment: Alignment.topRight,
                         child: GestureDetector(

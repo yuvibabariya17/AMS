@@ -5,6 +5,7 @@ import 'package:booking_app/controllers/AddProduct_controller.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/strings.dart';
@@ -34,6 +35,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
           widget.editProduct!.description.toString();
       controller.categroryCtr.text =
           widget.editProduct!.productCategoryInfo.name.toString();
+      controller.brandCtr.text =
+          widget.editProduct!.brandCategoryInfo.name.toString();
       controller.amountCtr.text = widget.editProduct!.amount.toString();
       controller.quantityCtr.text = widget.editProduct!.qty.toString();
 
@@ -42,12 +45,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
       controller.productCategoryId.value =
           widget.editProduct!.productCategoryId.toString().trim();
 
+      controller.brandId.value = widget.editProduct!.brandCategoryId.toString();
+
       // Set other fields as well
     }
     if (widget.isEdit == true) {
       validateFields();
     }
     controller.getProductCategoryList(context);
+    controller.getBrandList(context);
 
     //   getProductCategoryAPI(context);
     super.initState();
@@ -61,6 +67,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     controller.categroryCtr.text = "";
     controller.amountCtr.text = "";
     controller.quantityCtr.text = "";
+    controller.brandCtr.text = "";
 
     super.dispose();
   }
@@ -73,6 +80,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     controller.validateCategory(controller.categroryCtr.text);
     controller.validateAmount(controller.amountCtr.text);
     controller.validateQuantity(controller.quantityCtr.text);
+    controller.validateBrand(controller.brandCtr.text);
 
     // Add validation for other fields as needed
   }
@@ -240,6 +248,35 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         },
                                         errorText: controller
                                             .categroryModel.value.error,
+                                        inputType: TextInputType.none,
+                                      );
+                                    }))),
+                            getTitle("Select Brand"),
+                            FadeInUp(
+                                from: 30,
+                                child: AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Obx(() {
+                                      return getReactiveFormField(
+                                        node: controller.brandNode,
+                                        controller: controller.brandCtr,
+                                        hintLabel: "Select Brand",
+                                        isdown: true,
+                                        wantSuffix: true,
+                                        onChanged: (val) {
+                                          controller.validateBrand(val);
+                                          setState(() {});
+                                        },
+                                        isReadOnly: true,
+                                        onTap: () {
+                                          //  controller.categroryCtr.text = "";
+                                          showDropDownDialog(
+                                              context,
+                                              controller.setBrandList(),
+                                              "Brand List");
+                                        },
+                                        errorText:
+                                            controller.brandModel.value.error,
                                         inputType: TextInputType.none,
                                       );
                                     }))),

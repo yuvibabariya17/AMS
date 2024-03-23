@@ -147,7 +147,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 3.h),
+                            margin: EdgeInsets.only(
+                                left: SizerUtil.deviceType == DeviceType.mobile
+                                    ? 2.2.h
+                                    : 4.8.w),
                             child: Text("Today",
                                 style: TextStyle(
                                     fontSize: SizerUtil.deviceType ==
@@ -163,7 +166,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               return FadeInDown(
                                 from: 70,
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 3.h),
+                                  margin: EdgeInsets.only(
+                                      left: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 2.2.h
+                                          : 4.8.w),
                                   child: Text(
                                     (controller.picDate.value.toString()),
                                     style: TextStyle(
@@ -192,6 +199,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           if (pickedDate != null) {
                             String apiPassingDate =
                                 DateFormat('yyyy-MM-dd').format(pickedDate);
+                            formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             controller.picDate.value =
                                 Common().formatDate(apiPassingDate.toString());
                             controller.selectedDate = pickedDate;
@@ -219,7 +228,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         },
                         child: Container(
                           margin: EdgeInsets.only(
-                            right: 3.5.h,
+                            right: SizerUtil.deviceType == DeviceType.mobile
+                                ? 2.h
+                                : 4.2.w,
                           ),
                           height: 6.1.h,
                           width: 6.1.h,
@@ -245,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   height: 1.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 5.w, right: 2.w),
+                  padding: EdgeInsets.only(left: 4.w, right: 2.w),
                   child: DatePicker(
                     DateTime.now(),
                     width: 7.h,
@@ -464,105 +475,98 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           //clipBehavior: Clip.antiAlias,
                                           backgroundColor:
                                               isDarkMode() ? black : white,
-                                          content: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 3.h,
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      item.service.length > 18
-                                                          ? Container(
-                                                              width: 60.w,
-                                                              child: Marquee(
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      fontRegular,
-                                                                  color: isDarkMode()
-                                                                      ? white
-                                                                      : black,
-                                                                  fontSize: SizerUtil
-                                                                              .deviceType ==
-                                                                          DeviceType
-                                                                              .mobile
-                                                                      ? 16.sp
-                                                                      : 10.sp,
+                                          content: Stack(children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  height: 3.h,
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Expanded(
+                                                          child: item.service
+                                                                      .length >
+                                                                  18
+                                                              ? Center(
+                                                                  child:
+                                                                      Container(
+                                                                    width: 60.w,
+                                                                    child:
+                                                                        Marquee(
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            fontRegular,
+                                                                        color: isDarkMode()
+                                                                            ? white
+                                                                            : black,
+                                                                        fontSize: SizerUtil.deviceType ==
+                                                                                DeviceType.mobile
+                                                                            ? 16.sp
+                                                                            : 10.sp,
+                                                                      ),
+                                                                      text: item
+                                                                          .service,
+                                                                      scrollAxis:
+                                                                          Axis.horizontal, // Use Axis.vertical for vertical scrolling
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start, // Adjust as needed
+                                                                      blankSpace:
+                                                                          20.0, // Adjust the space between text repetitions
+                                                                      velocity:
+                                                                          50.0, // Adjust the scrolling speed
+                                                                      pauseAfterRound:
+                                                                          const Duration(
+                                                                              seconds: 1), // Time to pause after each scroll
+                                                                      startPadding:
+                                                                          2.w, // Adjust the initial padding
+                                                                      accelerationDuration:
+                                                                          const Duration(
+                                                                              seconds: 1), // Duration for acceleration
+                                                                      accelerationCurve:
+                                                                          Curves
+                                                                              .linear, // Acceleration curve
+                                                                      decelerationDuration:
+                                                                          const Duration(
+                                                                              milliseconds: 500), // Duration for deceleration
+                                                                      decelerationCurve:
+                                                                          Curves
+                                                                              .easeOut, // Deceleration curve
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : Text(
+                                                                  item.service,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        fontRegular,
+                                                                    color: isDarkMode()
+                                                                        ? white
+                                                                        : black,
+                                                                    fontSize: SizerUtil.deviceType ==
+                                                                            DeviceType.mobile
+                                                                        ? 16.sp
+                                                                        : 10.sp,
+                                                                  ),
                                                                 ),
-                                                                text: item
-                                                                    .service,
-                                                                scrollAxis: Axis
-                                                                    .horizontal, // Use Axis.vertical for vertical scrolling
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start, // Adjust as needed
-                                                                blankSpace:
-                                                                    20.0, // Adjust the space between text repetitions
-                                                                velocity:
-                                                                    50.0, // Adjust the scrolling speed
-                                                                pauseAfterRound:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            1), // Time to pause after each scroll
-                                                                startPadding: 2
-                                                                    .w, // Adjust the initial padding
-                                                                accelerationDuration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            1), // Duration for acceleration
-                                                                accelerationCurve:
-                                                                    Curves
-                                                                        .linear, // Acceleration curve
-                                                                decelerationDuration:
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            500), // Duration for deceleration
-                                                                decelerationCurve:
-                                                                    Curves
-                                                                        .easeOut, // Deceleration curve
-                                                              ),
-                                                            )
-                                                          : Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          10.w),
-                                                              child: Text(
-                                                                item.service,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      fontRegular,
-                                                                  color: isDarkMode()
-                                                                      ? white
-                                                                      : black,
-                                                                  fontSize: SizerUtil
-                                                                              .deviceType ==
-                                                                          DeviceType
-                                                                              .mobile
-                                                                      ? 16.sp
-                                                                      : 10.sp,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                      SizedBox(
-                                                        width: 4.w,
-                                                      ),
-                                                      // Spacer(),
-                                                      Expanded(
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .topRight,
+                                                        ),
+
+                                                        // Spacer(),
+                                                        Positioned(
+                                                          top: 0,
+                                                          right: 0,
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
@@ -580,179 +584,99 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ]),
-                                              ),
-                                              Divider(
-                                                color: Colors.grey,
-                                              ),
-                                              Column(
-                                                // mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Customer Name : ",
-                                                        style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          color: isDarkMode()
-                                                              ? white
-                                                              : black,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          item.customerInfo.name
-                                                              .capitalize
-                                                              .toString(),
-                                                          overflow: TextOverflow
-                                                              .visible,
-                                                          maxLines: 3,
-                                                          textAlign:
-                                                              TextAlign.start,
+                                                      ]),
+                                                ),
+                                                Divider(
+                                                  color: Colors.grey,
+                                                ),
+                                                Column(
+                                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Customer Name : ",
                                                           style: TextStyle(
-                                                              fontSize: SizerUtil
-                                                                          .deviceType ==
-                                                                      DeviceType
-                                                                          .mobile
-                                                                  ? 12.sp
-                                                                  : 10.sp,
-                                                              color:
-                                                                  isDarkMode()
-                                                                      ? white
-                                                                      : black,
-                                                              fontFamily:
-                                                                  fontRegular),
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .mobile
+                                                                ? 12.sp
+                                                                : 6.sp,
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                            color: isDarkMode()
+                                                                ? white
+                                                                : black,
+                                                          ),
                                                         ),
+                                                        Expanded(
+                                                          child: Text(
+                                                            item.customerInfo
+                                                                .name.capitalize
+                                                                .toString(),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .visible,
+                                                            maxLines: 3,
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            style: TextStyle(
+                                                                fontSize: SizerUtil
+                                                                            .deviceType ==
+                                                                        DeviceType
+                                                                            .mobile
+                                                                    ? 12.sp
+                                                                    : 6.sp,
+                                                                color:
+                                                                    isDarkMode()
+                                                                        ? white
+                                                                        : black,
+                                                                fontFamily:
+                                                                    fontRegular),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Date of Appointment : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Date of Appointment : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    formatDate(item
-                                                        .dateOfAppointment
-                                                        .toString()),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: SizerUtil
-                                                                    .deviceType ==
-                                                                DeviceType
-                                                                    .mobile
-                                                            ? 12.sp
-                                                            : 12.sp,
-                                                        color: isDarkMode()
-                                                            ? white
-                                                            : black,
-                                                        fontFamily:
-                                                            fontRegular),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Time of Appointment : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    formatTime(
-                                                      selectedData
-                                                          .timeOfAppointment
-                                                          .toString(),
-                                                    ),
-
-                                                    // item.dateOfAppointment
-                                                    //     .toString(),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: SizerUtil
-                                                                    .deviceType ==
-                                                                DeviceType
-                                                                    .mobile
-                                                            ? 12.sp
-                                                            : 12.sp,
-                                                        color: isDarkMode()
-                                                            ? white
-                                                            : black,
-                                                        fontFamily:
-                                                            fontRegular),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Contact No : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      controller
-                                                          .launchPhoneCall(item
-                                                              .customerInfo
-                                                              .contactNo);
-                                                    },
-                                                    child: Text(
-                                                      item.customerInfo
-                                                          .contactNo,
+                                                    Text(
+                                                      formatDate(item
+                                                          .dateOfAppointment
+                                                          .toString()),
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -762,88 +686,144 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                   DeviceType
                                                                       .mobile
                                                               ? 12.sp
-                                                              : 12.sp,
+                                                              : 6.sp,
                                                           color: isDarkMode()
-                                                              ? Colors.blue
-                                                              : Colors.blue,
+                                                              ? white
+                                                              : black,
                                                           fontFamily:
                                                               fontRegular),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
+                                                  ],
+                                                ),
+                                                SizedBox(height: 1.h),
+                                                Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        style: TextStyle(
-                                                          fontSize: 8.sp,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: isDarkMode()
-                                                              ? white
-                                                              : black,
-                                                          fontFamily: fontBold,
-                                                        ),
-                                                        children: [
-                                                          TextSpan(
-                                                            text: 'Duration : ',
-                                                            style: TextStyle(
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                    Text(
+                                                      "Time of Appointment : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
                                                       ),
                                                     ),
                                                     Text(
-                                                      item.duration.toString(),
+                                                      formatTime(
+                                                        selectedData
+                                                            .timeOfAppointment
+                                                            .toString(),
+                                                      ),
+
+                                                      // item.dateOfAppointment
+                                                      //     .toString(),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           fontSize: SizerUtil
                                                                       .deviceType ==
                                                                   DeviceType
                                                                       .mobile
                                                               ? 12.sp
-                                                              : 12.sp,
+                                                              : 6.sp,
                                                           color: isDarkMode()
                                                               ? white
                                                               : black,
                                                           fontFamily:
                                                               fontRegular),
-                                                    )
-                                                  ]),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Appointment Type : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      item.appointmentType,
+                                                  ],
+                                                ),
+                                                SizedBox(height: 1.h),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Contact No : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        controller
+                                                            .launchPhoneCall(item
+                                                                .customerInfo
+                                                                .contactNo);
+                                                      },
+                                                      child: Text(
+                                                        item.customerInfo
+                                                            .contactNo,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .mobile
+                                                                ? 12.sp
+                                                                : 6.sp,
+                                                            color: isDarkMode()
+                                                                ? Colors.blue
+                                                                : Colors.blue,
+                                                            fontFamily:
+                                                                fontRegular),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Duration : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      item.duration.toString(),
                                                       maxLines: 2,
                                                       overflow:
                                                           TextOverflow.visible,
@@ -855,102 +835,161 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                   DeviceType
                                                                       .mobile
                                                               ? 12.sp
-                                                              : 12.sp,
+                                                              : 6.sp,
                                                           color: isDarkMode()
                                                               ? white
                                                               : black,
                                                           fontFamily:
                                                               fontRegular),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Amount : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '₹ ${item.amount.toString()}',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Appointment Type : ",
+                                                      style: TextStyle(
                                                         fontSize: SizerUtil
                                                                     .deviceType ==
                                                                 DeviceType
                                                                     .mobile
                                                             ? 12.sp
-                                                            : 12.sp,
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
                                                         color: isDarkMode()
                                                             ? white
                                                             : black,
-                                                        fontFamily:
-                                                            fontRegular),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "Notes : ",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: isDarkMode()
-                                                          ? white
-                                                          : black,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      item.notes,
-                                                      maxLines: 2,
+                                                    Expanded(
+                                                      child: Text(
+                                                        item.appointmentType,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .visible,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: TextStyle(
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .mobile
+                                                                ? 12.sp
+                                                                : 6.sp,
+                                                            color: isDarkMode()
+                                                                ? white
+                                                                : black,
+                                                            fontFamily:
+                                                                fontRegular),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Amount : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '₹ ${item.amount.toString()}',
+                                                      maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      textAlign:
-                                                          TextAlign.start,
                                                       style: TextStyle(
                                                           fontSize: SizerUtil
                                                                       .deviceType ==
                                                                   DeviceType
                                                                       .mobile
                                                               ? 12.sp
-                                                              : 12.sp,
+                                                              : 6.sp,
                                                           color: isDarkMode()
                                                               ? white
                                                               : black,
                                                           fontFamily:
                                                               fontRegular),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 1.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Notes : ",
+                                                      style: TextStyle(
+                                                        fontSize: SizerUtil
+                                                                    .deviceType ==
+                                                                DeviceType
+                                                                    .mobile
+                                                            ? 12.sp
+                                                            : 6.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: isDarkMode()
+                                                            ? white
+                                                            : black,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        item.notes,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: TextStyle(
+                                                            fontSize: SizerUtil
+                                                                        .deviceType ==
+                                                                    DeviceType
+                                                                        .mobile
+                                                                ? 12.sp
+                                                                : 6.sp,
+                                                            color: isDarkMode()
+                                                                ? white
+                                                                : black,
+                                                            fontFamily:
+                                                                fontRegular),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ]),
                                         );
                                       },
                                     );
@@ -1093,22 +1132,26 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                Text(
-                                                                  maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  item.service,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        11.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w800,
-                                                                    color: isDarkMode()
-                                                                        ? white
-                                                                        : black,
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    maxLines: 1,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    item.service,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize: SizerUtil.deviceType ==
+                                                                              DeviceType.mobile
+                                                                          ? 12.sp
+                                                                          : 6.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w800,
+                                                                      color: isDarkMode()
+                                                                          ? white
+                                                                          : black,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 // Spacer(),
@@ -1176,8 +1219,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                   "Customer : ",
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize:
-                                                                        10.sp,
+                                                                    fontSize: SizerUtil.deviceType ==
+                                                                            DeviceType.mobile
+                                                                        ? 10.sp
+                                                                        : 6.sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w800,
@@ -1200,17 +1245,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    style: TextStyle(
-                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                                                            ? 9
-                                                                                .sp
-                                                                            : 7
-                                                                                .sp,
-                                                                        color: isDarkMode()
-                                                                            ? white
-                                                                            : black,
-                                                                        fontFamily:
-                                                                            fontRegular),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize: SizerUtil.deviceType ==
+                                                                              DeviceType.mobile
+                                                                          ? 10.sp
+                                                                          : 6.sp,
+                                                                      color: isDarkMode()
+                                                                          ? white
+                                                                          : black,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1227,8 +1271,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                     "Duration : ",
                                                                     style:
                                                                         TextStyle(
-                                                                      fontSize:
-                                                                          10.sp,
+                                                                      fontSize: SizerUtil.deviceType ==
+                                                                              DeviceType.mobile
+                                                                          ? 10.sp
+                                                                          : 6.sp,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w800,
@@ -1247,9 +1293,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                             .ellipsis,
                                                                     style: TextStyle(
                                                                         fontSize: SizerUtil.deviceType == DeviceType.mobile
-                                                                            ? 9
+                                                                            ? 10
                                                                                 .sp
-                                                                            : 7
+                                                                            : 6
                                                                                 .sp,
                                                                         color: isDarkMode()
                                                                             ? white
@@ -1261,10 +1307,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                             Row(
                                                               children: [
                                                                 Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          top: 0.5
-                                                                              .h),
+                                                                  margin: EdgeInsets.only(
+                                                                      top: SizerUtil.deviceType ==
+                                                                              DeviceType.mobile
+                                                                          ? 0.5.h
+                                                                          : 0.1.h),
                                                                   child: Text(
                                                                     //  data.title,
                                                                     formatTime(selectedData
@@ -1277,8 +1324,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                             : black,
                                                                         fontFamily:
                                                                             opensansMedium,
-                                                                        fontSize: 10
-                                                                            .sp,
+                                                                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                                                            ? 10
+                                                                                .sp
+                                                                            : 5.5
+                                                                                .sp,
                                                                         fontWeight:
                                                                             FontWeight.w700),
                                                                   ),
@@ -1321,6 +1371,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           ),
           GestureDetector(
             onTap: () {
+              logcat("SELECTED_DATE", formattedDate.toString());
               Get.to(AppointmentBookingScreen(
                       selectedDate:
                           controller.homeFormatTime(formattedDate.toString())))

@@ -53,7 +53,7 @@ class HomeAppBar extends StatelessWidget {
                                   left:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 0.0
-                                          : 2.0.w),
+                                          : 0.0),
                               child: SvgPicture.asset(
                                 Asset.menu,
                                 height:

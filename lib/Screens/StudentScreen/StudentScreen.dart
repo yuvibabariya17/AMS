@@ -564,7 +564,8 @@ class _StudentScreenState extends State<StudentScreen> {
               Text(
                 "Student Name : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -578,7 +579,7 @@ class _StudentScreenState extends State<StudentScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -595,7 +596,8 @@ class _StudentScreenState extends State<StudentScreen> {
               Text(
                 "Contact No : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -612,7 +614,7 @@ class _StudentScreenState extends State<StudentScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 12.sp,
+                          : 6.sp,
                       color: isDarkMode() ? Colors.blue : Colors.blue,
                       fontFamily: fontRegular),
                 ),
@@ -623,40 +625,73 @@ class _StudentScreenState extends State<StudentScreen> {
             height: 1.h,
           ),
           Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 8.sp,
-                      fontWeight: FontWeight.w700,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontBold,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Email : ',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Email : ",
+                style: TextStyle(
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
+                  fontWeight: FontWeight.w800,
+                  color: isDarkMode() ? white : black,
                 ),
-                Text(
-                  data.email.toString(),
-                  textAlign: TextAlign.start,
-                  maxLines: 2,
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.mobile
-                          ? 12.sp
-                          : 12.sp,
-                      color: isDarkMode() ? white : black,
-                      fontFamily: fontRegular),
-                )
-              ]),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    // controller.launchPhoneCall(
+                    //     data.customerInfo.contactNo);
+                  },
+                  child: Text(
+                    data.email.toString(),
+                    textAlign: TextAlign.start,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: SizerUtil.deviceType == DeviceType.mobile
+                            ? 12.sp
+                            : 6.sp,
+                        color: isDarkMode() ? white : black,
+                        fontFamily: fontRegular),
+                  )),
+            ],
+          ),
+
+          // Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       RichText(
+          //         text: TextSpan(
+          //           style: TextStyle(
+          //             fontSize: 8.sp,
+          //             fontWeight: FontWeight.w700,
+          //             color: isDarkMode() ? white : black,
+          //             fontFamily: fontBold,
+          //           ),
+          //           children: [
+          //             TextSpan(
+          //               text: 'Email : ',
+          //               style: TextStyle(
+          //                 fontSize: 12.sp,
+          //                 fontWeight: FontWeight.w800,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       Text(
+          //         data.email.toString(),
+          //         textAlign: TextAlign.start,
+          //         maxLines: 2,
+          //         style: TextStyle(
+          //             fontSize: SizerUtil.deviceType == DeviceType.mobile
+          //                 ? 12.sp
+          //                 : 12.sp,
+          //             color: isDarkMode() ? white : black,
+          //             fontFamily: fontRegular),
+          //       )
+          //     ]),
+
           SizedBox(
             height: 1.h,
           ),
@@ -667,25 +702,35 @@ class _StudentScreenState extends State<StudentScreen> {
               Text(
                 "Address : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
               ),
               Expanded(
                 child: Container(
-                  height: 6.h,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      data.address.toString(),
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                  width: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 20.w,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    thickness: 1.5,
+                    radius: Radius.circular(50),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        data.address.toString(),
+                        maxLines: 5,
+                        overflow: TextOverflow.visible,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 6.sp,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                      ),
                     ),
                   ),
                 ),

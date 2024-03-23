@@ -358,8 +358,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
         ExpertList data = controller.filteredExpertObjectList[index];
         return Container(
           padding: EdgeInsets.only(
-            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 0.5.w,
-            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 0.5.w,
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 1.5.w : 1.w,
           ),
           decoration: BoxDecoration(
             color: isDarkMode() ? black : white,
@@ -536,7 +536,8 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.grey, // Set your desired border color here
-                    width: 0.5, // Set the width of the border
+                    width: 0.5,
+                    // Set the width of the border
                   ),
                   borderRadius: BorderRadius.circular(18),
                 ),
@@ -570,7 +571,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 "Expert Name : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -584,7 +585,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -602,7 +603,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 "Service : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -615,7 +616,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -632,7 +633,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 "Start Time : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -646,7 +647,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -663,7 +664,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 "End Time : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -677,7 +678,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -694,7 +695,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 "Amount : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -706,7 +707,7 @@ class _ExpertScreenState extends State<ExpertScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),

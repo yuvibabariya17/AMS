@@ -39,6 +39,8 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
           widget.editBrandCategory!.uploadInfo.image.toString();
       controller.descCtr.text =
           widget.editBrandCategory!.description.toString();
+      controller.categroryCtr.text =
+          widget.editBrandCategory!.productCategoryInfo.name.toString();
 
       controller.uploadImageId.value =
           widget.editBrandCategory!.uploadId.toString();
@@ -49,6 +51,8 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
 
       // Set other fields as well
     }
+
+    controller.getProductCategoryList(context);
 
     super.initState();
   }
@@ -91,7 +95,51 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                getTitle("Name"),
+                                getTitle(AddProductConstant.category),
+                                FadeInUp(
+                                    from: 30,
+                                    child: AnimatedSize(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: Obx(() {
+                                          return getReactiveFormField(
+                                            node: controller.categoryNode,
+                                            controller: controller.categroryCtr,
+                                            hintLabel: AddProductConstant
+                                                .category_hint,
+                                            wantSuffix: true,
+                                            isdown: true,
+                                            onChanged: (val) {
+                                              controller.validateCategory(val);
+                                              setState(() {});
+                                            },
+                                            // onAddBtn: () {
+                                            //   Get.to(AddProductCategoryScreen())
+                                            //       ?.then((value) {
+                                            //     if (value == true) {
+                                            //       logcat("ISDONE", "DONE");
+                                            //       controller
+                                            //           .getProductCategoryList(
+                                            //         context,
+                                            //       );
+                                            //     }
+                                            //   });
+                                            // },
+                                            //  isAdd: true,
+                                            isReadOnly: true,
+                                            onTap: () {
+                                              //  controller.categroryCtr.text = "";
+                                              showDropDownDialog(
+                                                  context,
+                                                  controller.setCategoryList(),
+                                                  "Category List");
+                                            },
+                                            errorText: controller
+                                                .categroryModel.value.error,
+                                            inputType: TextInputType.none,
+                                          );
+                                        }))),
+                                getTitle("Brand Name"),
                                 FadeInUp(
                                     from: 30,
                                     child: AnimatedSize(
@@ -101,7 +149,7 @@ class _AddBrandCategoryScreenState extends State<AddBrandCategoryScreen> {
                                           return getReactiveFormField(
                                             node: controller.nameNode,
                                             controller: controller.namectr,
-                                            hintLabel: "Enter Name",
+                                            hintLabel: "Enter Brand Name",
                                             onChanged: (val) {
                                               controller.validateName(val);
                                             },

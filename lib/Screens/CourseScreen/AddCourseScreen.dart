@@ -32,7 +32,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
   @override
   void initState() {
     if (widget.isEdit == true && widget.editCourse != null) {
-      controller.Studentctr.text = widget.editCourse!.name;
+      controller.Coursectr.text = widget.editCourse!.name;
       controller.Feesctr.text = widget.editCourse!.fees.toString();
       controller.Durationctr.text = widget.editCourse!.duration.toString();
       controller.Descctr.text = widget.editCourse!.description;
@@ -54,7 +54,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
   void validateFields() {
     // Validate all fields here
-    controller.validateStudent(controller.Studentctr.text);
+    controller.validateCourse(controller.Coursectr.text);
     controller.validateFee(controller.Feesctr.text);
     controller.validateStartDate(controller.Durationctr.text);
     controller.validateDescription(controller.Descctr.text);
@@ -66,7 +66,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
   @override
   void dispose() {
-    controller.Studentctr.text = "";
+    controller.Coursectr.text = "";
     controller.Feesctr.text = "";
     controller.Durationctr.text = "";
     controller.Descctr.text = "";
@@ -128,15 +128,15 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           const Duration(milliseconds: 300),
                                       child: Obx(() {
                                         return getReactiveFormField(
-                                          node: controller.StudentNode,
-                                          controller: controller.Studentctr,
+                                          node: controller.CourseNode,
+                                          controller: controller.Coursectr,
                                           hintLabel: "Enter Course Name",
                                           // isReadOnly: true,
                                           onChanged: (val) {
-                                            controller.validateStudent(val);
+                                            controller.validateCourse(val);
                                           },
                                           errorText: controller
-                                              .StudentModel.value.error,
+                                              .CourseModel.value.error,
                                           inputType: TextInputType.name,
                                         );
                                       }))),

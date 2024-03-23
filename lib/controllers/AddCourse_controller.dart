@@ -89,7 +89,7 @@ class AddCourseController extends GetxController {
   var IdModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
-    if (StudentModel.value.isValidate == false) {
+    if (CourseModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     }
     // else if (CourseModel.value.isValidate == false) {
@@ -233,7 +233,7 @@ class AddCourseController extends GetxController {
       var retrievedObject = await UserPreferences().getSignInInfo();
 
       logcat("ADDCOURSE", {
-        "name": Studentctr.text.toString().trim(),
+        "name": Coursectr.text.toString().trim(),
         "thumbnail_url": uploadImageId.value.toString(),
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
@@ -243,7 +243,7 @@ class AddCourseController extends GetxController {
       });
 
       var response = await Repository.post({
-        "name": Studentctr.text.toString().trim(),
+        "name": Coursectr.text.toString().trim(),
         "thumbnail_url": uploadImageId.value.toString(),
         "duration": Durationctr.text.toString().trim(),
         "fees": Feesctr.text.toString().trim(),
@@ -293,7 +293,7 @@ class AddCourseController extends GetxController {
     var retrievedObject = await UserPreferences().getSignInInfo();
 
     logcat("UPDATE_COURSE", {
-      "name": Studentctr.text.toString().trim(),
+      "name": Coursectr.text.toString().trim(),
       "thumbnail_url": uploadImageId.value.toString(),
       "duration": Durationctr.text.toString().trim(),
       "fees": Feesctr.text.toString().trim(),
@@ -302,7 +302,7 @@ class AddCourseController extends GetxController {
       "vendor_id": retrievedObject!.id.toString().trim()
     });
     var response = await Repository.put({
-      "name": Studentctr.text.toString().trim(),
+      "name": Coursectr.text.toString().trim(),
       "thumbnail_url": uploadImageId.value.toString(),
       "duration": Durationctr.text.toString().trim(),
       "fees": Feesctr.text.toString().trim(),

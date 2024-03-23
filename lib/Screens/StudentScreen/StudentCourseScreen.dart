@@ -729,7 +729,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '₹ ${data.fees.toString()}',
+                    '₹ ${data.courseInfo.fees.toString()}',
                     style: TextStyle(
                       color: isDarkMode() ? white : black,
                       fontFamily: opensansMedium,
@@ -841,7 +841,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 "Course Name : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -855,7 +855,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -873,7 +873,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 "Course Fee : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -890,7 +890,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -908,7 +908,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 "Duration : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -920,7 +920,7 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? white : black,
                     fontFamily: fontRegular),
               ),
@@ -937,25 +937,33 @@ class _StudentCourseScreenState extends State<StudentCourseScreen> {
                 "Other Notes : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
               ),
               Expanded(
                 child: Container(
-                  height: 10.h,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      data.otherNotes.toString(),
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 8.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                  width:
+                      SizerUtil.deviceType == DeviceType.mobile ? 20.w : 20.w,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    thickness: 1.5,
+                    radius: Radius.circular(50),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        data.otherNotes.toString(),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 6.sp,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                      ),
                     ),
                   ),
                 ),

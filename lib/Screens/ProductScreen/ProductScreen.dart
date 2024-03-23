@@ -499,7 +499,7 @@ class _ProductScreenState extends State<ProductScreen> {
         context,
         "Product Details",
         //  isDescription: true,
-        isNotes: true,
+        // isNotes: true,
         Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -554,7 +554,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -563,12 +563,12 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Text(
                       data.name.capitalize.toString(),
                       overflow: TextOverflow.visible,
-                      maxLines: 3,
+                      maxLines: 5,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 8.sp,
+                              : 6.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -587,7 +587,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -601,7 +601,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 8.sp,
+                              : 6.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -620,7 +620,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -632,7 +632,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 8.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -650,7 +650,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -662,7 +662,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 8.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -680,7 +680,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -688,23 +688,28 @@ class _ProductScreenState extends State<ProductScreen> {
                   Expanded(
                     child: Container(
                       width: SizerUtil.deviceType == DeviceType.mobile
-                          ? 10.w
+                          ? 20.w
                           : 10.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
-                          ? 15.h
+                          ? 10.h
                           : 10.h,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          data.description.toString(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.mobile
-                                      ? 12.sp
-                                      : 8.sp,
-                              color: isDarkMode() ? white : black,
-                              fontFamily: fontRegular),
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        thickness: 1.5,
+                        radius: Radius.circular(50),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            data.description.toString(),
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 12.sp
+                                        : 6.sp,
+                                color: isDarkMode() ? white : black,
+                                fontFamily: fontRegular),
+                          ),
                         ),
                       ),
                     ),

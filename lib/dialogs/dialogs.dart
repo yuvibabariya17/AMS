@@ -134,8 +134,9 @@ Widget setDropDownContent(RxList<dynamic> list, Widget content,
                   child: Text(
                 "Empty List",
                 style: TextStyle(
-                    fontSize:
-                        SizerUtil.deviceType == DeviceType.mobile ? 6.sp : 6.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 12.sp,
                     fontFamily: fontMedium),
               )),
             )
@@ -186,8 +187,9 @@ Widget setDropDownTestContent(RxList<dynamic> list, Widget content,
                   child: Text(
                 "Empty List",
                 style: TextStyle(
-                    fontSize:
-                        SizerUtil.deviceType == DeviceType.mobile ? 6.sp : 6.sp,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 12.sp
+                        : 12.sp,
                     fontFamily: fontMedium,
                     color: isDarkMode() ? white : black),
               )),
@@ -213,6 +215,7 @@ Future showDropDownDialog(BuildContext context, Widget content, String title) {
                 left: SizerUtil.deviceType == DeviceType.mobile ? 0.w : 2.9.w),
             child: Text(
               title,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: fontMedium,
                   fontSize:

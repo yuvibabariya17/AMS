@@ -86,10 +86,10 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(
-                              top: 1.h,
+                              top: 2.h,
                               right: SizerUtil.deviceType == DeviceType.mobile
                                   ? 7.w
-                                  : 13.w,
+                                  : 7.w,
                             ),
                             child: Text(
                               "View More >",
@@ -109,9 +109,9 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(
-                        top: 1.h,
-                      ),
+                      // margin: EdgeInsets.only(
+                      //   top: 1.h,
+                      // ),
                       padding: EdgeInsets.only(
                         left: SizerUtil.deviceType == DeviceType.mobile
                             ? 5.w
@@ -126,7 +126,10 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                           scrollDirection: Axis.vertical,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
+                            crossAxisCount:
+                                SizerUtil.deviceType == DeviceType.mobile
+                                    ? 2
+                                    : 3,
                             crossAxisSpacing: 10.0,
                             mainAxisSpacing:
                                 SizerUtil.deviceType == DeviceType.mobile
@@ -134,7 +137,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                     : 15.0,
                             childAspectRatio:
                                 SizerUtil.deviceType == DeviceType.mobile
-                                    ? 1.5
+                                    ? 1.8
                                     : 1.8,
                           ),
                           clipBehavior: Clip.antiAlias,
@@ -147,25 +150,25 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                   right:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 1.w
-                                          : 4.w,
+                                          : 1.w,
                                   top: SizerUtil.deviceType == DeviceType.mobile
                                       ? 1.h
                                       : 1.h,
                                   left:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 1.w
-                                          : 4.w),
+                                          : 1.w),
                               child: Container(
                                 padding: EdgeInsets.only(
                                   //  top: 1.h,
                                   left:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 3.w
-                                          : 4.w,
+                                          : 0.5.w,
                                   right:
                                       SizerUtil.deviceType == DeviceType.mobile
                                           ? 3.w
-                                          : 4.w,
+                                          : 0.5.w,
                                   // bottom: 1.h
                                 ),
                                 child: Row(
@@ -177,7 +180,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                         height: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 6.h
-                                            : 8.h,
+                                            : 5.h,
                                         child: CircleAvatar(
                                           radius: 3.h,
                                           backgroundColor: white,
@@ -188,7 +191,11 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                         ),
                                       ),
                                     ]),
-                                    SizedBox(width: 2.w),
+                                    SizedBox(
+                                        width: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 2.w
+                                            : 1.w),
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment:
@@ -210,7 +217,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 14.sp
-                                                        : 7.sp,
+                                                        : 6.sp,
                                                 fontWeight: FontWeight.w700),
                                           ),
                                           // SizedBox(
@@ -233,7 +240,7 @@ class _StaffprofileTabScreenState extends State<StaffprofileTabScreen> {
                                                     SizerUtil.deviceType ==
                                                             DeviceType.mobile
                                                         ? 11.sp
-                                                        : 7.sp,
+                                                        : 6.sp,
                                                 fontWeight: FontWeight.w400),
                                           )
                                         ],

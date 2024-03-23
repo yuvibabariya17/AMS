@@ -52,16 +52,20 @@ class PreviousAppointmentController extends GetxController {
           "recordPerPage": 20,
           "sortBy": "name",
           "sortDirection": "asc"
-        },
-        "search": {
-          "startAt": selectedDateString != null ? selectedDateString : ''
-          // "endAt": selectedDateString.toString()
-          // "vendor_id": "65964339a438e9a2e56bb859",
-          // "customer_id": "65002e988f256c43ccea2fcb",
-          // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
-          // "appointment_slot_id": "6500476bf3b6019b811a1e22"
         }
+        // ,
+        // "search": {
+        //   "startAt": selectedDateString != null ? selectedDateString : ''
+        //   // "endAt": selectedDateString.toString()
+        //   // "vendor_id": "65964339a438e9a2e56bb859",
+        //   // "customer_id": "65002e988f256c43ccea2fcb",
+        //   // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
+        //   // "appointment_slot_id": "6500476bf3b6019b811a1e22"
+        // }
       });
+      DateTime today = DateTime.now();
+      DateTime lastWeekStart = today.subtract(Duration(days: 7));
+      DateTime lastWeekEnd = today.subtract(Duration(days: 1));
 
       var response = await Repository.post({
         "pagination": {
@@ -88,10 +92,8 @@ class PreviousAppointmentController extends GetxController {
           logcat("TWODAYSAGO", twoDaysAgo.toString());
 
           data.data.retainWhere((appointment) =>
-              appointment.dateOfAppointment.isAfter(twoDaysAgo) &&
-              appointment.dateOfAppointment
-                  .isBefore(DateTime(today.year, today.month, today.day)));
-
+              appointment.dateOfAppointment.isAfter(lastWeekStart) &&
+              appointment.dateOfAppointment.isBefore(lastWeekEnd));
           data.data.sort(
               (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
 
@@ -99,9 +101,11 @@ class PreviousAppointmentController extends GetxController {
           appointmentObjectList.clear();
           appointmentObjectList.addAll(data.data);
           logcat("APPOINTMENT LIST", jsonEncode(appointmentObjectList));
-           if (currentPage.value < totalPages.value) {
+          if (currentPage.value < totalPages.value) {
             currentPage.value++;
-            getAppointmentList(context,);
+            getAppointmentList(
+              context,
+            );
           }
         } else {
           showDialogForScreen(context, responseData['message'],

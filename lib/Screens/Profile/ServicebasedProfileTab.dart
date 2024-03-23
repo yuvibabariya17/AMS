@@ -78,8 +78,8 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             left: 5.w,
                             right: SizerUtil.deviceType == DeviceType.mobile
                                 ? 7.w
-                                : 13.w,
-                            top: 1.h),
+                                : 7.w,
+                            top: 2.h),
                         child: Text(
                           "View More >",
                           style: TextStyle(
@@ -97,9 +97,9 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                 child: Container(
                   margin: EdgeInsets.only(top: 1.h),
                   padding: EdgeInsets.only(
-                    left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 8.w,
+                    left: SizerUtil.deviceType == DeviceType.mobile ? 7.w : 7.w,
                     right:
-                        SizerUtil.deviceType == DeviceType.mobile ? 7.w : 8.w,
+                        SizerUtil.deviceType == DeviceType.mobile ? 7.w : 7.w,
                   ),
                   child: Container(
                     width: double.infinity,
@@ -114,11 +114,17 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:
                               SizerUtil.deviceType == DeviceType.mobile ? 2 : 3,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing:
+                              SizerUtil.deviceType == DeviceType.mobile
+                                  ? 10.0
+                                  : 20.0,
+                          mainAxisSpacing:
+                              SizerUtil.deviceType == DeviceType.mobile
+                                  ? 10.0
+                                  : 20.0,
                           childAspectRatio:
                               SizerUtil.deviceType == DeviceType.mobile
-                                  ? 2.0
+                                  ? 2.2
                                   : 1.8,
                         ),
                         itemCount: controller.serviceObjectList.length,
@@ -129,12 +135,12 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                             padding: EdgeInsets.only(
                               left: SizerUtil.deviceType == DeviceType.mobile
                                   ? 3.w
-                                  : 1.w,
+                                  : 3.w,
                               right: SizerUtil.deviceType == DeviceType.mobile
                                   ? 3.w
                                   : 1.w,
                               top: SizerUtil.deviceType == DeviceType.mobile
-                                  ? 2.h
+                                  ? 1.h
                                   : 0.5.h,
                               bottom: SizerUtil.deviceType == DeviceType.mobile
                                   ? 1.h
@@ -173,7 +179,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                     fontSize: SizerUtil.deviceType ==
                                             DeviceType.mobile
                                         ? 14.sp
-                                        : 9.sp,
+                                        : 6.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -189,7 +195,7 @@ class _ServiceProfileTabScreenState extends State<ServiceProfileTabScreen> {
                                         fontSize: SizerUtil.deviceType ==
                                                 DeviceType.mobile
                                             ? 11.sp
-                                            : 9.sp,
+                                            : 6.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),

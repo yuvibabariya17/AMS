@@ -115,6 +115,7 @@ class _AddReportBugScreenState extends State<AddReportBugScreen> {
                                 controller: controller.imgctr,
                                 hintLabel: ReportBugConstant.upload_hint,
                                 wantSuffix: true,
+                                isPhoto: true,
                                 isReadOnly: true,
                                 onChanged: (val) {
                                   controller.validateImage(val);
@@ -152,6 +153,7 @@ class _AddReportBugScreenState extends State<AddReportBugScreen> {
                                 hintLabel: ReportBugConstant.upload_video_hint,
                                 wantSuffix: true,
                                 isReadOnly: true,
+                                isPhoto: true,
                                 onChanged: (val) {
                                   controller.validateVideo(val);
                                   setState(() {});

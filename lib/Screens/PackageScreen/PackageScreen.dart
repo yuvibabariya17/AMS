@@ -354,14 +354,14 @@ class _PackageScreenState extends State<PackageScreen> {
                     Expanded(
                         child: Text(
                       data.name.capitalize.toString(),
-                      maxLines: 2,
+                      maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: isDarkMode() ? white : black,
                           fontFamily: opensansMedium,
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 14.sp
-                              : 10.sp,
+                              : 8.sp,
                           fontWeight: FontWeight.w700),
                     )),
                     // SizedBox(height: 5.0),
@@ -386,7 +386,7 @@ class _PackageScreenState extends State<PackageScreen> {
                             fontFamily: opensansMedium,
                             fontSize: SizerUtil.deviceType == DeviceType.mobile
                                 ? 10.sp
-                                : 8.sp,
+                                : 7.sp,
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -440,7 +440,6 @@ class _PackageScreenState extends State<PackageScreen> {
     return Common().commonDetailsDialog(
         context,
         "Package Details",
-        // isNotes: true,
         Expanded(
           child: Column(
             children: [
@@ -453,7 +452,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -463,12 +462,12 @@ class _PackageScreenState extends State<PackageScreen> {
                     child: Text(
                       data.name.capitalize.toString(),
                       overflow: TextOverflow.visible,
-                      maxLines: 3,
+                      maxLines: 5,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontSize: SizerUtil.deviceType == DeviceType.mobile
                               ? 12.sp
-                              : 10.sp,
+                              : 6.sp,
                           color: isDarkMode() ? white : black,
                           fontFamily: fontRegular),
                     ),
@@ -487,7 +486,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -499,7 +498,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 10.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -517,7 +516,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -529,7 +528,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 10.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -547,7 +546,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -559,7 +558,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 10.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -577,7 +576,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -589,7 +588,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                         fontSize: SizerUtil.deviceType == DeviceType.mobile
                             ? 12.sp
-                            : 10.sp,
+                            : 6.sp,
                         color: isDarkMode() ? white : black,
                         fontFamily: fontRegular),
                   ),
@@ -608,7 +607,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       fontWeight: FontWeight.w800,
                       color: isDarkMode() ? white : black,
                     ),
@@ -617,22 +616,27 @@ class _PackageScreenState extends State<PackageScreen> {
                     child: Container(
                       width: SizerUtil.deviceType == DeviceType.mobile
                           ? 10.w
-                          : 10.w,
+                          : 5.w,
                       height: SizerUtil.deviceType == DeviceType.mobile
                           ? 10.h
-                          : 5.h,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          data.otherNotes.toString(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.mobile
-                                      ? 12.sp
-                                      : 10.sp,
-                              color: isDarkMode() ? white : black,
-                              fontFamily: fontRegular),
+                          : 10.h,
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        thickness: 1.5,
+                        radius: Radius.circular(50),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            data.otherNotes.toString(),
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
+                                        ? 12.sp
+                                        : 6.sp,
+                                color: isDarkMode() ? white : black,
+                                fontFamily: fontRegular),
+                          ),
                         ),
                       ),
                     ),
@@ -676,278 +680,6 @@ class _PackageScreenState extends State<PackageScreen> {
           ),
         ));
   }
-
-  //  showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         insetPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 3.h),
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius:
-  //               BorderRadius.circular(20.0), // Adjust the radius as needed
-  //         ),
-  //         elevation: 0.0, // No shadow
-  //         //clipBehavior: Clip.antiAlias,
-  //         backgroundColor: isDarkMode() ? black : white,
-  //         content: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Container(
-  //               height: 3.h,
-  //               child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                   children: [
-  //                     Container(
-  //                       width: 55.w,
-  //                       child: Marquee(
-  //                         style: TextStyle(
-  //                           fontFamily: fontRegular,
-  //                           color: isDarkMode() ? white : black,
-  //                           fontSize: SizerUtil.deviceType == DeviceType.mobile
-  //                               ? 16.sp
-  //                               : 10.sp,
-  //                         ),
-  //                         text: "PACKAGE DETAILS",
-  //                         scrollAxis: Axis
-  //                             .horizontal, // Use Axis.vertical for vertical scrolling
-  //                         crossAxisAlignment:
-  //                             CrossAxisAlignment.start, // Adjust as needed
-  //                         blankSpace:
-  //                             20.0, // Adjust the space between text repetitions
-  //                         velocity: 50.0, // Adjust the scrolling speed
-  //                         pauseAfterRound: const Duration(
-  //                             seconds: 1), // Time to pause after each scroll
-  //                         startPadding: 2.w, // Adjust the initial padding
-  //                         accelerationDuration: const Duration(
-  //                             seconds: 1), // Duration for acceleration
-  //                         accelerationCurve:
-  //                             Curves.linear, // Acceleration curve
-  //                         decelerationDuration: const Duration(
-  //                             milliseconds: 500), // Duration for deceleration
-  //                         decelerationCurve:
-  //                             Curves.easeOut, // Deceleration curve
-  //                       ),
-  //                     ),
-  //                     Spacer(),
-  //                     Align(
-  //                       alignment: Alignment.topRight,
-  //                       child: GestureDetector(
-  //                         onTap: () {
-  //                           Navigator.of(context).pop();
-  //                         },
-  //                         child: Icon(
-  //                           Icons.cancel,
-  //                           size: 24.0,
-  //                           color: isDarkMode() ? white : black,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ]),
-  //             ),
-  //             Divider(
-  //               color: Colors.grey,
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Column(
-  //               // mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 SizedBox(
-  //                   height: 1.h,
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.start,
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       "Package Name : ",
-  //                       style: TextStyle(
-  //                         fontSize: 12.sp,
-  //                         fontWeight: FontWeight.w800,
-  //                         color: isDarkMode() ? white : black,
-  //                       ),
-  //                     ),
-  //                     Expanded(
-  //                       // flex: 2,
-  //                       child: Text(
-  //                         data.name.capitalize.toString(),
-  //                         overflow: TextOverflow.ellipsis,
-  //                         maxLines: 2,
-  //                         textAlign: TextAlign.start,
-  //                         style: TextStyle(
-  //                             fontSize:
-  //                                 SizerUtil.deviceType == DeviceType.mobile
-  //                                     ? 12.sp
-  //                                     : 10.sp,
-  //                             color: isDarkMode() ? white : black,
-  //                             fontFamily: fontRegular),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 Text(
-  //                   "Actual Fees : ",
-  //                   style: TextStyle(
-  //                     fontSize: 12.sp,
-  //                     fontWeight: FontWeight.w800,
-  //                     color: isDarkMode() ? white : black,
-  //                   ),
-  //                 ),
-  //                 GestureDetector(
-  //                   onTap: () {
-  //                     // controller.launchPhoneCall(
-  //                     //     data.customerInfo.contactNo);
-  //                   },
-  //                   child: Text(
-  //                     data.actFees.toString(),
-  //                     maxLines: 1,
-  //                     overflow: TextOverflow.ellipsis,
-  //                     style: TextStyle(
-  //                         fontSize: SizerUtil.deviceType == DeviceType.mobile
-  //                             ? 12.sp
-  //                             : 12.sp,
-  //                         color: isDarkMode() ? white : black,
-  //                         fontFamily: fontRegular),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //                 mainAxisAlignment: MainAxisAlignment.start,
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   RichText(
-  //                     text: TextSpan(
-  //                       style: TextStyle(
-  //                         fontSize: 8.sp,
-  //                         fontWeight: FontWeight.w700,
-  //                         color: isDarkMode() ? white : black,
-  //                         fontFamily: fontBold,
-  //                       ),
-  //                       children: [
-  //                         TextSpan(
-  //                           text: 'Package Fees : ',
-  //                           style: TextStyle(
-  //                             fontSize: 12.sp,
-  //                             fontWeight: FontWeight.w800,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   Text(
-  //                     data.packFees.toString(),
-  //                     style: TextStyle(
-  //                         fontSize: SizerUtil.deviceType == DeviceType.mobile
-  //                             ? 12.sp
-  //                             : 12.sp,
-  //                         color: isDarkMode() ? white : black,
-  //                         fontFamily: fontRegular),
-  //                   )
-  //                 ]),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 Text(
-  //                   "Start From : ",
-  //                   style: TextStyle(
-  //                     fontSize: 12.sp,
-  //                     fontWeight: FontWeight.w800,
-  //                     color: isDarkMode() ? white : black,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   formatDate(data.durationFrom.toString()),
-  //                   maxLines: 1,
-  //                   overflow: TextOverflow.ellipsis,
-  //                   style: TextStyle(
-  //                       fontSize: SizerUtil.deviceType == DeviceType.mobile
-  //                           ? 12.sp
-  //                           : 12.sp,
-  //                       color: isDarkMode() ? white : black,
-  //                       fontFamily: fontRegular),
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 Text(
-  //                   "End to : ",
-  //                   style: TextStyle(
-  //                     fontSize: 12.sp,
-  //                     fontWeight: FontWeight.w800,
-  //                     color: isDarkMode() ? white : black,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   formatDate(data.durationTo.toString()),
-  //                   maxLines: 1,
-  //                   overflow: TextOverflow.ellipsis,
-  //                   style: TextStyle(
-  //                       fontSize: SizerUtil.deviceType == DeviceType.mobile
-  //                           ? 12.sp
-  //                           : 12.sp,
-  //                       color: isDarkMode() ? white : black,
-  //                       fontFamily: fontRegular),
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 1.h,
-  //             ),
-  //             Text(
-  //               "Other Notes : ",
-  //               style: TextStyle(
-  //                 fontSize: 12.sp,
-  //                 fontWeight: FontWeight.w800,
-  //                 color: isDarkMode() ? white : black,
-  //               ),
-  //             ),
-  //             Expanded(
-  //               child: Container(
-  //                 width: 70.w,
-  //                 child: ReadMoreText(
-  //                   data.otherNotes.toString(),
-  //                   preDataTextStyle: TextStyle(fontWeight: FontWeight.w500),
-  //                   style: TextStyle(color: Colors.black),
-  //                   colorClickableText: Colors.red,
-  //                   trimMode: TrimMode.Line,
-  //                   trimLines: 3,
-  //                   textAlign: TextAlign.start,
-  //                   trimCollapsedText: 'Show more',
-  //                   trimExpandedText: ' show less',
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
 
   Widget apiOtherStates(state) {
     if (state == ScreenState.apiLoading) {

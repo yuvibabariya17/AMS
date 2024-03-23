@@ -261,11 +261,22 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                   if (widget.onTap != null) widget.onTap!();
                                 },
                                 padding: EdgeInsets.only(
-                                    left: widget.isAdd == true ? 5.w : 0),
+                                    left: widget.isAdd == true
+                                        ? SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 5.w
+                                            : 0.w
+                                        : 0),
                                 icon: SvgPicture.asset(
                                   Asset.dropdown,
-                                  height: 30,
-                                  width: 30,
+                                  height:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 30
+                                          : 50,
+                                  width:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 30
+                                          : 50,
                                   fit: BoxFit.scaleDown,
                                 ),
                                 // iconSize:
@@ -308,7 +319,12 @@ class _CustomFormFieldState extends State<CustomFormField> {
                                   ),
                                   child: Text(
                                     "HR",
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                      fontSize: SizerUtil.deviceType ==
+                                              DeviceType.mobile
+                                          ? 13.sp
+                                          : 10.sp,
+                                    ),
                                   ),
                                 ),
                               )

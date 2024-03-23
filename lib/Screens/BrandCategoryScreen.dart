@@ -4,14 +4,12 @@ import 'package:booking_app/Screens/AddBrandCategoryScreen.dart';
 import 'package:booking_app/controllers/BrandCategoryController.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../../core/Common/toolbar.dart';
 import '../../../core/constants/assets.dart';
@@ -506,7 +504,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
   getBrandCategoryDetails(BuildContext context, BrandCatList data) {
     return Common().commonDetailsDialog(
       context,
-      "Brnad Category Details",
+      "Brand Category Details",
       // isDescription: true,
       Column(
         // mainAxisAlignment: MainAxisAlignment.start,
@@ -558,7 +556,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                 "Brand Category Name : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -572,7 +570,7 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -590,25 +588,33 @@ class _BrandCategoryScreenState extends State<BrandCategoryScreen> {
                 "Description : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
               ),
               Expanded(
                 child: Container(
-                  height: 10.h,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      data.description.toString(),
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 8.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                  width:
+                      SizerUtil.deviceType == DeviceType.mobile ? 25.w : 10.w,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    thickness: 1.5,
+                    radius: Radius.circular(50),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        data.description.toString(),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 6.sp,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                      ),
                     ),
                   ),
                 ),

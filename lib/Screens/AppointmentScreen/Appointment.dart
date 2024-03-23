@@ -4,7 +4,6 @@ import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
 import 'package:booking_app/controllers/Appointment_screen_controller.dart';
-import 'package:booking_app/controllers/PreviousAppointment_controller.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/Common/appbar.dart';
 import 'package:booking_app/core/constants/assets.dart';
@@ -13,11 +12,13 @@ import 'package:booking_app/core/themes/font_constant.dart';
 import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
+import 'package:booking_app/custom_componannt/common_views.dart';
+import 'package:booking_app/custom_componannt/form_inputs.dart';
+import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/Common.dart';
 import '../../core/themes/color_const.dart';
@@ -57,6 +58,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   @override
   void initState() {
     //   controller.getAppointmentList(context);
+    controller.getCustomerList(context);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
 
     super.initState();
@@ -114,44 +116,48 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         child: Column(
           children: [
             HomeAppBar(
-              title: ScreenTitle.appointment,
-              isfilter: false,
-              icon: Asset.filter,
-              onClick: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: controller.isFromUpcoming == true
-                        ? DateTime.now()
-                        : DateTime(2000),
-                    selectableDayPredicate: (DateTime date) {
-                      if (controller.isFromUpcoming == true) {
-                        // Enable today's date and future dates
-                        return date.isAfter(
-                            DateTime.now().subtract(Duration(days: 1)));
-                      } else {
-                        // Disable future dates compared to the current date
-                        return date
-                            .isBefore(DateTime.now().add(Duration(days: 0)));
-                      }
-                    },
-                    lastDate: DateTime(2100));
-                if (pickedDate != null) {
-                  String apiPassingDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                  picDate.value =
-                      Common().formatDate(apiPassingDate.toString());
-                  controller.isFromUpcoming == true
-                      ? Get.find<UpcomingAppointmentController>()
-                          .getAppointmentList(context, true,
-                              isClearList: true,
-                              selectedDateString: apiPassingDate)
-                      : Get.find<PreviousAppointmentController>()
-                          .getAppointmentList(context,
-                              selectedDateString: apiPassingDate);
+                title: ScreenTitle.appointment,
+                isfilter: false,
+                icon: Asset.filter,
+                onClick: () {
+                  showbottomsheetdialog(context);
                 }
-              },
-            ),
+
+                // () async {
+                //   DateTime? pickedDate = await showDatePicker(
+                //       context: context,
+                //       initialDate: DateTime.now(),
+                //       firstDate: controller.isFromUpcoming == true
+                //           ? DateTime.now()
+                //           : DateTime(2000),
+                //       selectableDayPredicate: (DateTime date) {
+                //         if (controller.isFromUpcoming == true) {
+                //           // Enable today's date and future dates
+                //           return date.isAfter(
+                //               DateTime.now().subtract(Duration(days: 1)));
+                //         } else {
+                //           // Disable future dates compared to the current date
+                //           return date
+                //               .isBefore(DateTime.now().add(Duration(days: 0)));
+                //         }
+                //       },
+                //       lastDate: DateTime(2100));
+                //   if (pickedDate != null) {
+                //     String apiPassingDate =
+                //         DateFormat('yyyy-MM-dd').format(pickedDate);
+                //     picDate.value =
+                //         Common().formatDate(apiPassingDate.toString());
+                //     controller.isFromUpcoming == true
+                //         ? Get.find<UpcomingAppointmentController>()
+                //             .getAppointmentList(context, true,
+                //                 isClearList: true,
+                //                 selectedDateString: apiPassingDate)
+                //         : Get.find<PreviousAppointmentController>()
+                //             .getAppointmentList(context,
+                //                 selectedDateString: apiPassingDate);
+                //   }
+                // },
+                ),
 
             // getAppbar(
             //   ScreenTitle.appointment,
@@ -261,79 +267,123 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-        top: Radius.circular(30.0),
-      )),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30.0),
+        ),
+      ),
       builder: (context) {
         return ClipRRect(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(30.0),
           ),
-          child: Container(
-            height: 40.h,
-            color: isDarkMode() ? black : white,
-            padding: EdgeInsets.only(
-                left: 3.5.h, right: 3.5.h, top: 2.h, bottom: 2.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Center(
-                    child: Text(
-                  'Filter',
-                  style: TextStyle(
-                    fontFamily: opensans_Bold,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20.sp,
-                    color: isDarkMode() ? white : black,
-                  ),
-                )),
-                SizedBox(
-                  height: 0.5.h,
-                ),
-                Divider(
-                  height: 3.h,
-                  thickness: 1,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                Wrap(
-                  children: [
-                    StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return Column(
-                          children: [],
-                        );
-                      },
+          child: SingleChildScrollView(
+            child: Container(
+              color: isDarkMode() ? black : white,
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Filter',
+                    style: TextStyle(
+                      fontFamily: opensans_Bold,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12.sp,
+                      color: isDarkMode() ? white : black,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 3.5.h),
-                      child: SizedBox(
-                        width: 150.h,
-                        height: 5.5.h,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50))),
-                            child: Center(
-                              child: Text(
-                                'Apply',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.5.sp,
-                                    fontFamily: opensans_Bold,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            )),
+                  ),
+                  SizedBox(height: 8.0),
+                  Divider(
+                    height: 1.0,
+                    color:
+                        isDarkMode() ? white : black, // Adjust color as needed
+                  ),
+                  SizedBox(height: 8.0),
+                  Container(
+                    margin: EdgeInsets.only(left: 3.w, right: 3.w),
+                    child: Form(
+                      key: controller.formKey,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              getTitle("Customer"),
+                            ],
+                          ),
+                          Obx(() {
+                            return getReactiveFormField(
+                              node: controller.CustomerNode,
+                              controller: controller.Customerctr,
+                              hintLabel: "Select Customer",
+                              wantSuffix: true,
+                              isdown: true,
+                              onChanged: (val) {
+                                controller.validateCustomer(val);
+                              },
+                              onTap: () {
+                                showDropDownDialog(
+                                    context,
+                                    controller.setCustomerList(),
+                                    ShowList.customer_list);
+                                // showDropdownMessage(
+                                //     context,
+                                //     controller.setExpertList(),
+                                //     'Select Expert');
+                              },
+                              errorText: controller.CustomerModel.value.error,
+                              inputType: TextInputType.text,
+                            );
+                          }),
+                          Row(
+                            children: [
+                              getTitle("Date"),
+                            ],
+                          ),
+                          Obx(() {
+                            return getReactiveFormField(
+                              node: controller.CustomerNode,
+                              controller: controller.Customerctr,
+                              hintLabel: "Select Date",
+                              wantSuffix: true,
+                              isCalender: true,
+                              onChanged: (val) {
+                                controller.validateCustomer(val);
+                              },
+                              errorText: controller.CustomerModel.value.error,
+                              inputType: TextInputType.text,
+                            );
+                          }),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(height: 5.h),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 6.h,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black, // Adjust color as needed
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Apply',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8.sp,
+                          fontFamily: opensans_Bold,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

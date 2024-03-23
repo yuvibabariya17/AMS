@@ -69,6 +69,9 @@ class _AddExpertScreenState extends State<AddExpertScreen> {
     controller.Servicectr.text = "";
     controller.Expertctr.text = "";
     controller.Pricectr.text = "";
+    controller.Startctr.text = "";
+    controller.Endctr.text = "";
+    controller.Profilectr.text = "";
 
     super.dispose();
   }

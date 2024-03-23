@@ -568,7 +568,8 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
               Text(
                 "Category Name : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -582,7 +583,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 10.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -600,25 +601,34 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
               Text(
                 "Description : ",
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize:
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
               ),
               Expanded(
                 child: Container(
-                  height: 10.h,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      data.description.toString(),
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontSize: SizerUtil.deviceType == DeviceType.mobile
-                              ? 12.sp
-                              : 12.sp,
-                          color: isDarkMode() ? white : black,
-                          fontFamily: fontRegular),
+                  width:
+                      SizerUtil.deviceType == DeviceType.mobile ? 25.w : 10.w,
+                  height:
+                      SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    thickness: 1.5,
+                    radius: Radius.circular(50),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        data.description.toString(),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: SizerUtil.deviceType == DeviceType.mobile
+                                ? 12.sp
+                                : 6.sp,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontRegular),
+                      ),
                     ),
                   ),
                 ),

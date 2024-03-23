@@ -118,193 +118,108 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
     // ignore: unrelated_type_quality_checks
     if (controller.state == ScreenState.apiSuccess &&
         controller.appointmentObjectList.isNotEmpty) {
-      return controller.appointmentObjectList.isNotEmpty
-          ? Container(
-              // margin: EdgeInsets.only(
-              //   left: 5.w,
-              //   right: 5.w,
-              // ),
-              // padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
-              child: SizedBox(
-              height: SizerUtil.height,
-              child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 35.h),
-                  clipBehavior: Clip.antiAlias,
-                  itemBuilder: (context, index) {
-                    //ProductItem data = controller.staticData[index];
-                    ListofAppointment data =
-                        controller.appointmentObjectList[index];
-                    return Container(
-                      margin: EdgeInsets.only(
-                          left: SizerUtil.deviceType == DeviceType.mobile
-                              ? 7.w
-                              : 10.w,
-                          right: SizerUtil.deviceType == DeviceType.mobile
-                              ? 7.w
-                              : 10.w,
-                          bottom: SizerUtil.deviceType == DeviceType.mobile
-                              ? 1.h
-                              : 2.h,
-                          top: SizerUtil.deviceType == DeviceType.mobile
-                              ? 1.h
-                              : 2.h),
-                      padding: EdgeInsets.only(
-                          top: SizerUtil.deviceType == DeviceType.mobile
-                              ? 2.h
-                              : 1.h,
-                          left: SizerUtil.deviceType == DeviceType.mobile
-                              ? 4.w
-                              : 3.w,
-                          right: SizerUtil.deviceType == DeviceType.mobile
-                              ? 4.w
-                              : 3.w,
-                          bottom: SizerUtil.deviceType == DeviceType.mobile
-                              ? 2.h
-                              : 1.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(children: [
-                            Text(
-                              //  data.title,
-                              Details.date,
-                              style: TextStyle(
-                                  color: isDarkMode() ? white : black,
-                                  fontFamily: opensansMedium,
-                                  fontSize:
-                                      SizerUtil.deviceType == DeviceType.mobile
-                                          ? 12.sp
-                                          : 8.sp,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Container(
-                              child: Text(
-                                //  data.title,
-                                formatDate(data.dateOfAppointment.toString()),
+      return Container(
+          margin: EdgeInsets.only(
+            left: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 6.3.w,
+            right: SizerUtil.deviceType == DeviceType.mobile ? 1.w : 6.3.w,
+          ),
+          child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.only(
+                  bottom:
+                      SizerUtil.deviceType == DeviceType.mobile ? 10.h : 32.h),
+              clipBehavior: Clip.antiAlias,
+              itemBuilder: (context, index) {
+                //ProductItem data = controller.staticData[index];
+                ListofAppointment data =
+                    controller.appointmentObjectList[index];
+                return Container(
+                  margin: EdgeInsets.only(
+                      left:
+                          SizerUtil.deviceType == DeviceType.mobile ? 7.w : 0.w,
+                      right:
+                          SizerUtil.deviceType == DeviceType.mobile ? 7.w : 0.w,
+                      bottom:
+                          SizerUtil.deviceType == DeviceType.mobile ? 1.h : 2.h,
+                      top: SizerUtil.deviceType == DeviceType.mobile
+                          ? 1.h
+                          : 2.h),
+                  padding: EdgeInsets.only(
+                      top:
+                          SizerUtil.deviceType == DeviceType.mobile ? 2.h : 1.h,
+                      left:
+                          SizerUtil.deviceType == DeviceType.mobile ? 4.w : 3.w,
+                      right:
+                          SizerUtil.deviceType == DeviceType.mobile ? 4.w : 3.w,
+                      bottom: SizerUtil.deviceType == DeviceType.mobile
+                          ? 2.h
+                          : 1.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(children: [
+                        Text(
+                          //  data.title,
+                          Details.date,
+                          style: TextStyle(
+                              color: isDarkMode() ? white : black,
+                              fontFamily: opensansMedium,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.mobile
+                                      ? 12.sp
+                                      : 8.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Container(
+                          child: Text(
+                            //  data.title,
+                            formatDate(data.dateOfAppointment.toString()),
 
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: SizerUtil.deviceType ==
-                                            DeviceType.mobile
+                            style: TextStyle(
+                                color: isDarkMode() ? white : black,
+                                fontFamily: opensansMedium,
+                                fontSize:
+                                    SizerUtil.deviceType == DeviceType.mobile
                                         ? 10.sp
                                         : 7.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ]),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Column(
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          //  data.title,
-                                          Details.time,
-                                          style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 8.sp,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                            //  data.title,
-                                            formatTime(data.appointmentSlotInfo
-                                                .timeOfAppointment
-                                                .toString()),
-
-                                            style: TextStyle(
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: opensansMedium,
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 10.sp
-                                                        : 7.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      //  data.title,
+                                      Details.time,
+                                      style: TextStyle(
+                                          color: isDarkMode() ? white : black,
+                                          fontFamily: opensansMedium,
+                                          fontSize: SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 12.sp
+                                              : 8.sp,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          //  data.title,
-                                          Details.customer,
-                                          style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? white : black,
-                                              fontFamily: opensansMedium,
-                                              fontSize: SizerUtil.deviceType ==
-                                                      DeviceType.mobile
-                                                  ? 12.sp
-                                                  : 8.sp,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                            //  data.title,
-                                            data.customerInfo.name,
+                                    Container(
+                                      child: Text(
+                                        //  data.title,
+                                        formatTime(data.appointmentSlotInfo
+                                            .timeOfAppointment
+                                            .toString()),
 
-                                            style: TextStyle(
-                                                color: isDarkMode()
-                                                    ? white
-                                                    : black,
-                                                fontFamily: opensansMedium,
-                                                fontSize:
-                                                    SizerUtil.deviceType ==
-                                                            DeviceType.mobile
-                                                        ? 10.sp
-                                                        : 7.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(children: [
-                                      Text(
-                                        //  data.title,
-                                        Details.appointment_type,
-                                        style: TextStyle(
-                                            color: isDarkMode() ? white : black,
-                                            fontFamily: opensansMedium,
-                                            fontSize: SizerUtil.deviceType ==
-                                                    DeviceType.mobile
-                                                ? 12.sp
-                                                : 8.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Container(
-                                          child: Text(
-                                        //  data.title,
-                                        data.appointmentType,
-                                        // data.vendorInfo != null
-                                        //     ? data.vendorInfo.emailId.toString()
-                                        //     : "",
                                         style: TextStyle(
                                             color: isDarkMode() ? white : black,
                                             fontFamily: opensansMedium,
@@ -313,155 +228,199 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                                                 ? 10.sp
                                                 : 7.sp,
                                             fontWeight: FontWeight.w500),
-                                      )),
-                                    ]),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      //  data.title,
+                                      Details.customer,
+                                      style: TextStyle(
+                                          color: isDarkMode() ? white : black,
+                                          fontFamily: opensansMedium,
+                                          fontSize: SizerUtil.deviceType ==
+                                                  DeviceType.mobile
+                                              ? 12.sp
+                                              : 8.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        //  data.title,
+                                        data.customerInfo.name,
+
+                                        style: TextStyle(
+                                            color: isDarkMode() ? white : black,
+                                            fontFamily: opensansMedium,
+                                            fontSize: SizerUtil.deviceType ==
+                                                    DeviceType.mobile
+                                                ? 10.sp
+                                                : 7.sp,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(children: [
+                                  Text(
+                                    //  data.title,
+                                    Details.appointment_type,
+                                    style: TextStyle(
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 12.sp
+                                            : 8.sp,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Container(
+                                      child: Text(
+                                    //  data.title,
+                                    data.appointmentType,
+                                    // data.vendorInfo != null
+                                    //     ? data.vendorInfo.emailId.toString()
+                                    //     : "",
+                                    style: TextStyle(
+                                        color: isDarkMode() ? white : black,
+                                        fontFamily: opensansMedium,
+                                        fontSize: SizerUtil.deviceType ==
+                                                DeviceType.mobile
+                                            ? 10.sp
+                                            : 7.sp,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                ]),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            color: isDarkMode() ? white : black,
+                            Asset.user,
+                            height: SizerUtil.deviceType == DeviceType.mobile
+                                ? 1.8.h
+                                : 2.h,
                           ),
                           SizedBox(
-                            height: 1.h,
+                            width: 2.w,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
+                          Text(
+                            data.vendorInfo.userName,
+                            style: TextStyle(
                                 color: isDarkMode() ? white : black,
-                                Asset.user,
-                                height:
+                                fontFamily: opensansMedium,
+                                fontSize:
                                     SizerUtil.deviceType == DeviceType.mobile
-                                        ? 1.8.h
-                                        : 2.h,
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Text(
-                                data.vendorInfo.userName,
-                                style: TextStyle(
-                                    color: isDarkMode() ? white : black,
-                                    fontFamily: opensansMedium,
-                                    fontSize: SizerUtil.deviceType ==
-                                            DeviceType.mobile
                                         ? 12.sp
                                         : 8.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Spacer(),
-                              data.isFinished == true
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        showDeleteConfirmationDialog(data.id);
-                                      },
-                                      child: Container(
-                                        height: SizerUtil.deviceType ==
-                                                DeviceType.mobile
-                                            ? 4.h
-                                            : 4.5.h,
-                                        width: 20.w,
-                                        child: Center(
-                                          child: Text(
-                                            "Cancel",
-                                            style: TextStyle(
-                                              color:
-                                                  isDarkMode() ? black : white,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: isDarkMode() ? white : black,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: isDarkMode()
-                                                    ? Colors.white
-                                                        .withOpacity(0.2)
-                                                    : Colors.black
-                                                        .withOpacity(0.2),
-                                                spreadRadius: 0.1,
-                                                blurRadius: 10,
-                                                offset: Offset(0.5, 0.5)),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Container()
-                            ],
+                                fontWeight: FontWeight.w700),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Container(
-                              //   child: CupertinoSwitch(
-                              //     value: btn,
-                              //     onChanged: (value) {
-                              //       btn = value;
-                              //       setState(
-                              //         () {},
-                              //       );
-                              //     },
-                              //     thumbColor: CupertinoColors.white,
-                              //     activeColor: CupertinoColors.black,
-                              //     trackColor: Colors.grey,
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   width: 1.w,
-                              // ),
-                              // Text(
-                              //   'Remind me',
-                              //   style: TextStyle(
-                              //     color: isDarkMode() ? white : black,
-                              //   ),
-                              // ),
-                              // Container(
-                              //   child: Icon(
-                              //     Icons.arrow_drop_down,
-                              //     color: isDarkMode() ? white : black,
-                              //   ),
-                              // ),
-                            ],
-                          )
+                          Spacer(),
+                          data.isFinished == true
+                              ? GestureDetector(
+                                  onTap: () {
+                                    showDeleteConfirmationDialog(data.id);
+                                  },
+                                  child: Container(
+                                    height: SizerUtil.deviceType ==
+                                            DeviceType.mobile
+                                        ? 4.h
+                                        : 4.5.h,
+                                    width: 20.w,
+                                    child: Center(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: isDarkMode() ? black : white,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isDarkMode() ? white : black,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: isDarkMode()
+                                                ? Colors.white.withOpacity(0.2)
+                                                : Colors.black.withOpacity(0.2),
+                                            spreadRadius: 0.1,
+                                            blurRadius: 10,
+                                            offset: Offset(0.5, 0.5)),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container()
                         ],
                       ),
-                      decoration: BoxDecoration(
-                        color: isDarkMode() ? black : white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: isDarkMode()
-                                  ? Colors.white.withOpacity(0.2)
-                                  : Colors.black.withOpacity(0.2),
-                              spreadRadius: 0.1,
-                              blurRadius: 10,
-                              offset: Offset(0.5, 0.5)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Container(
+                          //   child: CupertinoSwitch(
+                          //     value: btn,
+                          //     onChanged: (value) {
+                          //       btn = value;
+                          //       setState(
+                          //         () {},
+                          //       );
+                          //     },
+                          //     thumbColor: CupertinoColors.white,
+                          //     activeColor: CupertinoColors.black,
+                          //     trackColor: Colors.grey,
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 1.w,
+                          // ),
+                          // Text(
+                          //   'Remind me',
+                          //   style: TextStyle(
+                          //     color: isDarkMode() ? white : black,
+                          //   ),
+                          // ),
+                          // Container(
+                          //   child: Icon(
+                          //     Icons.arrow_drop_down,
+                          //     color: isDarkMode() ? white : black,
+                          //   ),
+                          // ),
                         ],
-                      ),
-                    );
-                  },
-                  itemCount: controller.appointmentObjectList.length),
-            ))
-          : Center(
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 31.h),
-                  child: Text(
-                    CommonConstant.noDataFound,
-                    style: TextStyle(
-                        fontFamily: fontMedium,
-                        fontSize: 12.sp,
-                        color: isDarkMode() ? white : black),
+                      )
+                    ],
                   ),
-                ),
-              ],
-            ));
+                  decoration: BoxDecoration(
+                    color: isDarkMode() ? black : white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: isDarkMode()
+                              ? Colors.white.withOpacity(0.2)
+                              : Colors.black.withOpacity(0.2),
+                          spreadRadius: 0.1,
+                          blurRadius: 10,
+                          offset: Offset(0.5, 0.5)),
+                    ],
+                  ),
+                );
+              },
+              itemCount: controller.appointmentObjectList.length));
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,

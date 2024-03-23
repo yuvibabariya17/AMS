@@ -97,7 +97,7 @@ Widget setNavtile(
                   fontFamily: opensansMedium,
                   fontSize: SizerUtil.deviceType == DeviceType.mobile
                       ? 12.5.sp
-                      : 10.sp,
+                      : 8.sp,
                   fontWeight: FontWeight.w600))
         ],
       ),

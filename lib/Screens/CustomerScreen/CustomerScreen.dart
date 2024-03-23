@@ -554,7 +554,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 "Customer Name : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -564,11 +564,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
                   data.name.capitalize.toString(),
                   overflow: TextOverflow.visible,
                   textAlign: TextAlign.start,
-                  maxLines: 3,
+                  maxLines: 5,
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -585,7 +585,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               "Date of Birth : ",
               style: TextStyle(
                 fontSize:
-                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                 fontWeight: FontWeight.w800,
                 color: isDarkMode() ? white : black,
               ),
@@ -598,7 +598,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   color: isDarkMode() ? white : black,
                   fontFamily: fontRegular),
             ),
@@ -615,7 +615,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               "Date of Anniversary : ",
               style: TextStyle(
                 fontSize:
-                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                 fontWeight: FontWeight.w800,
                 color: isDarkMode() ? white : black,
               ),
@@ -628,7 +628,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   color: isDarkMode() ? white : black,
                   fontFamily: fontRegular),
             ),
@@ -645,7 +645,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 "Address : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -653,13 +653,13 @@ class _CustomerScreenState extends State<CustomerScreen> {
               Expanded(
                 child: Text(
                   data.address,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
+                  maxLines: 5,
+                  overflow: TextOverflow.visible,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -680,7 +680,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 "Contact No : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -692,7 +692,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? Colors.blue : Colors.blue,
                     fontFamily: fontRegular),
               ),
@@ -714,7 +714,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 "Whatsapp No : ",
                 style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black,
                 ),
@@ -726,7 +726,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 style: TextStyle(
                     fontSize: SizerUtil.deviceType == DeviceType.mobile
                         ? 12.sp
-                        : 8.sp,
+                        : 6.sp,
                     color: isDarkMode() ? Colors.blue : Colors.blue,
                     fontFamily: fontRegular),
               ),
@@ -744,7 +744,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               "Email ID : ",
               style: TextStyle(
                   fontSize:
-                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                      SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                   fontWeight: FontWeight.w800,
                   color: isDarkMode() ? white : black),
             ),
@@ -763,7 +763,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       //  decoration: TextDecoration.underline,
                       fontSize: SizerUtil.deviceType == DeviceType.mobile
                           ? 12.sp
-                          : 8.sp,
+                          : 6.sp,
                       color: isDarkMode() ? white : black,
                       fontFamily: fontRegular),
                 ),
@@ -782,26 +782,31 @@ class _CustomerScreenState extends State<CustomerScreen> {
               "Description : ",
               style: TextStyle(
                 fontSize:
-                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 8.sp,
+                    SizerUtil.deviceType == DeviceType.mobile ? 12.sp : 6.sp,
                 fontWeight: FontWeight.w800,
                 color: isDarkMode() ? white : black,
               ),
             ),
             Expanded(
               child: Container(
-                width: SizerUtil.deviceType == DeviceType.mobile ? 10.w : 10.w,
+                width: SizerUtil.deviceType == DeviceType.mobile ? 25.w : 10.w,
                 height: SizerUtil.deviceType == DeviceType.mobile ? 10.h : 10.h,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Text(
-                    data.description.toString(),
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: SizerUtil.deviceType == DeviceType.mobile
-                            ? 12.sp
-                            : 8.sp,
-                        color: isDarkMode() ? white : black,
-                        fontFamily: fontRegular),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  thickness: 1.5,
+                  radius: Radius.circular(50),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      data.description.toString(),
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.mobile
+                              ? 12.sp
+                              : 6.sp,
+                          color: isDarkMode() ? white : black,
+                          fontFamily: fontRegular),
+                    ),
                   ),
                 ),
               ),

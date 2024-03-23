@@ -1,4 +1,4 @@
-import 'package:animate_do/animate_do.dart';
+  import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/EmailScreen.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/core/themes/color_const.dart';
@@ -61,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
             //         ),
             // ),
             SingleChildScrollView(
-              child: Form(
+              child: 
+              
+              Form(
                 key: controller.formKey,
                 child: Container(
                   padding: EdgeInsets.only(
@@ -316,7 +318,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+          
+          
             ),
+
+            
           ]),
         ));
   }

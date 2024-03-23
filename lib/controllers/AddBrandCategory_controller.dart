@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:booking_app/Config/apicall_constant.dart';
 import 'package:booking_app/Models/CommonModel.dart';
+import 'package:booking_app/Models/ProductCatListModel.dart';
 import 'package:booking_app/Models/UploadImageModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
 import 'package:booking_app/api_handle/Repository.dart';
@@ -9,6 +10,8 @@ import 'package:booking_app/controllers/home_screen_controller.dart';
 import 'package:booking_app/controllers/internet_controller.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/themes/color_const.dart';
+import 'package:booking_app/core/themes/font_constant.dart';
+import 'package:booking_app/core/utils/helper.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
@@ -17,11 +20,12 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 
 class AddBrandCategoryController extends GetxController {
   final InternetController networkManager = Get.find<InternetController>();
 
-  late FocusNode nameNode, descNode, emailNode, contactNode, imageNode, idNode;
+  late FocusNode nameNode, descNode, imageNode, categoryNode;
 
   Rx<File?> avatarFile = null.obs;
   Rx<File?> videoFile = null.obs;
@@ -30,7 +34,7 @@ class AddBrandCategoryController extends GetxController {
   DateTime selectedStartDate = DateTime.now();
   DateTime selectedEndDate = DateTime.now();
 
-  late TextEditingController namectr, descCtr, imgctr;
+  late TextEditingController namectr, descCtr, imgctr, categroryCtr;
 
   // startTimectr,
   // endTimectr
@@ -42,10 +46,12 @@ class AddBrandCategoryController extends GetxController {
     nameNode = FocusNode();
     imageNode = FocusNode();
     descNode = FocusNode();
+    categoryNode = FocusNode();
 
     namectr = TextEditingController();
     imgctr = TextEditingController();
     descCtr = TextEditingController();
+    categroryCtr = TextEditingController();
 
     // startTimectr = TextEditingController();
     // endTimectr = TextEditingController();
@@ -61,6 +67,7 @@ class AddBrandCategoryController extends GetxController {
   var DescriptionModel = ValidationModel(null, null, isValidate: false).obs;
   var EmailModel = ValidationModel(null, null, isValidate: false).obs;
   var ContactModel = ValidationModel(null, null, isValidate: false).obs;
+  var categroryModel = ValidationModel(null, null, isValidate: false).obs;
   var IdModel = ValidationModel(null, null, isValidate: false).obs;
 
   void enableSignUpButton() {
@@ -69,6 +76,8 @@ class AddBrandCategoryController extends GetxController {
     } else if (ImageModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (DescriptionModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (categroryModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -117,6 +126,19 @@ class AddBrandCategoryController extends GetxController {
     enableSignUpButton();
   }
 
+  void validateCategory(String? val) {
+    categroryModel.update((model) {
+      if (val == null || val.isEmpty) {
+        model!.error = "Enter Category";
+        model.isValidate = false;
+      } else {
+        model!.error = null;
+        model.isValidate = true;
+      }
+    });
+    enableSignUpButton();
+  }
+
   RxBool isFormInvalidate = false.obs;
   RxString uploadImageId = ''.obs;
   RxString uploadBreacherId = ''.obs;
@@ -146,6 +168,95 @@ class AddBrandCategoryController extends GetxController {
         positiveButton: CommonConstant.continuebtn);
   }
 
+  RxBool isProductCategoryList = false.obs;
+  RxList<ListProductCategory> productCategoryObjectList =
+      <ListProductCategory>[].obs;
+  RxString productCategoryId = "".obs;
+
+  void getProductCategoryList(context) async {
+    state.value = ScreenState.apiLoading;
+    isProductCategoryList.value = true;
+    // try {
+    if (networkManager.connectionType == 0) {
+      showDialogForScreen(context, Connection.noConnection, false,
+          callback: () {
+        Get.back();
+      });
+      return;
+    }
+    var response = await Repository.post({}, ApiUrl.productCategoryList,
+        allowHeader: true);
+    isProductCategoryList.value = false;
+    var responseData = jsonDecode(response.body);
+    logcat("SERVICE RESPONSE", jsonEncode(responseData));
+
+    if (response.statusCode == 200) {
+      if (responseData['status'] == 1) {
+        var data = ProductCategoryListModel.fromJson(responseData);
+
+        state.value = ScreenState.apiSuccess;
+        productCategoryObjectList.clear();
+        productCategoryObjectList.addAll(data.data);
+        logcat("SERVICE RESPONSE", jsonEncode(productCategoryObjectList));
+      } else {
+        showDialogForScreen(context, responseData['message'], false,
+            callback: () {});
+      }
+    } else {
+      showDialogForScreen(context, Connection.servererror, false,
+          callback: () {});
+    }
+    // } catch (e) {
+    //   logcat('Exception', e);
+    //   isServiceTypeApiList.value = false;
+    // }
+  }
+
+  Widget setCategoryList() {
+    return Obx(() {
+      if (isProductCategoryList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isProductCategoryList.value);
+      return setDropDownTestContent(
+        productCategoryObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: productCategoryObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: VisualDensity(
+                  horizontal: 0,
+                  vertical:
+                      SizerUtil.deviceType == DeviceType.mobile ? -4 : -1),
+              contentPadding: EdgeInsets.all(0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                productCategoryId.value =
+                    productCategoryObjectList[index].id.toString();
+                categroryCtr.text =
+                    productCategoryObjectList[index].name.capitalize.toString();
+
+                validateCategory(categroryCtr.text);
+              },
+              title: Text(
+                productCategoryObjectList[index].name.toString(),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
+                    color: isDarkMode() ? white : black),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
   void AddBrandCategory(context) async {
     var loadingIndicator = LoadingProgressDialog();
     try {
@@ -163,6 +274,7 @@ class AddBrandCategoryController extends GetxController {
         "name": namectr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "description": descCtr.text.toLowerCase().trim(),
+        "product_category_id": productCategoryId.value.toString()
       }, ApiUrl.addBrandCategory, allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
@@ -208,6 +320,7 @@ class AddBrandCategoryController extends GetxController {
         "name": namectr.text.toString().trim(),
         "image_id": uploadImageId.value.toString(),
         "description": descCtr.text.toLowerCase().trim(),
+        "product_category_id": productCategoryId.value.toString()
       }, '${ApiUrl.editBrandCategory}/$brandCategoryId', allowHeader: true);
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);

@@ -51,7 +51,8 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
           widget.editStudentCourse!.courseInfo.name.toString();
       controller.startDatectr.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.parse(widget.editStudentCourse!.startingFrom));
-      controller.Feesctr.text = widget.editStudentCourse!.fees.toString();
+      controller.Feesctr.text =
+          widget.editStudentCourse!.courseInfo.fees.toString();
       controller.imgctr.text =
           widget.editStudentCourse!.idProofUrlInfo.image.toString();
       controller.notesctr.text =
@@ -327,6 +328,9 @@ class _AddStudentCourseScreenState extends State<AddStudentCourseScreen> {
                                               controller.validateFees(val);
                                               setState(() {});
                                             },
+                                            isReadOnly: widget.isEdit == true
+                                                ? true
+                                                : true,
                                             errorText: controller
                                                 .FeesModel.value.error,
                                             inputType: TextInputType.number,

@@ -50,11 +50,13 @@ class ListofProduct {
   String uploadId;
   String description;
   String productCategoryId;
+  String brandCategoryId;
   int amount;
   int qty;
   int createdAt;
   UploadInfo uploadInfo;
-  ProductCategoryInfo productCategoryInfo;
+  CategoryInfo productCategoryInfo;
+  CategoryInfo brandCategoryInfo;
 
   ListofProduct({
     required this.id,
@@ -62,28 +64,32 @@ class ListofProduct {
     required this.uploadId,
     required this.description,
     required this.productCategoryId,
+    required this.brandCategoryId,
     required this.amount,
     required this.qty,
     required this.createdAt,
     required this.uploadInfo,
     required this.productCategoryInfo,
+    required this.brandCategoryInfo,
   });
 
   factory ListofProduct.fromJson(Map<String, dynamic> json) => ListofProduct(
-        id: json["_id"] ?? '',
-        name: json["name"] ?? '',
-        uploadId: json["upload_id"] ?? '',
-        description: json["description"] ?? '',
-        productCategoryId: json["product_category_id"] ?? '',
-        amount: json["amount"],
-        qty: json["qty"],
-        createdAt: json["created_at"],
-        uploadInfo: json["upload_info"] != null
-            ? UploadInfo.fromJson(json["upload_info"])
-            : UploadInfo(image: ''),
-        productCategoryInfo: json["product_category_info"] != null
-            ? ProductCategoryInfo.fromJson(json["product_category_info"])
-            : ProductCategoryInfo(name: '', description: ''),
+        id: json["_id"],
+        name: json["name"],
+        uploadId: json["upload_id"],
+        description: json["description"] ??
+            "", // Provide a default value for description
+        productCategoryId: json["product_category_id"] ?? "",
+        brandCategoryId: json["brand_category_id"] ?? "",
+        amount: json["amount"] ?? 0, // Provide a default value for amount
+        qty: json["qty"] ?? 0, // Provide a default value for qty
+        createdAt:
+            json["created_at"] ?? 0, // Provide a default value for createdAt
+        uploadInfo: UploadInfo.fromJson(json["upload_info"] ?? {}),
+        productCategoryInfo:
+            CategoryInfo.fromJson(json["product_category_info"] ?? {}),
+        brandCategoryInfo:
+            CategoryInfo.fromJson(json["brand_category_info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -92,25 +98,26 @@ class ListofProduct {
         "upload_id": uploadId,
         "description": description,
         "product_category_id": productCategoryId,
+        "brand_category_id": brandCategoryId,
         "amount": amount,
         "qty": qty,
         "created_at": createdAt,
         "upload_info": uploadInfo.toJson(),
         "product_category_info": productCategoryInfo.toJson(),
+        "brand_category_info": brandCategoryInfo.toJson(),
       };
 }
 
-class ProductCategoryInfo {
+class CategoryInfo {
   String name;
   String description;
 
-  ProductCategoryInfo({
+  CategoryInfo({
     required this.name,
     required this.description,
   });
 
-  factory ProductCategoryInfo.fromJson(Map<String, dynamic> json) =>
-      ProductCategoryInfo(
+  factory CategoryInfo.fromJson(Map<String, dynamic> json) => CategoryInfo(
         name: json["name"] ?? '',
         description: json["description"] ?? '',
       );
