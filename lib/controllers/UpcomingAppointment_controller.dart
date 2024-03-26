@@ -41,6 +41,7 @@ class UpcomingAppointmentController extends GetxController {
   RxInt currentPags = 1.obs;
   RxInt totalPages = 0.obs;
   String? selectedDateString;
+
   void getAppointmentList(BuildContext context, bool isFirst,
       {bool? isClearList, String? selectedDateString}) async {
     var loadingIndicator = LoadingProgressDialogs();

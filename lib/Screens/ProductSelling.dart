@@ -691,40 +691,84 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                           ]),
                         ]),
                       ),
-                      FadeInUp(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 2.h),
-                          child: InkWell(
-                            onTap: () {
-                              Get.back();
-                            },
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          FadeInUp(
                             child: Container(
-                              height: 13.w,
-                              alignment: Alignment.center,
-                              width: SizerUtil.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3.w),
-                                color: black,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: primaryColor.withOpacity(0.3),
-                                      blurRadius: 10.0,
-                                      offset: const Offset(0, 1),
-                                      spreadRadius: 3.0)
-                                ],
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "Submit",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: fontBold,
-                                    fontSize: 14.sp),
+                              height: 5.h,
+                              width: 30.w,
+                              child: InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  height: 13.w,
+                                  alignment: Alignment.center,
+                                  width: SizerUtil.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(3.w),
+                                    color: black,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: primaryColor.withOpacity(0.3),
+                                          blurRadius: 10.0,
+                                          offset: const Offset(0, 1),
+                                          spreadRadius: 3.0)
+                                    ],
+                                  ),
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    "Submit",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontBold,
+                                        fontSize: 14.sp),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          FadeInUp(
+                            child: Container(
+                              height: 5.h,
+                              width: 30.w,
+                              child: InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  height: 13.w,
+                                  alignment: Alignment.center,
+                                  width: SizerUtil.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(3.w),
+                                    color: black,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: primaryColor.withOpacity(0.3),
+                                          blurRadius: 10.0,
+                                          offset: const Offset(0, 1),
+                                          spreadRadius: 3.0)
+                                    ],
+                                  ),
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    "Add More",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: fontBold,
+                                        fontSize: 14.sp),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 2.h,

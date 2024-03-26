@@ -128,7 +128,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                               : 5.w,
                           top: 1.h,
                           bottom: 5.h),
-                      child: Form(
+                      child:
+                       Form(
                           key: controller.formKey,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -203,7 +204,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                   child: AnimatedSize(
                                       duration:
                                           const Duration(milliseconds: 300),
-                                      child: Obx(() {
+                                      child: 
+                                      
+                                      Obx(() {
                                         return getReactiveFormField(
                                           node: controller.DobNode,
                                           controller: controller.Dobctr,
@@ -311,13 +314,20 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                           inputType: TextInputType.text,
                                         );
                                       }))),
+                           
+                           
+                           
+                           
+                           
                               getTitle(Strings.doa),
                               FadeInUp(
                                   from: 30,
                                   child: AnimatedSize(
                                       duration:
                                           const Duration(milliseconds: 300),
-                                      child: Obx(() {
+                                      child:
+                                      
+                                       Obx(() {
                                         return getReactiveFormField(
                                           node: controller.DoaNode,
                                           controller: controller.Doactr,
@@ -427,6 +437,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                           inputType: TextInputType.text,
                                         );
                                       }))),
+                             
+                             
+                             
                               getTitle(Strings.address),
                               FadeInUp(
                                   from: 30,

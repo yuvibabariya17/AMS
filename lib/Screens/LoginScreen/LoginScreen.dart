@@ -212,7 +212,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             }, "Sign In",
                                 validate: controller.isFormInvalidate.value);
-                          })),
+                          }
+                          
+                          )),
 
                       // OR AND GOOGLE FACEBOOK
 

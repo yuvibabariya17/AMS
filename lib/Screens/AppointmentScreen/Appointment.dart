@@ -19,6 +19,7 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/Common.dart';
 import '../../core/themes/color_const.dart';
@@ -51,17 +52,32 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   bool state = false;
 
   DateTime? selectedDate = DateTime.now();
+  DateTime? selectedEndDate = DateTime.now();
   DatePickerController datePickerController = DatePickerController();
-  DateTime selectedValue = DateTime.now();
+  // DateTime selectedValue = DateTime.now();
   RxString picDate = "".obs;
 
   @override
   void initState() {
     //   controller.getAppointmentList(context);
+    controller.getServiceList(context);
     controller.getCustomerList(context);
+    controller.getAppointmentList(context, controller.customerId.value);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
 
+    //validateFields();
+
     super.initState();
+  }
+
+  void validateFields() {
+    // Validate all fields here
+
+    controller.validateCustomer(controller.CustomerCtr.text);
+    controller.validateDate(controller.startDateCtr.text);
+    controller.validateEndDate(controller.endDateCtr.text);
+
+    // Add validation for other fields as needed
   }
 
   @override
@@ -283,13 +299,15 @@ class _AppointmentScreenState extends State<AppointmentScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Filter',
-                    style: TextStyle(
-                      fontFamily: opensans_Bold,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.sp,
-                      color: isDarkMode() ? white : black,
+                  Center(
+                    child: Text(
+                      'Filter',
+                      style: TextStyle(
+                        fontFamily: opensans_Bold,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20.sp,
+                        color: isDarkMode() ? white : black,
+                      ),
                     ),
                   ),
                   SizedBox(height: 8.0),
@@ -312,10 +330,11 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                           ),
                           Obx(() {
                             return getReactiveFormField(
-                              node: controller.CustomerNode,
-                              controller: controller.Customerctr,
+                              node: controller.customerNode,
+                              controller: controller.CustomerCtr,
                               hintLabel: "Select Customer",
                               wantSuffix: true,
+                              isReadOnly: true,
                               isdown: true,
                               onChanged: (val) {
                                 controller.validateCustomer(val);
@@ -336,52 +355,255 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                           }),
                           Row(
                             children: [
-                              getTitle("Date"),
+                              getTitle("Service"),
                             ],
                           ),
                           Obx(() {
                             return getReactiveFormField(
-                              node: controller.CustomerNode,
-                              controller: controller.Customerctr,
-                              hintLabel: "Select Date",
+                              node: controller.serviceNode,
+                              controller: controller.serviceCtr,
+                              hintLabel: "Select Service",
+                              wantSuffix: true,
+                              isReadOnly: true,
+                              isdown: true,
+                              onChanged: (val) {
+                                controller.validateService(val);
+                              },
+                              onTap: () {
+                                showDropDownDialog(
+                                    context,
+                                    controller.setServiceList(),
+                                    ShowList.service_list);
+                              },
+                              errorText: controller.ServiceMpdel.value.error,
+                              inputType: TextInputType.text,
+                            );
+                          }),
+                          Row(
+                            children: [
+                              getTitle("Start Date"),
+                            ],
+                          ),
+                          Obx(() {
+                            return getReactiveFormField(
+                              node: controller.startDateNode,
+                              controller: controller.startDateCtr,
+                              hintLabel: "Select Start Date",
                               wantSuffix: true,
                               isCalender: true,
                               onChanged: (val) {
-                                controller.validateCustomer(val);
+                                controller.validateDate(val);
+                                setState(() {});
                               },
-                              errorText: controller.CustomerModel.value.error,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Theme(
+                                        data: isDarkMode()
+                                            ? ThemeData.dark().copyWith(
+                                                primaryColor: primaryColor,
+                                                buttonTheme: ButtonThemeData(
+                                                  textTheme:
+                                                      ButtonTextTheme.primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50), // Set your border radius
+                                                  ),
+                                                ),
+                                                colorScheme:
+                                                    const ColorScheme.dark(
+                                                  primary: Colors
+                                                      .teal, // Set your primary color
+                                                )
+                                                        .copyWith(
+                                                            secondary:
+                                                                secondaryColor)
+                                                        .copyWith(
+                                                            background: white),
+                                              )
+                                            : ThemeData.light().copyWith(
+                                                primaryColor: primaryColor,
+                                                buttonTheme: ButtonThemeData(
+                                                  textTheme:
+                                                      ButtonTextTheme.primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50), // Set your border radius
+                                                  ),
+                                                ),
+                                                colorScheme:
+                                                    const ColorScheme.light(
+                                                  primary: Colors
+                                                      .teal, // Set your primary color
+                                                )
+                                                        .copyWith(
+                                                            secondary:
+                                                                secondaryColor)
+                                                        .copyWith(
+                                                            background: white),
+                                              ),
+                                        child: child!,
+                                      );
+                                    },
+                                    initialDate: selectedDate,
+                                    firstDate: DateTime(1950),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 0)));
+                                if (pickedDate != null &&
+                                    pickedDate != selectedDate) {
+                                  setState(() {
+                                    selectedDate = pickedDate;
+                                  });
+                                }
+                                if (pickedDate != null) {
+                                  String formattedDate =
+                                      DateFormat(Strings.oldDateFormat)
+                                          .format(pickedDate);
+                                  controller.updateDate(formattedDate);
+                                  controller.validateDate(formattedDate);
+                                }
+                              },
+                              errorText: controller.StartDateModel.value.error,
                               inputType: TextInputType.text,
                             );
+                          }),
+                          Row(
+                            children: [
+                              getTitle("End Date"),
+                            ],
+                          ),
+                          Obx(() {
+                            return getReactiveFormField(
+                              node: controller.endDateNode,
+                              controller: controller.endDateCtr,
+                              hintLabel: "Select End Date",
+                              wantSuffix: true,
+                              isCalender: true,
+                              onChanged: (val) {
+                                controller.validateEndDate(val);
+                                setState(() {});
+                              },
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return Theme(
+                                        data: isDarkMode()
+                                            ? ThemeData.dark().copyWith(
+                                                primaryColor: primaryColor,
+                                                buttonTheme: ButtonThemeData(
+                                                  textTheme:
+                                                      ButtonTextTheme.primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50), // Set your border radius
+                                                  ),
+                                                ),
+                                                colorScheme:
+                                                    const ColorScheme.dark(
+                                                  primary: Colors
+                                                      .teal, // Set your primary color
+                                                )
+                                                        .copyWith(
+                                                            secondary:
+                                                                secondaryColor)
+                                                        .copyWith(
+                                                            background: white),
+                                              )
+                                            : ThemeData.light().copyWith(
+                                                primaryColor: primaryColor,
+                                                buttonTheme: ButtonThemeData(
+                                                  textTheme:
+                                                      ButtonTextTheme.primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50), // Set your border radius
+                                                  ),
+                                                ),
+                                                colorScheme:
+                                                    const ColorScheme.light(
+                                                  primary: Colors
+                                                      .teal, // Set your primary color
+                                                )
+                                                        .copyWith(
+                                                            secondary:
+                                                                secondaryColor)
+                                                        .copyWith(
+                                                            background: white),
+                                              ),
+                                        child: child!,
+                                      );
+                                    },
+                                    initialDate: selectedEndDate,
+                                    firstDate: DateTime(1950),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 0)));
+                                if (pickedDate != null &&
+                                    pickedDate != selectedEndDate) {
+                                  setState(() {
+                                    selectedEndDate = pickedDate;
+                                  });
+                                }
+                                if (pickedDate != null) {
+                                  String formattedDate =
+                                      DateFormat(Strings.oldDateFormat)
+                                          .format(pickedDate);
+                                  controller.updateEndDate(formattedDate);
+                                  controller.validateEndDate(formattedDate);
+                                }
+                              },
+                              errorText: controller.EndDateModel.value.error,
+                              inputType: TextInputType.text,
+                            );
+                          }),
+                          SizedBox(height: 3.h),
+                          Obx(() {
+                            return getFormButton(() {
+                              if (controller.isFormInvalidate.value == true) {
+                                controller.getAppointmentList(
+                                    context, controller.customerId.value);
+                              }
+                              logcat("FILTER_APPLY",
+                                  controller.isFormInvalidate.value);
+                            }, "Apply",
+                                validate: controller.isFormInvalidate.value);
                           }),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 5.h),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 6.h,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.black, // Adjust color as needed
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                        ),
-                      ),
-                      child: Text(
-                        'Apply',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 8.sp,
-                          fontFamily: opensans_Bold,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
+
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   height: 6.h,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: Colors.black, // Adjust color as needed
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(24.0),
+                  //       ),
+                  //     ),
+                  //     child: Text(
+                  //       'Apply',
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 12.sp,
+                  //         fontFamily: opensans_Bold,
+                  //         fontWeight: FontWeight.w700,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -251,17 +251,38 @@ class ProductSellingController extends GetxController {
       }
       loadingIndicator.show(context, '');
       var retrievedObject = await UserPreferences().getSignInInfo();
-      logcat("Passing_data::", {
-        "date_of_sale": orderDatectr.value.toString(),
-        "vendor_id": retrievedObject!.id.toString().trim(),
-        "product_category_id": productCategoryId.value.toString()
-      });
 
-      var response = await Repository.post({
-        "date_of_sale": orderDatectr.value.toString(),
+      var requestBody = {
+        "date_of_sale": orderDatectr.text.toString().trim(),
+        "customer_id": customerId.value.toString().trim(),
         "vendor_id": retrievedObject!.id.toString().trim(),
-        "product_category_id": productCategoryId.value.toString()
-      }, ApiUrl.addProductSale, allowHeader: true);
+        "product_details": [
+          {
+            "product_category_id": productCategoryId.value.toString().trim(),
+            "brand_category_id": brandCategoryId.value.toString().trim(),
+            "product_id": "65ddb0fae2e8c21230da574f",
+            "qty": qtyctr.text.toString().trim()
+          },
+        ]
+      };
+
+      var requestBodyJson = jsonEncode(requestBody);
+
+      // logcat("Passing_data::", {
+      //   "date_of_sale": orderDatectr.value.toString(),
+      //   "vendor_id": retrievedObject!.id.toString().trim(),
+      //   "product_category_id": productCategoryId.value.toString()
+      // });
+
+      var response = await Repository.post(
+          requestBodyJson as Map<String, dynamic>, ApiUrl.addProductSale,
+          allowHeader: true);
+
+      // var response = await Repository.post({
+      //   "date_of_sale": orderDatectr.value.toString(),
+      //   "vendor_id": retrievedObject!.id.toString().trim(),
+      //   "product_category_id": productCategoryId.value.toString()
+      // }, ApiUrl.addProductSale, allowHeader: true);
 
       loadingIndicator.hide(context);
       var data = jsonDecode(response.body);
