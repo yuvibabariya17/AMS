@@ -39,42 +39,27 @@ class MyApp extends StatelessWidget {
     int isDarkMode = getStorage.read(GetStorageKey.IS_DARK_MODE) ?? 1;
     getStorage.write(GetStorageKey.IS_DARK_MODE, isDarkMode);
     Common().trasparent_statusbar();
-    return FutureBuilder(
-      future: _init(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Sizer(
-            builder: (context, orientation, deviceType) {
-              return ThemeProvider(
-                initTheme:
-                    isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
-                child: Builder(builder: (context) {
-                  return GetBuilder<ThemeController>(
-                    init: ThemeController(),
-                    builder: (ctr) {
-                      return GetMaterialApp(
-                        title: CommonConstant.ams,
-                        theme: !ctr.isDark.value
-                            ? ThemeData.light()
-                            : ThemeData.dark(),
-                        debugShowCheckedModeBanner: false,
-                        home: Splashscreen(),
-                        defaultTransition: Transition.rightToLeftWithFade,
-                      );
-                    },
-                  );
-                }),
-              );
-            },
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return ThemeProvider(
+          initTheme: isDarkMode == 1 ? AppTheme.lightTheme : AppTheme.darkTheme,
+          child: Builder(builder: (context) {
+            return GetBuilder<ThemeController>(
+              init: ThemeController(),
+              builder: (ctr) {
+                return GetMaterialApp(
+                  title: CommonConstant.ams,
+                  theme:
+                      !ctr.isDark.value ? ThemeData.light() : ThemeData.dark(),
+                  debugShowCheckedModeBanner: false,
+                  home: Splashscreen(),
+                  defaultTransition: Transition.rightToLeftWithFade,
+                );
+              },
+            );
+          }),
+        );
       },
     );
-  }
-
-  Future<void> _init() async {
-    await GetStorage.init();
   }
 }
