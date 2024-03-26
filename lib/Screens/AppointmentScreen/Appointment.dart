@@ -62,7 +62,8 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     //   controller.getAppointmentList(context);
     controller.getServiceList(context);
     controller.getCustomerList(context);
-    controller.getAppointmentList(context, controller.customerId.value);
+    controller.getAppointmentList(
+        context, controller.customerId.value, controller.serviceId.value);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
 
     //validateFields();
@@ -562,13 +563,16 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                               errorText: controller.EndDateModel.value.error,
                               inputType: TextInputType.text,
                             );
+                            
                           }),
                           SizedBox(height: 3.h),
                           Obx(() {
                             return getFormButton(() {
                               if (controller.isFormInvalidate.value == true) {
                                 controller.getAppointmentList(
-                                    context, controller.customerId.value);
+                                    context,
+                                    controller.customerId.value,
+                                    controller.serviceId.value);
                               }
                               logcat("FILTER_APPLY",
                                   controller.isFormInvalidate.value);

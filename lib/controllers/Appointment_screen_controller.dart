@@ -94,7 +94,8 @@ class AppointmentScreenController extends GetxController {
   RxList<ListofAppointment> appointmentObjectList = <ListofAppointment>[].obs;
   RxString appointmentId = "".obs;
 
-  void getAppointmentList(context, String? customerId) async {
+  void getAppointmentList(
+      context, String? customerId, String? serviceId) async {
     isAppointmentTypeList.value = true;
     try {
       if (networkManager.connectionType == 0) {
@@ -116,8 +117,8 @@ class AppointmentScreenController extends GetxController {
           //"startAt": "2024-03-23"
           //"endAt": "2024-03-15"
           "vendor_id": retrievedObject!.id.toString().trim(),
-          "customer_id": customerId
-          //"vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          "customer_id": customerId,
+          "vendor_service_id": serviceId,
           //"appointment_slot_id": "6500476bf3b6019b811a1e22"
         }
       }, ApiUrl.appointmentList, allowHeader: true);
@@ -175,7 +176,7 @@ class AppointmentScreenController extends GetxController {
           state.value = ScreenState.apiSuccess;
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
-          logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+          logcat("SERVICE_RESPONSE", jsonEncode(serviceObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -210,7 +211,7 @@ class AppointmentScreenController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("SETCUSTOMERLIST", "CUSTOMER");
+                logcat("SETSERVICELIST", "SERVICE");
                 serviceId.value = serviceObjectList[index].id.toString();
                 serviceCtr.text = serviceObjectList[index]
                     .serviceInfo
