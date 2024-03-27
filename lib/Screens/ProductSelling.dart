@@ -607,8 +607,21 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                       // controller.validateState(val);
                                     },
                                     onTap: () {
-                                      showDropDownDialog(context,
-                                          controller.setBrand(), "Brand List");
+                                      if (controller
+                                          .productCatctr.text.isEmpty) {
+                                        // Show popup dialog if product category is not selected
+                                        controller.PopupDialogs(
+                                          context,
+                                          "Product Sale",
+                                          "Product Category Field is Required",
+                                        );
+                                      } else {
+                                        // Open brand list dialog if product category is selected
+                                        showDropDownDialog(
+                                            context,
+                                            controller.setBrand(),
+                                            "Brand List");
+                                      }
                                     },
                                     isReadOnly: true,
                                     wantSuffix: true,
@@ -632,10 +645,27 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                       // controller.validateState(val);
                                     },
                                     onTap: () {
-                                      showDropDownDialog(
+                                      if (controller.brandctr.text.isEmpty &&
+                                          controller
+                                              .productCatctr.text.isEmpty) {
+                                        controller.PopupDialogs(
                                           context,
-                                          controller.setProductList(),
-                                          "Product List");
+                                          "Product Sale",
+                                          "Product Category Field and Brand Field is Required",
+                                        );
+                                      } else if (controller
+                                          .brandctr.text.isEmpty) {
+                                        controller.PopupDialogs(
+                                          context,
+                                          "Product Sale",
+                                          "Brand Field is Required",
+                                        );
+                                      } else {
+                                        showDropDownDialog(
+                                            context,
+                                            controller.setProductList(),
+                                            "Product List");
+                                      }
                                     },
                                     isReadOnly: true,
                                     wantSuffix: true,

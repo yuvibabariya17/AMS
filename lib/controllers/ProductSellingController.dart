@@ -18,6 +18,7 @@ import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
 import 'package:booking_app/preference/UserPreference.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -639,8 +640,8 @@ class ProductSellingController extends GetxController {
           state.value = ScreenState.apiSuccess;
           BrnadCategoryObjectList.clear();
           BrnadCategoryObjectList.addAll(data.data);
-          getProductList(context, false, productCategoryId.value.toString(),
-              brandCategoryId.value.toString());
+          // getProductList(context, false, productCategoryId.value.toString(),
+          //     brandCategoryId.value.toString());
           logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
@@ -700,6 +701,62 @@ class ProductSellingController extends GetxController {
         ),
       );
     });
+  }
+
+  Future<Object?> PopupDialogs(
+      BuildContext context, String title, String subtext) {
+    return showGeneralDialog(
+        barrierColor: black.withOpacity(0.6),
+        transitionBuilder: (context, a1, a2, widget) {
+          return Transform.scale(
+            scale: a1.value,
+            child: Opacity(
+                opacity: a1.value,
+                child: CupertinoAlertDialog(
+                  title: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontBold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  content: Text(
+                    subtext,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: isDarkMode() ? white : black,
+                      fontFamily: fontMedium,
+                    ),
+                  ),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      isDefaultAction: true,
+                      isDestructiveAction: true,
+                      child: Text("Continue",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: isDarkMode() ? white : black,
+                            fontFamily: fontBold,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    // The "No" button
+                  ],
+                )),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        });
   }
 
   showDialogForScreen(context, String message, {Function? callback}) {
