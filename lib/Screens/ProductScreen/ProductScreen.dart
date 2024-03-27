@@ -5,14 +5,12 @@ import 'package:booking_app/controllers/ProductController.dart';
 import 'package:booking_app/core/Common/Common.dart';
 import 'package:booking_app/core/constants/assets.dart';
 import 'package:booking_app/custom_componannt/CustomeBackground.dart';
-import 'package:booking_app/dialogs/ImageScreen.dart';
 import 'package:booking_app/preference/UserPreference.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/Common/toolbar.dart';
 import '../../core/constants/strings.dart';
@@ -1103,9 +1101,6 @@ class _ProductScreenState extends State<ProductScreen> {
     }
 
     Widget? button;
-    // if (controller.filterList.isEmpty) {
-    //   Container();
-    // }
     if (state == ScreenState.noDataFound) {
       button = getMiniButton(() {
         Get.back();

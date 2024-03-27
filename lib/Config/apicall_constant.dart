@@ -75,6 +75,7 @@ class ApiUrl {
   static const editProdcutCategory = "product/category/edit";
   static const editBrandCategory = "brand/category/edit";
   static const addProductSale = "product/sale/add";
+  static const getProductSale = "product/sale/list";
   static const productSaleList = "product/sale/list";
   static const productSaleDelete = "product/sale/delete";
   static const productSaleEdit = "product/sale/edit";
