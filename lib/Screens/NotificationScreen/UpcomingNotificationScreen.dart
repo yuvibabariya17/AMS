@@ -33,7 +33,7 @@ class _UpcomingNotificationScreenState
       shrinkWrap: false,
       physics: BouncingScrollPhysics(),
       clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.only(bottom: 5.h,top: 1.h),
+      padding: EdgeInsets.only(bottom: 5.h, top: 1.h),
       itemBuilder: (context, index) {
         return getListItem(context, index);
       },
@@ -172,6 +172,4 @@ class _UpcomingNotificationScreenState
       ),
     );
   }
-
-
 }

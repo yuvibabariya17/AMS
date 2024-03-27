@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Models/ProductSellListModel.dart';
 import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
@@ -18,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-
 import '../controllers/home_screen_controller.dart';
 
 class ProductSellingScreen extends StatefulWidget {
@@ -726,9 +724,10 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                             });
                           },
                           onTap: () {
-                            // controller.customerctr.text = "";
                             showDropDownDialog(context,
                                 controller.setCustomerList(), "Customer List");
+
+                            // controller.customerctr.text = "";
                           },
                           errorText: controller.ProductModel.value.error,
                           inputType: TextInputType.none,
@@ -752,9 +751,31 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                             setState(() {});
                           },
                           onTap: () async {
-                            addProduct(
-                              context,
-                            );
+                            if (controller.orderDatectr.text.isEmpty &&
+                                controller.customerctr.text.isEmpty) {
+                              controller.PopupDialogs(
+                                context,
+                                "Product Sale",
+                                "Sale Date and Customer Field is Required",
+                              );
+                            } else if (controller.customerctr.text.isEmpty) {
+                              controller.PopupDialogs(
+                                context,
+                                "Product Sale",
+                                "Customer Field is Required",
+                              );
+                            } else if (controller.orderDatectr.text.isEmpty &&
+                                controller.customerctr.text.isNotEmpty) {
+                              controller.PopupDialogs(
+                                context,
+                                "Product Sale",
+                                "Sale Date Field is Required",
+                              );
+                            } else {
+                              addProduct(
+                                context,
+                              );
+                            }
                           },
                           errorText: controller.ProductSelectModel.value.error,
                           inputType: TextInputType.none,

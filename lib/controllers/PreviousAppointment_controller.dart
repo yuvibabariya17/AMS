@@ -6,6 +6,7 @@ import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/notification_model.dart';
@@ -36,7 +37,12 @@ class PreviousAppointmentController extends GetxController {
   RxString message = "".obs;
   RxList memberList = [].obs;
   RxInt totalPages = 0.obs;
-  void getAppointmentList(context, {String? selectedDateString}) async {
+
+  void getAppointmentList(context,
+      {String? selectedDateString,
+      String? customerId,
+      bool? isFromFilter,
+      String? serviceId}) async {
     state.value = ScreenState.apiLoading;
 
     try {
@@ -46,22 +52,24 @@ class PreviousAppointmentController extends GetxController {
         });
         return;
       }
+
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
       logcat("PARAMETER", {
         "pagination": {
           "pageNo": currentPage.value,
           "recordPerPage": 20,
           "sortBy": "name",
           "sortDirection": "asc"
+        },
+        "search": {
+          //"startAt": "2024-03-23"
+          //"endAt": "2024-03-15"
+          "vendor_id": retrievedObject!.id.toString().trim(),
+          "customer_id": customerId ?? '',
+          "vendor_service_id": serviceId ?? '',
+          //"appointment_slot_id": "6500476bf3b6019b811a1e22"
         }
-        // ,
-        // "search": {
-        //   "startAt": selectedDateString != null ? selectedDateString : ''
-        //   // "endAt": selectedDateString.toString()
-        //   // "vendor_id": "65964339a438e9a2e56bb859",
-        //   // "customer_id": "65002e988f256c43ccea2fcb",
-        //   // "vendor_service_id": "64ffed654016bf16c7fe8a6f",
-        //   // "appointment_slot_id": "6500476bf3b6019b811a1e22"
-        // }
       });
       DateTime today = DateTime.now();
       DateTime lastWeekStart = today.subtract(Duration(days: 7));
@@ -75,7 +83,12 @@ class PreviousAppointmentController extends GetxController {
           "sortDirection": "asc"
         },
         "search": {
-          "startAt": selectedDateString != null ? selectedDateString : ''
+          //"startAt": "2024-03-23"
+          //"endAt": "2024-03-15"
+          "vendor_id": retrievedObject.id.toString().trim(),
+          "customer_id": customerId ?? '',
+          "vendor_service_id": serviceId ?? '',
+          //"appointment_slot_id": "6500476bf3b6019b811a1e22"
         }
       }, ApiUrl.appointmentList, allowHeader: true);
       isAppointmentApiList.value = false;
@@ -84,22 +97,28 @@ class PreviousAppointmentController extends GetxController {
 
       if (response.statusCode == 200) {
         if (responseData['status'] == 1) {
+          state.value = ScreenState.apiSuccess;
           var data = AppointmentModel.fromJson(responseData);
           totalPages.value = data.totalPages;
-          var today = DateTime.now();
-          var twoDaysAgo = today.subtract(Duration(days: 3));
+          if (isFromFilter == true) {
+            appointmentObjectList.clear();
+            appointmentObjectList.addAll(data.data);
+          } else {
+            var today = DateTime.now();
+            var twoDaysAgo = today.subtract(Duration(days: 3));
 
-          logcat("TWODAYSAGO", twoDaysAgo.toString());
+            logcat("TWODAYSAGO", twoDaysAgo.toString());
 
-          data.data.retainWhere((appointment) =>
-              appointment.dateOfAppointment.isAfter(lastWeekStart) &&
-              appointment.dateOfAppointment.isBefore(lastWeekEnd));
-          data.data.sort(
-              (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
+            data.data.retainWhere((appointment) =>
+                appointment.dateOfAppointment.isAfter(lastWeekStart) &&
+                appointment.dateOfAppointment.isBefore(lastWeekEnd));
+            data.data.sort(
+                (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
 
-          state.value = ScreenState.apiSuccess;
-          appointmentObjectList.clear();
-          appointmentObjectList.addAll(data.data);
+            appointmentObjectList.clear();
+            appointmentObjectList.addAll(data.data);
+          }
+          update();
           logcat("APPOINTMENT LIST", jsonEncode(appointmentObjectList));
           if (currentPage.value < totalPages.value) {
             currentPage.value++;

@@ -30,25 +30,20 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
 
   @override
   void initState() {
-    controller.getAppointmentList(context);
+    controller.appointmentObjectList.clear();
+    controller.getAppointmentList(context, isFromFilter: false);
+    setState(() {});
     super.initState();
   }
 
   String formatDate(String dateTimeString) {
-    // Parse the date string into a DateTime object
     DateTime dateTime = DateTime.parse(dateTimeString);
-
-    // Format the DateTime object into the desired format
     String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-
     return formattedDate;
   }
 
   String formatTime(String dateTimeString) {
-    // Parse the date string into a DateTime object
     DateTime dateTime = DateTime.parse(dateTimeString);
-
-    // Format the DateTime object into the desired format
     String formattedDate = DateFormat('h:mm a').format(dateTime);
     return formattedDate;
   }
@@ -76,7 +71,7 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
             return Future.delayed(
               const Duration(seconds: 1),
               () {
-                controller.getAppointmentList(context);
+                controller.getAppointmentList(context, isFromFilter: false);
               },
             );
           },
@@ -159,35 +154,53 @@ class _PreviousAppointmentScreenState extends State<PreviousAppointmentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Text(
-                          //  data.title,
-                          Details.date,
-                          style: TextStyle(
-                              color: isDarkMode() ? white : black,
-                              fontFamily: opensansMedium,
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.mobile
-                                      ? 12.sp
-                                      : 8.sp,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Container(
-                          child: Text(
-                            //  data.title,
-                            formatDate(data.dateOfAppointment.toString()),
-
-                            style: TextStyle(
-                                color: isDarkMode() ? white : black,
-                                fontFamily: opensansMedium,
-                                fontSize:
-                                    SizerUtil.deviceType == DeviceType.mobile
-                                        ? 10.sp
-                                        : 7.sp,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ]),
+                      Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              Details.date,
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontFamily: opensansMedium,
+                                  fontSize:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 12.sp
+                                          : 8.sp,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Text(
+                              formatDate(data.dateOfAppointment.toString()),
+                              style: TextStyle(
+                                  color: isDarkMode() ? white : black,
+                                  fontFamily: opensansMedium,
+                                  fontSize:
+                                      SizerUtil.deviceType == DeviceType.mobile
+                                          ? 10.sp
+                                          : 7.sp,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Spacer(),
+                            data.isConfirmed == 1
+                                ? Container(
+                                    // height: 2.h,
+                                    // width: 10.w,
+                                    //color: black,
+                                    margin: EdgeInsets.only(
+                                        left: 4), // Adjust the margin as needed
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      "Completed",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ))
+                                : Container()
+                          ]),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -84,6 +84,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   @override
   void dispose() {
     Get.find<UpcomingAppointmentController>().appointmentObjectList.clear();
+    Get.find<PreviousAppointmentController>().appointmentObjectList.clear();
     super.dispose();
   }
 
@@ -595,7 +596,21 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                   : true);
                                     } else {
                                       Get.find<PreviousAppointmentController>()
-                                          .getAppointmentList(context);
+                                          .getAppointmentList(context,
+                                              customerId: controller
+                                                  .customerId.value
+                                                  .toString(),
+                                              serviceId: controller
+                                                  .serviceId.value
+                                                  .toString(),
+                                              isFromFilter: controller
+                                                          .areAllFieldsEmpty() ==
+                                                      true
+                                                  ? false
+                                                  : true);
+
+                                      // Get.find<PreviousAppointmentController>()
+                                      //     .getAppointmentList(context);
                                     }
                                   }
                                   logcat("FILTER_APPLY",
