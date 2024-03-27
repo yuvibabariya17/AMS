@@ -208,7 +208,7 @@ class AppointmentScreenController extends GetxController {
           state.value = ScreenState.apiSuccess;
           serviceObjectList.clear();
           serviceObjectList.addAll(data.data);
-          logcat("SERVICE RESPONSE", jsonEncode(serviceObjectList));
+          logcat("SERVICE_RESPONSE", jsonEncode(serviceObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
               callback: () {});
@@ -243,7 +243,7 @@ class AppointmentScreenController extends GetxController {
               minLeadingWidth: 5,
               onTap: () {
                 Get.back();
-                logcat("SETCUSTOMERLIST", "CUSTOMER");
+                logcat("SETSERVICELIST", "SERVICE");
                 serviceId.value = serviceObjectList[index].id.toString();
                 serviceCtr.text = serviceObjectList[index]
                     .serviceInfo
