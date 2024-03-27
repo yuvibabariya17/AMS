@@ -29,9 +29,10 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
   @override
   void initState() {
     controller.getCustomerList(context);
-    controller.getProductCategoryList(context, true);
-    controller.getBrandCategoryList(context, true);
 
+    controller.getProductCategoryList(context, true);
+    // controller.getBrandCategoryList(context, true);
+    //controller.getProductList(context, true, "", "");
     super.initState();
   }
 
@@ -170,15 +171,15 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             const Duration(milliseconds: 300),
                                         child: Obx(() {
                                           return getReactiveFormField(
-                                            node: controller.productCatNode,
+                                            node: controller.productNameNode,
                                             controller:
-                                                controller.productCatctr,
+                                                controller.productNamectr,
                                             hintLabel: "Select Product",
                                             wantSuffix: true,
                                             isReadOnly: true,
                                             isdown: true,
                                             onChanged: (val) {
-                                              controller.validateProduct(val);
+                                              controller.validateName(val);
                                               setState(() {});
                                             },
                                             onTap: () async {
@@ -188,7 +189,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             },
                                             //  isReadOnly: true,
                                             errorText: controller
-                                                .ProductModel.value.error,
+                                                .NameModel.value.error,
                                             inputType: TextInputType.none,
                                           );
                                         }))),
@@ -626,11 +627,19 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                 return getReactiveFormField(
                                     node: controller.productNameNode,
                                     controller: controller.productNamectr,
-                                    hintLabel: "Product Name",
+                                    hintLabel: "Product",
                                     onChanged: (val) {
                                       // controller.validateState(val);
                                     },
-                                    onTap: () {},
+                                    onTap: () {
+                                      showDropDownDialog(
+                                          context,
+                                          controller.setProductList(),
+                                          "Product List");
+                                    },
+                                    isReadOnly: true,
+                                    wantSuffix: true,
+                                    isdown: true,
                                     isEnable: true,
                                     inputType: TextInputType.text,
                                     errorText:

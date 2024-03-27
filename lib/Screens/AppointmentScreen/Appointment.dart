@@ -563,7 +563,6 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                               errorText: controller.EndDateModel.value.error,
                               inputType: TextInputType.text,
                             );
-                            
                           }),
                           SizedBox(height: 3.h),
                           Obx(() {

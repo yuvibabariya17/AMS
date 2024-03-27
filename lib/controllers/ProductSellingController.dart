@@ -5,6 +5,7 @@ import 'package:booking_app/Models/BrandCategoryModel.dart';
 import 'package:booking_app/Models/CommonModel.dart';
 import 'package:booking_app/Models/CustomerListModel.dart';
 import 'package:booking_app/Models/ProductCatListModel.dart';
+import 'package:booking_app/Models/ProductListModel.dart';
 import 'package:booking_app/Models/sign_in_form_validation.dart';
 import 'package:booking_app/api_handle/Repository.dart';
 import 'package:booking_app/controllers/home_screen_controller.dart';
@@ -321,6 +322,102 @@ class ProductSellingController extends GetxController {
     }
   }
 
+  RxBool isProductTypeApiList = false.obs;
+  RxList<ListofProduct> productObjectList = <ListofProduct>[].obs;
+  RxString productId = "".obs;
+
+  void getProductList(
+      context, bool isFirst, String categoryId, String brandId) async {
+    var loadingIndicator = LoadingProgressDialogs();
+    if (isFirst == true) {
+      logcat("STEP_1", "STEP");
+      state.value = ScreenState.apiLoading;
+    } else {
+      logcat("STEP_2", "STEP");
+      loadingIndicator.show(context, "message");
+    }
+    isProductTypeApiList.value = true;
+    try {
+      if (networkManager.connectionType == 0) {
+        if (isFirst == false) {
+          loadingIndicator.hide(context);
+        }
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
+      }
+      var response =
+          await Repository.post({}, ApiUrl.productList, allowHeader: true);
+      if (isFirst == false) {
+        loadingIndicator.hide(context);
+      }
+      isProductTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" PRODUCT RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = ProductListModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          productObjectList.clear();
+          productObjectList.addAll(data.data);
+          logcat("PRODUCT RESPONSE", jsonEncode(productObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
+      isProductTypeApiList.value = false;
+    }
+  }
+
+  Widget setProductList() {
+    return Obx(() {
+      if (isProductTypeApiList.value == true)
+        return setDropDownContent([].obs, Text("Loading"),
+            isApiIsLoading: isProductTypeApiList.value);
+
+      return setDropDownTestContent(
+        productObjectList,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: productObjectList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+              contentPadding:
+                  const EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+              horizontalTitleGap: null,
+              minLeadingWidth: 5,
+              onTap: () {
+                Get.back();
+                logcat("ONTAP", "SACHIN");
+                productId.value = productObjectList[index].id.toString();
+                productNamectr.text =
+                    productObjectList[index].name.capitalize.toString();
+              },
+              title: Text(
+                productObjectList[index].name.toString(),
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: SizerUtil.deviceType == DeviceType.mobile
+                        ? 13.5.sp
+                        : 11.sp,
+                    color: isDarkMode() ? white : black),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
+
   RxBool isCustomerTypeApiList = false.obs;
   RxList<ListofCustomer> customerObjectList = <ListofCustomer>[].obs;
   RxString customerId = "".obs;
@@ -407,7 +504,10 @@ class ProductSellingController extends GetxController {
       <ListProductCategory>[].obs;
   RxString productCategoryId = "".obs;
 
-  void getProductCategoryList(context, bool isFirst) async {
+  void getProductCategoryList(
+    context,
+    bool isFirst,
+  ) async {
     var loadingIndicator = LoadingProgressDialogs();
     if (isFirst == true) {
       state.value = ScreenState.apiLoading;
@@ -482,6 +582,9 @@ class ProductSellingController extends GetxController {
                     productCategoryObjectList[index].id.toString();
                 productCatctr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
+
+                getBrandCategoryList(
+                    context, true, productCategoryId.value.toString());
               },
               title: Text(
                 productCategoryObjectList[index].name.toString(),
@@ -501,7 +604,7 @@ class ProductSellingController extends GetxController {
   RxList<BrandCatList> BrnadCategoryObjectList = <BrandCatList>[].obs;
   RxString brandCategoryId = "".obs;
 
-  void getBrandCategoryList(context, bool isFirst) async {
+  void getBrandCategoryList(context, bool isFirst, String categoryId) async {
     var loadingIndicator = LoadingProgressDialogs();
     if (isFirst == true) {
       state.value = ScreenState.apiLoading;
@@ -536,6 +639,8 @@ class ProductSellingController extends GetxController {
           state.value = ScreenState.apiSuccess;
           BrnadCategoryObjectList.clear();
           BrnadCategoryObjectList.addAll(data.data);
+          getProductList(context, false, productCategoryId.value.toString(),
+              brandCategoryId.value.toString());
           logcat("SERVICE RESPONSE", jsonEncode(BrnadCategoryObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
@@ -576,6 +681,12 @@ class ProductSellingController extends GetxController {
                     BrnadCategoryObjectList[index].id.toString();
                 brandctr.text =
                     BrnadCategoryObjectList[index].name.capitalize.toString();
+
+                getProductList(
+                    context,
+                    true,
+                    productCategoryId.value.toString(),
+                    brandCategoryId.value.toString());
               },
               title: Text(
                 BrnadCategoryObjectList[index].name.toString(),
