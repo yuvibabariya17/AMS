@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:booking_app/Screens/CustomerScreen/AddCustomerScreen.dart';
 import 'package:booking_app/controllers/ProductSellingController.dart';
@@ -151,7 +153,6 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             },
                                             onTap: () {
                                               // controller.customerctr.text = "";
-
                                               showDropDownDialog(
                                                   context,
                                                   controller.setCustomerList(),
@@ -192,27 +193,6 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                             inputType: TextInputType.none,
                                           );
                                         }))),
-
-                                // getTitle("Other Notes"),
-                                // FadeInUp(
-                                //     from: 30,
-                                //     child: AnimatedSize(
-                                //         duration:
-                                //             const Duration(milliseconds: 300),
-                                //         child: Obx(() {
-                                //           return getReactiveFormField(
-                                //             node: controller.notesNode,
-                                //             controller: controller.notesctr,
-                                //             hintLabel: "Enter Notes",
-                                //             onChanged: (val) {
-                                //               controller.validateNotes(val);
-                                //               setState(() {});
-                                //             },
-                                //             errorText: controller
-                                //                 .NotesModel.value.error,
-                                //             inputType: TextInputType.text,
-                                //           );
-                                //         }))),
                                 SizedBox(
                                   height: 4.h,
                                 ),
@@ -474,16 +454,11 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
   }
 
   AnimationController? controllers;
-
+  List<Map<String, dynamic>> productList = [];
   Future<Future> addProduct(
     context,
   ) async {
-    // controller.addCityctr.text = "";
-    // controller.stateController.text = "";
-    // controller.addHospitalctr.text = "";
-    // controller.addDoctorctr.text = "";
-    // controller.cityctr.text = "";
-
+    controller.clearFields(context);
     return showModalBottomSheet(
         context: context,
         transitionAnimationController: controllers,
@@ -628,7 +603,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                     controller: controller.productNamectr,
                                     hintLabel: "Product Name",
                                     onChanged: (val) {
-                                      // controller.validateState(val);
+                                      controller.validateProduct(val);
                                     },
                                     onTap: () {},
                                     isEnable: true,
@@ -648,11 +623,9 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                   controller: controller.qtyctr,
                                   hintLabel: 'Qty',
                                   onChanged: (value) {
-                                    // Your onChanged logic for Text Field 2
+                                    controller.validateQty(value);
                                   },
-                                  onTap: () {
-                                    // Your onTap logic for Text Field 2
-                                  },
+                                  onTap: () {},
                                   inputType: TextInputType.number,
                                 ),
                               ),
@@ -662,7 +635,9 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                   node: controller.priceNode,
                                   controller: controller.pricectr,
                                   hintLabel: "Price",
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    controller.validatePrice(value);
+                                  },
                                   onTap: () {},
                                   inputType: TextInputType.number,
                                 ),
@@ -671,11 +646,13 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                           ),
                           Column(children: [
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
                                   Icons.info,
                                   color: black,
-                                  size: 3.h,
+                                  size: 2.5.h,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 1.w),
@@ -683,7 +660,7 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                                     "Product is Out of Stock",
                                     style: TextStyle(
                                         fontFamily: fontRegular,
-                                        fontSize: 13.5.sp),
+                                        fontSize: 12.sp),
                                   ),
                                 ),
                               ],
@@ -691,85 +668,143 @@ class _ProductSellingScreenState extends State<ProductSellingScreen> {
                           ]),
                         ]),
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FadeInUp(
-                            child: Container(
-                              height: 5.h,
-                              width: 30.w,
-                              child: InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Container(
-                                  height: 13.w,
-                                  alignment: Alignment.center,
-                                  width: SizerUtil.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.w),
-                                    color: black,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: primaryColor.withOpacity(0.3),
-                                          blurRadius: 10.0,
-                                          offset: const Offset(0, 1),
-                                          spreadRadius: 3.0)
-                                    ],
-                                  ),
-                                  child: Text(
-                                    textAlign: TextAlign.center,
-                                    "Submit",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: fontBold,
-                                        fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
+                      Obx(() {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 40.w,
+                              margin: EdgeInsets.only(top: 2.h),
+                              child: getFormButton(() {
+                                if (controller.isFormInvalidate.value == true) {
+                                  productList.add({
+                                    "product_category_id":
+                                        controller.productCategoryId.value,
+                                    "brand_category_id":
+                                        controller.brandCategoryId.value,
+                                    "product_id": "",
+                                    "qty":
+                                        int.tryParse(controller.qtyctr.text) ??
+                                            0,
+                                    "price": double.tryParse(
+                                            controller.pricectr.text) ??
+                                        0.0,
+                                  });
+                                  logcat("productListssss:::",
+                                      jsonEncode(productList));
+                                  logcat("LENGTH:::",
+                                      productList.length.toString());
+                                  //Navigator.pop(context);
+                                }
+                                logcat("FILTER_APPLY",
+                                    controller.isFormInvalidate.value);
+                              }, "Submit",
+                                  validate: controller.isFormInvalidate.value),
                             ),
-                          ),
-                          FadeInUp(
-                            child: Container(
-                              height: 5.h,
-                              width: 30.w,
-                              child: InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Container(
-                                  height: 13.w,
-                                  alignment: Alignment.center,
-                                  width: SizerUtil.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.w),
-                                    color: black,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: primaryColor.withOpacity(0.3),
-                                          blurRadius: 10.0,
-                                          offset: const Offset(0, 1),
-                                          spreadRadius: 3.0)
-                                    ],
-                                  ),
-                                  child: Text(
-                                    textAlign: TextAlign.center,
-                                    "Add More",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: fontBold,
-                                        fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
+                            SizedBox(
+                              width: 2.w,
                             ),
-                          ),
-                        ],
-                      ),
+                            Container(
+                              width: 40.w,
+                              margin: EdgeInsets.only(top: 2.h),
+                              child: getFormButton(() {
+                                productList.add({
+                                  "product_category_id":
+                                      controller.productCategoryId.value,
+                                  "brand_category_id":
+                                      controller.brandCategoryId.value,
+                                  "product_id": "",
+                                  "qty":
+                                      int.tryParse(controller.qtyctr.text) ?? 0,
+                                  "price": double.tryParse(
+                                          controller.pricectr.text) ??
+                                      0.0,
+                                });
+                                setState() {}
+                                controller.clearFields(context);
+                              }, "Add More",
+                                  validate: controller.isFormInvalidate.value),
+                            )
+                          ],
+                        );
+                      }),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   children: [
+                      //     FadeInUp(
+                      //       child: Container(
+                      //         height: 5.h,
+                      //         width: 30.w,
+                      //         child: InkWell(
+                      //           onTap: () {
+                      //             Get.back();
+                      //           },
+                      //           child: Container(
+                      //             height: 13.w,
+                      //             alignment: Alignment.center,
+                      //             width: SizerUtil.width,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(3.w),
+                      //               color: black,
+                      //               boxShadow: [
+                      //                 BoxShadow(
+                      //                     color: primaryColor.withOpacity(0.3),
+                      //                     blurRadius: 10.0,
+                      //                     offset: const Offset(0, 1),
+                      //                     spreadRadius: 3.0)
+                      //               ],
+                      //             ),
+                      //             child: Text(
+                      //               textAlign: TextAlign.center,
+                      //               "Submit",
+                      //               style: TextStyle(
+                      //                   color: Colors.white,
+                      //                   fontFamily: fontBold,
+                      //                   fontSize: 14.sp),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     FadeInUp(
+                      //       child: Container(
+                      //         height: 5.h,
+                      //         width: 30.w,
+                      //         child: InkWell(
+                      //           onTap: () {
+                      //             Get.back();
+                      //           },
+                      //           child: Container(
+                      //             height: 13.w,
+                      //             alignment: Alignment.center,
+                      //             width: SizerUtil.width,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(3.w),
+                      //               color: black,
+                      //               boxShadow: [
+                      //                 BoxShadow(
+                      //                     color: primaryColor.withOpacity(0.3),
+                      //                     blurRadius: 10.0,
+                      //                     offset: const Offset(0, 1),
+                      //                     spreadRadius: 3.0)
+                      //               ],
+                      //             ),
+                      //             child: Text(
+                      //               textAlign: TextAlign.center,
+                      //               "Add More",
+                      //               style: TextStyle(
+                      //                   color: Colors.white,
+                      //                   fontFamily: fontBold,
+                      //                   fontSize: 14.sp),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 2.h,
                         width: double.infinity,

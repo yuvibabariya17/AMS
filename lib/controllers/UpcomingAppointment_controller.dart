@@ -7,6 +7,7 @@ import 'package:booking_app/core/constants/strings.dart';
 import 'package:booking_app/core/utils/log.dart';
 import 'package:booking_app/dialogs/dialogs.dart';
 import 'package:booking_app/dialogs/loading_indicator.dart';
+import 'package:booking_app/preference/UserPreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/notification_model.dart';
@@ -43,7 +44,11 @@ class UpcomingAppointmentController extends GetxController {
   String? selectedDateString;
 
   void getAppointmentList(BuildContext context, bool isFirst,
-      {bool? isClearList, String? selectedDateString}) async {
+      {bool? isClearList,
+      bool? isFromFilter,
+      String? selectedDateString,
+      String? customerId,
+      String? serviceId}) async {
     var loadingIndicator = LoadingProgressDialogs();
     if (isFirst) {
       state.value = ScreenState.apiLoading;
@@ -62,7 +67,25 @@ class UpcomingAppointmentController extends GetxController {
         return;
       }
       isLoading.value = true;
-      logcat("CURRENT_PAGE::", currentPage.value.toString());
+      var retrievedObject = await UserPreferences().getSignInInfo();
+
+      logcat("CURRENT_PAGE::", {
+        "pagination": {
+          "pageNo": currentPage.value,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          //"startAt": "2024-03-23"
+          //"endAt": "2024-03-15"
+          "vendor_id": retrievedObject!.id.toString().trim(),
+          "customer_id": customerId ?? '',
+          "vendor_service_id": serviceId ?? '',
+          //"appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
+      });
+
       var response = await Repository.post({
         "pagination": {
           "pageNo": currentPage.value,
@@ -70,6 +93,14 @@ class UpcomingAppointmentController extends GetxController {
           "sortBy": "name",
           "sortDirection": "asc"
         },
+        "search": {
+          //"startAt": "2024-03-23"
+          //"endAt": "2024-03-15"
+          "vendor_id": retrievedObject.id.toString().trim(),
+          "customer_id": customerId ?? '',
+          "vendor_service_id": serviceId ?? '',
+          //"appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
       }, ApiUrl.appointmentList, allowHeader: true);
 
       if (!isFirst) {
@@ -84,22 +115,26 @@ class UpcomingAppointmentController extends GetxController {
           state.value = ScreenState.apiSuccess;
           var data = AppointmentModel.fromJson(responseData);
           totalPages.value = data.totalPages;
-          var today = DateTime.now();
-          var startOfToday = DateTime(today.year, today.month, today.day);
-          var endOfToday = startOfToday.add(Duration(days: 3));
+          if (isFromFilter == true) {
+            appointmentObjectList.clear();
+            appointmentObjectList.addAll(data.data);
+          } else {
+            var today = DateTime.now();
+            var startOfToday = DateTime(today.year, today.month, today.day);
+            var endOfToday = startOfToday.add(Duration(days: 3));
 
-          data.data.retainWhere((appointment) =>
-              appointment.dateOfAppointment.isAfter(startOfToday) &&
-              appointment.dateOfAppointment.isBefore(endOfToday));
+            data.data.retainWhere((appointment) =>
+                appointment.dateOfAppointment.isAfter(startOfToday) &&
+                appointment.dateOfAppointment.isBefore(endOfToday));
 
-          data.data.sort(
-              (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
-          appointmentObjectList.clear();
-          appointmentObjectList.addAll(data.data);
+            data.data.sort(
+                (a, b) => a.dateOfAppointment.compareTo(b.dateOfAppointment));
+            appointmentObjectList.clear();
+            appointmentObjectList.addAll(data.data);
+          }
           update();
           logcat("APPOINTMENT_RESPONSE:", jsonEncode(appointmentObjectList));
           logcat("API_LENGTH", appointmentObjectList.length.toString());
-
           if (currentPage.value < totalPages.value) {
             currentPage.value++;
             getAppointmentList(context, true);

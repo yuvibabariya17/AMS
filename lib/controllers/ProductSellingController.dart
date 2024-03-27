@@ -92,9 +92,6 @@ class ProductSellingController extends GetxController {
     brandctr = TextEditingController();
     productCatctr = TextEditingController();
     customerctr = TextEditingController();
-
-    // endTimectr = TextEditingController();
-
     enableSignUpButton();
     super.onInit();
   }
@@ -115,12 +112,37 @@ class ProductSellingController extends GetxController {
   var PriceModel = ValidationModel(null, null, isValidate: false).obs;
   var CustomerModel = ValidationModel(null, null, isValidate: false).obs;
 
+  void clearFields(BuildContext context) {
+    productCatctr.text = '';
+    productCategoryId.value = '';
+    brandctr.text = '';
+    brandCategoryId.value = '';
+    productNamectr.text = '';
+    qtyctr.text = '';
+    pricectr.text = '';
+    ProductcatModel.value.isValidate = false;
+    BrandModel.value.isValidate = false;
+    ProductModel.value.isValidate = false;
+    QtyModel.value.isValidate = false;
+    PriceModel.value.isValidate = false;
+    isFormInvalidate.value = false;
+    hideKeyboard(context);
+  }
+
   void enableSignUpButton() {
     if (OrderDateModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else if (CustomerModel.value.isValidate == false) {
       isFormInvalidate.value = false;
+    } else if (ProductcatModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (BrandModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
     } else if (ProductModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (QtyModel.value.isValidate == false) {
+      isFormInvalidate.value = false;
+    } else if (PriceModel.value.isValidate == false) {
       isFormInvalidate.value = false;
     } else {
       isFormInvalidate.value = true;
@@ -156,7 +178,7 @@ class ProductSellingController extends GetxController {
   }
 
   void validateProductCategory(String? val) {
-    ProductModel.update((model) {
+    ProductcatModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Product Category";
         model.isValidate = false;
@@ -170,7 +192,7 @@ class ProductSellingController extends GetxController {
   }
 
   void validateBrand(String? val) {
-    ProductModel.update((model) {
+    BrandModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Select Brand";
         model.isValidate = false;
@@ -184,7 +206,7 @@ class ProductSellingController extends GetxController {
   }
 
   void validateName(String? val) {
-    ProductModel.update((model) {
+    NameModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Product Name";
         model.isValidate = false;
@@ -198,7 +220,7 @@ class ProductSellingController extends GetxController {
   }
 
   void validateQty(String? val) {
-    ProductModel.update((model) {
+    QtyModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Quantity";
         model.isValidate = false;
@@ -212,7 +234,7 @@ class ProductSellingController extends GetxController {
   }
 
   void validatePrice(String? val) {
-    ProductModel.update((model) {
+    PriceModel.update((model) {
       if (val != null && val.isEmpty) {
         model!.error = "Enter Product Price";
         model.isValidate = false;
@@ -328,36 +350,36 @@ class ProductSellingController extends GetxController {
   void getCustomerList(context) async {
     state.value = ScreenState.apiLoading;
     isCustomerTypeApiList.value = true;
-    // try {
-    if (networkManager.connectionType == 0) {
-      showDialogForScreen(context, Connection.noConnection, callback: () {
-        Get.back();
-      });
-      return;
-    }
-    var response =
-        await Repository.post({}, ApiUrl.customerList, allowHeader: true);
-    isCustomerTypeApiList.value = false;
-    var responseData = jsonDecode(response.body);
-    logcat(" CUSTOMER RESPONSE", jsonEncode(responseData));
-
-    if (response.statusCode == 200) {
-      var data = CustomerListModel.fromJson(responseData);
-      if (data.status == 1) {
-        state.value = ScreenState.apiSuccess;
-        customerObjectList.clear();
-        customerObjectList.addAll(data.data);
-        logcat("CUSTOMER RESPONSE", jsonEncode(customerObjectList));
-      } else {
-        showDialogForScreen(context, responseData['message'], callback: () {});
+    try {
+      if (networkManager.connectionType == 0) {
+        showDialogForScreen(context, Connection.noConnection, callback: () {
+          Get.back();
+        });
+        return;
       }
-    } else {
-      showDialogForScreen(context, Connection.servererror, callback: () {});
+      var response =
+          await Repository.post({}, ApiUrl.customerList, allowHeader: true);
+      isCustomerTypeApiList.value = false;
+      var responseData = jsonDecode(response.body);
+      logcat(" CUSTOMER RESPONSE", jsonEncode(responseData));
+
+      if (response.statusCode == 200) {
+        var data = CustomerListModel.fromJson(responseData);
+        if (data.status == 1) {
+          state.value = ScreenState.apiSuccess;
+          customerObjectList.clear();
+          customerObjectList.addAll(data.data);
+          logcat("CUSTOMER RESPONSE", jsonEncode(customerObjectList));
+        } else {
+          showDialogForScreen(context, responseData['message'],
+              callback: () {});
+        }
+      } else {
+        showDialogForScreen(context, Connection.servererror, callback: () {});
+      }
+    } catch (e) {
+      logcat('Exception', e);
     }
-    // } catch (e) {
-    //   logcat('Exception', e);
-    //   isCourseTypeApiList.value = false;
-    // }
   }
 
   Widget setCustomerList() {
@@ -385,6 +407,7 @@ class ProductSellingController extends GetxController {
                 customerId.value = customerObjectList[index].id.toString();
                 customerctr.text =
                     customerObjectList[index].name.capitalize.toString();
+                validateCustomer(customerctr.text);
               },
               title: Text(
                 customerObjectList[index].name.toString(),
@@ -482,6 +505,7 @@ class ProductSellingController extends GetxController {
                     productCategoryObjectList[index].id.toString();
                 productCatctr.text =
                     productCategoryObjectList[index].name.capitalize.toString();
+                validateProductCategory(productCatctr.text);
               },
               title: Text(
                 productCategoryObjectList[index].name.toString(),
@@ -576,6 +600,7 @@ class ProductSellingController extends GetxController {
                     BrnadCategoryObjectList[index].id.toString();
                 brandctr.text =
                     BrnadCategoryObjectList[index].name.capitalize.toString();
+                validateBrand(brandctr.text);
               },
               title: Text(
                 BrnadCategoryObjectList[index].name.toString(),

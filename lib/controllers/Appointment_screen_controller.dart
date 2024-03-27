@@ -56,6 +56,17 @@ class AppointmentScreenController extends GetxController {
     super.onInit();
   }
 
+  bool areAllFieldsEmpty() {
+    update();
+    // Check if all specified fields are empty
+    return serviceCtr.text.isEmpty &&
+        serviceId.value.isEmpty &&
+        customerId.value.isEmpty &&
+        startDateCtr.text.isEmpty &&
+        endDateCtr.text.isEmpty &&
+        CustomerCtr.text.isEmpty;
+  }
+
   final InternetController networkManager = Get.find<InternetController>();
 
   RxBool isExpertTypeApiList = false.obs;
@@ -85,7 +96,7 @@ class AppointmentScreenController extends GetxController {
   }
 
   void updateEndDate(date) {
-    startDateCtr.text = date;
+    endDateCtr.text = date;
     print("PICKED_DATE${endDateCtr.value}");
     update();
   }
@@ -94,7 +105,9 @@ class AppointmentScreenController extends GetxController {
   RxList<ListofAppointment> appointmentObjectList = <ListofAppointment>[].obs;
   RxString appointmentId = "".obs;
 
-  void getAppointmentList(context, String? customerId) async {
+  void getAppointmentList(
+    context,
+  ) async {
     isAppointmentTypeList.value = true;
     try {
       if (networkManager.connectionType == 0) {
@@ -105,7 +118,8 @@ class AppointmentScreenController extends GetxController {
       }
 
       var retrievedObject = await UserPreferences().getSignInInfo();
-      var response = await Repository.post({
+
+      logcat("Appointemt_PARAM", {
         "pagination": {
           "pageNo": 1,
           "recordPerPage": 20,
@@ -116,8 +130,24 @@ class AppointmentScreenController extends GetxController {
           //"startAt": "2024-03-23"
           //"endAt": "2024-03-15"
           "vendor_id": retrievedObject!.id.toString().trim(),
-          "customer_id": customerId
-          //"vendor_service_id": "64ffed654016bf16c7fe8a6f",
+          "customer_id": customerId.value.toString(),
+          "vendor_service_id": serviceId.value.toString(),
+          //"appointment_slot_id": "6500476bf3b6019b811a1e22"
+        }
+      });
+      var response = await Repository.post({
+        "pagination": {
+          "pageNo": 1,
+          "recordPerPage": 20,
+          "sortBy": "name",
+          "sortDirection": "asc"
+        },
+        "search": {
+          //"startAt": "2024-03-23"
+          //"endAt": "2024-03-15"
+          "vendor_id": retrievedObject.id.toString().trim(),
+          "customer_id": customerId.value.toString(),
+          "vendor_service_id": serviceId.value.toString(),
           //"appointment_slot_id": "6500476bf3b6019b811a1e22"
         }
       }, ApiUrl.appointmentList, allowHeader: true);
@@ -130,6 +160,9 @@ class AppointmentScreenController extends GetxController {
         if (data.status == 1) {
           appointmentObjectList.clear();
           appointmentObjectList.addAll(data.data);
+          appointmentObjectList.call();
+          appointmentObjectList.refresh();
+          update();
           logcat("APPOINTMENT_LIST", jsonEncode(appointmentObjectList));
         } else {
           showDialogForScreen(context, responseData['message'],
@@ -249,7 +282,6 @@ class AppointmentScreenController extends GetxController {
       isCustomerTypeApiList.value = false;
       var responseData = jsonDecode(response.body);
       logcat("CUSTOMER LIST", jsonEncode(responseData));
-
       if (response.statusCode == 200) {
         var data = CustomerListModel.fromJson(responseData);
         if (data.status == 1) {
