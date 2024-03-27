@@ -32,10 +32,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   void initState() {
     logcat("CLEARLIST", "data");
     controller.appointmentObjectList.clear();
-    controller.getAppointmentList(
-      context,
-      true,
-    );
+    controller.getAppointmentList(context, true, isFromFilter: false);
     logcat("APPOINTMENT_LENGTH",
         controller.appointmentObjectList.length.toString());
     setState(() {});
@@ -85,7 +82,8 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
               const Duration(seconds: 1),
               () {
                 //controller.appointmentObjectList.clear();
-                controller.getAppointmentList(context, true);
+                controller.getAppointmentList(context, true,
+                    isFromFilter: false);
               },
             );
           },
@@ -211,7 +209,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                   if (value == true) {
                                     controller.getAppointmentList(
                                         context, false,
-                                        isClearList: true);
+                                        isFromFilter: false, isClearList: true);
                                   }
                                 });
                               },
@@ -568,7 +566,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     if (state == ScreenState.noNetwork) {
       button = getMiniButton(() {
         controller.appointmentObjectList.clear();
-        controller.getAppointmentList(context, true);
+        controller.getAppointmentList(context, true, isFromFilter: false);
       }, "Try Again");
     }
 

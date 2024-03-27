@@ -4,6 +4,7 @@ import 'package:booking_app/Screens/BookingAppointmentScreen/AppointmentBooking.
 import 'package:booking_app/Screens/AppointmentScreen/PreviousAppointmentScreen.dart';
 import 'package:booking_app/Screens/AppointmentScreen/Upcoming_Appointment.dart';
 import 'package:booking_app/controllers/Appointment_screen_controller.dart';
+import 'package:booking_app/controllers/PreviousAppointment_controller.dart';
 import 'package:booking_app/controllers/UpcomingAppointment_controller.dart';
 import 'package:booking_app/core/Common/appbar.dart';
 import 'package:booking_app/core/constants/assets.dart';
@@ -62,8 +63,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     //   controller.getAppointmentList(context);
     controller.getServiceList(context);
     controller.getCustomerList(context);
-    controller.getAppointmentList(
-        context, controller.customerId.value, controller.serviceId.value);
+    controller.getAppointmentList(context);
     tabController = TabController(vsync: this, length: 2, initialIndex: 0);
 
     //validateFields();
@@ -112,7 +112,8 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                         //     .appointmentObjectList
                         //     .clear();
                         Get.find<UpcomingAppointmentController>()
-                            .getAppointmentList(context, true);
+                            .getAppointmentList(context, true,
+                                isFromFilter: false);
                         setState(() {});
                       }
                     });
@@ -283,17 +284,21 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   Future showbottomsheetdialog(BuildContext context) {
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(30.0),
         ),
       ),
+      constraints: BoxConstraints(maxWidth: SizerUtil.width),
       builder: (context) {
         return ClipRRect(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(30.0),
           ),
           child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               color: isDarkMode() ? black : white,
               padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -318,295 +323,309 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                         isDarkMode() ? white : black, // Adjust color as needed
                   ),
                   SizedBox(height: 8.0),
-                  Container(
-                    margin: EdgeInsets.only(left: 3.w, right: 3.w),
-                    child: Form(
-                      key: controller.formKey,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              getTitle("Customer"),
-                            ],
-                          ),
-                          Obx(() {
-                            return getReactiveFormField(
-                              node: controller.customerNode,
-                              controller: controller.CustomerCtr,
-                              hintLabel: "Select Customer",
-                              wantSuffix: true,
-                              isReadOnly: true,
-                              isdown: true,
-                              onChanged: (val) {
-                                controller.validateCustomer(val);
-                              },
-                              onTap: () {
-                                showDropDownDialog(
-                                    context,
-                                    controller.setCustomerList(),
-                                    ShowList.customer_list);
-                                // showDropdownMessage(
-                                //     context,
-                                //     controller.setExpertList(),
-                                //     'Select Expert');
-                              },
-                              errorText: controller.CustomerModel.value.error,
-                              inputType: TextInputType.text,
-                            );
-                          }),
-                          Row(
-                            children: [
-                              getTitle("Service"),
-                            ],
-                          ),
-                          Obx(() {
-                            return getReactiveFormField(
-                              node: controller.serviceNode,
-                              controller: controller.serviceCtr,
-                              hintLabel: "Select Service",
-                              wantSuffix: true,
-                              isReadOnly: true,
-                              isdown: true,
-                              onChanged: (val) {
-                                controller.validateService(val);
-                              },
-                              onTap: () {
-                                showDropDownDialog(
-                                    context,
-                                    controller.setServiceList(),
-                                    ShowList.service_list);
-                              },
-                              errorText: controller.ServiceMpdel.value.error,
-                              inputType: TextInputType.text,
-                            );
-                          }),
-                          Row(
-                            children: [
-                              getTitle("Start Date"),
-                            ],
-                          ),
-                          Obx(() {
-                            return getReactiveFormField(
-                              node: controller.startDateNode,
-                              controller: controller.startDateCtr,
-                              hintLabel: "Select Start Date",
-                              wantSuffix: true,
-                              isCalender: true,
-                              onChanged: (val) {
-                                controller.validateDate(val);
-                                setState(() {});
-                              },
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
-                                      return Theme(
-                                        data: isDarkMode()
-                                            ? ThemeData.dark().copyWith(
-                                                primaryColor: primaryColor,
-                                                buttonTheme: ButtonThemeData(
-                                                  textTheme:
-                                                      ButtonTextTheme.primary,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50), // Set your border radius
-                                                  ),
+                  Form(
+                    key: controller.formKey,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            getTitle("Customer"),
+                          ],
+                        ),
+                        Obx(() {
+                          return getReactiveFormField(
+                            node: controller.customerNode,
+                            controller: controller.CustomerCtr,
+                            hintLabel: "Select Customer",
+                            wantSuffix: true,
+                            isReadOnly: true,
+                            isdown: true,
+                            onChanged: (val) {
+                              controller.validateCustomer(val);
+                            },
+                            onTap: () {
+                              showDropDownDialog(
+                                  context,
+                                  controller.setCustomerList(),
+                                  ShowList.customer_list);
+                              // showDropdownMessage(
+                              //     context,
+                              //     controller.setExpertList(),
+                              //     'Select Expert');
+                            },
+                            errorText: controller.CustomerModel.value.error,
+                            inputType: TextInputType.text,
+                          );
+                        }),
+                        Row(
+                          children: [
+                            getTitle("Service"),
+                          ],
+                        ),
+                        Obx(() {
+                          return getReactiveFormField(
+                            node: controller.serviceNode,
+                            controller: controller.serviceCtr,
+                            hintLabel: "Select Service",
+                            wantSuffix: true,
+                            isReadOnly: true,
+                            isdown: true,
+                            onChanged: (val) {
+                              controller.validateService(val);
+                            },
+                            onTap: () {
+                              showDropDownDialog(
+                                  context,
+                                  controller.setServiceList(),
+                                  ShowList.service_list);
+                            },
+                            errorText: controller.ServiceMpdel.value.error,
+                            inputType: TextInputType.text,
+                          );
+                        }),
+                        Row(
+                          children: [
+                            getTitle("Start Date"),
+                          ],
+                        ),
+                        Obx(() {
+                          return getReactiveFormField(
+                            node: controller.startDateNode,
+                            controller: controller.startDateCtr,
+                            hintLabel: "Select Start Date",
+                            wantSuffix: true,
+                            isCalender: true,
+                            onChanged: (val) {
+                              controller.validateDate(val);
+                              setState(() {});
+                            },
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Theme(
+                                      data: isDarkMode()
+                                          ? ThemeData.dark().copyWith(
+                                              primaryColor: primaryColor,
+                                              buttonTheme: ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50), // Set your border radius
                                                 ),
-                                                colorScheme:
-                                                    const ColorScheme.dark(
-                                                  primary: Colors
-                                                      .teal, // Set your primary color
-                                                )
-                                                        .copyWith(
-                                                            secondary:
-                                                                secondaryColor)
-                                                        .copyWith(
-                                                            background: white),
-                                              )
-                                            : ThemeData.light().copyWith(
-                                                primaryColor: primaryColor,
-                                                buttonTheme: ButtonThemeData(
-                                                  textTheme:
-                                                      ButtonTextTheme.primary,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50), // Set your border radius
-                                                  ),
-                                                ),
-                                                colorScheme:
-                                                    const ColorScheme.light(
-                                                  primary: Colors
-                                                      .teal, // Set your primary color
-                                                )
-                                                        .copyWith(
-                                                            secondary:
-                                                                secondaryColor)
-                                                        .copyWith(
-                                                            background: white),
                                               ),
-                                        child: child!,
-                                      );
-                                    },
-                                    initialDate: selectedDate,
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime.now()
-                                        .add(const Duration(days: 0)));
-                                if (pickedDate != null &&
-                                    pickedDate != selectedDate) {
-                                  setState(() {
-                                    selectedDate = pickedDate;
-                                  });
-                                }
-                                if (pickedDate != null) {
-                                  String formattedDate =
-                                      DateFormat(Strings.oldDateFormat)
-                                          .format(pickedDate);
-                                  controller.updateDate(formattedDate);
-                                  controller.validateDate(formattedDate);
-                                }
-                              },
-                              errorText: controller.StartDateModel.value.error,
-                              inputType: TextInputType.text,
-                            );
-                          }),
-                          Row(
-                            children: [
-                              getTitle("End Date"),
-                            ],
-                          ),
-                          Obx(() {
-                            return getReactiveFormField(
-                              node: controller.endDateNode,
-                              controller: controller.endDateCtr,
-                              hintLabel: "Select End Date",
-                              wantSuffix: true,
-                              isCalender: true,
-                              onChanged: (val) {
-                                controller.validateEndDate(val);
-                                setState(() {});
-                              },
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    builder:
-                                        (BuildContext context, Widget? child) {
-                                      return Theme(
-                                        data: isDarkMode()
-                                            ? ThemeData.dark().copyWith(
-                                                primaryColor: primaryColor,
-                                                buttonTheme: ButtonThemeData(
-                                                  textTheme:
-                                                      ButtonTextTheme.primary,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50), // Set your border radius
-                                                  ),
-                                                ),
-                                                colorScheme:
-                                                    const ColorScheme.dark(
-                                                  primary: Colors
-                                                      .teal, // Set your primary color
-                                                )
-                                                        .copyWith(
-                                                            secondary:
-                                                                secondaryColor)
-                                                        .copyWith(
-                                                            background: white),
+                                              colorScheme:
+                                                  const ColorScheme.dark(
+                                                primary: Colors
+                                                    .teal, // Set your primary color
                                               )
-                                            : ThemeData.light().copyWith(
-                                                primaryColor: primaryColor,
-                                                buttonTheme: ButtonThemeData(
-                                                  textTheme:
-                                                      ButtonTextTheme.primary,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50), // Set your border radius
-                                                  ),
+                                                      .copyWith(
+                                                          secondary:
+                                                              secondaryColor)
+                                                      .copyWith(
+                                                          background: white),
+                                            )
+                                          : ThemeData.light().copyWith(
+                                              primaryColor: primaryColor,
+                                              buttonTheme: ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50), // Set your border radius
                                                 ),
-                                                colorScheme:
-                                                    const ColorScheme.light(
-                                                  primary: Colors
-                                                      .teal, // Set your primary color
-                                                )
-                                                        .copyWith(
-                                                            secondary:
-                                                                secondaryColor)
-                                                        .copyWith(
-                                                            background: white),
                                               ),
-                                        child: child!,
-                                      );
-                                    },
-                                    initialDate: selectedEndDate,
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime.now()
-                                        .add(const Duration(days: 0)));
-                                if (pickedDate != null &&
-                                    pickedDate != selectedEndDate) {
-                                  setState(() {
-                                    selectedEndDate = pickedDate;
-                                  });
-                                }
-                                if (pickedDate != null) {
-                                  String formattedDate =
-                                      DateFormat(Strings.oldDateFormat)
-                                          .format(pickedDate);
-                                  controller.updateEndDate(formattedDate);
-                                  controller.validateEndDate(formattedDate);
-                                }
-                              },
-                              errorText: controller.EndDateModel.value.error,
-                              inputType: TextInputType.text,
-                            );
-                          }),
-                          SizedBox(height: 3.h),
-                          Obx(() {
-                            return getFormButton(() {
-                              if (controller.isFormInvalidate.value == true) {
-                                controller.getAppointmentList(
-                                    context,
-                                    controller.customerId.value,
-                                    controller.serviceId.value);
+                                              colorScheme:
+                                                  const ColorScheme.light(
+                                                primary: Colors
+                                                    .teal, // Set your primary color
+                                              )
+                                                      .copyWith(
+                                                          secondary:
+                                                              secondaryColor)
+                                                      .copyWith(
+                                                          background: white),
+                                            ),
+                                      child: child!,
+                                    );
+                                  },
+                                  initialDate: selectedDate,
+                                  firstDate: DateTime(1950),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: 0)));
+                              if (pickedDate != null &&
+                                  pickedDate != selectedDate) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                });
                               }
-                              logcat("FILTER_APPLY",
-                                  controller.isFormInvalidate.value);
-                            }, "Apply",
-                                validate: controller.isFormInvalidate.value);
-                          }),
-                        ],
-                      ),
+                              if (pickedDate != null) {
+                                String formattedDate =
+                                    DateFormat(Strings.oldDateFormat)
+                                        .format(pickedDate);
+                                controller.updateDate(formattedDate);
+                                controller.validateDate(formattedDate);
+                              }
+                            },
+                            errorText: controller.StartDateModel.value.error,
+                            inputType: TextInputType.text,
+                          );
+                        }),
+                        Row(
+                          children: [
+                            getTitle("End Date"),
+                          ],
+                        ),
+                        Obx(() {
+                          return getReactiveFormField(
+                            node: controller.endDateNode,
+                            controller: controller.endDateCtr,
+                            hintLabel: "Select End Date",
+                            wantSuffix: true,
+                            isCalender: true,
+                            onChanged: (val) {
+                              controller.validateEndDate(val);
+                              setState(() {});
+                            },
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Theme(
+                                      data: isDarkMode()
+                                          ? ThemeData.dark().copyWith(
+                                              primaryColor: primaryColor,
+                                              buttonTheme: ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50), // Set your border radius
+                                                ),
+                                              ),
+                                              colorScheme:
+                                                  const ColorScheme.dark(
+                                                primary: Colors
+                                                    .teal, // Set your primary color
+                                              )
+                                                      .copyWith(
+                                                          secondary:
+                                                              secondaryColor)
+                                                      .copyWith(
+                                                          background: white),
+                                            )
+                                          : ThemeData.light().copyWith(
+                                              primaryColor: primaryColor,
+                                              buttonTheme: ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50), // Set your border radius
+                                                ),
+                                              ),
+                                              colorScheme:
+                                                  const ColorScheme.light(
+                                                primary: Colors
+                                                    .teal, // Set your primary color
+                                              )
+                                                      .copyWith(
+                                                          secondary:
+                                                              secondaryColor)
+                                                      .copyWith(
+                                                          background: white),
+                                            ),
+                                      child: child!,
+                                    );
+                                  },
+                                  initialDate: selectedEndDate,
+                                  firstDate: DateTime(1950),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: 0)));
+                              if (pickedDate != null &&
+                                  pickedDate != selectedEndDate) {
+                                setState(() {
+                                  selectedEndDate = pickedDate;
+                                });
+                              }
+                              if (pickedDate != null) {
+                                String formattedDate =
+                                    DateFormat(Strings.oldDateFormat)
+                                        .format(pickedDate);
+                                controller.updateEndDate(formattedDate);
+                                controller.validateEndDate(formattedDate);
+                              }
+                            },
+                            errorText: controller.EndDateModel.value.error,
+                            inputType: TextInputType.text,
+                          );
+                        }),
+                        SizedBox(height: 2.h),
+                        Obx(() {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 40.w,
+                                child: getFormButton(() {
+                                  if (controller.isFormInvalidate.value ==
+                                      true) {
+                                    Navigator.pop(context);
+                                    if (controller.isFromUpcoming == true) {
+                                      Get.find<UpcomingAppointmentController>()
+                                          .getAppointmentList(context, true,
+                                              customerId: controller
+                                                  .customerId.value
+                                                  .toString(),
+                                              serviceId: controller
+                                                  .serviceId.value
+                                                  .toString(),
+                                              isFromFilter: controller
+                                                          .areAllFieldsEmpty() ==
+                                                      true
+                                                  ? false
+                                                  : true);
+                                    } else {
+                                      Get.find<PreviousAppointmentController>()
+                                          .getAppointmentList(context);
+                                    }
+                                  }
+                                  logcat("FILTER_APPLY",
+                                      controller.isFormInvalidate.value);
+                                }, "Apply",
+                                    validate:
+                                        controller.isFormInvalidate.value),
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Container(
+                                width: 40.w,
+                                child: getFormButton(() {
+                                  controller.serviceCtr.text = '';
+                                  controller.serviceId.value = '';
+                                  controller.customerId.value = '';
+                                  controller.startDateCtr.text = '';
+                                  controller.endDateCtr.text = '';
+                                  controller.CustomerCtr.text = '';
+                                }, "CLEAR",
+                                    validate:
+                                        controller.isFormInvalidate.value),
+                              )
+                            ],
+                          );
+                        }),
+                      ],
                     ),
                   ),
-
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   height: 6.h,
-                  //   child: ElevatedButton(
-                  //     onPressed: () {
-                  //       Navigator.pop(context);
-                  //     },
-                  //     style: ElevatedButton.styleFrom(
-                  //       primary: Colors.black, // Adjust color as needed
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(24.0),
-                  //       ),
-                  //     ),
-                  //     child: Text(
-                  //       'Apply',
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 12.sp,
-                  //         fontFamily: opensans_Bold,
-                  //         fontWeight: FontWeight.w700,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
